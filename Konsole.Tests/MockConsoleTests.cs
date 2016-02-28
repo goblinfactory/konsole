@@ -6,13 +6,26 @@ using NUnit.Framework;
 
 namespace Konsole.Tests
 {
-    [UseReporter(typeof(DiffReporter))] 
+    [UseReporter(typeof(DiffReporter))]
     public class MockConsoleTests
     {
-        public class write_and_writeline_tests
+        [UseReporter(typeof(DiffReporter))]
+        public class Write_and_WriteLine_tests
         {
             [Test]
-            public void write_and_write_line_simple_usages()
+            public void overflow_text_should_wrap_onto_next_line()
+            {
+                var console = new MockConsole(8, 20);
+                console.WriteLine("1234567890");
+                console.WriteLine("---");
+                console.WriteLine("12345678901234567890");
+                Console.WriteLine(console.Buffer);
+                Console.WriteLine();
+                Approvals.Verify(console.Buffer);
+            }
+
+            [Test]
+            public void Write_should_write_to_end_of_line_and_WriteLine_should_write_to_current_line_and_move_cursor_to_beginning_of_next_line()
             {
                 var console = new MockConsole(80, 20);
                 console.WriteLine("line1");
@@ -29,7 +42,45 @@ namespace Konsole.Tests
             };
                 Console.WriteLine(console.Buffer);
                 Assert.That(console.LinesTextTrimmed, Is.EqualTo(expected));
-            }            
+            }
+        }
+
+        public class CursorLeft_tests
+        {
+            [Test]
+            public void CursorLeft_should_return_the_x_position_that_the_next_character_will_be_written_to()
+            {
+                var console = new MockConsole(30, 20);
+                Assert.AreEqual(0, console.CursorLeft);
+                console.Write("Today ");
+                Assert.AreEqual(6, console.CursorLeft);
+                
+                console.Write("is ");
+                Assert.AreEqual(9, console.CursorLeft);
+                
+                console.Write("a good day to test.");
+                Assert.AreEqual(28, console.CursorLeft);
+                
+                // digit 3 should overflow to next line.
+                console.Write("123");
+                Assert.AreEqual(1, console.CursorTop);
+            }
+            [Test]
+            public void setting_CursorLeft_position_should_change_x_position_without_affecting_y_position_and_allow_writing_at_different_x_positions()
+            {
+                var console = new MockConsole(80, 20);
+                Assert.AreEqual(0, console.CursorTop);
+                console.WriteLine("line1");
+                Assert.AreEqual(1, console.CursorTop);
+                console.Write("This ");
+                Assert.AreEqual(1, console.CursorTop);
+                console.Write("is ");
+                Assert.AreEqual(1, console.CursorTop);
+                console.WriteLine("a test line.");
+                Assert.AreEqual(2, console.CursorTop);
+                console.WriteLine("line 3");
+                Assert.AreEqual(3, console.CursorTop);
+            }
         }
 
         public class CursorTop_tests
@@ -58,14 +109,13 @@ namespace Konsole.Tests
                 console.WriteLine("line 0");
                 console.WriteLine("line 1");
                 console.WriteLine("line 2");
-                console.Y = 1;
+                console.CursorTop = 1;
                 console.WriteLine("new line 1");
-                var expected = new[]
-            {
-                "line 0",
-                "new line 1",
-                "line 2"
-            };
+                var expected = new[] {
+                    "line 0",
+                    "new line 1",
+                    "line 2"
+                };
                 Console.WriteLine(console.Buffer);
                 Assert.That(console.LinesTextTrimmed, Is.EqualTo(expected));
             }
@@ -74,7 +124,7 @@ namespace Konsole.Tests
 
 
         [Test]
-        public void printat_tests()
+        public void PrintAt_tests()
         {
             var console = new MockConsole(5, 5);
             console.PrintAt(0, 0, "*");
@@ -105,18 +155,8 @@ namespace Konsole.Tests
 
         }
 
-        
-        [Test]
-        public void overflow_text_should_wrap_onto_next_line()
-        {
-            var console = new MockConsole(8, 20);
-            console.WriteLine("1234567890");
-            console.WriteLine("---");
-            console.WriteLine("12345678901234567890");
-            Console.WriteLine(console.Buffer);
-            Console.WriteLine();
-            Approvals.Verify(console.Buffer);
-        }
+
+
 
 
     }

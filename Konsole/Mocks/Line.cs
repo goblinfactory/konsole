@@ -40,7 +40,7 @@ namespace Goblinfactory.Konsole.Mocks
             // e.g. width 10, x = 6 , string len = 10, overflow = 10-(10-1)=11 
 
             var writeText = text.Substring(0, writeLen);
-            var overflowText = overflow > 0 ? text.Substring(x + writeLen, overflow) : null;
+            var overflowText = overflow > 0 ? text.Substring(writeLen, overflow) : null;
             // todo; consider asignment overrides? 
             for (int i = 0; i < writeLen; i++) Cells[i + x] = Cells[i + x].WithChar(writeText[i]);
             return overflowText;

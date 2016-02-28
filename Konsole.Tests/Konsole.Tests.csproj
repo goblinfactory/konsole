@@ -71,7 +71,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MockConsoleTests.overflow_text_should_wrap_onto_next_line.approved.txt" />
     <Content Include="ProgressBarTests.refresh_should_show_progress_title_and_progress_bar.approved.txt" />
     <Content Include="ProgressBarTests.should_still_update_progress_even_when_writing_lines_after_progress_bar.approved.txt" />
   </ItemGroup>
