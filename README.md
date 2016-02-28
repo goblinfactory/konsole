@@ -24,4 +24,4 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 ![sample output](progressbar.gif)
 [sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
 
-<sub>(*) By 100%-ish I mean 'some', enough to make MockConsole useful enough and accurate enough that I couldn't have written a high quality progress-bar without it ;-D If you use MockConsole to help you write a console utility and find it's lacking some important features, please contact me, I'd love to hear from you and see if I can update MockConsole to help you.</sub>
+<sub>* By 100%-ish I mean 'some', enough to make MockConsole useful enough and accurate enough that I couldn't have written a high quality progress-bar without it ;-D If you use MockConsole to help you write a console utility and find it's lacking some important features, please contact me, I'd love to hear from you and see if I can update MockConsole to help you.</sub>
