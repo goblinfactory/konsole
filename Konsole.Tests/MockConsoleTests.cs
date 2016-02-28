@@ -1,7 +1,6 @@
 ﻿using System;
 using ApprovalTests;
 using ApprovalTests.Reporters;
-using Goblinfactory.Konsole.Mocks;
 using NUnit.Framework;
 
 namespace Konsole.Tests

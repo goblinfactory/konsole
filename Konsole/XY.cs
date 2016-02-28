@@ -1,4 +1,4 @@
-namespace Goblinfactory.Konsole.Mocks
+namespace Konsole
 {
     public struct XY
     {

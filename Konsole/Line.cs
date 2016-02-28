@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Goblinfactory.Konsole.Mocks
+namespace Konsole
 {
     public class Line
     {

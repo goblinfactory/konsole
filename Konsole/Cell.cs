@@ -1,6 +1,6 @@
 using System;
 
-namespace Goblinfactory.Konsole.Mocks
+namespace Konsole
 {
     public struct Cell
     {

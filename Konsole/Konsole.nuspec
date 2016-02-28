@@ -6,13 +6,12 @@
     <title>$title$</title>
     <authors>Alan Hemmings</authors>
     <owners>Goblinfactory Ltd</owners>
-    <licenseUrl>https://raw.githubusercontent.com/goblinfactory/progress-bar/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/goblinfactory/progress-bar/</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/goblinfactory/progress-bar/master/progress.png</iconUrl>
+    <licenseUrl>https://raw.githubusercontent.com/goblinfactory/konsole/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/goblinfactory/konsole/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/goblinfactory/konsole/master/progress.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>C# console progress bar, with support for single or multithreaded progress updates. </description>
-    <releaseNotes>First draft.</releaseNotes>
-    <copyright>Copyright 2016</copyright>
-    <tags>console progress console-progress progressbar progress-bar</tags>
+    <description>home of ProgressBar ( C# console progress bar with support for single or multithreaded progress updates ) and MockConsole ( The only 100%-ish* System.Console compatible console mock, supporting color printing as well as .CursorTop and .CursorLeft.</description>
+    <copyright>Copyright Goblinfactory Ltd, 2016, all rights reserved.</copyright>
+    <tags>console progress console-progress progressbar progress-bar konsole mockconsole iconsole</tags>
   </metadata>
 </package>

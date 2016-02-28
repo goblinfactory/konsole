@@ -3,7 +3,6 @@ using System.Text;
 using ApprovalTests;
 using ApprovalTests.Maintenance;
 using ApprovalTests.Reporters;
-using Goblinfactory.Konsole.Mocks;
 using NUnit.Framework;
 
 namespace Konsole.Tests
