@@ -3,8 +3,6 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 
 ![install-package Goblinfactory.Konsole](install-package.png)
 
-(Apologies not yet available, busy atmo! Just moved goblinfactory/progress-bar to here today, 28.02.16, and am working on new nuget package, hope to have it up tonight.)
-
 ##ProgressBar usage
 ```csharp
 
