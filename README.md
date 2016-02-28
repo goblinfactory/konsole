@@ -8,7 +8,7 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 ##ProgressBar usage
 ```csharp
 
-    using Goblinfactory.ProgressBar;
+    using Goblinfactory.Konsole;
 
            . . .
 
@@ -22,4 +22,4 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 ```
 
 ![sample output](progressbar.gif)
-![sample ProgressBar code that produced the output above](readme-sample-parallel.md)
+[sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
