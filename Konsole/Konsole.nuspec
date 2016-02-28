@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>0.0.1.0</version>
+    <title>$title$</title>
+    <authors>Alan Hemmings</authors>
+    <owners>Goblinfactory Ltd</owners>
+    <licenseUrl>https://raw.githubusercontent.com/goblinfactory/progress-bar/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/goblinfactory/progress-bar/</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/goblinfactory/progress-bar/master/progress.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>C# console progress bar, with support for single or multithreaded progress updates. </description>
+    <releaseNotes>First draft.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>console progress console-progress progressbar progress-bar</tags>
+  </metadata>
+</package>
