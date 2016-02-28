@@ -4,10 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Goblinfactory.Konsole;
-using Konsole;
 
-namespace Goblinfactory.Konsole.Sample
+namespace Konsole.Sample
 {
     class Program
     {
@@ -15,7 +13,7 @@ namespace Goblinfactory.Konsole.Sample
 
         private static void Main(string[] args)
         {
-            //ParallelDemo();
+            ParallelDemo();
         }
 
         static void ParallelDemo()
@@ -27,7 +25,7 @@ namespace Goblinfactory.Konsole.Sample
             // processing of each directory happens on a different thread, to simulate multiple background tasks, 
             // e.g. file downloading.
             // ==============================================================================================================
-            var dirs = Directory.GetDirectories(@"c:\windows").Where(d=> Directory.GetFiles(d).Count()>0).Take(7);
+            var dirs = Directory.GetDirectories(@"c:\windows").Where(d=> Directory.GetFiles(d).Any()).Take(7);
 
             var tasks = new List<Task>();
             var bars = new List<ProgressBar>();
@@ -35,7 +33,7 @@ namespace Goblinfactory.Konsole.Sample
             {
                 var dir = new DirectoryInfo(d);
                 var files = dir.GetFiles().Take(50).Select(f=>f.FullName).ToArray();
-                if (files.Count()==0) continue;
+                if (files.Length==0) continue;
                 var bar = new ProgressBar(files.Count());
                 bars.Add(bar);
                 bar.Refresh(0, d);
