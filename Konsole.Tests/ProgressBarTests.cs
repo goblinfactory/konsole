@@ -11,7 +11,7 @@ using Goblinfactory.Konsole.Mocks;
 namespace Goblinfactory.ProgressBar.Tests
 {
     [UseReporter(typeof(DiffReporter))]
-    public class ProgressBarAcceptanceTests
+    public class ProgressBarTests
     {
         [Test]
         public void EnsureNoAbandonedFiles()
@@ -24,7 +24,7 @@ namespace Goblinfactory.ProgressBar.Tests
         {
             var testoutput = new StringBuilder();
             var console = new MockConsole(80,20);
-            var pb = new ProgressBar(10, console);
+            var pb = new global::Konsole.ProgressBar(10, console);
             
             for (int i = 1; i < 5; i++)
             {
@@ -42,7 +42,7 @@ namespace Goblinfactory.ProgressBar.Tests
         {
             var console = new MockConsole(40,10);
             console.WriteLine("line 1");
-            var pb = new ProgressBar(10, console);
+            var pb = new global::Konsole.ProgressBar(10, console);
             pb.Refresh(0, "loading");
             console.WriteLine("line 2");
             pb.Refresh(1, "cats");

@@ -158,5 +158,10 @@ namespace Goblinfactory.Konsole.Mocks
             Write(text);
         }
 
+        public void SetCursorPosition(int x, int y)
+        {
+            Cursor = new XY(x, y);
+        }
+
     }
 }

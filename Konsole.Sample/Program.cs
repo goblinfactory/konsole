@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Goblinfactory.Konsole;
+using Konsole;
 
 namespace Goblinfactory.Konsole.Sample
 {
@@ -11,15 +13,7 @@ namespace Goblinfactory.Konsole.Sample
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("Simplest usage");
-            //var pb = new ProgressBar(50);
-            //pb.Refresh(0, "connecting to server to download 50 files sychronously.");
-            //Console.ReadLine();
-            //pb.Refresh(5, "downloading file 5");
-            //Console.ReadLine();
-            //pb.Refresh(50, "finished.");
 
-            //return;
 
 
             // demo; take the first 10 directories that have files from c:\windows, and then pretends to process (list) them.
@@ -29,13 +23,13 @@ namespace Goblinfactory.Konsole.Sample
             var dirs = Directory.GetDirectories(@"c:\windows").Where(d=> Directory.GetFiles(d).Count()>0).Take(7);
 
             var tasks = new List<Task>();
-            var bars = new List<ProgressBar.ProgressBar>();
+            var bars = new List<ProgressBar>();
             foreach (var d in dirs)
             {
                 var dir = new DirectoryInfo(d);
                 var files = dir.GetFiles().Take(50).Select(f=>f.FullName).ToArray();
                 if (files.Count()==0) continue;
-                var bar = new ProgressBar.ProgressBar(files.Count());
+                var bar = new ProgressBar(files.Count());
                 bars.Add(bar);
                 bar.Refresh(0, d);
                 tasks.Add(new Task(() => ProcessFiles(d, files, bar)));
@@ -50,7 +44,20 @@ namespace Goblinfactory.Konsole.Sample
 
         }
 
-        public static void ProcessFiles(string directory, string[] files, ProgressBar.ProgressBar bar)
+        public void SimplestUsage()
+        {
+            Console.WriteLine("Simplest usage");
+            var pb = new ProgressBar(50);
+            pb.Refresh(0, "connecting to server to download 50 files sychronously.");
+            Console.ReadLine();
+            pb.Refresh(5, "downloading file 5");
+            Console.ReadLine();
+            pb.Refresh(50, "finished.");
+            return;
+        }
+
+
+        public static void ProcessFiles(string directory, string[] files, ProgressBar bar)
         {
             var cnt = files.Count();
             foreach (var file in files)

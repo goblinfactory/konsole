@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Goblinfactory.Konsole;
 using Goblinfactory.Konsole;
 
-namespace Goblinfactory.ProgressBar
+namespace Konsole
 {
     public class ProgressBar
     {
