@@ -11,7 +11,14 @@ namespace Goblinfactory.Konsole.Sample
 {
     class Program
     {
-        static void Main(string[] args)
+
+
+        private static void Main(string[] args)
+        {
+            //ParallelDemo();
+        }
+
+        static void ParallelDemo()
         {
 
 

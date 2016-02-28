@@ -2,13 +2,11 @@
 using System.Text;
 using ApprovalTests;
 using ApprovalTests.Maintenance;
-using ApprovalTests.Namers;
 using ApprovalTests.Reporters;
-using NUnit.Framework;
-using Goblinfactory.Konsole;
 using Goblinfactory.Konsole.Mocks;
+using NUnit.Framework;
 
-namespace Goblinfactory.ProgressBar.Tests
+namespace Konsole.Tests
 {
     [UseReporter(typeof(DiffReporter))]
     public class ProgressBarTests

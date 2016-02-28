@@ -9,44 +9,46 @@ namespace Konsole.Tests
     [UseReporter(typeof(DiffReporter))] 
     public class MockConsoleTests
     {
-
-        [Test]
-        public void write_and_write_line_simple_usages()
+        public class write_and_writeline_tests
         {
-            var console = new MockConsole(80, 20);
-            console.WriteLine("line1");
-            console.Write("This ");
-            console.Write("is ");
-            console.WriteLine("a test line.");
-            console.WriteLine("line 3");
+            [Test]
+            public void write_and_write_line_simple_usages()
+            {
+                var console = new MockConsole(80, 20);
+                console.WriteLine("line1");
+                console.Write("This ");
+                console.Write("is ");
+                console.WriteLine("a test line.");
+                console.WriteLine("line 3");
 
-            var expected = new[]
+                var expected = new[]
             {
                 "line1",
                 "This is a test line.",
                 "line 3"
             };
-            Console.WriteLine(console.Buffer);
-            Assert.That(console.LinesTextTrimmed, Is.EqualTo(expected));
+                Console.WriteLine(console.Buffer);
+                Assert.That(console.LinesTextTrimmed, Is.EqualTo(expected));
+            }            
         }
 
-        public class cursor_top_tests
+        public class CursorTop_tests
         {
             [Test]
             public void calling_writeline_should_increment_cursortop_position()
             {
                 var console = new MockConsole(80, 20);
-                Assert.AreEqual(0, console.Y);
+                Assert.AreEqual(0, console.CursorTop);
                 console.WriteLine("line1");
-                Assert.AreEqual(1, console.Y);
+                Assert.AreEqual(1, console.CursorTop);
                 console.Write("This ");
-                Assert.AreEqual(1, console.Y);
+                Assert.AreEqual(1, console.CursorTop);
                 console.Write("is ");
-                Assert.AreEqual(1, console.Y);
+                Assert.AreEqual(1, console.CursorTop);
                 console.WriteLine("a test line.");
-                Assert.AreEqual(2, console.Y);
+                Assert.AreEqual(2, console.CursorTop);
                 console.WriteLine("line 3");
-                Assert.AreEqual(3, console.Y);
+                Assert.AreEqual(3, console.CursorTop);
             }
 
             [Test]

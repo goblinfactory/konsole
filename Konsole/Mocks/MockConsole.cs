@@ -109,10 +109,22 @@ namespace Goblinfactory.Konsole.Mocks
             }
         }
 
+        public int CursorTop
+        {
+            get { return Y; }
+            set { Y = value; }
+        }
+
         public int Y
         {
             get { return Cursor.Y;  }
             set { Cursor = Cursor.WithY(value); }
+        }
+
+        public int CursorLeft
+        {
+            get { return X; }
+            set { X = value; }
         }
 
         public int X
