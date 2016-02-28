@@ -1,7 +1,7 @@
 # Konsole
 home of ProgressBar ( C# console progress bar with support for single or multithreaded progress updates ) and MockConsole ( The only 100%-ish* System.Console compatible console mock, supporting color printing as well as .CursorTop and .CursorLeft.
 
-### `Install-Package Goblinfactory.Konsole` 
+![install-package Goblinfactory.Konsole](install-package.png)
 
 (Apologies not yet available, busy atmo! Just moved goblinfactory/progress-bar to here today, 28.02.16, and am working on new nuget package, hope to have it up tonight.)
 
