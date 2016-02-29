@@ -126,7 +126,8 @@ Because it' much more than just a mock. Below is a comparison of how someone mig
             }
                 
             // Now, if someone accidentally changes your currency formatter, this test will wail
-            // when the rendered output to the Console suddenly changes, bwaaam! Score one for TestConsole, sweetness!
+            // when the rendered output to the Console suddenly changes, bwaaam! Instant Fail.
+            // Score one for TestConsole, sweetness, life is good!
         }
 
 
