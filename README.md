@@ -59,6 +59,78 @@ home of ProgressBar ( C# console progress bar with support for single or multith
         }
 ```
 
+##Why did I recently rename MockConsole to TestConsole?
+
+Because it' much more than just a mock. Below is a comparison of how someone might test an Invoice class using a traditional `Mock<IConsole>` and the same test, using a `TestConsole`. To make it a fair comparison I'm comparing to [NSubstitute](http://nsubstitute.github.io/) which is quite terse and one of my favourite mocking frameworks.
+
+```csharp
+
+        [Test]
+        public void Test_Invoice_using_mocks()
+        {
+            // test the invoice
+            // ============
+            IConsole console = new Substitute.For<IConsole>();
+            var invoice = new Invoice(console);
+            invoice.AddLine(2, "Semi Skimmed Milk", "2 pints", "£",1.00);
+            invoice.AddLine(3, "Warburtons Crumpets", "6 pack", "£",0.89);
+            invoice.Print();
+                
+            // not really practical to test printed output using a mock console
+            // ================================================================
+            console.Received().SetCursorPosition(0,0);
+            console.Received().WriteLine("ACME Wholesale Foody");
+            console.Received().WriteLine("--------------------");
+            console.Received().WriteLine("");
+            console.Received().WriteLine("--------------------");
+            console.Received().Write("qty ");
+            console.Received().Write(2);
+            console.Received().Write(" Semi Skimmed Milk");
+            console.Received().Write(", ");
+            console.Received().Write("{0} pints", 2);
+            console.Received().Write("£ {0.00,-10}", 2.0m);
+            .
+            .
+            . // and so on and so on ...for probably around another 12 or 13 lines.
+            .
+            .
+             // having to mimick the exact formatted Write's and Writelines and SetCursor movements 
+             // this is brittle, if the code is optimised to replace two Write's with a single formatted WriteLine for example
+             // then this test fails even though the desired output is written to the console.
+        }
+        
+            
+        [Test]
+        public void testing_Invoice_class_using_TestConsole()
+            {
+                var expected = @"
+                 ACME WHoleSale Foody 
+                 -------------------- 
+                 qty 2 Semi Skimmed Milk   , 2 pints     £ 2.00
+                 qty 3 Warburtons Crumpets , 6 pack      £ 5.34
+                 --------------
+                 total   £ 7.34 
+                 --------------
+            
+                * some random message on the footer
+";
+        
+                IConsole console = new TestConsole();
+                var invoice = new Invoice(console);
+                invoice.AddLine(2, "Semi Skimmed Milk", "2 pints", "£",1.00);
+                invoice.AddLine(3, "Warburtons Crumpets", "6 pack", "£",0.89);
+                invoice.Print();
+                Assert.AreEqual(console.Buffer,expected);
+                });
+            }
+
+        }
+
+
+``` 
+
+
+
 <sub>* By 100%-ish I mean 'some', enough to make TestConsole useful enough and accurate enough that I couldn't have written a high quality progress-bar without it ;-D If you use MockConsole to help you write a console utility and find it's lacking some important features, please contact me, I'd love to hear from you and see if I can update MockConsole to help you.</sub>
 
 ##Support, Feedback, Suggestions
