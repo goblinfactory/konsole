@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -13,7 +14,37 @@ namespace Konsole.Sample
 
         private static void Main(string[] args)
         {
-            ParallelDemo();
+            //ParallelDemo();
+            Console.ReadLine();
+        }
+
+        public class Cat
+        {
+            private readonly IConsole _console;
+            public Cat(IConsole console) { _console = console; }
+            public void Greet()
+            {
+                _console.WriteLine("Prrr!");
+                _console.WriteLine("Meow!");
+            }
+        }
+
+        public void MockConsole_ConsoleWriter_and_IConsole_example_usage()
+        {
+            {
+                // test the cat
+                // ============
+                var console = new MockConsole(80, 20);
+                var cat = new Cat(console);
+                cat.Greet();
+                Assert.AreEqual(console.TrimmedLines, new[] {"Prrr!", "Meow!"});
+            }
+            {
+                // create an instance of a cat that will purr to the real Console
+                // ==============================================================
+                var cat = new Cat(new ConsoleWriter());
+                cat.Greet(); // prints Prrr! aand Meow! to the console
+            }
         }
 
         static void ParallelDemo()
@@ -73,4 +104,12 @@ namespace Konsole.Sample
         } 
 
     }
+
+    // fake Assert class so that I can have an Assert without referencing nunit in the sample project
+    public static class Assert
+    {
+        public static void That(bool result) { }
+        public static void AreEqual<T>(IEnumerable<T> a, IEnumerable<T> b) { }
+    }
+
 }

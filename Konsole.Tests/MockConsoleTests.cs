@@ -40,7 +40,7 @@ namespace Konsole.Tests
                 "line 3"
             };
                 Console.WriteLine(console.Buffer);
-                Assert.That(console.LinesTextTrimmed, Is.EqualTo(expected));
+                Assert.That(console.TrimmedLines, Is.EqualTo(expected));
             }
         }
 
@@ -116,7 +116,7 @@ namespace Konsole.Tests
                     "line 2"
                 };
                 Console.WriteLine(console.Buffer);
-                Assert.That(console.LinesTextTrimmed, Is.EqualTo(expected));
+                Assert.That(console.TrimmedLines, Is.EqualTo(expected));
             }
 
         }
@@ -149,7 +149,7 @@ namespace Konsole.Tests
             };
 
             Console.WriteLine(console.Buffer);
-            Assert.That(console.LinesTextTrimmed, Is.EqualTo(trimmed));
+            Assert.That(console.TrimmedLines, Is.EqualTo(trimmed));
             Assert.That(console.LinesText, Is.EqualTo(buffer));
 
         }

@@ -51,7 +51,7 @@ namespace Konsole
         /// <summary>
         /// get all the lines written to for the whole mock console, all trimmed.
         /// </summary>
-        public string[] LinesTextTrimmed
+        public string[] TrimmedLines
         {
             get
             {
