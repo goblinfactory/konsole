@@ -60,3 +60,9 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 ```
 
 <sub>* By 100%-ish I mean 'some', enough to make MockConsole useful enough and accurate enough that I couldn't have written a high quality progress-bar without it ;-D If you use MockConsole to help you write a console utility and find it's lacking some important features, please contact me, I'd love to hear from you and see if I can update MockConsole to help you.</sub>
+
+##Support, Feedback, Suggestions
+
+[@snowcode](https://twitter.com/snowcode)
+
+![Alan Hemmings](https://pbs.twimg.com/profile_images/624901555532095488/j5dynw0i_bigger.png)
