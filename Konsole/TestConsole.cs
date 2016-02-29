@@ -5,7 +5,7 @@ using System.Linq;
 namespace Konsole
 {
 
-    public class MockConsole : IConsole
+    public class TestConsole : IConsole
     {
         private readonly int _width;
         private readonly int _height;
@@ -27,9 +27,9 @@ namespace Konsole
         }
         private int _lastLineWrittenTo;
 
-        public MockConsole(int width, int height, bool echo = false) : this(width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
+        public TestConsole(int width, int height, bool echo = false) : this(width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
 
-        public MockConsole(int width, int height, ConsoleColor color, ConsoleColor background, bool echo = false)
+        public TestConsole(int width, int height, ConsoleColor color, ConsoleColor background, bool echo = false)
         {
             _width = width;
             _height = height;

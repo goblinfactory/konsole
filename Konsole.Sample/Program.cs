@@ -29,12 +29,12 @@ namespace Konsole.Sample
             }
         }
 
-        public void MockConsole_ConsoleWriter_and_IConsole_example_usage()
+        public void TestConsole_ConsoleWriter_and_IConsole_example_usage()
         {
             {
                 // test the cat
                 // ============
-                var console = new MockConsole(80, 20);
+                var console = new TestConsole(80, 20);
                 var cat = new Cat(console);
                 cat.Greet();
                 Assert.AreEqual(console.TrimmedLines, new[] {"Prrr!", "Meow!"});

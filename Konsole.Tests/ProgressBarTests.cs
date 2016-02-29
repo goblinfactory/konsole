@@ -20,7 +20,7 @@ namespace Konsole.Tests
         public void refresh_should_show_progress_title_and_progress_bar()
         {
             var testoutput = new StringBuilder();
-            var console = new MockConsole(80,20);
+            var console = new TestConsole(80,20);
             var pb = new global::Konsole.ProgressBar(10, console);
             
             for (int i = 1; i < 5; i++)
@@ -37,7 +37,7 @@ namespace Konsole.Tests
         [Test]
         public void should_still_update_progress_even_when_writing_lines_after_progress_bar()
         {
-            var console = new MockConsole(40,10);
+            var console = new TestConsole(40,10);
             console.WriteLine("line 1");
             var pb = new global::Konsole.ProgressBar(10, console);
             pb.Refresh(0, "loading");
