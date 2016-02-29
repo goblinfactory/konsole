@@ -57,15 +57,13 @@ namespace Konsole
 
         public void PrintAt(int x, int y, string format, params object[] args)
         {
-            Console.CursorTop = y;
-            Console.CursorLeft = x;
+            Console.SetCursorPosition(x, y);
             Console.WriteLine(format, args);
         }
 
         public void PrintAt(int x, int y, string text)
         {
-            Console.CursorTop = y;
-            Console.CursorLeft = x;
+            Console.SetCursorPosition(x, y);
             Console.WriteLine(text);
         }
     }
