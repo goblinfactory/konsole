@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Goblinfactory.ProgressBar, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Goblinfactory.ProgressBar.0.0.1.0\lib\net45\Goblinfactory.ProgressBar.dll</HintPath>
+    <Reference Include="Konsole, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Goblinfactory.Konsole.0.0.0.2\lib\net45\Konsole.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

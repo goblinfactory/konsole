@@ -6,7 +6,7 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 ##ProgressBar usage
 ```csharp
 
-    using Goblinfactory.Konsole;
+    using Konsole;
 
            . . .
 
@@ -26,7 +26,7 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 
 ````csharp
         
-        using Goblinfactory.Konsole;
+        using Konsole;
         ...
         public class Cat
         {
