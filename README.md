@@ -99,7 +99,8 @@ Because it' much more than just a mock. Below is a comparison of how someone mig
              // then this test fails even though the desired output is written to the console.
         }
         
-            
+        // using a Test Double like Konsole.TestConsole the test above becomes
+
         [Test]
         public void testing_Invoice_class_using_TestConsole()
             {
