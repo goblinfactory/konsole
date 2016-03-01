@@ -59,7 +59,7 @@ home of ProgressBar ( C# console progress bar with support for single or multith
         }
 ```
 
-##Why I recently renames MockConsole to TestConsole
+##Why I recently renamed MockConsole to TestConsole
 
 Because it' much more than just a mock. Below is a comparison of how someone might test an Invoice class using a traditional `Mock<IConsole>` and the same test, using a `Konsole.TestConsole`. To make it a fair comparison I'm comparing to [NSubstitute](http://nsubstitute.github.io/) which is quite terse and one of my favourite mocking frameworks.
 
