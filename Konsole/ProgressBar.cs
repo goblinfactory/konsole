@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 
 namespace Konsole
 {
@@ -26,6 +27,8 @@ namespace Konsole
             _character = character;
             _format = format ?? FORMAT;
         }
+
+        public int Max { get { return _max; }}
 
         public void Refresh(int current, string format, params object[] args)
         {

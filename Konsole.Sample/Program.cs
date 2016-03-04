@@ -5,36 +5,20 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Konsole.Examples;
 using Konsole.Testing;
 
 namespace Konsole.Sample
 {
     class Program
     {
-
-
         private static void Main(string[] args)
         {
-            ProgressivelyFasterCustomerProcessDemo();
+            Console.WriteLine("Press enter to start, press any key to stop;");
+            ProgressivelyFasterDemo();
             Console.WriteLine("Press enter to close.");
             Console.ReadLine();
         }
-
-        public static void ProgressivelyFasterCustomerProcessDemo()
-        {
-            Console.WriteLine("Press enter to migrate customer records;");
-            Console.ReadLine();
-            var names = TestData.MakeNames();
-            int cnt = names.Count();
-            var pb = new ProgressBar(cnt);
-            int i = 1;
-            foreach (var name in names) {
-                pb.Refresh(i++, name);
-                Thread.Sleep(100 - (1*(i * 99/cnt)));
-            }
-            pb.Refresh(cnt, "Finished.");
-        }
-
 
         public class Cat
         {
@@ -65,11 +49,29 @@ namespace Konsole.Sample
             }
         }
 
+        public static void ProgressivelyFasterDemo(int startingPauseMilliseconds = 50)
+        {
+            var pb = new ProgressBar(300);
+            var names = TestData.MakeNames().Take(pb.Max);
+            int cnt = names.Count();
+            int i = 1;
+            foreach (var name in names)
+            {
+                pb.Refresh(i++, name);
+                int pause = startingPauseMilliseconds - (1 * (i * (startingPauseMilliseconds - 1) / cnt));
+                if (pause > 0) Thread.Sleep(pause);
+                if (Console.KeyAvailable)
+                {
+                    Console.WriteLine("key press detected, stopped before end.");
+                    break;
+                }
+            }
+
+        }
+
+
         static void ParallelDemo()
         {
-
-
-
             // demo; take the first 10 directories that have files from c:\windows, and then pretends to process (list) them.
             // processing of each directory happens on a different thread, to simulate multiple background tasks, 
             // e.g. file downloading.

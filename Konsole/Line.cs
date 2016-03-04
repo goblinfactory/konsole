@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Konsole
 {
-    public class Line
+    internal class Line
     {
         private readonly int _width;
         public Dictionary<int, Cell> Cells { get; private set; }

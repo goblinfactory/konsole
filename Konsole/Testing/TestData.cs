@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace Konsole.Testing
 {
@@ -10,7 +6,6 @@ namespace Konsole.Testing
     {
         // some inspiration, source for names with non latin encodings.
         // https://en.wikipedia.org/wiki/List_of_the_most_common_surnames_in_Europe#Latvia
-
 
         /// <summary>
         /// make a set of names, formatstring {0}=firstname, {1}=lastname
