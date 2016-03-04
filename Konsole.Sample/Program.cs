@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Konsole.Testing;
 
 namespace Konsole.Sample
 {
@@ -14,9 +15,26 @@ namespace Konsole.Sample
 
         private static void Main(string[] args)
         {
-            //ParallelDemo();
+            ProgressivelyFasterCustomerProcessDemo();
+            Console.WriteLine("Press enter to close.");
             Console.ReadLine();
         }
+
+        public static void ProgressivelyFasterCustomerProcessDemo()
+        {
+            Console.WriteLine("Press enter to migrate customer records;");
+            Console.ReadLine();
+            var names = TestData.MakeNames();
+            int cnt = names.Count();
+            var pb = new ProgressBar(cnt);
+            int i = 1;
+            foreach (var name in names) {
+                pb.Refresh(i++, name);
+                Thread.Sleep(100 - (1*(i * 99/cnt)));
+            }
+            pb.Refresh(cnt, "Finished.");
+        }
+
 
         public class Cat
         {
