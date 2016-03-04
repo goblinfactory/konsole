@@ -133,7 +133,11 @@ Because it' much more than just a mock. Below is a comparison of how someone mig
 
 ``` 
 
+##What's the value of a simple IWriteLine and IConsole interface?
 
+Q: At first glance it seems absurd to have a nuget package that has so little in it; Why would you want to reference Konsole to get access to a 4 line IWriteLine interface, instead of simply writing your own? 
+
+A: If your class references a public well known ` IConsole ` or ` IWriteLine ` interface, then when other people use your class, they can pass in to your class, anything at all that implements ` IWriteLine ` or ` IConsole `.  This is subtle but hugely important. This free's you to write your class, knowing your class will be compatible with anyone else's classes that implement IWriteLine without you having to ask them to please reference and use your version of IConsole. 
 
 <sub>* By 100%-ish I mean 'some', enough to make TestConsole useful enough and accurate enough that I couldn't have written a high quality progress-bar without it ;-D If you use MockConsole to help you write a console utility and find it's lacking some important features, please contact me, I'd love to hear from you and see if I can update MockConsole to help you.</sub>
 
