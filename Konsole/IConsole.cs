@@ -2,10 +2,8 @@ using System;
 
 namespace Konsole
 {
-    public interface IConsole
+    public interface IConsole : IWriteLine
     {
-        void WriteLine(string format, params object[] args);
-        void Write(string format, params object[] args);
         int WindowWidth();
         int CursorTop { get; set; }
         int CursorLeft { get; set; }

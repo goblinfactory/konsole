@@ -43,6 +43,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="ConsoleWriter.cs" />
     <Compile Include="IConsole.cs" />
+    <Compile Include="IWriteLine.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="TestConsole.cs" />
     <Compile Include="ProgressBar.cs" />
