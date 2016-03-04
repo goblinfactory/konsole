@@ -13,8 +13,10 @@ namespace Konsole.Sample
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Press enter to start, press any key to stop;");
-            ProgressivelyFasterDemo();
+            var names = TestData.MakeNames();
+            foreach (var n in names) Console.WriteLine(n);
+            //Console.WriteLine("Press enter to start, press any key to stop;");
+            //ProgressivelyFasterDemo();
             Console.WriteLine("Press enter to close.");
             Console.ReadLine();
         }
@@ -51,7 +53,7 @@ namespace Konsole.Sample
         public static void ProgressivelyFasterDemo(int startingPauseMilliseconds = 50)
         {
             var pb = new ProgressBar(300);
-            var names = TestData.MakeNames().Take(pb.Max);
+            var names = TestData.MakeNames(300);
             int cnt = names.Count();
             int i = 1;
             foreach (var name in names)
@@ -61,6 +63,11 @@ namespace Konsole.Sample
                 if (pause > 0) Thread.Sleep(pause);
                 if (Console.KeyAvailable)
                 {
+                    if (Console.ReadKey().Key == ConsoleKey.P)
+                    {
+                        Thread.Sleep(2000);
+                        continue;
+                    }
                     Console.WriteLine("key press detected, stopped before end.");
                     break;
                 }

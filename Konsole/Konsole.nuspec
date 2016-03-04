@@ -13,6 +13,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Home of ProgressBar ( C# console progress bar with support for single or multithreaded progress updates ) and TestConsole ( The only 100%-ish* System.Console compatible test console, supporting color printing as well as .CursorTop and .CursorLeft.</description>
     <copyright>Copyright Goblinfactory Ltd, 2016, all rights reserved.</copyright>
-    <tags>testconsole progressbar konsole mockconsole</tags>
+    <tags>iconsole iwriteline progressbar konsole</tags>
   </metadata>
 </package>

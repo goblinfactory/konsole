@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.ExceptionServices;
 
 namespace Konsole.Testing
 {
@@ -10,18 +13,19 @@ namespace Konsole.Testing
         /// <summary>
         /// make a set of names, formatstring {0}=firstname, {1}=lastname
         /// </summary>
-        public static string[] MakeNames(string format = "{0} {1}")
+        public static string[] MakeNames(int howMany = 450, string format = "{0} {1}")
         {
+            if (howMany > 450) howMany = 450;
             var namesets = new
             {
                 Firsts = new[]
                 {
-                    "Chrudoš", "Kazi", "Liana", "Šárka", "Józefa", "Alan", "Susan", "Cathy", "Mahakhinaoratalova",
-                    "Benedetto", "Marco", "Sinzenza", "Ke"
+                    "Chrudoš", "Kazi", "Liana", "Šárka", "Józefa","Gloria", "Alan", "Susan", "Cathy", "Mahakhinaoratalova",
+                    "Benedetto", "Marco", "Sinzenza", "Ke", "Graham", "Chloe", "Diane", "Fred"
                 },
                 Lasts = new[]
                 {
-                    "ბერიძე", "Rebane", "წიკლაური", "Αγγελόπουλος", "Παπαδόπουλος", "Mac Giolla Mhuire", "O'Brien",
+                    "ბერიძე", "Rebane", "წიკლაური", "Αγγελόπουλος","Jackson", "Παπαδόπουλος", "Mac Giolla Mhuire", "O'Brien",
                     "Ó Ceannéidigh", "Bērziņš", "Vītols", "Dąbrowski", "Kendriksen", "Popov", "Kuznetsov",
                     " Kamiński", "Walters", "Ferarri", "Ricci", "Baker", "Vafoozala", "Sinzenza", "Ke", "Frank",
                     "Watson"
@@ -32,7 +36,24 @@ namespace Konsole.Testing
                 from last in namesets.Lasts
                 select string.Format(format, first, last);
 
-            return names.ToArray();
+            var shuffled = ShuffleStrings(names);
+            return shuffled.Take(howMany).ToArray();
+        }
+
+        public static string[] ShuffleStrings(IEnumerable<string> src)
+        {
+            var from = src.ToList();
+            int cnt = from.Count;
+            var r = new Random();
+            int left = cnt;
+            var shuffled = new List<string>();
+            for (int i = 0; i < cnt; i++)
+            {
+                int x = r.Next(left--);
+                shuffled.Add(from[x]);
+                from.RemoveAt(x);
+            }
+            return shuffled.ToArray();
         }
     }
 }
