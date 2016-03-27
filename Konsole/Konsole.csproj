@@ -42,6 +42,12 @@
   <ItemGroup>
     <Compile Include="Cell.cs" />
     <Compile Include="ConsoleWriter.cs" />
+    <Compile Include="Forms\BoxWriter.cs" />
+    <Compile Include="Forms\FieldReader.cs" />
+    <Compile Include="Forms\Form.cs" />
+    <Compile Include="Forms\IBoxStyle.cs" />
+    <Compile Include="Forms\IBoxWriter.cs" />
+    <Compile Include="Forms\ThinBoxStyle.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="IWriteLine.cs" />
     <Compile Include="Line.cs" />
@@ -55,6 +61,9 @@
     <None Include="Konsole.nuspec">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Forms\Internal\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

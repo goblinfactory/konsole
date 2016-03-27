@@ -27,6 +27,7 @@ namespace Konsole
         }
         private int _lastLineWrittenTo;
 
+        public TestConsole() : this(80, 20, false) { }
         public TestConsole(int width, int height, bool echo = false) : this(width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
 
         public TestConsole(int width, int height, ConsoleColor color, ConsoleColor background, bool echo = false)

@@ -5,20 +5,54 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Konsole.Forms;
 using Konsole.Testing;
 
 namespace Konsole.Sample
 {
     class Program
     {
+        // #1 - strings
+        // #2 - integers
+        // #3 - look for model attribute data for length
+        // #4 -   "  for required
+        // navigation keys to move between fields
+        // enter and tab to move to next
+        // current field to highlight when editing (reverse video)
+        // Support Changesets
+        // support copy and paste?
+
+        internal class Person
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string AFieldWithAMuch { get; set; }
+            public string FavouriteMovie { get; set; }
+        }
+
         private static void Main(string[] args)
         {
-            var names = TestData.MakeNames();
-            foreach (var n in names) Console.WriteLine(n);
-            //Console.WriteLine("Press enter to start, press any key to stop;");
-            //ProgressivelyFasterDemo();
-            Console.WriteLine("Press enter to close.");
+            Console.WriteLine("press enter to start");
             Console.ReadLine();
+            TestForms();
+            Console.WriteLine("Press enter to close");
+            Console.ReadLine();
+        }
+
+        public static void TestForms()
+        {
+            var form1 = new Form(80,new ThickBoxStyle());
+            var person = new Person()
+            {
+                FirstName = "Fred",
+                LastName = "Astair",
+                AFieldWithAMuch = "22 apples",
+                FavouriteMovie = "Night of the Day of the Dawn of the Son of the Bride of the Return of the Revenge of the Terror of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating Subhumanoid Zombified Living Dead, Part 2: In Shocking 2-D"
+            };
+            form1.Show(person);
+
+            new Form(40, new ThinBoxStyle()).Show(new {Height = "40px", Width = "200px"}, "Demo Box");
+            new Form(40, new ThinBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
         }
 
         public class Cat
@@ -139,3 +173,4 @@ namespace Konsole.Sample
     }
 
 }
+
