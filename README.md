@@ -22,6 +22,45 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 ![sample output](progressbar.gif)
 [sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
 
+##Form usage
+
+First draft of Konsole (forms) is working. Starting with readonly forms. Below are examples showing auto rendering of simple objects.
+(Currently only text fields, readonly, simple objects.)
+On the backlog; add additional field types, complex objects, and editing. 
+
+````csharp
+        
+        using Konsole.Form;
+        ...
+
+            var form1 = new Form(80,new ThickBoxStyle());
+            var person = new Person()
+            {
+                FirstName = "Fred",
+                LastName = "Astair",
+                FieldWithLongerName = "22 apples",
+                FavouriteMovie = "Night of the Day of the Dawn of the Son of the Bride of the Return of the Revenge of the Terror of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating Subhumanoid Zombified Living Dead, Part 2: In Shocking 2-D"
+            };
+            form1.Show(person);
+```
+![sample output](Form-Person.png)
+
+
+````csharp        
+
+           // works with anonymous types
+            new Form().Show(new {Height = "40px", Width = "200px"}, "Demo Box");
+```
+![sample output](Form-DemoBox.png)
+
+````csharp        
+
+            // change the box style, and width
+            new Form(40, new ThickBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
+```
+![sample output](Form-Permissions.png)
+
+
 ##IConsole, TestConsole and ConsoleWriter usage
 
 ````csharp

@@ -26,7 +26,7 @@ namespace Konsole.Sample
         {
             public string FirstName { get; set; }
             public string LastName { get; set; }
-            public string AFieldWithAMuch { get; set; }
+            public string FieldWithLongerName { get; set; }
             public string FavouriteMovie { get; set; }
         }
 
@@ -46,13 +46,16 @@ namespace Konsole.Sample
             {
                 FirstName = "Fred",
                 LastName = "Astair",
-                AFieldWithAMuch = "22 apples",
+                FieldWithLongerName = "22 apples",
                 FavouriteMovie = "Night of the Day of the Dawn of the Son of the Bride of the Return of the Revenge of the Terror of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating Subhumanoid Zombified Living Dead, Part 2: In Shocking 2-D"
             };
             form1.Show(person);
 
-            new Form(40, new ThinBoxStyle()).Show(new {Height = "40px", Width = "200px"}, "Demo Box");
-            new Form(40, new ThinBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
+            // works with anonymous types
+            new Form().Show(new {Height = "40px", Width = "200px"}, "Demo Box");
+
+            // change the box style, and width, thickbox
+            new Form(40, new ThickBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
         }
 
         public class Cat
