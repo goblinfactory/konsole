@@ -27,6 +27,7 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 First draft of Konsole (forms) is working. Starting with readonly forms. Below are examples showing auto rendering of simple objects.
 (Currently only text fields, readonly, simple objects.)
 On the backlog; add additional field types, complex objects, and editing. 
+27.03.2016 - Forms is not yet part of the latest nuget package. Will be adding forms to the nuget package when a few more features are in the github code.
 
 ````csharp
         
