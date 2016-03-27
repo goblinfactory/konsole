@@ -1,8 +1,6 @@
-﻿ ┌──────────────────────────────────────────────────────────────────────────────┐                   
- │ Person                                                                       │                   
- ├──────────────────────────────────────────────────────────────────────────────┤                   
-│ First Name                      : Fred                                       │
-│ Last Name                       : Astair                                     │
-│ A Field With A Much Longer Name : 22 apples                                  │
-│ Favourite Movie                 : Night of the Day of the Dawn of the Son ...│
- └──────────────────────────────────────────────────────────────────────────────┘                   
+﻿ ┌─────────────────────────────────── Person ───────────────────────────────────┐                                                                                                                       
+ │ First Name                      : Fred                                       │                                                                                                                       
+ │ Last Name                       : Astair                                     │                                                                                                                       
+ │ A Field With A Much Longer Name : 22 apples                                  │                                                                                                                       
+ │ Favourite Movie                 : Night of the Day of the Dawn of the Son ...│                                                                                                                       
+ └──────────────────────────────────────────────────────────────────────────────┘                                                                                                                       

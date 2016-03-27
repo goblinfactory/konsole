@@ -25,7 +25,7 @@ namespace Konsole.Tests
         [Test]
         public void showing_form_should_show_the_form()
         {
-            var console = new TestConsole(100,20);
+            var console = new TestConsole(200,20);
             var form = new Form(console);
             var person = new Person()
             {
@@ -37,6 +37,8 @@ namespace Konsole.Tests
             form.Show(person);
             Approvals.Verify(console.Buffer);
         }
+
+        // todo; add in test so that form is visible here in the test.
     
         // show dialog, with caption
         // show dialog async!
