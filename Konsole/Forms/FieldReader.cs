@@ -1,37 +1,97 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Konsole.Forms;
 
 namespace Konsole.Forms
 {
-    public class FieldReader <T>
+    public class FieldReader 
     {
-        private readonly T _object;
+        private readonly object _object;
         private readonly Type _type;
 
-        public FieldReader(T @object)
+        public FieldReader(object @object)
         {
             _object = @object;
-            _type = typeof(T);
+            _type = @object.GetType();
         }
 
-        public FieldList ReadFields()
+        private static readonly Type[] NumericTypes = {
+            typeof(byte),
+            typeof(int),
+            typeof(Int16),
+            typeof(Int32),
+            typeof(Int64),
+            typeof(UInt16),
+            typeof(UInt32),
+            typeof(UInt64),
+            typeof(decimal),
+            typeof(float),
+            typeof(Int32), 
+            typeof(Int64)
+        };
+
+        private static readonly Type[] SupportedTypes = new []
         {
-            var fields = readFields<string>();
-            int width = fields.Max(f => f.Caption.Length);
-            var fieldlist = new FieldList(fields,width);
+            typeof (string),
+            typeof (bool),
+            typeof (DateTime)
+        }.Concat(NumericTypes).ToArray();
+
+        public FieldList ReadFieldList()
+        {
+            var fields = readFields();
+            int width = (fields.Any()) ? fields.Max(f => f.Caption.Length) : 10;
+            var fieldlist = new FieldList(fields.ToArray(), width);
             return fieldlist;
         }
 
-        private Field[] readFields<T>()
+        public static Type NonGenericType(Type t)
         {
-            var fields = _type
-                .GetProperties()
-                .Where(f => f.PropertyType == typeof(T))
-                .Select(f => new Field(FieldType.String, f.Name, ToCaption(f.Name), (T)f.GetValue(_object)))
-                .ToArray();
+            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
+                ? t.GetGenericArguments()[0] : t;            
+        }
+
+        public static bool IsNumericType(Type type)
+        {
+            Type nonGenericType = NonGenericType(type);
+            return NumericTypes.Any(t => nonGenericType.Name == t.Name);
+        }
+
+
+        private IEnumerable<Field> readFields()
+        {
+            var properties = _type.GetProperties();
+
+            var supportedProps = properties
+                .Where(f => SupportedTypes.Contains(NonGenericType(f.PropertyType)));
+            
+            var fields = supportedProps
+                .Select(f => new Field(
+                    ParseFieldType(f.PropertyType), 
+                    f.Name, 
+                    ToCaption(f.Name), 
+                    IsNullable(f.PropertyType), 
+                    f.GetValue(_object)
+                ));
             return fields;
+        }
+
+        public static FieldType ParseFieldType(Type type)
+        {
+            if (IsNumericType(type)) return FieldType.Numeric;
+            switch (type.Name)
+            {
+                case "string": return FieldType.String;
+            }
+            return FieldType.Unsupported;
+        }
+
+
+        private bool IsNullable(Type t)
+        {
+            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof (Nullable<>));
         }
 
         private string ToCaption(string caption)
@@ -55,32 +115,29 @@ namespace Konsole.Forms
     public enum FieldType
     {
         String,
+        Numeric,
+        NullableNumber,
+        Boolean,
+        Date,
+        Object,
         Unsupported
     }
 
     public class Field
     {
         public FieldType FieldType { get; private set; }
+        public bool Nullable { get; private set; }
         public string Name { get; private set; }
         public object Value { get; private set; }
         public string Caption { get; private set; }
-        public Field(FieldType type, string name, string caption, object value)
+        public Field(FieldType type, string name, string caption, bool nullable, object value)
         {
             Name = name;
             Caption = caption;
             Value = value;
             FieldType = type;
+            Nullable = nullable;
         }
-    }
-
-    public class Field<T> : Field
-    {
-        public Field(FieldType type, string name, string caption, T value) : base(typeof(T).ParseFieldType(),name,caption, value) {}
-    }
-
-    public class StringField : Field<string>
-    {
-        public StringField(string name, string caption, string value) : base(FieldType.String, name, caption, value) {}
     }
 
 
@@ -97,11 +154,3 @@ namespace Konsole.Forms
     }
 }
 
-internal static class FieldTypeExtensions
-{
-    public static FieldType ParseFieldType(this Type type)
-    {
-        if (type == typeof(string)) return FieldType.String;
-        return FieldType.Unsupported;
-    }
-}

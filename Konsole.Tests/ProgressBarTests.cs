@@ -51,5 +51,17 @@ namespace Konsole.Tests
             Console.WriteLine();
             Approvals.Verify(console.Buffer);
         }
+
+
+        //public void progress_bar_print_at_should_position_progress_bar_at_required_position()
+        //{
+
+        //}
+
+        //public void progress_bar_and_form_objects_should_support_zindex_and_respect_clipped_overlapped_areas_when_rendering()
+        //{
+
+        //}
+
     }
 }

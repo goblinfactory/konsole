@@ -31,7 +31,7 @@ namespace Konsole.Forms
         {
             var t = typeof (T);
             var boxtitle = title ?? t.Name;
-            var fl = new FieldReader<T>(item).ReadFields();
+            var fl = new FieldReader(item).ReadFieldList();
             var box = new BoxWriter(_boxStyle, _width, fl.CaptionWidth, 1);
             _console.WriteLine(box.Header(boxtitle));
             foreach (var f in fl.Fields)
