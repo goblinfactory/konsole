@@ -10,12 +10,28 @@ using NUnit.Framework;
 
 namespace Konsole.Tests
 {
-
+    public class Address
+    {
+        public Address()
+        {
+            Line1 = "";
+            Line2 = "";
+            PostCode = "";
+        }
+        public string Line1 { get; set; }
+        public string Line2 { get; set; }
+        public string PostCode { get; set; }
+    }
     public class Person
     {
+        public Person()
+        {
+            Address = new Address();
+        }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string AFieldWithAMuchLongerName { get; set; }
+        public Address Address { get; set; }
         public string FavouriteMovie { get; set; }
     }
 
@@ -48,9 +64,83 @@ namespace Konsole.Tests
             
         //}
 
+
+        //public void fields_should_retain_their_ordinal_position()
+        //{
+            
+        //}
+
         //public void long_text_fields_should_be_rendered_as_multi_line_textboxes()
         //{
         //    more than (x) lines should be trimmed with ellipses.    
         //}
+
+        //public void print_at_should_render_the_dialog_at_required_position()
+        //{
+            
+        //}
+
+        //public void progress_bar_print_at_should_position_progress_bar_at_required_position()
+        //{
+            
+        //}
+
+        //public void progress_bar_and_form_objects_should_support_zindex_and_respect_clipped_overlapped_areas_when_rendering()
+        //{
+            
+        //}
+
+        //public enum Button { Ok, OkCancel, YesNo, YesNoCancel }
+
+        //public void async_await_dialog_should_allow_user_to_select_from_list_and_return_option_selected()
+        //{
+            
+        //}
+
+        internal class IntegerOnlyClass
+        {
+            public int Number { get; set; }
+        }
+
+        [TestCase(-100)]
+        [TestCase(1)]
+        [TestCase(0)]
+        [TestCase(int.MaxValue)]
+        [TestCase(int.MinValue)]
+        [Test]
+        public void integer_fields_should_render_as_integers(int number)
+        {
+            var console = new TestConsole(200, 20);
+            var form = new Form(console);
+            var numclass = new IntegerOnlyClass()
+            {
+                Number = number
+            };
+            form.Show(numclass);
+            Approvals.Verify(console.Buffer);
+        }
+
+        internal class NullableIntegerClass
+        {
+            public int? Number { get; set; }
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase(1)]
+        [TestCase(1245)]
+        [TestCase(int.MinValue)]
+        [TestCase(int.MaxValue)]
+        public void nullable_integer_field_should_render_as_blank_when_null_or_use_configured_null_placeholder(int? nullableNumber)
+        {
+            var console = new TestConsole(200, 20);
+            var form = new Form(console);
+            var numclass = new NullableIntegerClass()
+            {
+                Number = nullableNumber
+            };
+            form.Show(numclass);
+            Approvals.Verify(console.Buffer);
+        }
     }   
 }
