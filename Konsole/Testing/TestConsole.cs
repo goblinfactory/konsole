@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Konsole
+namespace Konsole.Testing
 {
 
     public class TestConsole : IConsole

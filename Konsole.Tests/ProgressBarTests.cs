@@ -3,6 +3,7 @@ using System.Text;
 using ApprovalTests;
 using ApprovalTests.Maintenance;
 using ApprovalTests.Reporters;
+using Konsole.Testing;
 using NUnit.Framework;
 
 namespace Konsole.Tests

@@ -8,6 +8,7 @@ using ApprovalTests;
 using ApprovalTests.Maintenance;
 using ApprovalTests.Reporters;
 using Konsole.Forms;
+using Konsole.Testing;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 

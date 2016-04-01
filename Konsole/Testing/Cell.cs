@@ -1,6 +1,6 @@
 using System;
 
-namespace Konsole
+namespace Konsole.Testing
 {
     public struct Cell
     {

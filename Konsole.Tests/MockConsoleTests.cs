@@ -1,6 +1,7 @@
 ﻿using System;
 using ApprovalTests;
 using ApprovalTests.Reporters;
+using Konsole.Testing;
 using NUnit.Framework;
 
 namespace Konsole.Tests
