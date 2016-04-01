@@ -28,10 +28,19 @@ namespace Konsole.Tests
         {
             var console = new TestConsole(200, 50);
             var line = new Line(console);
+
+            // negative width box should not render anything
+            // ---------------------------------------------
             console.PrintAt(0, 0, "10,1-8,2 height:2 width:-2");
             line.Box(10, 1, 8, 2, "my test box", ThickNess.Single);
+            
+            // 1 pixel wide should render a single character square
+            // ---------------------------------------------------
             console.PrintAt(0, 2, "0,1-0,1 height:1 width:1");
             line.Box(0, 3, 0, 3, "my test box", ThickNess.Single);
+            
+            // range of box sizes, alternating double and single line.
+            // -------------------------------------------------------
             for (int i = 0; i < 10; i++)
             {
                 var tl = new XY(0, 4*i+5);
@@ -41,6 +50,8 @@ namespace Konsole.Tests
                 line.Box(tl.X, tl.Y, br.X, br.Y, "my test box", i % 2 == 0 ? ThickNess.Single : ThickNess.Double);                
             }
 
+            // wide 1 line high box
+            // -------------------
             console.PrintAt(0, 44, "(0,45 - 9,45) height:1 width:10");
             line.Box(0,45,9,45, "my test box", ThickNess.Double);                
 
@@ -58,5 +69,6 @@ namespace Konsole.Tests
         //    new Line(console).Box(5, 5, 15, 15, "overlap", ThickNess.Double, Join.Merge);
         //    Approvals.Verify(console.Buffer);
         //}
+
     }
 }
