@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LineTests.cs" />
     <Compile Include="FormTests.cs" />
     <Compile Include="MockConsoleTests.cs" />
     <Compile Include="ProgressBarTests.cs" />
@@ -72,6 +73,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Drawing_LineTests.draw_box_should_draw_box.approved.txt" />
     <Content Include="FormTests.Numeric_types_both_nullable_and_non_nullable_should_be_supported.approved.txt" />
     <Content Include="ProgressBarTests.refresh_should_show_progress_title_and_progress_bar.approved.txt" />
     <Content Include="ProgressBarTests.should_still_update_progress_even_when_writing_lines_after_progress_bar.approved.txt" />

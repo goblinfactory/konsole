@@ -19,7 +19,7 @@ namespace Konsole
         public ProgressBar(int max, char character, string format, IConsole console)
         {
             _console = console;
-            _y = _console.Y;
+            _y = _console.CursorTop;
             _c = _console.ForegroundColor;
             _current = 0;
             _max = max;
@@ -48,7 +48,7 @@ namespace Konsole
                     float perc = (float) current/(float) _max;
                     var bar = new String(_character, (int) ((float) (_console.WindowWidth() - 30)*perc));
                     var line = string.Format(_format, current, _max, (int) (perc*100));
-                    _console.Y = _y;
+                    _console.CursorTop = _y;
                     _console.ForegroundColor = _c;
                     _console.Write(line);
                     _console.ForegroundColor = ConsoleColor.Green;

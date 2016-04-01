@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drawing\Line.cs" />
+    <Compile Include="Forms\ThickBoxStyle.cs" />
     <Compile Include="Testing\Cell.cs" />
     <Compile Include="ConsoleWriter.cs" />
     <Compile Include="Forms\BoxWriter.cs" />
@@ -50,7 +52,7 @@
     <Compile Include="Forms\ThinBoxStyle.cs" />
     <Compile Include="IConsole.cs" />
     <Compile Include="IWriteLine.cs" />
-    <Compile Include="Testing\Line.cs" />
+    <Compile Include="Testing\Row.cs" />
     <Compile Include="Testing\TestConsole.cs" />
     <Compile Include="ProgressBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

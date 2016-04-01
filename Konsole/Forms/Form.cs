@@ -8,6 +8,17 @@ namespace Konsole.Forms
     //C	└	┴	┬	├	─	┼	╞	╟	╚	╔	╩	╦	╠	═	╬	╧
     //D	╨	╤	╥	╙	╘	╒	╓	╫	╪	┘	┌					
 
+    // http://www.theasciicode.com.ar/extended-ascii-code/black-square-ascii-code-254.html
+
+    // http://www.edlazorvfx.com/ysu/html/ascii.html
+    // some useful ascii codes for rendering bools
+    //[ ✓ ] check mark [number: &#10003;]
+    //[ ✔ ] heavy check mark [number: &#10004;]
+    //[ ✕ ] multiplication sign X [number: &#100005;]
+    //[ ✖ ] heavy multiplication sign X [number: &#10006;]
+    //[ ✗ ] ballot X [number: &#10007;]
+    //[ ✘ ] heavy ballot X [number: &#10008;]
+
     public class Form 
     {
         private int _width;

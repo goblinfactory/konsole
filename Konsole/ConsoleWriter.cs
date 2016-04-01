@@ -31,6 +31,16 @@ namespace Konsole
             set { Console.CursorTop = value;  }
         }
 
+        public XY XY
+        {
+            get { return new XY(Console.CursorLeft, Console.CursorTop); }
+
+            set
+            {
+                Console.CursorLeft = value.X;
+                Console.CursorTop = value.Y;
+            }
+        }
         
         public int Y
         {
@@ -58,13 +68,19 @@ namespace Konsole
         public void PrintAt(int x, int y, string format, params object[] args)
         {
             Console.SetCursorPosition(x, y);
-            Console.WriteLine(format, args);
+            Console.WriteLine(format, args);            
         }
 
         public void PrintAt(int x, int y, string text)
         {
             Console.SetCursorPosition(x, y);
-            Console.WriteLine(text);
+            Console.WriteLine(text);            
         }
+        public void PrintAt(int x, int y, char c)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.Write(c);
+        }
+
     }
 }

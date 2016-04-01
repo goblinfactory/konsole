@@ -9,5 +9,10 @@ namespace Konsole
         public XY IncX(int x)  { return new XY(x + X, Y); }
         public XY WithY(int y)  { return new XY(X, y); }
         public XY IncY(int y)  { return new XY(X, Y+y); }
+        public override string ToString()
+        {
+            return string.Format("{0},{1}",X,Y);
+        }
+
     }
 }

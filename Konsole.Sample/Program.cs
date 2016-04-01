@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Konsole.Drawing;
 using Konsole.Forms;
 using Konsole.Testing;
 
@@ -34,7 +35,7 @@ namespace Konsole.Sample
         {
             Console.WriteLine("press enter to start");
             Console.ReadLine();
-            TestForms();
+            new Line(new ConsoleWriter()).Box(2, 2,10,4, "test", ThickNess.Single);
             Console.WriteLine("Press enter to close");
             Console.ReadLine();
         }

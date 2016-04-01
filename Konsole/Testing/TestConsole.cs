@@ -12,7 +12,7 @@ namespace Konsole.Testing
         private readonly bool _echo;
         private ConsoleColor _color;
         private ConsoleColor _background;
-        private Dictionary<int, Line> _lines;
+        private Dictionary<int, Row> _lines;
         private XY _cursor;
 
         private XY Cursor
@@ -39,8 +39,8 @@ namespace Konsole.Testing
             _background = background;
             Cursor = new XY(0, 0);
             _lastLineWrittenTo = 0;
-            _lines = new Dictionary<int, Line>();
-            for (int i = 0; i < height; i++) _lines.Add(i, new Line(width,' ', color, background));
+            _lines = new Dictionary<int, Row>();
+            for (int i = 0; i < height; i++) _lines.Add(i, new Row(width,' ', color, background));
         }
 
         public string Buffer
@@ -92,6 +92,8 @@ namespace Konsole.Testing
         {
             if (_echo) Console.Write(text);
             var overflow = "";
+            // don't automatically expand buffer, tester should know what to expect, this is normally an error if you go beyond the expected length.
+            if (!_lines.ContainsKey(Cursor.Y)) throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer and re-run the test. Requested line number was:" + Cursor.Y);
             while (overflow != null)
             {
                 overflow = _lines[Cursor.Y].WriteFormatted(_color,_background, Cursor.X, text);
@@ -119,6 +121,8 @@ namespace Konsole.Testing
             get { return Cursor.Y;  }
             set { Cursor = Cursor.WithY(value); }
         }
+
+        public XY XY { get; set; }
 
         public int CursorLeft
         {
@@ -159,14 +163,8 @@ namespace Konsole.Testing
 
         public void PrintAt(int x, int y, string format, params object[] args)
         {
-            Cursor = new XY(x, y);
+            Cursor = new XY(x,y);
             Write(format, args);
-        }
-
-        public void PrintAt(int x, int y, string text)
-        {
-            Cursor = new XY(x, y);
-            Write(text);
         }
 
         public void SetCursorPosition(int x, int y)
@@ -174,5 +172,17 @@ namespace Konsole.Testing
             Cursor = new XY(x, y);
         }
 
+
+        public void PrintAt(int x, int y, string text)
+        {
+            Cursor = new XY(x,y);
+            Write(text);
+        }
+
+        public void PrintAt(int x, int y, char c)
+        {
+            Cursor = new XY(x,y);
+            Write(c.ToString());
+        }
     }
 }
