@@ -45,7 +45,7 @@ namespace Konsole.Tests
     public class FormTests
     {
         [Test]
-        public void showing_form_should_show_the_form()
+        public void Show_should_show_the_form_inline_at_the_next_line_below_current_cursor_position()
         {
             var console = new TestConsole(200, 20);
             var form = new Form(console);
@@ -57,20 +57,54 @@ namespace Konsole.Tests
                 FavouriteMovie =
                     "Night of the Day of the Dawn of the Son of the Bride of the Return of the Revenge of the Terror of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating Subhumanoid Zombified Living Dead, Part 2: In Shocking 2-D"
             };
+            console.WriteLine("line1");
             form.Show(person);
+            console.WriteLine("line2");
             Approvals.Verify(console.Buffer);
         }
+
+        //[Test]
+        //public void ShowAt_should_show_the_form_inline_at_the_required_cursor_position_and_not_change_current_cursor_position()
+        //{
+        //    var console = new TestConsole(100, 20);
+        //    var form = new Form(console);
+        //    var box= new 
+        //    {
+        //        Height = 11.4M,
+        //        Width = 20.32M
+        //    };
+        //    console.WriteLine("line1");
+        //    form.Show(box, "test");
+        //    console.WriteLine("line2");
+        //    Approvals.Verify(console.Buffer);
+        //}
+
 
         // todo; add in test so that form is visible here in the test.
 
         // show dialog, with caption
         // show dialog async!
 
+        // public void should_support_any_width 
+        // e.g. so that we think carefully about clipping
+        // if it works at 3 chars, then it will work at 2000!
+        // also, will allow us to dynamically 'collapse' forms
+        // and have them 'autosize' to fit neatly together
+        // when 'composing' forms.
+
         //public void nested_objects_should_render_as_sub_boxes()
         //{
 
         //}
 
+        //public void collection_properties_should_render_as_grid()
+        //{
+            
+        //}
+
+        // - renderer to detect cycles maintain a list of already visited objects
+
+        // - limit the recursion to only items in the same assembly 
 
         //public void fields_should_retain_their_ordinal_position()
         //{

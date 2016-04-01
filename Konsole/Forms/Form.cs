@@ -10,7 +10,7 @@ namespace Konsole.Forms
 
     public class Form 
     {
-        private readonly int _width;
+        private int _width;
         private readonly IBoxStyle _boxStyle;
         private readonly IConsole _console;
         
@@ -18,10 +18,17 @@ namespace Konsole.Forms
         public Form(int width) : this(width, null, null) {}
         public Form() : this(80, null, null) { }
 
+        public int Width
+        {
+            get {  return _width;}
+            set
+            {
+                _width = value;
+            }
+        }
+
         public Form(int width, IBoxStyle boxStyle, IConsole console = null)
         {
-
-            if (width<40) throw new ArgumentOutOfRangeException("width","Minimum width of 40.");
             _width = width;
             _boxStyle = boxStyle ?? new ThinBoxStyle();
             _console = console ?? new ConsoleWriter();

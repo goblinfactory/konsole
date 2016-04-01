@@ -72,8 +72,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FormTests.showing_form_should_show_the_form.approved.txt" />
-    <Content Include="FormTests.showing_form_should_show_the_form.received.txt" />
+    <Content Include="FormTests.Numeric_types_both_nullable_and_non_nullable_should_be_supported.approved.txt" />
     <Content Include="ProgressBarTests.refresh_should_show_progress_title_and_progress_bar.approved.txt" />
     <Content Include="ProgressBarTests.should_still_update_progress_even_when_writing_lines_after_progress_bar.approved.txt" />
     <Content Include="Write_and_WriteLine_tests.overflow_text_should_wrap_onto_next_line.approved.txt" />
