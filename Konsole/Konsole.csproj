@@ -40,7 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drawing\CellMap.cs" />
+    <Compile Include="Drawing\LineCharTypes.cs" />
     <Compile Include="Drawing\Line.cs" />
+    <Compile Include="Drawing\MergeOrOverlap.cs" />
+    <Compile Include="Drawing\LineMerger.cs" />
+    <Compile Include="Drawing\LineThickNess.cs" />
     <Compile Include="Forms\ThickBoxStyle.cs" />
     <Compile Include="Testing\Cell.cs" />
     <Compile Include="ConsoleWriter.cs" />

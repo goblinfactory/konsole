@@ -4,22 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Konsole.Forms;
+using Konsole.Testing;
 
 namespace Konsole.Drawing
 {
     public class Line
     {
         private readonly IConsole _console;
+        private readonly MergeOrOverlap _mergeOrOverlap;
 
-        public Line(IConsole console)
+        public Line(IConsole console, MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)
         {
             _console = console;
+            _mergeOrOverlap = mergeOrOverlap;
         }
 
         public static IBoxStyle ThickBox = new ThickBoxStyle();
         public static IBoxStyle ThinBox = new ThinBoxStyle();
 
-        public void Box(int sx, int sy, int ex, int ey, string title, ThickNess thickness)
+        public void Box(int sx, int sy, int ex, int ey, LineThickNess thickness = LineThickNess.Single)
+        {
+            Box(sx, sy, ex, ey, "", thickness);
+        }
+
+        public void Box(int sx, int sy, int ex, int ey, string title, LineThickNess thickness)
         {
             int width = (ex - sx) + 1;
             int height = (ey - sy) + 1;
@@ -34,7 +42,7 @@ namespace Konsole.Drawing
                 return;
             }
 
-            var line = (thickness == ThickNess.Single) ? ThinBox: ThickBox;
+            var line = (thickness == LineThickNess.Single) ? ThinBox: ThickBox;
             DrawCorners(sx,sy,ex,ey, line);
              // top edge
             DrawHorizontal(sx + 1, sy, ex - 1, line);
@@ -50,9 +58,27 @@ namespace Konsole.Drawing
         {
             if (ex - sx < 0) return;
             if (sx > ex) throw new ArgumentOutOfRangeException("start x cannot be bigger than end x.");
-            var linechars = new string(line.T, (ex - sx) + 1);
-            _console.PrintAt(sx, sy, linechars);
+            int length = (ex - sx) + 1;
+            
+            for (int i = sx; i < sx + length; i++)
+            {
+                printAtAndMerge(i, sy, line.T);
+            }
         }
+
+        private Dictionary<XY, Cell> _printed = new Dictionary<XY, Cell>();  
+        private void printAtAndMerge(int x, int y, char c)
+        {
+            _console.PrintAt(x, y, c);
+        }
+
+        private char Merge(char? old, char @new)
+        {
+            if (!old.HasValue) return @new;
+
+        }
+
+
 
         public void DrawVertical(int sx, int sy, int ey, IBoxStyle line)
         {
@@ -61,6 +87,10 @@ namespace Konsole.Drawing
             for (int i = sy; i < (ey+1); i++) _console.PrintAt(sx, i, line.L);
         }
 
+        public void Merge(int x, int y, char newchar)
+        {
+            
+        }
 
 
         private bool Horizontal(int sy, int ey)
@@ -76,17 +106,5 @@ namespace Konsole.Drawing
             _console.PrintAt(sx,ey, line.BL);
             _console.PrintAt(ex,ey, line.BR);
         }
-    }
-
-    public enum Join
-    {
-        Merge, 
-        Overlap
-    }
-
-    public enum ThickNess
-    {
-        Single,
-        Double
     }
 }

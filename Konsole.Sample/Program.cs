@@ -35,7 +35,11 @@ namespace Konsole.Sample
         {
             Console.WriteLine("press enter to start");
             Console.ReadLine();
-            new Line(new ConsoleWriter()).Box(2, 2,10,4, "test", ThickNess.Single);
+            var line = new Line(new ConsoleWriter());
+
+            // draw two overlapping boxes
+            line.Box(10, 10, 20, 20, LineThickNess.Single);
+            line.Box(15, 15, 25, 25, LineThickNess.Double);
             Console.WriteLine("Press enter to close");
             Console.ReadLine();
         }

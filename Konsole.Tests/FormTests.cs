@@ -169,12 +169,6 @@ namespace Konsole.Tests
             Approvals.Verify(console.Buffer);
         }
 
-        [Test]
-        public void EnsureNoAbandonedFiles()
-        {
-            ApprovalMaintenance.VerifyNoAbandonedFiles();
-        }
-
     }
 
 }

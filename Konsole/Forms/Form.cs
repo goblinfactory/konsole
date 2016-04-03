@@ -6,7 +6,7 @@ namespace Konsole.Forms
     //0	1	2	3	4	5	6	7	8	9	A	B	C	D	E	F
     //B				│	┤	╡	╢	╖	╕	╣	║	╗	╝	╜	╛	┐
     //C	└	┴	┬	├	─	┼	╞	╟	╚	╔	╩	╦	╠	═	╬	╧
-    //D	╨	╤	╥	╙	╘	╒	╓	╫	╪	┘	┌					
+    //D	╨	╤	╥	╙	╘	╒	╓	╫	╪	┘	┌			╪		
 
     // http://www.theasciicode.com.ar/extended-ascii-code/black-square-ascii-code-254.html
 
