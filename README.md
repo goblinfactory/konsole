@@ -199,7 +199,7 @@ p.s. join us at snowcode the event!
 
 [www.snowcode.com](www.snowcode.com) 
 (free dev conf at great ski resort)<br/>
-developers + party + snow + great learning!
+developers + party + snow + great learning
 
 [@snowcode](https://twitter.com/snowcode)
 

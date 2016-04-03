@@ -8,7 +8,7 @@ using Konsole.Testing;
 
 namespace Konsole.Drawing
 {
-    public class Line
+    public class Draw
     {
         
         private readonly IConsole _console;
@@ -21,7 +21,7 @@ namespace Konsole.Drawing
 
         public LineThickNess Thickness { get; private set; }
 
-        public Line(IConsole console,  LineThickNess thickness = LineThickNess.Single,  MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)
+        public Draw(IConsole console,  LineThickNess thickness = LineThickNess.Single,  MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)
         {
             _console = console;
             _mergeOrOverlap = mergeOrOverlap;
@@ -38,7 +38,7 @@ namespace Konsole.Drawing
         }
 
 
-        public Line Box(int sx, int sy, int ex, int ey, string title, LineThickNess? thicknessOverride = null)
+        public Draw Box(int sx, int sy, int ex, int ey, string title, LineThickNess? thicknessOverride = null)
         {
             var thickness = thicknessOverride ?? Thickness; 
             int width = (ex - sx) + 1;
@@ -57,21 +57,30 @@ namespace Konsole.Drawing
             var line = (thickness == LineThickNess.Single) ? ThinBox : ThickBox;
             DrawCorners(sx,sy,ex,ey, line);
              // top edge
-            DrawHorizontal(sx + 1, sy, ex - 1, thickness);
+            Line(sx + 1, sy, ex - 1, sy, thickness);
             // left edge
-            DrawVertical(sx, sy+1, ey-1, line);
+            Line(sx, sy+1, sx, ey-1, thickness);
             // right edge
-            DrawVertical(ex, sy+1, ey-1, line);
+            Line(ex, sy + 1, ex, ey - 1, thickness);
             // bottom edge
-            DrawHorizontal(sx + 1, ey, ex - 1, thickness);
+            Line(sx + 1, ey, ex - 1, ey, thickness);
             return this;
         }
 
-
-        public Line DrawHorizontal(int sx, int sy, int ex, LineThickNess? _thicknessOverride = null)
+        public Draw Line(int sx, int sy, int ex, int ey, LineThickNess? _thicknessOverride = null)
         {
             var thickness = _thicknessOverride ?? Thickness; 
             IBoxStyle line = thickness == LineThickNess.Single ? _thin : _thick;
+
+            // horizontal or vertical?
+            if (sy == ey) return DrawHorizontal(sx, sy, ex, line);
+            if (sx == ex) return DrawVertical(sx, sy, ey, line);
+            // throw new ArgumentOutOfRangeException("cannot draw diagonal lines");
+            return this;
+        }
+
+        private Draw DrawHorizontal(int sx, int sy, int ex, IBoxStyle line)
+        {
             if (ex - sx < 0) return this;
             if (sx > ex) throw new ArgumentOutOfRangeException("start x cannot be bigger than end x.");
             int length = (ex - sx) + 1;
@@ -108,13 +117,14 @@ namespace Konsole.Drawing
             _console.PrintAt(x, y, newChar);
         }
 
-        public void DrawVertical(int sx, int sy, int ey, IBoxStyle line)
+        public Draw DrawVertical(int sx, int sy, int ey, IBoxStyle line)
         {
-            if (ey-sy<0) return;
+            if (ey-sy<0) return this;
             if (sy > ey) throw new ArgumentOutOfRangeException("start y cannot be bigger than end y.");
-            PrintAtAndMerge(sx, sy, line.L, LineMerger.Position.Middle);
+            PrintAtAndMerge(sx, sy, line.L, LineMerger.Position.First);
             for (int i = sy+1; i < (ey); i++) PrintAtAndMerge(sx, i, line.L, LineMerger.Position.Middle);
             PrintAtAndMerge(sx, ey, line.L, LineMerger.Position.Last);
+            return this;
         }
 
         private void DrawCorners(int sx, int sy, int ex, int ey, IBoxStyle line)

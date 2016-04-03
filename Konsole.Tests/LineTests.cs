@@ -21,7 +21,7 @@ namespace Konsole.Tests
         {
             var console = new TestConsole(200, 20);
             // draw box 40 wide, and 6 high
-            new Line(console).Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
+            new Draw(console).Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
             Approvals.Verify(console.Buffer);
         }
 
@@ -29,9 +29,26 @@ namespace Konsole.Tests
         public void should_be_able_to_draw_complex_forms_with_mixed_lines()
         {
             var console = new TestConsole(200, 50);
-            var line = new Line(console);
-            
-            line.Box(10, 10, 60, 20, "my test box", LineThickNess.Single);
+            int height = 18;
+            int sy = 2;
+            int sx = 2;
+            int width = 60;
+            int ex = sx + width;
+            int ey = sy + height;
+            int col1 = 20;
+
+            var draw = new Draw(console, LineThickNess.Double);
+            draw
+                .Box(sx, sy, ex, ey, "my test box")
+                .Line(sx, sy + 2, ex, sy + 2)
+                .Line(sx + col1, sy, sx + col1, sy + 2, LineThickNess.Single)
+                //.Box(sx + 35, ey - 4, ex - 5, ey - 2); faulty! need to fix
+                .Line(sx + 35, ey - 4, ex - 5, ey - 4, LineThickNess.Double)
+                .Line(sx + 35, ey - 2, ex - 5, ey - 2, LineThickNess.Double)
+                .Line(sx + 35, ey - 4, sx + 35, ey - 2, LineThickNess.Single) // faulty! need to fix
+                .Line(ex - 5, ey - 4, ex - 5, ey - 2, LineThickNess.Single);  // faulty! need to fix
+
+            console.PrintAt(sx + 2, sy + 1, "DEMO INVOICE");
             Approvals.Verify(console.Buffer);            
         }
 
@@ -39,7 +56,7 @@ namespace Konsole.Tests
         public void should_support_drawing_any_positive_size_boxes()
         {
             var console = new TestConsole(200, 100);
-            var line = new Line(console);
+            var line = new Draw(console);
 
             // negative width box should not render anything
             // ---------------------------------------------
@@ -84,7 +101,7 @@ namespace Konsole.Tests
             {
                 var console = new TestConsole(80, 35);
                 console.WriteLine("box1 :{0}, box2:{1}, MergeOrOverlap:{2}", firstThickness, secondThickness, merge);
-                var line = new Line(console, firstThickness, merge);
+                var line = new Draw(console, firstThickness, merge);
 
                 // draw two overlapping boxes
                 line.Box(10, 10, 20, 20, firstThickness);

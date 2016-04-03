@@ -1,5 +1,8 @@
 ﻿namespace Konsole.Forms
 {
+    // this styling is possibly broken, i.e. you can't style a box using these.
+    // the style is currently only being used to pick up the top or left characters.
+
     public class ThickBoxStyle : IBoxStyle
     {
         public char TL { get { return '╔'; } }

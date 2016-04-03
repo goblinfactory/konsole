@@ -81,6 +81,7 @@
     <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Single.Merge.approved.txt" />
     <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Single.Overlap.approved.txt" />
     <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.received.txt" />
+    <Content Include="Drawing_LineTests.should_be_able_to_draw_complex_forms_with_mixed_lines.approved.txt" />
     <Content Include="Drawing_LineTests.should_support_drawing_any_positive_size_boxes.approved.txt" />
     <Content Include="Drawing_LineTests.TestApprovals.received.txt" />
     <Content Include="FormTests.Numeric_types_both_nullable_and_non_nullable_should_be_supported.approved.txt" />
