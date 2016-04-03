@@ -14,6 +14,7 @@ namespace Konsole.Testing
         private ConsoleColor _background;
         private Dictionary<int, Row> _lines;
         private XY _cursor;
+        private int _lastLineWrittenTo;
 
         private XY Cursor
         {
@@ -25,7 +26,7 @@ namespace Konsole.Testing
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X==0) _lastLineWrittenTo = _cursor.Y-1;
             }
         }
-        private int _lastLineWrittenTo;
+
 
         public TestConsole() : this(80, 20, false) { }
         public TestConsole(int width, int height, bool echo = false) : this(width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
@@ -87,6 +88,16 @@ namespace Konsole.Testing
             var text = string.Format(format, args);
             Write(text);
         }
+
+        public void Clear()
+        {
+
+            if (_echo) Console.Clear();
+            _lines = new Dictionary<int, Row>();
+            _lastLineWrittenTo = 0;
+            XY = new XY(0, 0);
+        }
+
 
         public void Write(string text)
         {
@@ -184,5 +195,6 @@ namespace Konsole.Testing
             Cursor = new XY(x,y);
             Write(c.ToString());
         }
+
     }
 }

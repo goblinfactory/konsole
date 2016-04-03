@@ -82,5 +82,9 @@ namespace Konsole
             Console.Write(c);
         }
 
+        public void Clear()
+        {
+            Console.Clear();
+        }
     }
 }

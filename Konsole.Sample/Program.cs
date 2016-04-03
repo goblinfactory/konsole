@@ -35,13 +35,23 @@ namespace Konsole.Sample
         {
             Console.WriteLine("press enter to start");
             Console.ReadLine();
-            var line = new Line(new ConsoleWriter());
-
-            // draw two overlapping boxes
-            line.Box(10, 10, 20, 20, LineThickNess.Single);
-            line.Box(15, 15, 25, 25, LineThickNess.Double);
+            TestBoxes();
             Console.WriteLine("Press enter to close");
             Console.ReadLine();
+        }
+
+        public static void TestBoxes()
+        {
+            Console.Clear();
+            var console = new ConsoleWriter();
+            var line = new Line(console, LineThickNess.Double);
+            line
+                .Box(10, 10, 60, 20, "my test box")
+                .DrawHorizontal(10, 12, 60, LineThickNess.Single)
+                .DrawHorizontal(10, 14, 60, LineThickNess.Single);
+            
+            console.PrintAt(12, 11, "DEMO INVOICE -");
+            console.CursorTop = 21;
         }
 
         public static void TestForms()

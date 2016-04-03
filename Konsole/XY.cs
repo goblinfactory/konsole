@@ -13,6 +13,5 @@ namespace Konsole
         {
             return string.Format("{0},{1}",X,Y);
         }
-
     }
 }

@@ -183,6 +183,24 @@ A: If your class references a public well known ` IConsole ` or ` IWriteLine ` i
 
 ##Support, Feedback, Suggestions
 
+Please drop me a tweet if you find Konsole useful or are using it in production. 
+
+While no-one is publically using Konsole It makes sense for me to make any type of breaking changes as are needed from time to time straight to master on github.
+
+As soon as people start telling me that they're starting to use Konsole then I will have to consider what I push to github, and may have to switch to working on different branches, depending on the overhead that adds. 
+
+basically; please give me a shout out if you're using Konsole, that would really help me a ton.
+
+keep chillin!
+
+Alan
+
+p.s. join us at snowcode the event! 
+
+[www.snowcode.com](www.snowcode.com) 
+(free dev conf at great ski resort)<br/>
+developers + party + snow + great learning!
+
 [@snowcode](https://twitter.com/snowcode)
 
 ![Alan Hemmings](https://pbs.twimg.com/profile_images/624901555532095488/j5dynw0i_bigger.png)

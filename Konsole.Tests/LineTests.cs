@@ -26,9 +26,19 @@ namespace Konsole.Tests
         }
 
         [Test]
-        public void should_support_drawing_any_positive_size_boxes()
+        public void should_be_able_to_draw_complex_forms_with_mixed_lines()
         {
             var console = new TestConsole(200, 50);
+            var line = new Line(console);
+            
+            line.Box(10, 10, 60, 20, "my test box", LineThickNess.Single);
+            Approvals.Verify(console.Buffer);            
+        }
+
+        [Test]
+        public void should_support_drawing_any_positive_size_boxes()
+        {
+            var console = new TestConsole(200, 100);
             var line = new Line(console);
 
             // negative width box should not render anything
@@ -45,8 +55,8 @@ namespace Konsole.Tests
             // -------------------------------------------------------
             for (int i = 0; i < 10; i++)
             {
-                var tl = new XY(0, 4 * i + 5);
-                var br = new XY(0 + i, 4 * i + 7);
+                var tl = new XY(0, 5 * i + 7);
+                var br = new XY(0 + i, 5 * i + 10);
                 var desc = string.Format("({0} - {1}) height:{2} width:{3}", tl, br, (br.Y - tl.Y) + 1, (br.X - tl.X) + 1);
                 console.PrintAt(tl.X, tl.Y - 1, desc);
                 line.Box(tl.X, tl.Y, br.X, br.Y, "my test box", i % 2 == 0 ? LineThickNess.Single : LineThickNess.Double);
@@ -74,7 +84,7 @@ namespace Konsole.Tests
             {
                 var console = new TestConsole(80, 35);
                 console.WriteLine("box1 :{0}, box2:{1}, MergeOrOverlap:{2}", firstThickness, secondThickness, merge);
-                var line = new Line(console, merge);
+                var line = new Line(console, firstThickness, merge);
 
                 // draw two overlapping boxes
                 line.Box(10, 10, 20, 20, firstThickness);

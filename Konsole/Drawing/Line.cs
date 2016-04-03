@@ -10,13 +10,23 @@ namespace Konsole.Drawing
 {
     public class Line
     {
+        
         private readonly IConsole _console;
         private readonly MergeOrOverlap _mergeOrOverlap;
+        private LineMerger _lineMerger;
+        private Dictionary<XY, char> _printed = new Dictionary<XY, char>();
+        
+        private IBoxStyle _thick = new ThickBoxStyle();
+        private IBoxStyle _thin = new ThinBoxStyle();
 
-        public Line(IConsole console, MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)
+        public LineThickNess Thickness { get; private set; }
+
+        public Line(IConsole console,  LineThickNess thickness = LineThickNess.Single,  MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)
         {
             _console = console;
             _mergeOrOverlap = mergeOrOverlap;
+            _lineMerger = new LineMerger();
+            Thickness = thickness;
         }
 
         public static IBoxStyle ThickBox = new ThickBoxStyle();
@@ -27,84 +37,92 @@ namespace Konsole.Drawing
             Box(sx, sy, ex, ey, "", thickness);
         }
 
-        public void Box(int sx, int sy, int ex, int ey, string title, LineThickNess thickness)
+
+        public Line Box(int sx, int sy, int ex, int ey, string title, LineThickNess? thicknessOverride = null)
         {
+            var thickness = thicknessOverride ?? Thickness; 
             int width = (ex - sx) + 1;
             int height = (ey - sy) + 1;
             // if box is not visible, return.
-            if (ex - sx < 0) return;
-            if (ey - sy < 0) return;
+            if (ex - sx < 0) return this;
+            if (ey - sy < 0) return this;
 
             // if box is 1 character hight and wide render square and return
             if (height == 1 && width == 1)
             {
                 _console.PrintAt(sx, sy, '☐');
-                return;
+                return this;
             }
 
-            var line = (thickness == LineThickNess.Single) ? ThinBox: ThickBox;
+            var line = (thickness == LineThickNess.Single) ? ThinBox : ThickBox;
             DrawCorners(sx,sy,ex,ey, line);
              // top edge
-            DrawHorizontal(sx + 1, sy, ex - 1, line);
+            DrawHorizontal(sx + 1, sy, ex - 1, thickness);
             // left edge
             DrawVertical(sx, sy+1, ey-1, line);
             // right edge
             DrawVertical(ex, sy+1, ey-1, line);
             // bottom edge
-            DrawHorizontal(sx+1, ey, ex-1, line);
+            DrawHorizontal(sx + 1, ey, ex - 1, thickness);
+            return this;
         }
 
-        public void DrawHorizontal(int sx, int sy, int ex, IBoxStyle line)
+
+        public Line DrawHorizontal(int sx, int sy, int ex, LineThickNess? _thicknessOverride = null)
         {
-            if (ex - sx < 0) return;
+            var thickness = _thicknessOverride ?? Thickness; 
+            IBoxStyle line = thickness == LineThickNess.Single ? _thin : _thick;
+            if (ex - sx < 0) return this;
             if (sx > ex) throw new ArgumentOutOfRangeException("start x cannot be bigger than end x.");
             int length = (ex - sx) + 1;
-            
-            for (int i = sx; i < sx + length; i++)
+            PrintAtAndMerge(sx, sy, line.T, LineMerger.Position.First);
+            for (int i = sx+1; i < (sx + length)-1; i++)
             {
-                printAtAndMerge(i, sy, line.T);
+                PrintAtAndMerge(i, sy, line.T,LineMerger.Position.Middle);
             }
+            PrintAtAndMerge(sx+length-1, sy, line.T,LineMerger.Position.Last);
+            return this;
         }
 
-        private Dictionary<XY, Cell> _printed = new Dictionary<XY, Cell>();  
-        private void printAtAndMerge(int x, int y, char c)
+        private void printAt(int x, int y, char c)
         {
+            var key = new XY(x, y);
+            _printed[key] = c;
             _console.PrintAt(x, y, c);
         }
 
-        private char Merge(char? old, char @new)
+        private void PrintAtAndMerge(int x, int y, char c, LineMerger.Position position)
         {
-            if (!old.HasValue) return @new;
-
+            // if already printed then merge, otherwise just print and update printed.
+            var key = new XY(x, y);
+            bool printed = _printed.ContainsKey(key);
+            if (!printed)
+            {
+                _console.PrintAt(x, y, c);
+                _printed[key] = c;
+                return;
+            }
+            char printedChar = _printed[key];
+            var newChar = _lineMerger.Merge(printedChar, position, c);
+            _printed[key] = newChar;
+            _console.PrintAt(x, y, newChar);
         }
-
-
 
         public void DrawVertical(int sx, int sy, int ey, IBoxStyle line)
         {
             if (ey-sy<0) return;
             if (sy > ey) throw new ArgumentOutOfRangeException("start y cannot be bigger than end y.");
-            for (int i = sy; i < (ey+1); i++) _console.PrintAt(sx, i, line.L);
-        }
-
-        public void Merge(int x, int y, char newchar)
-        {
-            
-        }
-
-
-        private bool Horizontal(int sy, int ey)
-        {
-            return (sy== ey);
+            PrintAtAndMerge(sx, sy, line.L, LineMerger.Position.Middle);
+            for (int i = sy+1; i < (ey); i++) PrintAtAndMerge(sx, i, line.L, LineMerger.Position.Middle);
+            PrintAtAndMerge(sx, ey, line.L, LineMerger.Position.Last);
         }
 
         private void DrawCorners(int sx, int sy, int ex, int ey, IBoxStyle line)
         {
-            // for now, ignore overlaps from corners
-            _console.PrintAt(sx,sy, line.TL);
-            _console.PrintAt(ex,sy, line.TR);
-            _console.PrintAt(sx,ey, line.BL);
-            _console.PrintAt(ex,ey, line.BR);
+            printAt(sx,sy, line.TL);
+            printAt(ex,sy, line.TR);
+            printAt(sx,ey, line.BL);
+            printAt(ex,ey, line.BR);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿box1 :Double, box2:Double, Join:Merge                                           
+﻿box1 :Double, box2:Double, MergeOrOverlap:Merge                                 
                                                                                 
                                                                                 
                                                                                 
