@@ -111,6 +111,7 @@ namespace Konsole.Drawing
                 _printed[key] = c;
                 return;
             }
+            // already printed
             char printedChar = _printed[key];
             var newChar = _lineMerger.Merge(printedChar, position, c);
             _printed[key] = newChar;

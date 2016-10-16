@@ -57,10 +57,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LineTests.cs" />
-    <Compile Include="FormTests.cs" />
-    <Compile Include="MockConsoleTests.cs" />
-    <Compile Include="ProgressBarTests.cs" />
+    <Compile Include="Lines\LineTests.cs" />
+    <Compile Include="Forms\FormTests.cs" />
+    <Compile Include="MockConsole\MockConsoleTests.cs" />
+    <Compile Include="Progress\ProgressBarTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,22 +73,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Drawing_LineTests.draw_box_should_draw_box.approved.txt" />
-    <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Merge.approved.txt" />
-    <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Overlap.approved.txt" />
-    <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Double.Merge.approved.txt" />
-    <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Double.Overlap.approved.txt" />
-    <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Single.Merge.approved.txt" />
-    <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Single.Overlap.approved.txt" />
-    <Content Include="Drawing_LineTests.overlapping_boxes_and_merge_tests.received.txt" />
-    <Content Include="Drawing_LineTests.should_be_able_to_draw_complex_forms_with_mixed_lines.approved.txt" />
-    <Content Include="Drawing_LineTests.should_support_drawing_any_positive_size_boxes.approved.txt" />
-    <Content Include="Drawing_LineTests.TestApprovals.received.txt" />
-    <Content Include="FormTests.Numeric_types_both_nullable_and_non_nullable_should_be_supported.approved.txt" />
-    <Content Include="FormTests.Show_should_show_the_form_inline_at_the_next_line_below_current_cursor_position.approved.txt" />
-    <Content Include="ProgressBarTests.refresh_should_show_progress_title_and_progress_bar.approved.txt" />
-    <Content Include="ProgressBarTests.should_still_update_progress_even_when_writing_lines_after_progress_bar.approved.txt" />
-    <Content Include="Write_and_WriteLine_tests.overflow_text_should_wrap_onto_next_line.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.draw_box_should_draw_box.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Merge.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Overlap.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Double.Merge.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Double.Overlap.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Single.Merge.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Single.Single.Overlap.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.received.txt" />
+    <Content Include="Lines\Drawing_LineTests.should_be_able_to_draw_complex_forms_with_mixed_lines.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.should_support_drawing_any_positive_size_boxes.approved.txt" />
+    <Content Include="Lines\Drawing_LineTests.TestApprovals.received.txt" />
+    <Content Include="Forms\FormTests.Numeric_types_both_nullable_and_non_nullable_should_be_supported.approved.txt" />
+    <Content Include="Forms\FormTests.Show_should_show_the_form_inline_at_the_next_line_below_current_cursor_position.approved.txt" />
+    <Content Include="Progress\ProgressBarTests.refresh_should_show_progress_title_and_progress_bar.approved.txt" />
+    <Content Include="Progress\ProgressBarTests.should_still_update_progress_even_when_writing_lines_after_progress_bar.approved.txt" />
+    <Content Include="MockConsole\Write_and_WriteLine_tests.overflow_text_should_wrap_onto_next_line.approved.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
