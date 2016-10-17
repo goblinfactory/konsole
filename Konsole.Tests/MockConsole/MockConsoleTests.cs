@@ -25,6 +25,34 @@ namespace Konsole.Tests
             }
 
             [Test]
+            public void readable_buffer_should_show_which_lines_are_highlighted()
+            {
+                var normal = ConsoleColor.Black;
+                var hilite = ConsoleColor.White;
+
+                var console = new TestConsole(40, 10);
+                console.ForegroundColor = ConsoleColor.Red;
+
+                console.BackgroundColor = normal;                
+                console.WriteLine("menu item 1");
+                console.WriteLine("menu item 2");
+                console.Write("menu ");
+
+                console.BackgroundColor = hilite;
+                console.Write("item");
+
+                console.BackgroundColor = normal;
+                console.WriteLine(" 3");
+                console.WriteLine("menu item 4");
+                console.WriteLine("menu item 5");
+
+                var hlBuffer = console.HilighterBuffer(hilite, '#', ' ');
+                Console.WriteLine(hlBuffer);
+                Console.WriteLine();
+                Approvals.Verify(hlBuffer);
+            }
+
+            [Test]
             public void Write_should_write_to_end_of_line_and_WriteLine_should_write_to_current_line_and_move_cursor_to_beginning_of_next_line()
             {
                 var console = new TestConsole(80, 20);

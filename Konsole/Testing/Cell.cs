@@ -14,11 +14,15 @@ namespace Konsole.Testing
             Color = color;
             Background = background;
         }
+        public Cell WithChar(char c, ConsoleColor color, ConsoleColor background)
+        {
+            return new Cell(c, color, background);
+        }
+
         public Cell WithChar(char c)
         {
             return new Cell(c, Color, Background);
         }
 
-        
     }
 }

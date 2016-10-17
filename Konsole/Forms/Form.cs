@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 
 namespace Konsole.Forms
 {
@@ -57,9 +58,25 @@ namespace Konsole.Forms
                 var text = string.Format("{0} : {1}", f.Caption.FixLeft(fl.CaptionWidth), f.Value);
                 _console.WriteLine(box.Write(text));    
             }
-            
             _console.WriteLine(box.Footer);
         }
+
+        public void Edit<T>(T item, string title = null)
+        {
+            throw new NotImplementedException();
+            //var t = typeof(T);
+            //var boxtitle = title ?? t.Name;
+            //var fl = new FieldReader(item).ReadFieldList();
+            //var box = new BoxWriter(_boxStyle, _width, fl.CaptionWidth, 1);
+            //_console.WriteLine(box.Header(boxtitle));
+            //foreach (var f in fl.Fields)
+            //{
+            //    var text = string.Format("{0} : {1}", f.Caption.FixLeft(fl.CaptionWidth), f.Value);
+            //    _console.WriteLine(box.Write(text));
+            //}
+            //_console.WriteLine(box.Footer);
+        }
+
     }
 }
 

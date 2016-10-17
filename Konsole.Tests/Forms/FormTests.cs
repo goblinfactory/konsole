@@ -9,41 +9,14 @@ using ApprovalTests.Maintenance;
 using ApprovalTests.Reporters;
 using Konsole.Forms;
 using Konsole.Testing;
+using Konsole.Tests.TestClasses;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
 namespace Konsole.Tests
 {
-    public class Address
-    {
-        public Address()
-        {
-            Line1 = "";
-            Line2 = "";
-            PostCode = "";
-        }
-
-        public string Line1 { get; set; }
-        public string Line2 { get; set; }
-        public string PostCode { get; set; }
-    }
-
-    public class Person
-    {
-        public Person()
-        {
-            Address = new Address();
-        }
-
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string AFieldWithAMuchLongerName { get; set; }
-        public Address Address { get; set; }
-        public string FavouriteMovie { get; set; }
-    }
-
     [UseReporter(typeof (DiffReporter))]
-    public class FormTests
+    public partial class FormTests
     {
         [Test]
         public void Show_should_show_the_form_inline_at_the_next_line_below_current_cursor_position()
@@ -130,28 +103,13 @@ namespace Konsole.Tests
 
         //}
 
-        internal class MixedNumClass
-        {
-            public int IntMinValue { get; set; }
-            public int? IntNull { get; set; }
-            public int? IntField { get; set; }
-            public decimal DecimalMinValue { get; set; }
-            public decimal? DecimalMaxValue { get; set; }
-            public decimal? DecimalField { get; set; }
-            public float FloatField { get; set; }
-            public float FloatMaxValue { get; set; }
-            public float? FloatMinValue { get; set; }
-            public float? FloatNull { get; set; }
-            public float? FloatEpsilon { get; set; }
-        }
-
 
         [Test]
         public void Numeric_types_both_nullable_and_non_nullable_should_be_supported()
         {
             var console = new TestConsole(200, 20);
             var form = new Form(console);
-            var numclass = new MixedNumClass
+            var numclass = new TestClasses.FormTests.MixedNumClass
             {
                 IntMinValue = int.MaxValue,
                 IntNull = null,
@@ -167,7 +125,9 @@ namespace Konsole.Tests
             };
             form.Show(numclass);
             Approvals.Verify(console.Buffer);
+            Console.WriteLine(console.Buffer);
         }
+
 
     }
 

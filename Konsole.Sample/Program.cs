@@ -35,9 +35,32 @@ namespace Konsole.Sample
         {
             Console.WriteLine("press enter to start");
             Console.ReadLine();
-            TestBoxes();
+            //TestBoxes();
+            TestHilite();
             Console.WriteLine("Press enter to close");
             Console.ReadLine();
+        }
+
+        public static void TestHilite()
+        {
+            var normal = ConsoleColor.Black;
+            var hilite = ConsoleColor.White;
+
+            var console = new TestConsole(40, 10, true);
+            console.ForegroundColor = ConsoleColor.Red;
+
+            console.BackgroundColor = normal;
+            console.WriteLine("menu item 1");
+            console.WriteLine("menu item 2");
+            console.Write("menu ");
+
+            console.BackgroundColor = hilite;
+            console.Write("item");
+
+            console.BackgroundColor = normal;
+            console.WriteLine(" 3");
+            console.WriteLine("menu item 4");
+            console.WriteLine("menu item 5");
         }
 
         public static void TestBoxes()

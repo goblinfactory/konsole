@@ -57,6 +57,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestClasses\Address.cs" />
+    <Compile Include="Forms\FormEditTests.cs" />
+    <Compile Include="TestClasses\Person.cs" />
+    <Compile Include="TestClasses\FormTests.MixedNumClass.cs" />
     <Compile Include="Lines\LineTests.cs" />
     <Compile Include="Forms\FormTests.cs" />
     <Compile Include="MockConsole\MockConsoleTests.cs" />

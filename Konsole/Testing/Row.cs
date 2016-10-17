@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Konsole.Testing
 {
-    internal class Row
+    public class Row
     {
         private readonly int _width;
         public Dictionary<int, Cell> Cells { get; private set; }
@@ -42,7 +42,7 @@ namespace Konsole.Testing
             var writeText = text.Substring(0, writeLen);
             var overflowText = overflow > 0 ? text.Substring(writeLen, overflow) : null;
             // todo; consider asignment overrides? 
-            for (int i = 0; i < writeLen; i++) Cells[i + x] = Cells[i + x].WithChar(writeText[i]);
+            for (int i = 0; i < writeLen; i++) Cells[i + x] = Cells[i + x].WithChar(writeText[i], color, background);
             return overflowText;
         }
 

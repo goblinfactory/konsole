@@ -5,6 +5,8 @@ using System.Linq;
 namespace Konsole.Testing
 {
 
+
+
     public class TestConsole : IConsole
     {
         private readonly int _width;
@@ -44,10 +46,23 @@ namespace Konsole.Testing
             for (int i = 0; i < height; i++) _lines.Add(i, new Row(width,' ', color, background));
         }
 
-        public string Buffer
+        /// <summary>
+        /// use this method to return an 'approve-able' buffer representing the background color of the buffer
+        /// </summary>
+        /// <param name="highliteColor">the background color to look for that indicates that text has been hilighted</param>
+        /// <param name="hiChar">the char to use to indicate a highlight</param>
+        /// <param name="normal">the chart to use for all other</param>
+        /// <returns></returns>
+        public string HilighterBuffer(ConsoleColor highliteColor, char hiChar = '#', char normal = ' ')
         {
-            get { return string.Join("\r\n", LinesText); }
+            var buffer = new HiliteBuffer(highliteColor, hiChar, normal);
+            var rows = _lines.Select(l => l.Value).ToArray();
+            var text = buffer.ToApprovableText(rows);
+            return text;
         }
+
+
+        public string Buffer => string.Join("\r\n", LinesText);
 
 
         /// <summary>
@@ -108,7 +123,7 @@ namespace Konsole.Testing
             while (overflow != null)
             {
                 overflow = _lines[Cursor.Y].WriteFormatted(_color,_background, Cursor.X, text);
-                var xinc = overflow == null ? 0 : overflow.Length;
+                var xinc = overflow?.Length ?? 0;
                 if (overflow == null)
                 {
                     Cursor = Cursor.IncX(text.Length);

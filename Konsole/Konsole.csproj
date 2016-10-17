@@ -47,6 +47,7 @@
     <Compile Include="Drawing\LineMerger.cs" />
     <Compile Include="Drawing\LineThickNess.cs" />
     <Compile Include="Forms\ThickBoxStyle.cs" />
+    <Compile Include="Testing\HiliteBuffer.cs" />
     <Compile Include="Testing\Cell.cs" />
     <Compile Include="ConsoleWriter.cs" />
     <Compile Include="Forms\BoxWriter.cs" />
