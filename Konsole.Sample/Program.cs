@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Konsole.Drawing;
 using Konsole.Forms;
 using Konsole.Testing;
+using Console = Konsole.Testing.Console;
 
 namespace Konsole.Sample
 {
@@ -33,12 +34,12 @@ namespace Konsole.Sample
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("press enter to start");
-            Console.ReadLine();
+            System.Console.WriteLine("press enter to start");
+            System.Console.ReadLine();
             //TestBoxes();
             TestHilite();
-            Console.WriteLine("Press enter to close");
-            Console.ReadLine();
+            System.Console.WriteLine("Press enter to close");
+            System.Console.ReadLine();
         }
 
         public static void TestHilite()
@@ -46,7 +47,7 @@ namespace Konsole.Sample
             var normal = ConsoleColor.Black;
             var hilite = ConsoleColor.White;
 
-            var console = new TestConsole(40, 10, true);
+            var console = new Console(40, 10, true);
             console.ForegroundColor = ConsoleColor.Red;
 
             console.BackgroundColor = normal;
@@ -65,7 +66,7 @@ namespace Konsole.Sample
 
         public static void TestBoxes()
         {
-            Console.Clear();
+            System.Console.Clear();
             var console = new ConsoleWriter();
             
             int height = 18;
@@ -126,7 +127,7 @@ namespace Konsole.Sample
             {
                 // test the cat
                 // ============
-                var console = new TestConsole(80, 20);
+                var console = new Console(80, 20);
                 var cat = new Cat(console);
                 cat.Greet();
                 Assert.AreEqual(console.TrimmedLines, new[] {"Prrr!", "Meow!"});
@@ -150,14 +151,14 @@ namespace Konsole.Sample
                 pb.Refresh(i++, name);
                 int pause = startingPauseMilliseconds - (1 * (i * (startingPauseMilliseconds - 1) / cnt));
                 if (pause > 0) Thread.Sleep(pause);
-                if (Console.KeyAvailable)
+                if (System.Console.KeyAvailable)
                 {
-                    if (Console.ReadKey().Key == ConsoleKey.P)
+                    if (System.Console.ReadKey().Key == ConsoleKey.P)
                     {
                         Thread.Sleep(2000);
                         continue;
                     }
-                    Console.WriteLine("key press detected, stopped before end.");
+                    System.Console.WriteLine("key press detected, stopped before end.");
                     break;
                 }
             }
@@ -185,24 +186,24 @@ namespace Konsole.Sample
                 bar.Refresh(0, d);
                 tasks.Add(new Task(() => ProcessFiles(d, files, bar)));
             }
-            Console.WriteLine("ready press enter.");
-            Console.ReadLine();
+            System.Console.WriteLine("ready press enter.");
+            System.Console.ReadLine();
 
             foreach (var t in tasks) t.Start();
             Task.WaitAll(tasks.ToArray());
-            Console.WriteLine("done.");
-            Console.ReadLine();
+            System.Console.WriteLine("done.");
+            System.Console.ReadLine();
 
         }
 
         public void SimplestUsage()
         {
-            Console.WriteLine("Simplest usage");
+            System.Console.WriteLine("Simplest usage");
             var pb = new ProgressBar(50);
             pb.Refresh(0, "connecting to server to download 50 files sychronously.");
-            Console.ReadLine();
+            System.Console.ReadLine();
             pb.Refresh(5, "downloading file 5");
-            Console.ReadLine();
+            System.Console.ReadLine();
             pb.Refresh(50, "finished.");
             return;
         }

@@ -57,13 +57,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleTests\OverflowTests.cs" />
+    <Compile Include="Forms\SplitScreenTests.cs" />
     <Compile Include="TestClasses\Address.cs" />
     <Compile Include="Forms\FormEditTests.cs" />
     <Compile Include="TestClasses\Person.cs" />
     <Compile Include="TestClasses\FormTests.MixedNumClass.cs" />
     <Compile Include="Lines\LineTests.cs" />
     <Compile Include="Forms\FormTests.cs" />
-    <Compile Include="MockConsole\MockConsoleTests.cs" />
+    <Compile Include="MockConsole\TestConsoleTests.cs" />
     <Compile Include="Progress\ProgressBarTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

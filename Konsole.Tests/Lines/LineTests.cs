@@ -10,6 +10,7 @@ using ApprovalTests.Reporters;
 using Konsole.Drawing;
 using Konsole.Testing;
 using NUnit.Framework;
+using Console = Konsole.Testing.Console;
 
 namespace Konsole.Tests
 {
@@ -19,7 +20,7 @@ namespace Konsole.Tests
         [Test]
         public void draw_box_should_draw_box()
         {
-            var console = new TestConsole(200, 20);
+            var console = new Console(200, 20);
             // draw box 40 wide, and 6 high
             new Draw(console).Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
             Approvals.Verify(console.Buffer);
@@ -28,7 +29,7 @@ namespace Konsole.Tests
         [Test]
         public void should_be_able_to_draw_complex_forms_with_mixed_lines()
         {
-            var console = new TestConsole(200, 50);
+            var console = new Console(200, 50);
             int height = 18;
             int sy = 2;
             int sx = 2;
@@ -54,7 +55,7 @@ namespace Konsole.Tests
         [Test]
         public void should_support_drawing_any_positive_size_boxes()
         {
-            var console = new TestConsole(200, 100);
+            var console = new Console(200, 100);
             var line = new Draw(console);
 
             // negative width box should not render anything
@@ -98,7 +99,7 @@ namespace Konsole.Tests
         {
             using (ApprovalResults.ForScenario(firstThickness, secondThickness, merge))
             {
-                var console = new TestConsole(80, 35);
+                var console = new Console(80, 35);
                 console.WriteLine("box1 :{0}, box2:{1}, MergeOrOverlap:{2}", firstThickness, secondThickness, merge);
                 var line = new Draw(console, firstThickness, merge);
 

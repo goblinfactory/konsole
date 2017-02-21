@@ -12,16 +12,17 @@ using Konsole.Testing;
 using Konsole.Tests.TestClasses;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using Console = Konsole.Testing.Console;
 
 namespace Konsole.Tests
 {
     [UseReporter(typeof (DiffReporter))]
-    public partial class FormTests
+    public class FormTests
     {
         [Test]
         public void Show_should_show_the_form_inline_at_the_next_line_below_current_cursor_position()
         {
-            var console = new TestConsole(200, 20);
+            var console = new Console(200, 20);
             var form = new Form(console);
             var person = new Person()
             {
@@ -107,7 +108,7 @@ namespace Konsole.Tests
         [Test]
         public void Numeric_types_both_nullable_and_non_nullable_should_be_supported()
         {
-            var console = new TestConsole(200, 20);
+            var console = new Console(200, 20);
             var form = new Form(console);
             var numclass = new TestClasses.FormTests.MixedNumClass
             {
@@ -125,7 +126,7 @@ namespace Konsole.Tests
             };
             form.Show(numclass);
             Approvals.Verify(console.Buffer);
-            Console.WriteLine(console.Buffer);
+            System.Console.WriteLine(console.Buffer);
         }
 
 

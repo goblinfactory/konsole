@@ -3,6 +3,7 @@ using ApprovalTests;
 using ApprovalTests.Reporters;
 using Konsole.Testing;
 using NUnit.Framework;
+using Console = Konsole.Testing.Console;
 
 namespace Konsole.Tests
 {
@@ -15,12 +16,12 @@ namespace Konsole.Tests
             [Test]
             public void overflow_text_should_wrap_onto_next_line()
             {
-                var console = new TestConsole(8, 20);
+                var console = new Console(8, 20);
                 console.WriteLine("1234567890");
                 console.WriteLine("---");
                 console.WriteLine("12345678901234567890");
-                Console.WriteLine(console.Buffer);
-                Console.WriteLine();
+                System.Console.WriteLine(console.Buffer);
+                System.Console.WriteLine();
                 Approvals.Verify(console.Buffer);
             }
 
@@ -30,7 +31,7 @@ namespace Konsole.Tests
                 var normal = ConsoleColor.Black;
                 var hilite = ConsoleColor.White;
 
-                var console = new TestConsole(40, 10);
+                var console = new Console(40, 10);
                 console.ForegroundColor = ConsoleColor.Red;
 
                 console.BackgroundColor = normal;                
@@ -47,15 +48,15 @@ namespace Konsole.Tests
                 console.WriteLine("menu item 5");
 
                 var hlBuffer = console.HilighterBuffer(hilite, '#', ' ');
-                Console.WriteLine(hlBuffer);
-                Console.WriteLine();
+                System.Console.WriteLine(hlBuffer);
+                System.Console.WriteLine();
                 Approvals.Verify(hlBuffer);
             }
 
             [Test]
             public void Write_should_write_to_end_of_line_and_WriteLine_should_write_to_current_line_and_move_cursor_to_beginning_of_next_line()
             {
-                var console = new TestConsole(80, 20);
+                var console = new Console(80, 20);
                 console.WriteLine("line1");
                 console.Write("This ");
                 console.Write("is ");
@@ -68,7 +69,7 @@ namespace Konsole.Tests
                 "This is a test line.",
                 "line 3"
             };
-                Console.WriteLine(console.Buffer);
+                System.Console.WriteLine(console.Buffer);
                 Assert.That(console.TrimmedLines, Is.EqualTo(expected));
             }
         }
@@ -78,7 +79,7 @@ namespace Konsole.Tests
             [Test]
             public void CursorLeft_should_return_the_x_position_that_the_next_character_will_be_written_to()
             {
-                var console = new TestConsole(30, 20);
+                var console = new Console(30, 20);
                 Assert.AreEqual(0, console.CursorLeft);
                 console.Write("Today ");
                 Assert.AreEqual(6, console.CursorLeft);
@@ -96,7 +97,7 @@ namespace Konsole.Tests
             [Test]
             public void setting_CursorLeft_position_should_change_x_position_without_affecting_y_position_and_allow_writing_at_different_x_positions()
             {
-                var console = new TestConsole(80, 20);
+                var console = new Console(80, 20);
                 Assert.AreEqual(0, console.CursorTop);
                 console.WriteLine("line1");
                 Assert.AreEqual(1, console.CursorTop);
@@ -116,7 +117,7 @@ namespace Konsole.Tests
             [Test]
             public void calling_writeline_should_increment_cursortop_position()
             {
-                var console = new TestConsole(80, 20);
+                var console = new Console(80, 20);
                 Assert.AreEqual(0, console.CursorTop);
                 console.WriteLine("line1");
                 Assert.AreEqual(1, console.CursorTop);
@@ -133,7 +134,7 @@ namespace Konsole.Tests
             [Test]
             public void setting_cursor_top_to_a_previously_written_line_should_allow_us_to_overwrite_previously_written_lines()
             {
-                var console = new TestConsole(80, 20);
+                var console = new Console(80, 20);
                 console.WriteLine("line 0");
                 console.WriteLine("line 1");
                 console.WriteLine("line 2");
@@ -144,7 +145,7 @@ namespace Konsole.Tests
                     "new line 1",
                     "line 2"
                 };
-                Console.WriteLine(console.Buffer);
+                System.Console.WriteLine(console.Buffer);
                 Assert.That(console.TrimmedLines, Is.EqualTo(expected));
             }
 
@@ -154,7 +155,7 @@ namespace Konsole.Tests
         [Test]
         public void PrintAt_tests()
         {
-            var console = new TestConsole(5, 5);
+            var console = new Console(5, 5);
             console.PrintAt(0, 0, "*");
             console.PrintAt(2, 2, "*");
             console.PrintAt(4, 4, "*");
@@ -177,7 +178,7 @@ namespace Konsole.Tests
                 "    *"
             };
 
-            Console.WriteLine(console.Buffer);
+            System.Console.WriteLine(console.Buffer);
             Assert.That(console.TrimmedLines, Is.EqualTo(trimmed));
             Assert.That(console.LinesText, Is.EqualTo(buffer));
 
