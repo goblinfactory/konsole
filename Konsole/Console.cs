@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Konsole.Internal;
 
-namespace Konsole.Testing
+namespace Konsole
 {
 
 

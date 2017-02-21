@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Konsole.Testing
+namespace Konsole.Internal
 {
     /// <summary>
     /// interface for class that is able to provide a suitable human readable text representation of a buffer console.

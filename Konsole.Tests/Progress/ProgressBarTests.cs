@@ -3,9 +3,9 @@ using System.Text;
 using ApprovalTests;
 using ApprovalTests.Maintenance;
 using ApprovalTests.Reporters;
-using Konsole.Testing;
+using Konsole.Internal;
 using NUnit.Framework;
-using Console = Konsole.Testing.Console;
+using Console = Konsole.Console;
 
 namespace Konsole.Tests
 {

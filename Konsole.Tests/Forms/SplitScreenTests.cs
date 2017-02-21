@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using Konsole.Forms;
-using Konsole.Testing;
+using Konsole.Internal;
 using Konsole.Tests.TestClasses;
 using NUnit.Framework;
 

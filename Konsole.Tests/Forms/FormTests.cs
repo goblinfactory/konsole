@@ -8,11 +8,11 @@ using ApprovalTests;
 using ApprovalTests.Maintenance;
 using ApprovalTests.Reporters;
 using Konsole.Forms;
-using Konsole.Testing;
+using Konsole.Internal;
 using Konsole.Tests.TestClasses;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
-using Console = Konsole.Testing.Console;
+using Console = Konsole.Console;
 
 namespace Konsole.Tests
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using ApprovalTests;
 using Konsole.Forms;
-using Konsole.Testing;
+using Konsole.Internal;
 using Konsole.Tests.TestClasses;
-using Console = Konsole.Testing.Console;
+using Console = Konsole.Console;
 
 namespace Konsole.Tests.Forms
 {

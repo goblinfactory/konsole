@@ -8,9 +8,9 @@ using ApprovalTests;
 using ApprovalTests.Namers;
 using ApprovalTests.Reporters;
 using Konsole.Drawing;
-using Konsole.Testing;
+using Konsole.Internal;
 using NUnit.Framework;
-using Console = Konsole.Testing.Console;
+using Console = Konsole.Console;
 
 namespace Konsole.Tests
 {

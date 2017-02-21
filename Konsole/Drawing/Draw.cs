@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Konsole.Forms;
-using Konsole.Testing;
+using Konsole.Internal;
 
 namespace Konsole.Drawing
 {

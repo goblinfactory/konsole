@@ -7,8 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Konsole.Drawing;
 using Konsole.Forms;
-using Konsole.Testing;
-using Console = Konsole.Testing.Console;
+using Konsole.Internal;
+using Console = Konsole.Console;
 
 namespace Konsole.Sample
 {

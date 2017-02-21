@@ -57,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleTests\OverflowTests.cs" />
+    <Compile Include="ConsoleTests\WriteTests.cs" />
     <Compile Include="Forms\SplitScreenTests.cs" />
     <Compile Include="TestClasses\Address.cs" />
     <Compile Include="Forms\FormEditTests.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="TestClasses\FormTests.MixedNumClass.cs" />
     <Compile Include="Lines\LineTests.cs" />
     <Compile Include="Forms\FormTests.cs" />
-    <Compile Include="MockConsole\TestConsoleTests.cs" />
+    <Compile Include="ConsoleTests\CursorTests.cs" />
     <Compile Include="Progress\ProgressBarTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -79,6 +79,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ConsoleTests\WriteTests.overflow_text_should_wrap_onto_next_line.approved.txt" />
+    <Content Include="ConsoleTests\WriteTests.readable_buffer_should_show_which_lines_are_highlighted.approved.txt" />
+    <Content Include="ConsoleTests\WriteTests.readable_buffer_should_show_which_lines_are_highlighted.received.txt" />
     <Content Include="Lines\Drawing_LineTests.draw_box_should_draw_box.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Merge.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Overlap.approved.txt" />
@@ -94,7 +97,6 @@
     <Content Include="Forms\FormTests.Show_should_show_the_form_inline_at_the_next_line_below_current_cursor_position.approved.txt" />
     <Content Include="Progress\ProgressBarTests.refresh_should_show_progress_title_and_progress_bar.approved.txt" />
     <Content Include="Progress\ProgressBarTests.should_still_update_progress_even_when_writing_lines_after_progress_bar.approved.txt" />
-    <Content Include="MockConsole\Write_and_WriteLine_tests.overflow_text_should_wrap_onto_next_line.approved.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

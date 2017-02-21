@@ -1,5 +1,5 @@
 using System;
-using Konsole.Testing;
+using Konsole.Internal;
 
 namespace Konsole
 {
