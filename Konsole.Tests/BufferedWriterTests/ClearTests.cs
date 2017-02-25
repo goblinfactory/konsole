@@ -16,9 +16,9 @@ namespace Konsole.Tests.BufferedWriterTests
             var con = new BufferedWriter(10,2);
             con.WriteLine("one       ");
             con.WriteLine("two       ");
-            Assert.AreEqual(new [] { "one       ", "two       "}, con.WholeBuffer);
+            Assert.AreEqual(new [] { "one       ", "two       "}, con.Buffer);
             con.Clear();
-            Assert.AreEqual(new[] { "          ", "          " }, con.WholeBuffer);
+            Assert.AreEqual(new[] { "          ", "          " }, con.Buffer);
         }
 
         [Test]

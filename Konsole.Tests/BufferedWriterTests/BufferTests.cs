@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Konsole.Tests.BufferedWriterTests
 {
-
     public class BufferTests
     {
         [Test]
-        public void ListText_should_return_lines_written_to()
+        public void Should_return_all_lines()
         {
-            var console = new BufferedWriter(10, 4);
-            console.WriteLine("1");
-            console.WriteLine("2");
-            var lines = console.LinesText;
-            //Assert.That(console.LinesText, Is.EqualTo(buffer));
-            Assert.AreEqual(new []
-            {
-                "1         ",
-                "2         ",
-            }, lines);
+            var con = new BufferedWriter(10, 2);
+            con.WriteLine("one");
+            con.WriteLine("two");
+            Assert.AreEqual(new[] { "one       ", "two       " }, con.Buffer);
         }
+
+        [Test]
+        public void Lines_should_not_be_trimmed()
+        {
+            var con = new BufferedWriter(10, 2);
+            Assert.AreEqual(new[] { "          ", "          " }, con.Buffer);
+        }
+
+
+
     }
 }

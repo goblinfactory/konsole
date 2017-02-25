@@ -71,7 +71,7 @@ namespace Konsole
         /// <summary>
         /// get all the lines written to for the whole mock console
         /// </summary>
-        public string[] WholeBuffer => 
+        public string[] Buffer => 
             _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
 
         /// <summary>
