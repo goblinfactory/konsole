@@ -69,6 +69,11 @@ namespace Konsole
         public string[] Buffer => _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
 
         /// <summary>
+        /// get the entire buffer (all the lines for the whole mock console) regardless of whether they have been written to or not, untrimmed. as a single `crln` concatenated string.
+        /// </summary>
+        public string BufferString => string.Join("\r\n", Buffer);
+
+        /// <summary>
         /// get all the lines written to for the whole mock console, untrimmed
         /// </summary>
         public string[] BufferWritten // should be buffer written

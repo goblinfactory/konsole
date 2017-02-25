@@ -18,17 +18,19 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 - `BufferedWriter` methods standardised.
   * `.Buffer` `string[]` Get the entire buffer (all the lines) regardless of whether they have been written to or not, untrimmed.
+  * `.BufferString` `string` Get the entire buffer (all the lines) regardless of whether they have been written to or not, untrimmed, as a single `crln` concatenated string.
   * `.BufferWritten` `string[]` Get the entire buffer . Only the lines that have been written to, from topmost to bottommost, untrimmed.
   * `.BufferWrittenTrimmed` `string[]` Get the entire buffer . Only the lines that have been written to, from topmost to bottommost, Trimmed.
   * `.BufferWrittenString` `string` Get the entire buffer for all lines written to, as a single `crln` concatenated string.
+  * `.BufferHilighted` `string[]` returns an 'approve-able' text buffer where each character is represented by 2 characters with one of of them representing the background color of the buffer.
   
 
 
 
 ### Added
 
-- new method `Buffer` : returns the entire buffer as an array of strings, regardless of whether anything was written or not, ignoring how many lines written, and not trimming any lines, e.g. an empty buffer will return spaces as default.
-- new core functionality and class `Window` (subclass of `BufferedWriter`) Usage as follows
+- new method `BufferString` : 
+- new core windowing functionality via class `Window` (subclass of `BufferedWriter`) Usage as follows
 
 ```
 

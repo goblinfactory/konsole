@@ -30,7 +30,7 @@ namespace Konsole.Tests.BufferedWriterTests
             console.WriteLine("menu item 4");
             console.WriteLine("menu item 5");
 
-            var hlBuffer = console.HilighterBuffer(hilite, '#', ' ');
+            var hlBuffer = console.BufferHighlighted(hilite, '#', ' ');
             System.Console.WriteLine(hlBuffer);
             System.Console.WriteLine();
             Approvals.Verify(hlBuffer);
