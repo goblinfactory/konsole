@@ -28,8 +28,8 @@ namespace Konsole.Tests
             {
                 System.Console.WriteLine(" --- test " + i + "-----");
                 pb.Refresh(i, "ITEM " + i);
-                System.Console.WriteLine(console.BufferWritten);
-                testoutput.AppendLine(console.BufferWritten);
+                System.Console.WriteLine(console.BufferWrittenString);
+                testoutput.AppendLine(console.BufferWrittenString);
             }
             System.Console.WriteLine();
             Approvals.Verify(testoutput.ToString());
@@ -48,9 +48,9 @@ namespace Konsole.Tests
             pb.Refresh(10, "dogs");
             console.WriteLine("line 4");
 
-            System.Console.WriteLine(console.BufferWritten);
+            System.Console.WriteLine(console.BufferWrittenString);
             System.Console.WriteLine();
-            Approvals.Verify(console.BufferWritten);
+            Approvals.Verify(console.BufferWrittenString);
         }
 
 

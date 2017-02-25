@@ -205,7 +205,7 @@ namespace Konsole.Sample
                 var console = new BufferedWriter(80, 20);
                 var cat = new Cat(console);
                 cat.Greet();
-                Assert.AreEqual(console.TrimmedLines, new[] {"Prrr!", "Meow!"});
+                Assert.AreEqual(console.BufferWrittenTrimmed, new[] {"Prrr!", "Meow!"});
             }
             {
                 // create an instance of a cat that will purr to the real Console

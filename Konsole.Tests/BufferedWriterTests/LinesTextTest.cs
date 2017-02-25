@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Konsole.Tests.BufferedWriterTests
 {
 
-    public class ListTextTest
+    public class LinesTextTest
     {
         [Test]
         public void ListText_should_return_lines_written_to()
@@ -16,7 +16,7 @@ namespace Konsole.Tests.BufferedWriterTests
             var console = new BufferedWriter(10, 4);
             console.WriteLine("1");
             console.WriteLine("2");
-            var lines = console.LinesText;
+            var lines = console.BufferWritten;
             //Assert.That(console.LinesText, Is.EqualTo(buffer));
             Assert.AreEqual(new []
             {

@@ -34,7 +34,7 @@ namespace Konsole.Tests
             console.WriteLine("line1");
             form.Show(person);
             console.WriteLine("line2");
-            Approvals.Verify(console.BufferWritten);
+            Approvals.Verify(console.BufferWrittenString);
         }
 
         //[Test]
@@ -124,8 +124,8 @@ namespace Konsole.Tests
                 FloatEpsilon = float.Epsilon
             };
             form.Show(numclass);
-            Approvals.Verify(console.BufferWritten);
-            System.Console.WriteLine(console.BufferWritten);
+            Approvals.Verify(console.BufferWrittenString);
+            System.Console.WriteLine(console.BufferWrittenString);
         }
 
 

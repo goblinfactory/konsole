@@ -35,8 +35,8 @@ namespace Konsole.Tests.Forms
 
             System.Console.WriteLine("then the form should be rendered");
             // ---------------------------------------------------
-            Approvals.Verify(console.BufferWritten);
-            System.Console.WriteLine(console.BufferWritten);
+            Approvals.Verify(console.BufferWrittenString);
+            System.Console.WriteLine(console.BufferWrittenString);
 
             System.Console.WriteLine("and the first entry field should be highlighted");
             // ------------------------------------------------------------------

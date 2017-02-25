@@ -57,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BufferedWriterTests\ListTextTest.cs" />
+    <Compile Include="BufferedWriterTests\LinesTextTest.cs" />
     <Compile Include="BufferedWriterTests\ClearTests.cs" />
     <Compile Include="BufferedWriterTests\HiliteTests.cs" />
     <Compile Include="BufferedWriterTests\OverflowTests.cs" />

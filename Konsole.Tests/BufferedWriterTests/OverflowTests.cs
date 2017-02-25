@@ -33,9 +33,9 @@ namespace Konsole.Tests.BufferedWriterTests
             console.WriteLine("1234567890");
             console.WriteLine("---");
             console.WriteLine("12345678901234567890");
-            System.Console.WriteLine(console.BufferWritten);
+            System.Console.WriteLine(console.BufferWrittenString);
             System.Console.WriteLine();
-            Approvals.Verify(console.BufferWritten);
+            Approvals.Verify(console.BufferWrittenString);
         }
 
     }

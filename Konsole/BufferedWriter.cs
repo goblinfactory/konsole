@@ -64,20 +64,31 @@ namespace Konsole
 
 
         /// <summary>
-        /// get all the lines written to for the whole mock console
+        /// get the entire buffer (all the lines for the whole mock console) regardless of whether they have been written to or not, untrimmed.
         /// </summary>
-        public string BufferWritten => string.Join("\r\n", LinesText);
+        public string[] Buffer => _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
 
         /// <summary>
-        /// get all the lines written to for the whole mock console
+        /// get all the lines written to for the whole mock console, untrimmed
         /// </summary>
-        public string[] Buffer => 
-            _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
+        public string[] BufferWritten // should be buffer written
+        {
+            get
+            {
+                return _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString()).ToArray();
+            }
+        }
+
+        /// <summary>
+        /// get all the lines written to for the whole mock console - bufferWrittenString
+        /// </summary>
+        public string BufferWrittenString => string.Join("\r\n", BufferWritten);
+
 
         /// <summary>
         /// get all the lines written to for the whole mock console, all trimmed.
         /// </summary>
-        public string[] TrimmedLines
+        public string[] BufferWrittenTrimmed
         {
             get
             {
@@ -85,16 +96,6 @@ namespace Konsole
             }
         }
 
-        /// <summary>
-        /// get all the lines written to for the whole mock console.
-        /// </summary>
-        public string[] LinesText
-        {
-            get
-            {
-                return _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString()).ToArray();
-            }
-        }
 
 
         public void WriteLine(string format, params object[] args)

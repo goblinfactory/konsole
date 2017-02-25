@@ -22,8 +22,8 @@ namespace Konsole.Tests.BufferedWriterTests
                 "This is a test line.",
                 "line 3"
             };
-            System.Console.WriteLine(console.BufferWritten);
-            Assert.That(console.TrimmedLines, Is.EqualTo(expected));
+            System.Console.WriteLine(console.BufferWrittenString);
+            Assert.That(console.BufferWrittenTrimmed, Is.EqualTo(expected));
         }
     }
 }

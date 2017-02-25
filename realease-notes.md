@@ -11,7 +11,18 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 - rename `Console` to `BufferedWriter`
 - rename `ConsoleWriter` to `Writer`
-- rename `.Buffer` to `BufferWritten`
+- rename `.LinesText` to `BufferWritten` 
+- rename `.Buffer` to `BufferWrittenString` 
+- rename `.TrimmedLines` to `.BufferWrittenTrimmed`
+
+- `BufferedWriter` methods standardised.
+  * `.Buffer` `string[]` Get the entire buffer (all the lines) regardless of whether they have been written to or not, untrimmed.
+  * `.BufferWritten` `string[]` Get the entire buffer . Only the lines that have been written to, from topmost to bottommost, untrimmed.
+  * `.BufferWrittenTrimmed` `string[]` Get the entire buffer . Only the lines that have been written to, from topmost to bottommost, Trimmed.
+  * `.BufferWrittenString` `string` Get the entire buffer for all lines written to, as a single `crln` concatenated string.
+  
+
+
 
 ### Added
 

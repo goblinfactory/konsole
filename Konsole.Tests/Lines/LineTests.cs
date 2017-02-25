@@ -22,7 +22,7 @@ namespace Konsole.Tests
             var console = new BufferedWriter(200, 20);
             // draw box 40 wide, and 6 high
             new Draw(console).Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
-            Approvals.Verify(console.BufferWritten);
+            Approvals.Verify(console.BufferWrittenString);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Konsole.Tests
                 .Line(ex - 5, ey - 4, ex - 5, ey - 2, LineThickNess.Single);  // faulty! need to fix
 
             console.PrintAt(sx + 2, sy + 1, "DEMO INVOICE");
-            Approvals.Verify(console.BufferWritten);            
+            Approvals.Verify(console.BufferWrittenString);            
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace Konsole.Tests
             console.PrintAt(0, 44, "(0,45 - 9,45) height:1 width:10");
             line.Box(0, 45, 9, 45, "my test box", LineThickNess.Double);
 
-            Approvals.Verify(console.BufferWritten);
+            Approvals.Verify(console.BufferWrittenString);
         }
 
 
@@ -106,7 +106,7 @@ namespace Konsole.Tests
                 line.Box(10, 10, 20, 20, firstThickness);
                 line.Box(15, 15, 25, 25, secondThickness);
 
-                Approvals.Verify(console.BufferWritten);
+                Approvals.Verify(console.BufferWrittenString);
 
             }
         }

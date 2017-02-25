@@ -78,8 +78,8 @@ namespace Konsole.Tests.BufferedWriterTests
                     "new line 1",
                     "line 2"
                 };
-                System.Console.WriteLine(console.BufferWritten);
-                Assert.That(console.TrimmedLines, Is.EqualTo(expected));
+                System.Console.WriteLine(console.BufferWrittenString);
+                Assert.That(console.BufferWrittenTrimmed, Is.EqualTo(expected));
             }
 
         }
@@ -111,9 +111,9 @@ namespace Konsole.Tests.BufferedWriterTests
                 "    *"
             };
 
-            System.Console.WriteLine(console.BufferWritten);
-            Assert.That(console.TrimmedLines, Is.EqualTo(trimmed));
-            Assert.That(console.LinesText, Is.EqualTo(buffer));
+            System.Console.WriteLine(console.BufferWrittenString);
+            Assert.That(console.BufferWrittenTrimmed, Is.EqualTo(trimmed));
+            Assert.That(console.BufferWritten, Is.EqualTo(buffer));
 
         }
 
