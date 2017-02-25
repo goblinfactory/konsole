@@ -22,7 +22,7 @@ namespace Konsole.Tests.BufferedWriterTests
                 "This is a test line.",
                 "line 3"
             };
-            System.Console.WriteLine(console.Buffer);
+            System.Console.WriteLine(console.BufferWritten);
             Assert.That(console.TrimmedLines, Is.EqualTo(expected));
         }
     }

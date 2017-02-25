@@ -66,12 +66,13 @@ namespace Konsole
         /// <summary>
         /// get all the lines written to for the whole mock console
         /// </summary>
-        public string Buffer => string.Join("\r\n", LinesText);
+        public string BufferWritten => string.Join("\r\n", LinesText);
 
         /// <summary>
         /// get all the lines written to for the whole mock console
         /// </summary>
-        public string[] WholeBuffer => _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
+        public string[] WholeBuffer => 
+            _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
 
         /// <summary>
         /// get all the lines written to for the whole mock console, all trimmed.
@@ -119,6 +120,7 @@ namespace Konsole
             _lines = new Dictionary<int, Row>();
             _lastLineWrittenTo = 0;
             XY = new XY(0, 0);
+            _cursor.Y = 0;
         }
 
 

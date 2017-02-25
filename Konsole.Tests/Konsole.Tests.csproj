@@ -61,6 +61,7 @@
     <Compile Include="BufferedWriterTests\ClearTests.cs" />
     <Compile Include="BufferedWriterTests\HiliteTests.cs" />
     <Compile Include="BufferedWriterTests\OverflowTests.cs" />
+    <Compile Include="BufferedWriterTests\WholeBufferTests.cs" />
     <Compile Include="BufferedWriterTests\WriteTests.cs" />
     <Compile Include="Forms\SplitScreenTests.cs" />
     <Compile Include="TestClasses\Address.cs" />

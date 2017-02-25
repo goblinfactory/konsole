@@ -1,18 +1,22 @@
 # Change Log
 
-The format is based on Keep a Changelog and this project adheres to Semantic Versioning.
+The format is based on [Keep a Changelog](http://keepachangelog.com/) 
+and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [Unreleased] will become [2.0.0.0]
 
-### Changed
+New core `Window` functionality, plus big class renames, main interface `IConsole` remains unaffected between `1.0` and `2.0`.
 
-- rename Console to BufferedWriter
-- rename ConsoleWriter to Writer
+### Breaking changes
+
+- rename `Console` to `BufferedWriter`
+- rename `ConsoleWriter` to `Writer`
+- rename `.Buffer` to `BufferWritten`
 
 ### Added
 
-- new method `WholeBuffer` : returns the entire buffer as an array of strings, regardless of whether anything was written or not, ignoring how many lines written, and not trimming any lines, e.g. an empty buffer will return spaces as default.
-- new class `Window` (subclass of `BufferedWriter`) Usage as follows
+- new method `Buffer` : returns the entire buffer as an array of strings, regardless of whether anything was written or not, ignoring how many lines written, and not trimming any lines, e.g. an empty buffer will return spaces as default.
+- new core functionality and class `Window` (subclass of `BufferedWriter`) Usage as follows
 
 ```
 
