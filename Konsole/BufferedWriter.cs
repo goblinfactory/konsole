@@ -13,11 +13,17 @@ namespace Konsole
         private readonly int _width;
         private readonly int _height;
         private readonly bool _echo;
+
         private ConsoleColor _color;
+        private readonly ConsoleColor _startColor;
         private ConsoleColor _background;
-        private Dictionary<int, Row> _lines;
+        private readonly ConsoleColor _startBackground;
+
+        private readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
+
         private XY _cursor;
-        private int _lastLineWrittenTo;
+        private int _lastLineWrittenTo = -1;
+        private object _lock = new object();
 
         private XY Cursor
         {
@@ -39,12 +45,20 @@ namespace Konsole
             _width = width;
             _height = height;
             _echo = echo;
-            _color = color;
-            _background = background;
+            _startColor = color;
+            _startBackground = background;
+            init();
+        }
+
+        private void init()
+        {
+            _color = _startColor;
+            _background = _startBackground;
             Cursor = new XY(0, 0);
-            _lastLineWrittenTo = 0;
-            _lines = new Dictionary<int, Row>();
-            for (int i = 0; i < height; i++) _lines.Add(i, new Row(width,' ', color, background));
+            _lastLineWrittenTo = -1;
+            _lines.Clear();
+            if (_echo) Console.CursorTop = 0;
+            for (int i = 0; i < _height; i++) _lines.Add(i, new Row(_width, ' ', _startColor, _startBackground));
         }
 
         /// <summary>
@@ -119,14 +133,11 @@ namespace Konsole
             Write(text);
         }
 
+
         public void Clear()
         {
-
             if (_echo) System.Console.Clear();
-            _lines = new Dictionary<int, Row>();
-            _lastLineWrittenTo = 0;
-            XY = new XY(0, 0);
-            _cursor.Y = 0;
+            init();
         }
 
 

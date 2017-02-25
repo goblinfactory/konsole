@@ -12,13 +12,13 @@ namespace Konsole.Tests.BufferedWriterTests
         [Test]
         public void clear_the_buffer()
         {
-            // #ADH 17-02-25 I'm aware this test is currently failing, hope to have this fixed in next commit.
-            var con = new BufferedWriter(10,2);
-            con.WriteLine("one       ");
-            con.WriteLine("two       ");
-            Assert.AreEqual(new [] { "one       ", "two       "}, con.Buffer);
+            var con = new BufferedWriter(10,4);
+            con.WriteLine("one");
+            con.WriteLine("two");
+            Assert.AreEqual(new [] { "one", "two"}, con.BufferWrittenTrimmed);
             con.Clear();
-            Assert.AreEqual(new[] { "          ", "          " }, con.Buffer);
+            Assert.AreEqual(new string[] {}, con.BufferWritten);
+            con.WriteLine("three");
         }
 
         [Test]
