@@ -43,7 +43,7 @@ namespace Konsole.Forms
         {
             _width = width;
             _boxStyle = boxStyle ?? new ThinBoxStyle();
-            _console = console ?? new ConsoleWriter();
+            _console = console ?? new Writer();
         }
 
         public void Show<T>(T item, string title = null)

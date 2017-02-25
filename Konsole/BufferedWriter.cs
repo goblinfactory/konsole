@@ -8,7 +8,7 @@ namespace Konsole
 
 
 
-    public class Console : IConsole
+    public class BufferedWriter : IConsole
     {
         private readonly int _width;
         private readonly int _height;
@@ -30,11 +30,11 @@ namespace Konsole
             }
         }
 
+        // is there a way to detect current console buffer and settings?
+        public BufferedWriter(bool echo = false) : this(System.Console.WindowWidth, System.Console.WindowHeight, echo) { }
+        public BufferedWriter(int width, int height, bool echo = false) : this(width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
 
-        public Console() : this(80, 20, false) { }
-        public Console(int width, int height, bool echo = false) : this(width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
-
-        public Console(int width, int height, ConsoleColor color, ConsoleColor background, bool echo = false)
+        public BufferedWriter(int width, int height, ConsoleColor color, ConsoleColor background, bool echo = false)
         {
             _width = width;
             _height = height;
@@ -63,8 +63,15 @@ namespace Konsole
         }
 
 
+        /// <summary>
+        /// get all the lines written to for the whole mock console
+        /// </summary>
         public string Buffer => string.Join("\r\n", LinesText);
 
+        /// <summary>
+        /// get all the lines written to for the whole mock console
+        /// </summary>
+        public string[] WholeBuffer => _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
 
         /// <summary>
         /// get all the lines written to for the whole mock console, all trimmed.

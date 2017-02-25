@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Konsole.Drawing;
 using Konsole.Forms;
 using Konsole.Internal;
-using Console = Konsole.Console;
 
 namespace Konsole.Sample
 {
@@ -34,40 +33,116 @@ namespace Konsole.Sample
 
         private static void Main(string[] args)
         {
-            System.Console.WriteLine("press enter to start");
-            System.Console.ReadLine();
-            //TestBoxes();
-            TestHilite();
-            System.Console.WriteLine("Press enter to close");
-            System.Console.ReadLine();
+            var con = new BufferedWriter(true);
+            char cmd = ' ';
+            while (cmd != 'q')
+            {
+                Console.WriteLine(Console.ForegroundColor);
+                Console.WriteLine();
+
+                printMenu(con);
+                cmd = Console.ReadKey(true).KeyChar;
+                switch (cmd)
+                {
+                    case 'c':
+                        con.Clear();
+                        printMenu(con);
+                        break;
+
+                    case 'w':
+                        TestWindowsNormalUsage(con);
+                        break;
+
+                    case 'W':
+                        TestWindowsTestUsage(con);
+                        break;
+
+                    case 'h':
+                        TestHilite();
+                        break;
+                    case 'b':
+                        TestBoxes();
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
         }
 
-        public static void TestHilite()
+        private static void printMenu(BufferedWriter con)
+        {
+            con.WriteLine("");
+            con.WriteLine("W : TestWindowsTestUsage");
+            con.WriteLine("w : TestWindowsNormalUsage");
+            con.WriteLine("h : hiliting");
+            con.WriteLine("b : boxes");
+            con.WriteLine("c : clear screen");
+            con.WriteLine("q : quit");
+            con.WriteLine("");
+        }
+
+        private static void TestWindowsNormalUsage(IConsole con)
+        {
+            con.WriteLine("'w' TestWindowsNormalUsage");
+            con.WriteLine("--------------------------");
+            var console = new Writer();
+            var w1 = new Window(console, 0,0,40,20);
+            var w2 = new Window(console, 0, 0, 40, 20);
+            
+            //var window1 = new Window(buffer, 0,0, 20,20, true);  // zorder = 1, show = true
+            //var window2 = new Window(40,10, false); // zorder = 2
+        }
+
+        // this is how we would use a buffered writer instead of normal writer so that we can prove the windows are working!
+        private static void TestWindowsTestUsage(IConsole con)
+        {
+            con.WriteLine("'W' TestWindowsTestUsage");
+            con.WriteLine("------------------------");
+            var console = new BufferedWriter(80,20,true);
+            var w1 = new Window(console, 0, 0, 40, 20); // for now perhaps not allow the windows to overlap?
+            var w2 = new Window(console, 0, 0, 40, 20);
+
+            //var window1 = new Window(buffer, 0,0, 20,20, true);  // zorder = 1, show = true
+            //var window2 = new Window(40,10, false); // zorder = 2
+        }
+
+
+        private static void TestHilite()
         {
             var normal = ConsoleColor.Black;
             var hilite = ConsoleColor.White;
 
-            var console = new Console(40, 10, true);
-            console.ForegroundColor = ConsoleColor.Red;
+            var console = new BufferedWriter(40, 10, true);
+            var fore = console.ForegroundColor;
+            try
+            {
+                console.ForegroundColor = ConsoleColor.Red;
 
-            console.BackgroundColor = normal;
-            console.WriteLine("menu item 1");
-            console.WriteLine("menu item 2");
-            console.Write("menu ");
+                console.BackgroundColor = normal;
+                console.WriteLine("menu item 1");
+                console.WriteLine("menu item 2");
+                console.Write("menu ");
 
-            console.BackgroundColor = hilite;
-            console.Write("item");
+                console.BackgroundColor = hilite;
+                console.Write("item");
 
-            console.BackgroundColor = normal;
-            console.WriteLine(" 3");
-            console.WriteLine("menu item 4");
-            console.WriteLine("menu item 5");
+                console.BackgroundColor = normal;
+                console.WriteLine(" 3");
+                console.WriteLine("menu item 4");
+                console.WriteLine("menu item 5");
+            }
+            finally
+            {
+                console.ForegroundColor = fore;
+            }
         }
 
         public static void TestBoxes()
         {
             System.Console.Clear();
-            var console = new ConsoleWriter();
+            var console = new Writer();
             
             int height = 18;
             int sy = 2;
@@ -127,7 +202,7 @@ namespace Konsole.Sample
             {
                 // test the cat
                 // ============
-                var console = new Console(80, 20);
+                var console = new BufferedWriter(80, 20);
                 var cat = new Cat(console);
                 cat.Greet();
                 Assert.AreEqual(console.TrimmedLines, new[] {"Prrr!", "Meow!"});
@@ -135,7 +210,7 @@ namespace Konsole.Sample
             {
                 // create an instance of a cat that will purr to the real Console
                 // ==============================================================
-                var cat = new Cat(new ConsoleWriter());
+                var cat = new Cat(new Writer());
                 cat.Greet(); // prints Prrr! aand Meow! to the console
             }
         }

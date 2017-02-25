@@ -57,7 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleTests\WriteTests.cs" />
+    <Compile Include="BufferedWriterTests\BufferTests.cs" />
+    <Compile Include="BufferedWriterTests\ClearTests.cs" />
+    <Compile Include="BufferedWriterTests\HiliteTests.cs" />
+    <Compile Include="BufferedWriterTests\OverflowTests.cs" />
+    <Compile Include="BufferedWriterTests\WriteTests.cs" />
     <Compile Include="Forms\SplitScreenTests.cs" />
     <Compile Include="TestClasses\Address.cs" />
     <Compile Include="Forms\FormEditTests.cs" />
@@ -65,9 +69,10 @@
     <Compile Include="TestClasses\FormTests.MixedNumClass.cs" />
     <Compile Include="Lines\LineTests.cs" />
     <Compile Include="Forms\FormTests.cs" />
-    <Compile Include="ConsoleTests\CursorTests.cs" />
+    <Compile Include="BufferedWriterTests\CursorTests.cs" />
     <Compile Include="Progress\ProgressBarTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowTests\WindowTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -79,9 +84,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ConsoleTests\WriteTests.overflow_text_should_wrap_onto_next_line.approved.txt" />
-    <Content Include="ConsoleTests\WriteTests.readable_buffer_should_show_which_lines_are_highlighted.approved.txt" />
-    <Content Include="ConsoleTests\WriteTests.readable_buffer_should_show_which_lines_are_highlighted.received.txt" />
+    <Content Include="BufferedWriterTests\OverflowTests.overflow_text_should_wrap_onto_next_line.approved.txt" />
+    <Content Include="BufferedWriterTests\HiliteTests.readable_buffer_should_show_which_lines_are_highlighted.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.draw_box_should_draw_box.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Merge.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Overlap.approved.txt" />

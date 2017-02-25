@@ -1,7 +1,7 @@
 ﻿using ApprovalTests.Reporters;
 using NUnit.Framework;
 
-namespace Konsole.Tests.ConsoleTests
+namespace Konsole.Tests.BufferedWriterTests
 {
     [UseReporter(typeof(DiffReporter))]
     public class CursorTests
@@ -12,7 +12,7 @@ namespace Konsole.Tests.ConsoleTests
             [Test]
             public void CursorLeft_should_return_the_x_position_that_the_next_character_will_be_written_to()
             {
-                var console = new Console(30, 20);
+                var console = new BufferedWriter(30, 20);
                 Assert.AreEqual(0, console.CursorLeft);
                 console.Write("Today ");
                 Assert.AreEqual(6, console.CursorLeft);
@@ -30,7 +30,7 @@ namespace Konsole.Tests.ConsoleTests
             [Test]
             public void setting_CursorLeft_position_should_change_x_position_without_affecting_y_position_and_allow_writing_at_different_x_positions()
             {
-                var console = new Console(80, 20);
+                var console = new BufferedWriter(80, 20);
                 Assert.AreEqual(0, console.CursorTop);
                 console.WriteLine("line1");
                 Assert.AreEqual(1, console.CursorTop);
@@ -50,7 +50,7 @@ namespace Konsole.Tests.ConsoleTests
             [Test]
             public void calling_writeline_should_increment_cursortop_position()
             {
-                var console = new Console(80, 20);
+                var console = new BufferedWriter(80, 20);
                 Assert.AreEqual(0, console.CursorTop);
                 console.WriteLine("line1");
                 Assert.AreEqual(1, console.CursorTop);
@@ -67,7 +67,7 @@ namespace Konsole.Tests.ConsoleTests
             [Test]
             public void setting_cursor_top_to_a_previously_written_line_should_allow_us_to_overwrite_previously_written_lines()
             {
-                var console = new Console(80, 20);
+                var console = new BufferedWriter(80, 20);
                 console.WriteLine("line 0");
                 console.WriteLine("line 1");
                 console.WriteLine("line 2");
@@ -88,7 +88,7 @@ namespace Konsole.Tests.ConsoleTests
         [Test]
         public void PrintAt_tests()
         {
-            var console = new Console(5, 5);
+            var console = new BufferedWriter(5, 5);
             console.PrintAt(0, 0, "*");
             console.PrintAt(2, 2, "*");
             console.PrintAt(4, 4, "*");

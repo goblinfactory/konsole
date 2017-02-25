@@ -3,7 +3,6 @@ using ApprovalTests;
 using Konsole.Forms;
 using Konsole.Internal;
 using Konsole.Tests.TestClasses;
-using Console = Konsole.Console;
 
 namespace Konsole.Tests.Forms
 {
@@ -14,7 +13,7 @@ namespace Konsole.Tests.Forms
         {
             System.Console.WriteLine("given a console form for a person");
             // ---------------------------------------------------
-            var console = new Console(200, 20);
+            var console = new BufferedWriter(200, 20);
             var form = new Form(console);
             var person = new Person
             {

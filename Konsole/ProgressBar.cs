@@ -14,7 +14,7 @@ namespace Konsole
 
         public const string FORMAT = "Item {0,-5} of {1,-5}. ({2,-3}%) ";
 
-        public ProgressBar(int max) : this(max, '#', FORMAT, new ConsoleWriter()) { }
+        public ProgressBar(int max) : this(max, '#', FORMAT, new Writer()) { }
         public ProgressBar(int max, IConsole console) : this(max, '#', FORMAT, console) { }
         public ProgressBar(int max, char character, string format, IConsole console)
         {
