@@ -7,10 +7,10 @@ using NUnit.Framework;
 
 namespace Konsole.Tests.BufferedWriterTests
 {
-    public class ClearTests
+    public class ClearShould
     {
         [Test]
-        public void Should_clear_the_buffer()
+        public void clear_the_buffer()
         {
             // #ADH 17-02-25 I'm aware this test is currently failing, hope to have this fixed in next commit.
             var con = new BufferedWriter(10,2);
@@ -22,7 +22,7 @@ namespace Konsole.Tests.BufferedWriterTests
         }
 
         [Test]
-        public void Should_reset_the_y_position()
+        public void reset_the_y_position()
         {
             var con = new BufferedWriter(10, 2);
             Assert.AreEqual(0,con.Y);
