@@ -48,13 +48,13 @@ namespace Konsole
         }
 
         /// <summary>
-        /// use this method to return an 'approve-able' buffer representing the background color of the buffer
+        /// use this method to return an 'approve-able' text buffer representing the background color of the buffer
         /// </summary>
         /// <param name="highliteColor">the background color to look for that indicates that text has been hilighted</param>
         /// <param name="hiChar">the char to use to indicate a highlight</param>
         /// <param name="normal">the chart to use for all other</param>
         /// <returns></returns>
-        public string HilighterBuffer(ConsoleColor highliteColor, char hiChar = '#', char normal = ' ')
+        public string BufferHighlighted(ConsoleColor highliteColor, char hiChar = '#', char normal = ' ')
         {
             var buffer = new HiliteBuffer(highliteColor, hiChar, normal);
             var rows = _lines.Select(l => l.Value).ToArray();
