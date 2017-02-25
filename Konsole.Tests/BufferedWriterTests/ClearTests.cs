@@ -12,6 +12,7 @@ namespace Konsole.Tests.BufferedWriterTests
         [Test]
         public void Should_clear_the_buffer()
         {
+            // #ADH 17-02-25 I'm aware this test is currently failing, hope to have this fixed in next commit.
             var con = new BufferedWriter(10,2);
             con.WriteLine("one       ");
             con.WriteLine("two       ");
