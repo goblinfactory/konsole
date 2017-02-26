@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
@@ -7,42 +8,83 @@ using System.Threading.Tasks;
 
 namespace Konsole
 {
-    public class Window
+
+    public class Window : IConsole
     {
-        private readonly BufferedWriter _parentWindow;
+        private readonly BufferedWriter _console;
+        private readonly IConsole _parent;
         private readonly int _x;
         private readonly int _y;
-        private readonly int _width;
-        private readonly int _height;
-        private readonly bool _show;
-        private readonly BufferedWriter _buffer;
 
-        public Window(IConsole console, int x, int y, int width, int height)
+        public Window(IConsole parent, int x, int y, int width, int height)
         {
-            
+            _parent = parent;
+            _x = x;
+            _y = y;
+            _console = new BufferedWriter(width,height);
         }
 
-        public string[] Buffer { get; set; }
-
-        //public Window(BufferedWriter parentWindow,  int x, int y, int width, int height, bool show)
-        //{
-        //    _parentWindow = parentWindow;
-        //    _buffer = new BufferedWriter(width, height, show);
-        //    _x = x;
-        //    _y = y;
-        //    _width = width;
-        //    _height = height;
-        //    _show = show;
-        //}
-
-
-        public Window WriteLine(string p0)
+        /// <summary>
+        /// prints the state of the current buffer to parent. This is so that we can cater for the windows own overflow settings.
+        /// I did consider simply passing the prints to the parent via an offset, i.e. all WRiteLine to convert to PrintAt but then overflows and wrapping would not work.
+        /// </summary>
+        private void Refresh()
         {
-            return this;
+            int y = 0;
+            foreach (var line in _console.Buffer)
+            {
+                int x = 0;
+                foreach (var c in line)
+                {
+                    _parent.PrintAt(_x + x, _y + y, c);
+                    x++;
+                }
+                y++;
+            }
         }
 
-        public Window newWindow(int i, int i1, int i2, int i3)
+        public void WriteLine(string format, params object[] args)
         {
+            _console.WriteLine(format,args);
+            Refresh();
+        }
+
+        public void Write(string format, params object[] args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int WindowWidth()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CursorTop { get; set; }
+        public int CursorLeft { get; set; }
+        public ConsoleColor ForegroundColor { get; set; }
+        public void SetCursorPosition(int x, int y)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PrintAt(int x, int y, string format, params object[] args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PrintAt(int x, int y, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PrintAt(int x, int y, char c)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            // mmm, if echo is on, then this would clear the whole screen instead of just this window? will need to 
             throw new NotImplementedException();
         }
     }

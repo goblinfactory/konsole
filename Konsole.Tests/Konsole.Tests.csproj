@@ -72,7 +72,7 @@
     <Compile Include="BufferedWriterTests\CursorTests.cs" />
     <Compile Include="Progress\ProgressBarTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WindowTests\WindowTests.cs" />
+    <Compile Include="WindowTests\WindowsShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

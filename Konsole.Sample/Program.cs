@@ -13,16 +13,6 @@ namespace Konsole.Sample
 {
     class Program
     {
-        // #1 - strings
-        // #2 - integers
-        // #3 - look for model attribute data for length
-        // #4 -   "  for required
-        // navigation keys to move between fields
-        // enter and tab to move to next
-        // current field to highlight when editing (reverse video)
-        // Support Changesets
-        // support copy and paste?
-
         internal class Person
         {
             public string FirstName { get; set; }
@@ -46,20 +36,21 @@ namespace Konsole.Sample
                 {
                     case 'c':
                         con.Clear();
+                        Console.Clear();
                         printMenu(con);
                         break;
 
                     case 'w':
-                        TestWindowsNormalUsage(con);
-                        break;
-
-                    case 'W':
-                        TestWindowsTestUsage(con);
+                        TestWindows(con);
                         break;
 
                     case 'h':
                         TestHilite();
                         break;
+                    case 'p':
+                        Progress(con);
+                        break;
+
                     case 'b':
                         TestBoxes();
                         break;
@@ -74,38 +65,52 @@ namespace Konsole.Sample
         private static void printMenu(BufferedWriter con)
         {
             con.WriteLine("");
-            con.WriteLine("W : TestWindowsTestUsage");
-            con.WriteLine("w : TestWindowsNormalUsage");
+            con.WriteLine("w : windows");
             con.WriteLine("h : hiliting");
             con.WriteLine("b : boxes");
+            con.WriteLine("p : progress bars");
             con.WriteLine("c : clear screen");
             con.WriteLine("q : quit");
             con.WriteLine("");
         }
 
-        private static void TestWindowsNormalUsage(IConsole con)
+        private static void TestWindows(IConsole con)
         {
-            con.WriteLine("'w' TestWindowsNormalUsage");
-            con.WriteLine("--------------------------");
+            con.WriteLine("'w' Test windows");
+            con.WriteLine("----------------");
             var console = new Writer();
-            var w1 = new Window(console, 0,0,40,20);
-            var w2 = new Window(console, 0, 0, 40, 20);
-            
-            //var window1 = new Window(buffer, 0,0, 20,20, true);  // zorder = 1, show = true
-            //var window2 = new Window(40,10, false); // zorder = 2
+
+            var w1 = new Window(console, 0, 0, 5, 3);
+            var w2 = new Window(console, 5, 0, 5, 3);
+            con.WriteLine("hello");
+            w1.WriteLine("1");
+            w2.WriteLine("2");
+            w1.WriteLine("3");
+            w2.WriteLine("4");
+            con.WriteLine("finished, press enter to continue");
+            Console.ReadLine();
         }
 
-        // this is how we would use a buffered writer instead of normal writer so that we can prove the windows are working!
-        private static void TestWindowsTestUsage(IConsole con)
+        private static void Progress(IConsole con)
         {
-            con.WriteLine("'W' TestWindowsTestUsage");
-            con.WriteLine("------------------------");
-            var console = new BufferedWriter(80,20,true);
-            var w1 = new Window(console, 0, 0, 40, 20); // for now perhaps not allow the windows to overlap?
-            var w2 = new Window(console, 0, 0, 40, 20);
+            Console.Clear();
+            Console.WriteLine("'p' Test Progress bars");
+            Console.WriteLine("----------------------");
 
-            //var window1 = new Window(buffer, 0,0, 20,20, true);  // zorder = 1, show = true
-            //var window2 = new Window(40,10, false); // zorder = 2
+            var pb = new ProgressBar(10);
+            var pb2 = new ProgressBar(30);
+            Console.WriteLine("loading...");
+            for (int i = 0; i < 10; i++)
+            {
+                Thread.Sleep(500);
+                pb.Refresh(i, $"loading cat {i}");
+                pb2.Refresh(i, $"loading dog {i}");
+
+            }
+            pb.Refresh(10, "All cats loaded.");
+            Console.WriteLine("Done!");
+            Console.ReadLine();
+            Console.Clear();
         }
 
 

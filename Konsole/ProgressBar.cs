@@ -24,7 +24,9 @@ namespace Konsole
             _current = 0;
             _max = max;
             _character = character;
-            _format = format ?? FORMAT;
+            _format = format ?? FORMAT; 
+            _console.WriteLine("");
+            _console.WriteLine("");
         }
 
         public int Max { get { return _max; }}
@@ -37,10 +39,13 @@ namespace Konsole
 
         private static object _locker = new object();
 
+
+
         public void Refresh(int current, string item)
         {
             lock (_locker)
             {
+                var state = _console.GetState();
                 // save current position
                 _current = current;
                 try
@@ -59,7 +64,7 @@ namespace Konsole
                 }
                 finally
                 {
-                    _console.ForegroundColor = _c;
+                    _console.RestoreState(state);
                 }
             }
         }
@@ -68,6 +73,35 @@ namespace Konsole
         {
             _current++;
             Refresh(_current, item);
+        }
+    }
+
+    public class ConsoleState
+    {
+        public int Top { get; set; }
+        public int Left { get; set; }
+        public ConsoleColor ForegroundColor { get; set; }
+        public ConsoleColor BackgroundColor { get; set; }
+    }
+
+    public static class ConsoleStateManager
+    {
+        public static ConsoleState GetState(this IConsole console)
+        {
+            return new ConsoleState()
+            {
+                Top = console.CursorTop,
+                Left = console.CursorLeft,
+                ForegroundColor = console.ForegroundColor,
+            };
+        }
+
+        // don't like messing with state, eurgh, will fix this later!
+        public static void RestoreState(this IConsole console, ConsoleState state)
+        {
+            console.CursorLeft = state.Left;
+            console.CursorTop = state.Top;
+            console.ForegroundColor = state.ForegroundColor;
         }
     }
 

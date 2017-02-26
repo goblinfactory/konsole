@@ -36,8 +36,7 @@ namespace Konsole
             }
         }
 
-        // is there a way to detect current console buffer and settings?
-        public BufferedWriter(bool echo = false) : this(System.Console.WindowWidth, System.Console.WindowHeight, echo) { }
+        public BufferedWriter(bool echo = false) : this(Console.WindowWidth, Console.WindowHeight, echo) { }
         public BufferedWriter(int width, int height, bool echo = false) : this(width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
 
         public BufferedWriter(int width, int height, ConsoleColor color, ConsoleColor background, bool echo = false)
@@ -120,7 +119,7 @@ namespace Konsole
         public void WriteLine(string format, params object[] args)
         {
             var text = string.Format(format, args);
-            if (_echo) System.Console.WriteLine(text);
+            if (_echo) Console.WriteLine(text);
             string overflow = "";
             overflow = _lines[Cursor.Y].WriteFormatted(_color, _background, Cursor.X, text);
             Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
@@ -136,7 +135,7 @@ namespace Konsole
 
         public void Clear()
         {
-            if (_echo) System.Console.Clear();
+            if (_echo) Console.Clear();
             init();
         }
 

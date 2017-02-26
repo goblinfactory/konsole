@@ -3,7 +3,6 @@ using System.Text;
 using ApprovalTests;
 using ApprovalTests.Maintenance;
 using ApprovalTests.Reporters;
-using Konsole.Internal;
 using NUnit.Framework;
 
 namespace Konsole.Tests
@@ -22,16 +21,16 @@ namespace Konsole.Tests
         {
             var testoutput = new StringBuilder();
             var console = new BufferedWriter(80,20);
-            var pb = new global::Konsole.ProgressBar(10, console);
+            var pb = new ProgressBar(10, console);
             
             for (int i = 1; i < 5; i++)
             {
                 System.Console.WriteLine(" --- test " + i + "-----");
                 pb.Refresh(i, "ITEM " + i);
-                System.Console.WriteLine(console.BufferWrittenString);
+                Console.WriteLine(console.BufferWrittenString);
                 testoutput.AppendLine(console.BufferWrittenString);
             }
-            System.Console.WriteLine();
+            Console.WriteLine();
             Approvals.Verify(testoutput.ToString());
         }
 
@@ -40,7 +39,7 @@ namespace Konsole.Tests
         {
             var console = new BufferedWriter(40,10);
             console.WriteLine("line 1");
-            var pb = new global::Konsole.ProgressBar(10, console);
+            var pb = new ProgressBar(10, console);
             pb.Refresh(0, "loading");
             console.WriteLine("line 2");
             pb.Refresh(1, "cats");
@@ -48,21 +47,13 @@ namespace Konsole.Tests
             pb.Refresh(10, "dogs");
             console.WriteLine("line 4");
 
-            System.Console.WriteLine(console.BufferWrittenString);
-            System.Console.WriteLine();
+            Console.WriteLine(console.BufferWrittenString);
+            Console.WriteLine();
             Approvals.Verify(console.BufferWrittenString);
         }
 
 
-        //public void progress_bar_print_at_should_position_progress_bar_at_required_position()
-        //{
 
-        //}
-
-        //public void progress_bar_and_form_objects_should_support_zindex_and_respect_clipped_overlapped_areas_when_rendering()
-        //{
-
-        //}
 
     }
 }
