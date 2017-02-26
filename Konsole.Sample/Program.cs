@@ -99,17 +99,18 @@ namespace Konsole.Sample
 
             var pb = new ProgressBar(10);
             var pb2 = new ProgressBar(30);
-            Console.WriteLine("loading...");
+            Console.Write("loading...");
             for (int i = 0; i < 10; i++)
             {
                 Thread.Sleep(500);
+                Console.Write($" {i}");
                 pb.Refresh(i, $"loading cat {i}");
                 pb2.Refresh(i, $"loading dog {i}");
 
             }
             pb.Refresh(10, "All cats loaded.");
-            Console.WriteLine("Done!");
-            Console.ReadLine();
+            Console.WriteLine(" Done!");
+            Console.ReadKey(true);
             Console.Clear();
         }
 

@@ -54,6 +54,7 @@ namespace Konsole
                     var bar = new String(_character, (int) ((float) (_console.WindowWidth() - 30)*perc));
                     var line = string.Format(_format, current, _max, (int) (perc*100));
                     _console.CursorTop = _y;
+                    _console.CursorLeft = 0; // hard code to full screen. Later if we change this to support a width and offset we can revise this. good enough for now.
                     _console.ForegroundColor = _c;
                     _console.Write(line);
                     _console.ForegroundColor = ConsoleColor.Green;

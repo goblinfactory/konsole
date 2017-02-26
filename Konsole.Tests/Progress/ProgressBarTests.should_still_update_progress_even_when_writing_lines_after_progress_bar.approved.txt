@@ -1,6 +1,0 @@
-﻿line 1                                  
-Item 10    of 10   . (100%) ##########  
-dogs                                    
-line 2                                  
-line 3                                  
-line 4                                  
