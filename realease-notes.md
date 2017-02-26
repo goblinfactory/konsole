@@ -40,7 +40,8 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 ### Fixed
 
-- ? fix bug when calling clear on bufferedWriter and crashing. (was not resetting Y position.)
+- fix bug when calling clear on bufferedWriter and crashing. (was not resetting Y position.)
+- fix bug, calling `refresh` on progress bar changing cursor position.
 
 ## [1.0.0.0] - 2016-03-04
 
