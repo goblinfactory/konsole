@@ -3,13 +3,10 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 
 ![install-package Goblinfactory.Konsole](install-package.png)
 
-##ProgressBar usage
+## ProgressBar usage
 ```csharp
-
     using Konsole;
-
-           . . .
-
+           
             var pb = new ProgressBar(50);
             pb.Refresh(0, "connecting to server to download 50 files sychronously.");
             Console.ReadLine();
@@ -22,14 +19,14 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 ![sample output](progressbar.gif)
 [sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
 
-##Form usage
+## Form usage
 
 First draft of Konsole (forms) is working. Starting with readonly forms. Below are examples showing auto rendering of simple objects.
 (Currently only text fields, readonly, simple objects.)
 On the backlog; add additional field types, complex objects, and editing. 
 27.03.2016 - Forms is not yet part of the latest nuget package. Will be adding forms to the nuget package when a few more features are in the github code.
 
-````csharp
+```csharp
         
         using Konsole.Form;
         ...
@@ -44,17 +41,18 @@ On the backlog; add additional field types, complex objects, and editing.
             };
             form1.Show(person);
 ```
+
 ![sample output](Form-Person.png)
 
 
-````csharp        
+```csharp        
 
            // works with anonymous types
             new Form().Show(new {Height = "40px", Width = "200px"}, "Demo Box");
 ```
 ![sample output](Form-DemoBox.png)
 
-````csharp        
+```csharp        
 
             // change the box style, and width
             new Form(40, new ThickBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
@@ -62,9 +60,9 @@ On the backlog; add additional field types, complex objects, and editing.
 ![sample output](Form-Permissions.png)
 
 
-##IConsole, TestConsole and ConsoleWriter usage
+## IConsole, TestConsole and ConsoleWriter usage
 
-````csharp
+```csharp
         
         using Konsole;
         ...
@@ -99,7 +97,14 @@ On the backlog; add additional field types, complex objects, and editing.
         }
 ```
 
-##Why I recently renamed MockConsole to TestConsole
+## ChangeLog
+
+* [changelog](change-log.md)
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/) 
+and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## Why I recently renamed MockConsole to TestConsole
 
 Because it' much more than just a mock. Below is a comparison of how someone might test an Invoice class using a traditional `Mock<IConsole>` and the same test, using a `Konsole.TestConsole`. To make it a fair comparison I'm comparing to [NSubstitute](http://nsubstitute.github.io/) which is quite terse and one of my favourite mocking frameworks.
 
@@ -173,7 +178,7 @@ Because it' much more than just a mock. Below is a comparison of how someone mig
 
 ``` 
 
-##What's the value of a simple IWriteLine and IConsole interface?
+## What's the value of a simple IWriteLine and IConsole interface?
 
 Q: At first glance it seems absurd to have a nuget package that has so little in it; Why would you want to reference Konsole to get access to a 4 line IWriteLine interface, instead of simply writing your own? 
 
