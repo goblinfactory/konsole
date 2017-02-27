@@ -5,13 +5,13 @@ namespace Konsole.Internal
     public struct Cell
     {
         public char Char;
-        public ConsoleColor Color;
+        public ConsoleColor Foreground;
         public ConsoleColor Background;
 
-        public Cell(char c, ConsoleColor color, ConsoleColor background)
+        public Cell(char c, ConsoleColor foreground, ConsoleColor background)
         {
             Char = c;
-            Color = color;
+            Foreground = foreground;
             Background = background;
         }
         public Cell WithChar(char c, ConsoleColor color, ConsoleColor background)
@@ -21,7 +21,7 @@ namespace Konsole.Internal
 
         public Cell WithChar(char c)
         {
-            return new Cell(c, Color, Background);
+            return new Cell(c, Foreground, Background);
         }
 
     }

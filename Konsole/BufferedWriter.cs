@@ -14,9 +14,9 @@ namespace Konsole
         private readonly int _height;
         private readonly bool _echo;
 
-        private ConsoleColor _color;
-        private readonly ConsoleColor _startColor;
+        private ConsoleColor _foreground;
         private ConsoleColor _background;
+        private readonly ConsoleColor _startColor;
         private readonly ConsoleColor _startBackground;
 
         private readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
@@ -31,7 +31,7 @@ namespace Konsole
             {
                 int row = y > (_height-1) ? (_height-1) : y;
                 int col = x > (_width - 1) ? (_width - 1) : x;
-                return _lines[y].Cells[x];
+                return _lines[row].Cells[col];
             }
         }
 
@@ -61,7 +61,7 @@ namespace Konsole
 
         private void init()
         {
-            _color = _startColor;
+            _foreground = _startColor;
             _background = _startBackground;
             Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
@@ -131,7 +131,7 @@ namespace Konsole
             var text = string.Format(format, args);
             if (_echo) Console.WriteLine(text);
             string overflow = "";
-            overflow = _lines[Cursor.Y].WriteFormatted(_color, _background, Cursor.X, text);
+            overflow = _lines[Cursor.Y].WriteFormatted(_foreground, _background, Cursor.X, text);
             Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
             if (overflow != null) WriteLine(overflow);
         }
@@ -152,13 +152,13 @@ namespace Konsole
 
         public void Write(string text)
         {
-            if (_echo) System.Console.Write(text);
+            if (_echo) Console.Write(text);
             var overflow = "";
             // don't automatically expand buffer, tester should know what to expect, this is normally an error if you go beyond the expected length.
             if (!_lines.ContainsKey(Cursor.Y)) throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer and re-run the test. Requested line number was:" + Cursor.Y);
             while (overflow != null)
             {
-                overflow = _lines[Cursor.Y].WriteFormatted(_color,_background, Cursor.X, text);
+                overflow = _lines[Cursor.Y].WriteFormatted(_foreground,_background, Cursor.X, text);
                 var xinc = overflow?.Length ?? 0;
                 if (overflow == null)
                 {
@@ -208,20 +208,22 @@ namespace Konsole
             get { return _background; }
             set
             {
-                if (_echo) System.Console.BackgroundColor = value;
+                if (_echo) Console.BackgroundColor = value;
                 _background = value;
             }
         }
 
         public ConsoleColor ForegroundColor
         {
-            get { return _color; }
+            get { return _foreground; }
             set
             {
-                if (_echo) System.Console.ForegroundColor = value;
-                _color = value;
+                if (_echo) Console.ForegroundColor = value;
+                _foreground = value;
             }
         }
+
+        
 
         public void PrintAt(int x, int y, string format, params object[] args)
         {

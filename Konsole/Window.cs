@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Konsole
 {
@@ -39,10 +33,10 @@ namespace Konsole
             try
             {
                 int y = 0;
-                foreach (var line in _console.Buffer)
+                foreach (var line in _console.BufferWritten)
                 {
                     // quick hack to set color for a whole line, need to update for each individual cell later
-                    _parent.ForegroundColor = _console[0, y].Color;
+                    _parent.ForegroundColor = _console[0, y].Foreground;
                     _parent.PrintAt(_x, _y + y, line);
                     y++;
                 }
@@ -98,7 +92,13 @@ namespace Konsole
             set { _console.ForegroundColor = value; }
         }
 
-        public void SetCursorPosition(int x, int y)
+        public ConsoleColor BackgroundColor
+        {
+            get { return _console.BackgroundColor; }
+            set { _console.BackgroundColor = value; }
+        }
+
+    public void SetCursorPosition(int x, int y)
         {
             throw new NotImplementedException();
         }

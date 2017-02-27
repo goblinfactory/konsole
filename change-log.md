@@ -5,7 +5,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] will become [2.0.0.0]
 
-New core `Window` functionality, plus big class renames, main interface `IConsole` remains unaffected between `1.0` and `2.0`.
+New core `Window` functionality, plus big class renames, main interface `IConsole` has changed from `1.0` and `2.0`.
 
 ### Breaking changes
 
@@ -15,6 +15,8 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 - rename `HilighterBuffer` to `BufferHilighted`
 - rename `.Buffer` to `BufferWrittenString` 
 - rename `.TrimmedLines` to `.BufferWrittenTrimmed`
+- `Cell` class gets extra property, `Background`
+- `Cell` property rename `.Color` to `.Foreground`
 
 - `BufferedWriter` methods standardised.
   * `.Buffer` `string[]` Get the entire buffer (all the lines) regardless of whether they have been written to or not, untrimmed.
@@ -37,6 +39,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 ### Added
 
+- `BackgroundColor` added to `IConsole`
 - new method `BufferString` 
 - new property `Cell this[int x, int y]` on `BufferedWriter` (allows for interrogating fore and background colour at X,Y position on a buffered writer.)
 - new core windowing functionality via class `Window` (subclass of `BufferedWriter`) Usage as follows

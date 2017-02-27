@@ -11,85 +11,90 @@ namespace Konsole
     {
         public void WriteLine(string format, params object[] args)
         {
-            System.Console.WriteLine(format, args);
+            Console.WriteLine(format, args);
         }
 
         public void Write(string format, params object[] args)
         {
-            System.Console.Write(format, args);
+            Console.Write(format, args);
         }
 
         public int WindowWidth()
         {
-            return System.Console.WindowWidth;
+            return Console.WindowWidth;
         }
         
         public int CursorLeft
         {
-            get { return System.Console.CursorLeft; }
-            set { System.Console.CursorLeft = value;  }
+            get { return Console.CursorLeft; }
+            set { Console.CursorLeft = value;  }
         }
 
         public int CursorTop
         {
-            get { return System.Console.CursorTop; }
-            set { System.Console.CursorTop = value;  }
+            get { return Console.CursorTop; }
+            set { Console.CursorTop = value;  }
         }
 
         public XY XY
         {
-            get { return new XY(System.Console.CursorLeft, System.Console.CursorTop); }
+            get { return new XY(Console.CursorLeft, Console.CursorTop); }
 
             set
             {
-                System.Console.CursorLeft = value.X;
-                System.Console.CursorTop = value.Y;
+                Console.CursorLeft = value.X;
+                Console.CursorTop = value.Y;
             }
         }
         
         public int Y
         {
-            get { return System.Console.CursorTop; } 
-            set { System.Console.CursorTop = value; }
+            get { return Console.CursorTop; } 
+            set { Console.CursorTop = value; }
         }
 
         public int X
         {
-            get { return System.Console.CursorLeft; } 
-            set { System.Console.CursorLeft= value; }
+            get { return Console.CursorLeft; } 
+            set { Console.CursorLeft= value; }
         }
 
         public ConsoleColor ForegroundColor
         {
-            get { return System.Console.ForegroundColor; } 
-            set { System.Console.ForegroundColor = value; }
+            get { return Console.ForegroundColor; } 
+            set { Console.ForegroundColor = value; }
         }
-        
+
+        public ConsoleColor BackgroundColor {
+            get { return Console.BackgroundColor; }
+            set { Console.BackgroundColor = value; }
+        }
+
         public void SetCursorPosition(int x, int y)
         {
-            System.Console.SetCursorPosition(x, y);
+            Console.SetCursorPosition(x, y);
         }
 
         public void PrintAt(int x, int y, string format, params object[] args)
         {
-            System.Console.SetCursorPosition(x, y);
-            System.Console.WriteLine(format, args);            
+            Console.SetCursorPosition(x, y);
+            Console.WriteLine(format, args);            
         }
 
         public void PrintAt(int x, int y, string text)
         {
-            System.Console.SetCursorPosition(x, y);
-            System.Console.WriteLine(text);            
+            Console.SetCursorPosition(x, y);
+            Console.WriteLine(text);            
         }
         public void PrintAt(int x, int y, char c)
         {
-            System.Console.SetCursorPosition(x, y);
-            System.Console.Write(c);
+            Console.SetCursorPosition(x, y);
+            Console.Write(c);
         }
 
         public void Clear()
         {
-            System.Console.Clear();
+            Console.Clear();
         }
     }
 }

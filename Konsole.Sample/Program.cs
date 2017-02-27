@@ -77,12 +77,11 @@ namespace Konsole.Sample
         private static void TestWindows(IConsole con)
         {
             con.Clear();
-            Console.WriteLine("");
             Console.WriteLine("staring client server");
             var height = 30;
-            int width = Console.WindowWidth / 2;
-            var client = new Window(0, 1, width, height);
-            var server = new Window(width, 1, width, height);
+            int width = (Console.WindowWidth / 2)-2;
+            var client = new Window(1, 2, width, height);
+            var server = new Window(width+2, 2, width, height);
             
             // simulate a bunch of messages from my fake REST server
 
@@ -103,11 +102,11 @@ namespace Konsole.Sample
             foreach (var m in messages)
             {
                 client.Send(m.Request);
-                Thread.Sleep(500);
+                Thread.Sleep(250);
                 server.Recieve(m.Request);
-                Thread.Sleep(500);
+                Thread.Sleep(250);
                 server.Send(m.Response);
-                Thread.Sleep(500);
+                Thread.Sleep(250);
                 client.Recieve(m.Response);
                 client.WriteLine("");
                 server.WriteLine("");
