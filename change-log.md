@@ -38,9 +38,14 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 - new method `BufferString` : 
 - new core windowing functionality via class `Window` (subclass of `BufferedWriter`) Usage as follows
 
-```
+```csharp
 
-
+    var client = new Window(0, 0, 40, 10);
+    var server = new Window(41, 0, 40, 10);
+    server.WriteLine("Server started, listening on 'tcp://*:10001'.");
+    ...
+    client.WriteLine("enter commands, exit to quit");
+    ...
 
 ```
 
