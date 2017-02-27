@@ -85,33 +85,28 @@ namespace Konsole.Sample
             
             // simulate a bunch of messages from my fake REST server
 
-            server.WriteLine("Server started, listening on 'tcp://*:10001'.");
-            client.WriteLine("enter commands, exit to quit");
+            var messages = new[]
+            {
+                new { Request = "put foo", Response = "404|Not Found|foo|"},
+                new { Request = "post animals/cat", Response = "201|Created|animals/cat|"},
+                new { Request = "post animals/dog", Response = "201|Created|animals/dog|"},
+                new { Request = "get animals", Response = "206 | Partial content | animals |[`animals/cat`, `animals/dog`]"},
+                new { Request = "get animals/cat", Response = "200 | OK | animals / cat |"},
+                new { Request = "get animals/dog", Response = "200 | OK | animals / dog |"},
 
-            client.Send("put foo");
-            server.Recieve("put foo");
-            server.Send("404|Not Found|foo|");
-            client.Recieve("404|Not Found|foo|");
-            
-            client.Send("post animals/cat");
-            server.Recieve("post animals/cat");
-            server.Send("201|Created|animals/cat|");
-            client.Recieve("201|Created|animals/cat|");
+            };
 
-            client.Send("post animals/dog");
-            server.Recieve("post animals/dog");
-            server.Send("201|Created|animals/dog|");
-            client.Recieve("201|Created|animals/dog|");
-
-            client.Send("get animals");
-            server.Recieve("get animals");
-            server.Send("206 | Partial content | animals |[`animals/cat`, `animals/dog`]");
-            server.Send("200 | OK | animals / cat |");
-            server.Send("200 | OK | animals / dog |");
-
-            client.Recieve("206 | Partial content | animals |[`animals/cat`, `animals/dog`]");
-            client.Recieve("200 | OK | animals / cat |");
-            client.Recieve("200 | OK | animals / dog |");
+            foreach (var m in messages)
+            {
+                client.Send(m.Request);
+                Thread.Sleep(500);
+                server.Recieve(m.Request);
+                Thread.Sleep(500);
+                server.Send(m.Response);
+                Thread.Sleep(500);
+                client.Recieve(m.Response);
+                Console.ReadKey(true);
+            }
 
             server.WriteLine("");
             server.WriteLine("finished, press enter to continue");

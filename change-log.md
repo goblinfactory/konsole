@@ -32,6 +32,8 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 - scrolling.
 - faster window printing. (currently prints character by character, very ...VEERY SLOW!) not good enough!
 - Investigate if possible to print using native windows and Mac, Linux API's and switch out depending on platform detection, fallback to slower rendering.
+- fix clear issues. Demo program not clearing properly.
+- Window not printing `ForegroundColor` correctly.
 
 ### Added
 

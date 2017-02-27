@@ -33,12 +33,12 @@ namespace Konsole
             int y = 0;
             foreach (var line in _console.Buffer)
             {
-                int x = 0;
-                foreach (var c in line)
-                {
-                    _parent.PrintAt(_x + x, _y + y, c);
-                    x++;
-                }
+                _parent.PrintAt(_x, _y+y, line);
+                //foreach (var c in line)
+                //{
+                //    _parent.PrintAt(_x + x, _y + y, c);
+                //    x++;
+                //}
                 y++;
             }
         }

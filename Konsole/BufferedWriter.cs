@@ -25,6 +25,16 @@ namespace Konsole
         private int _lastLineWrittenTo = -1;
         private object _lock = new object();
 
+        public Cell this[int x, int y]
+        {
+            get
+            {
+                int row = y > (_height-1) ? (_height-1) : y;
+                int col = x > (_width - 1) ? (_width - 1) : x;
+                return _lines[y].Cells[x];
+            }
+        }
+
         private XY Cursor
         {
             get { return _cursor;}
