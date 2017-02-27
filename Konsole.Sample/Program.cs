@@ -40,10 +40,21 @@ namespace Konsole.Sample
                         printMenu(con);
                         break;
 
+                        
+                    case 'l':
+                        Console.Clear();
+                        ParallelDemo();
+                        break;
+
+                    case 'f':
+                        Console.Clear();
+                        ProgressivelyFasterDemo();
+                        break;
+
                     case 'w':
                         TestWindows(con);
                         break;
-
+                        
                     case 'h':
                         TestHilite();
                         break;
@@ -68,7 +79,9 @@ namespace Konsole.Sample
             con.WriteLine("w : windows");
             con.WriteLine("h : hiliting");
             con.WriteLine("b : boxes");
+            con.WriteLine("f : progressively faster demo");
             con.WriteLine("p : progress bars");
+            con.WriteLine("l : Parallel Demo");
             con.WriteLine("c : clear screen");
             con.WriteLine("q : quit");
             con.WriteLine("");
@@ -90,9 +103,7 @@ namespace Konsole.Sample
                 new { Request = "put foo", Response = "404|Not Found|foo|"},
                 new { Request = "post animals/cat", Response = "201|Created|animals/cat|"},
                 new { Request = "post animals/dog", Response = "201|Created|animals/dog|"},
-                new { Request = "get animals", Response = "206 | Partial content | animals |[`animals/cat`, `animals/dog`]"},
-                new { Request = "get animals/cat", Response = "200 | OK | animals / cat |"},
-                new { Request = "get animals/dog", Response = "200 | OK | animals / dog |"},
+                new { Request = "get animals", Response = "206 | Partial content | animals |[`animals/cat`, `animals/dog`]"}
 
             };
             client.WriteLine("CLIENT");
@@ -102,15 +113,21 @@ namespace Konsole.Sample
             foreach (var m in messages)
             {
                 client.Send(m.Request);
-                Thread.Sleep(250);
                 server.Recieve(m.Request);
-                Thread.Sleep(250);
                 server.Send(m.Response);
-                Thread.Sleep(250);
                 client.Recieve(m.Response);
                 client.WriteLine("");
                 server.WriteLine("");
             }
+            server.Recieve("get animals/cat");
+            server.Send("200 | OK | animals / cat |");
+
+            server.Recieve("get animals/dog");
+            server.Send("200 | OK | animals / dog |");
+
+            client.Recieve("200 | OK | animals / cat |");
+            client.Recieve("200 | OK | animals / dog |");
+            client.WriteLine("");
 
             Console.WriteLine("");
             Console.WriteLine("finished, press enter to continue");
@@ -276,11 +293,11 @@ namespace Konsole.Sample
 
         static void ParallelDemo()
         {
-            // demo; take the first 10 directories that have files from c:\windows, and then pretends to process (list) them.
+            // demo; take the first 10 directories that have files from solution root and then pretends to process (list) them.
             // processing of each directory happens on a different thread, to simulate multiple background tasks, 
             // e.g. file downloading.
             // ==============================================================================================================
-            var dirs = Directory.GetDirectories(@"c:\windows").Where(d=> Directory.GetFiles(d).Any()).Take(7);
+            var dirs = Directory.GetDirectories(@"..\..\..\..").Where(d=> Directory.GetFiles(d).Any()).Take(7);
 
             var tasks = new List<Task>();
             var bars = new List<ProgressBar>();
@@ -346,10 +363,10 @@ namespace Konsole.Sample
         public static void Recieve(this Window con, string text)
         {
             // awful, but will do...for rudimentary testing!
-            var c = con.ForegroundColor;
-            con.ForegroundColor = ConsoleColor.DarkGreen;
+            var c = con.BackgroundColor;
+            con.BackgroundColor = ConsoleColor.DarkYellow;
             con.WriteLine(text);
-            con.ForegroundColor = c;
+            con.BackgroundColor = c;
         }
 
     }

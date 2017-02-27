@@ -29,7 +29,8 @@ namespace Konsole
         private void Refresh()
         {
             // locking?
-            var color = _parent.ForegroundColor;
+            var fore = _parent.ForegroundColor;
+            var back = _parent.BackgroundColor;
             try
             {
                 int y = 0;
@@ -37,6 +38,7 @@ namespace Konsole
                 {
                     // quick hack to set color for a whole line, need to update for each individual cell later
                     _parent.ForegroundColor = _console[0, y].Foreground;
+                    _parent.BackgroundColor = _console[0, y].Background;
                     _parent.PrintAt(_x, _y + y, line);
                     y++;
                 }
@@ -44,7 +46,8 @@ namespace Konsole
             }
             finally
             {
-                _parent.ForegroundColor = color;
+                _parent.ForegroundColor = fore;
+                _parent.BackgroundColor = back;
             }
         }
 
