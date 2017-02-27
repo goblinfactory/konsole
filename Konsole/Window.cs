@@ -16,12 +16,16 @@ namespace Konsole
         private readonly int _x;
         private readonly int _y;
 
+        public Window(int x, int y, int width, int height) : this(new Writer(), x, y, width, height)
+        {
+        }
+
         public Window(IConsole parent, int x, int y, int width, int height)
         {
             _parent = parent;
             _x = x;
             _y = y;
-            _console = new BufferedWriter(width,height);
+            _console = new BufferedWriter(width, height);
         }
 
         /// <summary>
@@ -30,16 +34,23 @@ namespace Konsole
         /// </summary>
         private void Refresh()
         {
-            int y = 0;
-            foreach (var line in _console.Buffer)
+            // locking?
+            var color = _parent.ForegroundColor;
+            try
             {
-                _parent.PrintAt(_x, _y+y, line);
-                //foreach (var c in line)
-                //{
-                //    _parent.PrintAt(_x + x, _y + y, c);
-                //    x++;
-                //}
-                y++;
+                int y = 0;
+                foreach (var line in _console.Buffer)
+                {
+                    // quick hack to set color for a whole line, need to update for each individual cell later
+                    _parent.ForegroundColor = _console[0, y].Color;
+                    _parent.PrintAt(_x, _y + y, line);
+                    y++;
+                }
+
+            }
+            finally
+            {
+                _parent.ForegroundColor = color;
             }
         }
 
@@ -59,9 +70,34 @@ namespace Konsole
             throw new NotImplementedException();
         }
 
-        public int CursorTop { get; set; }
-        public int CursorLeft { get; set; }
-        public ConsoleColor ForegroundColor { get; set; }
+        public int CursorTop {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public int CursorLeft
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public ConsoleColor ForegroundColor {
+            get { return _console.ForegroundColor; }
+            set { _console.ForegroundColor = value; }
+        }
+
         public void SetCursorPosition(int x, int y)
         {
             throw new NotImplementedException();

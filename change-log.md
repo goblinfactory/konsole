@@ -37,7 +37,8 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 ### Added
 
-- new method `BufferString` : 
+- new method `BufferString` 
+- new property `Cell this[int x, int y]` on `BufferedWriter` (allows for interrogating fore and background colour at X,Y position on a buffered writer.)
 - new core windowing functionality via class `Window` (subclass of `BufferedWriter`) Usage as follows
 
 ```csharp
