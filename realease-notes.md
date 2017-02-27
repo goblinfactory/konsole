@@ -23,9 +23,15 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
   * `.BufferWrittenTrimmed` `string[]` Get the entire buffer . Only the lines that have been written to, from topmost to bottommost, Trimmed.
   * `.BufferWrittenString` `string` Get the entire buffer for all lines written to, as a single `crln` concatenated string.
   * `.BufferHilighted` `string[]` returns an 'approve-able' text buffer where each character is represented by 2 characters with one of of them representing the background color of the buffer.
-  
 
+### Backlog
 
+- Optional borders for windows
+- Merge two window borders to create neat single border.
+- allow for printing off the screen without crashing.
+- scrolling.
+- faster window printing. (currently prints character by character, very ...VEERY SLOW!) not good enough!
+- Investigate if possible to print using native windows and Mac, Linux API's and switch out depending on platform detection, fallback to slower rendering.
 
 ### Added
 
@@ -42,6 +48,8 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 - fix bug when calling clear on bufferedWriter and crashing. (was not resetting Y position.)
 - fix bug, calling `refresh` on progress bar changing cursor position.
+- fix bug, Write (not WriteLine) causes progress bar to print from last X position and overflows.
+- fix bug with `ProgressBar` not moving cursor down two lines to give `pb` space to display.
 
 ## [1.0.0.0] - 2016-03-04
 

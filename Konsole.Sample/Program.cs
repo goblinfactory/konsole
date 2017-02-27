@@ -76,20 +76,48 @@ namespace Konsole.Sample
 
         private static void TestWindows(IConsole con)
         {
-            con.WriteLine("'w' Test windows");
-            con.WriteLine("----------------");
+            con.Clear();
             var console = new Writer();
+            var height = 30;
+            int width = Console.WindowWidth / 2;
+            var client = new Window(console, 0, 0, width, height);
+            var server = new Window(console, width, 0, width, height);
+            
+            // simulate a bunch of messages from my fake REST server
 
-            var w1 = new Window(console, 0, 0, 5, 3);
-            var w2 = new Window(console, 5, 0, 5, 3);
-            con.WriteLine("hello");
-            w1.WriteLine("1");
-            w2.WriteLine("2");
-            w1.WriteLine("3");
-            w2.WriteLine("4");
-            con.WriteLine("finished, press enter to continue");
+            server.WriteLine("Server started, listening on 'tcp://*:10001'.");
+            client.WriteLine("enter commands, exit to quit");
+
+            client.Send("put foo");
+            server.Recieve("put foo");
+            server.Send("404|Not Found|foo|");
+            client.Recieve("404|Not Found|foo|");
+            
+            client.Send("post animals/cat");
+            server.Recieve("post animals/cat");
+            server.Send("201|Created|animals/cat|");
+            client.Recieve("201|Created|animals/cat|");
+
+            client.Send("post animals/dog");
+            server.Recieve("post animals/dog");
+            server.Send("201|Created|animals/dog|");
+            client.Recieve("201|Created|animals/dog|");
+
+            client.Send("get animals");
+            server.Recieve("get animals");
+            server.Send("206 | Partial content | animals |[`animals/cat`, `animals/dog`]");
+            server.Send("200 | OK | animals / cat |");
+            server.Send("200 | OK | animals / dog |");
+
+            client.Recieve("206 | Partial content | animals |[`animals/cat`, `animals/dog`]");
+            client.Recieve("200 | OK | animals / cat |");
+            client.Recieve("200 | OK | animals / dog |");
+
+            server.WriteLine("");
+            server.WriteLine("finished, press enter to continue");
             Console.ReadLine();
         }
+
 
         private static void Progress(IConsole con)
         {
@@ -309,5 +337,22 @@ namespace Konsole.Sample
         public static void AreEqual<T>(IEnumerable<T> a, IEnumerable<T> b) { }
     }
 
+    public static class SendRec
+    {
+        public static void Send(this Window con, string text)
+        {
+            con.WriteLine(text);
+        }
+
+        public static void Recieve(this Window con, string text)
+        {
+            // awful, but will do...for rudimentary testing!
+            var c = con.ForegroundColor;
+            con.ForegroundColor = ConsoleColor.DarkGreen;
+            con.WriteLine(text);
+            con.ForegroundColor = c;
+        }
+
+    }
 }
 
