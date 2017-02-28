@@ -149,7 +149,7 @@ namespace Konsole.Tests.BufferedWriterTests
 
             var expected = new[]
             {
-                "*    ",
+                "     ",
                 "     ",
                 "  123",
                 "45   ",
