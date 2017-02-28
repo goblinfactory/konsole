@@ -19,16 +19,16 @@ namespace Konsole.Internal
             }
         }
 
-        public string WriteFormatted(ConsoleColor color, ConsoleColor background, int x, string format, params object[] args)
+        public string WriteFormattedAndReturnOverflow(IConsole echo, ConsoleColor color, ConsoleColor background, int x, string format, params object[] args)
         {
             var text = string.Format(format, args);
-            return Write(color, background, x, text);
+            return WriteAndReturnOverflow(echo, color, background, x, text);
         }
 
         /// <summary>
         /// Writes text to a line, returns any overflow.
         /// </summary>
-        public string Write(ConsoleColor color, ConsoleColor background, int x, string text)
+        public string WriteAndReturnOverflow(IConsole echo, ConsoleColor color, ConsoleColor background, int x, string text)
         {
             int len = text.Length;
             int overflow = len + x > _width ? len - (_width - x) : 0;
@@ -43,6 +43,11 @@ namespace Konsole.Internal
             var overflowText = overflow > 0 ? text.Substring(writeLen, overflow) : null;
             // todo; consider asignment overrides? 
             for (int i = 0; i < writeLen; i++) Cells[i + x] = Cells[i + x].WithChar(writeText[i], color, background);
+            if (echo!=null)
+            {
+                echo.WriteLine(writeText);
+                if (overflowText!=null) echo.Write(overflowText);
+            }
             return overflowText;
         }
 

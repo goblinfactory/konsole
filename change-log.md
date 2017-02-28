@@ -9,7 +9,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 ### Breaking changes
 
-- rename `Console` to `BufferedWriter`
+- rename `Console` to `Window`
 - rename `ConsoleWriter` to `Writer`
 - rename `.LinesText` to `BufferWritten` 
 - rename `HilighterBuffer` to `BufferHilighted`

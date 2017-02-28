@@ -17,13 +17,9 @@ namespace Konsole
         private readonly bool _echo;
 
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
-        public IConsole _echoConsole
-        {
-            get { return __echoConsole ?? (__echoConsole = new Writer()); }
-            set { __echoConsole = value; }
-            
-        }
-        private IConsole __echoConsole;
+        public IConsole _echoConsole { get; set; }
+
+        
 
         private ConsoleColor _foreground;
         private ConsoleColor _background;
@@ -54,17 +50,17 @@ namespace Konsole
                 _cursor = value;
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X!=0) _lastLineWrittenTo = _cursor.Y;
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X==0) _lastLineWrittenTo = _cursor.Y-1;
-                GotoCursor();
+                gotoCursor();
             }
         }
 
-        private void GotoCursor()
+        private void gotoCursor()
         {
             if (_echo)
             {
                 // since this is a window, that's offset of x,y on parent, do the offset now
-                __echoConsole.CursorTop = _cursor.Y + _y;
-                __echoConsole.CursorLeft = _cursor.X + _x;
+                _echoConsole.CursorTop = _cursor.Y + _y;
+                _echoConsole.CursorLeft = _cursor.X + _x;
             }
         }
 
@@ -152,14 +148,13 @@ namespace Konsole
         }
 
 
-
         public void WriteLine(string format, params object[] args)
         {
-            GotoCursor();
+            gotoCursor();
             var text = string.Format(format, args);
             if (_echo) _echoConsole.WriteLine(text);
             string overflow = "";
-            overflow = _lines[Cursor.Y].WriteFormatted(_foreground, _background, Cursor.X, text);
+            overflow = _lines[Cursor.Y].WriteFormattedAndReturnOverflow(_echoConsole, _foreground, _background, Cursor.X, text);
             Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
             if (overflow != null) WriteLine(overflow);
         }
@@ -180,14 +175,13 @@ namespace Konsole
 
         public void Write(string text)
         {
-            GotoCursor();
-            if (_echo) _echoConsole.Write(text);
             var overflow = "";
             // don't automatically expand buffer, for now, user should know what to expect, this is normally an error if you go beyond the expected length.
             if (!_lines.ContainsKey(Cursor.Y)) throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer. Requested line number was:" + Cursor.Y);
             while (overflow != null)
             {
-                overflow = _lines[Cursor.Y].WriteFormatted(_foreground,_background, Cursor.X, text);
+                overflow = _lines[Cursor.Y].WriteFormattedAndReturnOverflow(_echoConsole, _foreground,_background, Cursor.X, text);
+
                 var xinc = overflow?.Length ?? 0;
                 if (overflow == null)
                 {
@@ -196,8 +190,11 @@ namespace Konsole
                 else
                 {
                     Cursor = new XY(0, Cursor.Y + 1);
-                    Write(overflow);
+                    //Write(overflow);
+                    //overflow = null;
                 }
+
+                text = overflow;
             }
         }
 
