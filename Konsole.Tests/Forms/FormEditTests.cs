@@ -13,7 +13,7 @@ namespace Konsole.Tests.Forms
         {
             System.Console.WriteLine("given a console form for a person");
             // ---------------------------------------------------
-            var console = new BufferedWriter(200, 20);
+            var console = new Window(200, 20);
             var form = new Form(console);
             var person = new Person
             {

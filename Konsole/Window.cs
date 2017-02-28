@@ -1,130 +1,276 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Konsole.Internal;
 
 namespace Konsole
 {
 
+
+
     public class Window : IConsole
     {
-        private readonly BufferedWriter _console;
-        private readonly IConsole _parent;
         private readonly int _x;
         private readonly int _y;
+        private readonly int _width;
+        private readonly int _height;
+        private readonly bool _echo;
 
-        public Window(int x, int y, int width, int height) : this(new Writer(), x, y, width, height)
+        // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
+        public IConsole _echoConsole
         {
+            get { return __echoConsole ?? (__echoConsole = new Writer()); }
+            set { __echoConsole = value; }
+            
+        }
+        private IConsole __echoConsole;
+
+        private ConsoleColor _foreground;
+        private ConsoleColor _background;
+        private readonly ConsoleColor _startColor;
+        private readonly ConsoleColor _startBackground;
+
+        private readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
+
+        private XY _cursor;
+        private int _lastLineWrittenTo = -1;
+        private object _lock = new object();
+
+        public Cell this[int x, int y]
+        {
+            get
+            {
+                int row = y > (_height-1) ? (_height-1) : y;
+                int col = x > (_width - 1) ? (_width - 1) : x;
+                return _lines[row].Cells[col];
+            }
         }
 
-        public Window(IConsole parent, int x, int y, int width, int height)
+        private XY Cursor
         {
-            _parent = parent;
+            get { return _cursor;}
+            set
+            {
+                _cursor = value;
+                if (_cursor.Y > _lastLineWrittenTo && _cursor.X!=0) _lastLineWrittenTo = _cursor.Y;
+                if (_cursor.Y > _lastLineWrittenTo && _cursor.X==0) _lastLineWrittenTo = _cursor.Y-1;
+                GotoCursor();
+            }
+        }
+
+        private void GotoCursor()
+        {
+            if (_echo)
+            {
+                // since this is a window, that's offset of x,y on parent, do the offset now
+                __echoConsole.CursorTop = _cursor.Y + _y;
+                __echoConsole.CursorLeft = _cursor.X + _x;
+            }
+        }
+
+        public Window(bool echo = true) : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, echo) { }
+        public Window(int width, int height, bool echo = true) : this(0,0, width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
+        public Window(int x, int y, int width, int height, bool echo = true) : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
+        public Window(int x, int y, int width, int height, ConsoleColor color, ConsoleColor background, bool echo = true)
+        {
             _x = x;
             _y = y;
-            _console = new BufferedWriter(width, height);
+            _echo = echo;
+            if(_echo) _echoConsole = new Writer();
+            _width = width == -1 ? _echoConsole.WindowWidth() : width;
+            _height = height == -1 ? _echoConsole.WindowHeight() : height;
+            
+            _startColor = color;
+            _startBackground = background;
+            
+            init();
+        }
+
+        private void init()
+        {
+            _foreground = _startColor;
+            _background = _startBackground;
+            Cursor = new XY(0, 0);
+            _lastLineWrittenTo = -1;
+            _lines.Clear();
+            if (_echo) { _echoConsole.CursorTop = 0;}
+            for (int i = 0; i < _height; i++) _lines.Add(i, new Row(_width, ' ', _startColor, _startBackground));
         }
 
         /// <summary>
-        /// prints the state of the current buffer to parent. This is so that we can cater for the windows own overflow settings.
-        /// I did consider simply passing the prints to the parent via an offset, i.e. all WRiteLine to convert to PrintAt but then overflows and wrapping would not work.
+        /// use this method to return an 'approve-able' text buffer representing the background color of the buffer
         /// </summary>
-        private void Refresh()
+        /// <param name="highliteColor">the background color to look for that indicates that text has been hilighted</param>
+        /// <param name="hiChar">the char to use to indicate a highlight</param>
+        /// <param name="normal">the chart to use for all other</param>
+        /// <returns></returns>
+        public string BufferHighlighted(ConsoleColor highliteColor, char hiChar = '#', char normal = ' ')
         {
-            // locking?
-            var fore = _parent.ForegroundColor;
-            var back = _parent.BackgroundColor;
-            try
-            {
-                int y = 0;
-                foreach (var line in _console.BufferWritten)
-                {
-                    // quick hack to set color for a whole line, need to update for each individual cell later
-                    _parent.ForegroundColor = _console[0, y].Foreground;
-                    _parent.BackgroundColor = _console[0, y].Background;
-                    _parent.PrintAt(_x, _y + y, line);
-                    y++;
-                }
+            var buffer = new HiliteBuffer(highliteColor, hiChar, normal);
+            var rows = _lines.Select(l => l.Value).ToArray();
+            var text = buffer.ToApprovableText(rows);
+            return text;
+        }
 
-            }
-            finally
+
+        /// <summary>
+        /// get the entire buffer (all the lines for the whole mock console) regardless of whether they have been written to or not, untrimmed.
+        /// </summary>
+        public string[] Buffer => _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
+
+        /// <summary>
+        /// get the entire buffer (all the lines for the whole mock console) regardless of whether they have been written to or not, untrimmed. as a single `crln` concatenated string.
+        /// </summary>
+        public string BufferString => string.Join("\r\n", Buffer);
+
+        /// <summary>
+        /// get all the lines written to for the whole mock console, untrimmed
+        /// </summary>
+        public string[] BufferWritten // should be buffer written
+        {
+            get
             {
-                _parent.ForegroundColor = fore;
-                _parent.BackgroundColor = back;
+                return _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString()).ToArray();
             }
         }
 
+        /// <summary>
+        /// get all the lines written to for the whole mock console - bufferWrittenString
+        /// </summary>
+        public string BufferWrittenString => string.Join("\r\n", BufferWritten);
+
+
+        /// <summary>
+        /// get all the lines written to for the whole mock console, all trimmed.
+        /// </summary>
+        public string[] BufferWrittenTrimmed
+        {
+            get
+            {
+                return _lines.Values.Take(_lastLineWrittenTo+1).Select( b => b.ToString().TrimEnd(new []{' '})).ToArray();
+            }
+        }
+
+
+
         public void WriteLine(string format, params object[] args)
         {
-            _console.WriteLine(format,args);
-            Refresh();
+            GotoCursor();
+            var text = string.Format(format, args);
+            if (_echo) _echoConsole.WriteLine(text);
+            string overflow = "";
+            overflow = _lines[Cursor.Y].WriteFormatted(_foreground, _background, Cursor.X, text);
+            Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
+            if (overflow != null) WriteLine(overflow);
         }
 
         public void Write(string format, params object[] args)
         {
-            throw new NotImplementedException();
+            var text = string.Format(format, args);
+            Write(text);
+        }
+
+
+        public void Clear()
+        {
+            if (_echo) _echoConsole.Clear();
+            init();
+        }
+
+
+        public void Write(string text)
+        {
+            GotoCursor();
+            if (_echo) _echoConsole.Write(text);
+            var overflow = "";
+            // don't automatically expand buffer, for now, user should know what to expect, this is normally an error if you go beyond the expected length.
+            if (!_lines.ContainsKey(Cursor.Y)) throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer. Requested line number was:" + Cursor.Y);
+            while (overflow != null)
+            {
+                overflow = _lines[Cursor.Y].WriteFormatted(_foreground,_background, Cursor.X, text);
+                var xinc = overflow?.Length ?? 0;
+                if (overflow == null)
+                {
+                    Cursor = Cursor.IncX(text.Length);
+                }
+                else
+                {
+                    Cursor = new XY(0, Cursor.Y + 1);
+                    Write(overflow);
+                }
+            }
+        }
+
+
+        public int WindowHeight()
+        {
+            return _height;
+        }
+
+        public int CursorTop
+        {
+            get { return Cursor.Y; }
+            set { Cursor = Cursor.WithY(value); }
+        }
+
+        public XY XY { get; set; }
+
+        public int CursorLeft
+        {
+            get { return Cursor.X; }
+            set { Cursor = Cursor.WithX(value); }
         }
 
         public int WindowWidth()
         {
-            throw new NotImplementedException();
-        }
-
-        public int CursorTop {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public int CursorLeft
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public ConsoleColor ForegroundColor {
-            get { return _console.ForegroundColor; }
-            set { _console.ForegroundColor = value; }
+            return _width;
         }
 
         public ConsoleColor BackgroundColor
         {
-            get { return _console.BackgroundColor; }
-            set { _console.BackgroundColor = value; }
+            get { return _background; }
+            set
+            {
+                if (_echo) _echoConsole.BackgroundColor = value;
+                _background = value;
+            }
         }
 
-    public void SetCursorPosition(int x, int y)
+        public ConsoleColor ForegroundColor
         {
-            throw new NotImplementedException();
+            get { return _foreground; }
+            set
+            {
+                if (_echo) _echoConsole.ForegroundColor = value;
+                _foreground = value;
+            }
         }
+
+        
 
         public void PrintAt(int x, int y, string format, params object[] args)
         {
-            throw new NotImplementedException();
+            Cursor = new XY(x,y);
+            Write(format, args);
         }
+
+        public void SetCursorPosition(int x, int y)
+        {
+            Cursor = new XY(x, y);
+        }
+
 
         public void PrintAt(int x, int y, string text)
         {
-            throw new NotImplementedException();
+            Cursor = new XY(x,y);
+            Write(text);
         }
 
         public void PrintAt(int x, int y, char c)
         {
-            throw new NotImplementedException();
+            Cursor = new XY(x,y);
+            Write(c.ToString());
         }
 
-        public void Clear()
-        {
-            // mmm, if echo is on, then this would clear the whole screen instead of just this window? will need to 
-            throw new NotImplementedException();
-        }
     }
 }

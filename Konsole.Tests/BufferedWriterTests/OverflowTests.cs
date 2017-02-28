@@ -29,7 +29,7 @@ namespace Konsole.Tests.BufferedWriterTests
         [Test]
         public void overflow_text_should_wrap_onto_next_line()
         {
-            var console = new BufferedWriter(8, 20);
+            var console = new Window(8, 20, false);
             console.WriteLine("1234567890");
             console.WriteLine("---");
             console.WriteLine("12345678901234567890");

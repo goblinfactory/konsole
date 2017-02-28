@@ -14,7 +14,7 @@ namespace Konsole.Tests.BufferedWriterTests
             var normal = ConsoleColor.Black;
             var hilite = ConsoleColor.White;
 
-            var console = new BufferedWriter(40, 10);
+            var console = new Window(40, 10, false);
             console.ForegroundColor = ConsoleColor.Red;
 
             console.BackgroundColor = normal;

@@ -23,7 +23,7 @@ namespace Konsole.Sample
 
         private static void Main(string[] args)
         {
-            var con = new BufferedWriter(true);
+            var con = new Window();
             char cmd = ' ';
             while (cmd != 'q')
             {
@@ -73,7 +73,7 @@ namespace Konsole.Sample
             }
         }
 
-        private static void printMenu(BufferedWriter con)
+        private static void printMenu(Window con)
         {
             con.WriteLine("");
             con.WriteLine("w : windows");
@@ -90,12 +90,19 @@ namespace Konsole.Sample
         private static void TestWindows(IConsole con)
         {
             con.Clear();
+            var w = new Window(10,10);
+            //w.WriteLine("123456789-12345");
+            w.PrintAt(5,5,"1234567890");
+            Console.ReadKey();
+            return;
+
+            con.Clear();
             Console.WriteLine("staring client server");
             var height = 30;
-            int width = (Console.WindowWidth / 2)-2;
+            int width = (Console.WindowWidth / 2) - 2;
             var client = new Window(1, 2, width, height);
-            var server = new Window(width+2, 2, width, height);
-            
+            var server = new Window(width + 2, 2, width, height);
+
             // simulate a bunch of messages from my fake REST server
 
             var messages = new[]
@@ -164,7 +171,7 @@ namespace Konsole.Sample
             var normal = ConsoleColor.Black;
             var hilite = ConsoleColor.White;
 
-            var console = new BufferedWriter(40, 10, true);
+            var console = new Window(40, 10, true);
             var fore = console.ForegroundColor;
             try
             {
@@ -252,7 +259,7 @@ namespace Konsole.Sample
             {
                 // test the cat
                 // ============
-                var console = new BufferedWriter(80, 20);
+                var console = new Window(80, 20);
                 var cat = new Cat(console);
                 cat.Greet();
                 Assert.AreEqual(console.BufferWrittenTrimmed, new[] {"Prrr!", "Meow!"});

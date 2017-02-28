@@ -19,7 +19,7 @@ namespace Konsole.Tests
         public void refresh_should_show_progress_title_and_progress_bar()
         {
             var testoutput = new StringBuilder();
-            var console = new BufferedWriter(80,20);
+            var console = new Window(80,20, false);
             var pb1 = new ProgressBar(10, console);
             var pb2 = new ProgressBar(10, console);
             pb1.Refresh(2,"cats");            
@@ -39,7 +39,7 @@ namespace Konsole.Tests
         [Test]
         public void should_still_update_progress_even_when_writing_lines_after_progress_bar()
         {
-            var console = new BufferedWriter(40,10);
+            var console = new Window(40,10, false);
             console.WriteLine("line 1");
             var pb = new ProgressBar(10, console);
             pb.Refresh(0, "loading");
@@ -67,7 +67,7 @@ namespace Konsole.Tests
         [Test]
         public void should_still_update_progress_even_when_Writing_text_after_progress_bar()
         {
-            var console = new BufferedWriter(40, 10);
+            var console = new Window(40, 10, false);
             console.Write("Some text"); // this text gets overwritten because progress bar is a full width screen control.
             var pb = new ProgressBar(10, console);
             console.Write("word 1");

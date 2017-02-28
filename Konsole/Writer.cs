@@ -23,7 +23,12 @@ namespace Konsole
         {
             return Console.WindowWidth;
         }
-        
+
+        public int WindowHeight()
+        {
+            return Console.WindowHeight;
+        }
+
         public int CursorLeft
         {
             get { return Console.CursorLeft; }

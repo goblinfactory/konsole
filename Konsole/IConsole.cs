@@ -6,6 +6,7 @@ namespace Konsole
     public interface IConsole : IWriteLine
     {
         int WindowWidth();
+        int WindowHeight();
         int CursorTop { get; set; }
         int CursorLeft { get; set; }
         ConsoleColor ForegroundColor { get; set; }

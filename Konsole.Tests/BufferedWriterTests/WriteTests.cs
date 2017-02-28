@@ -9,7 +9,7 @@ namespace Konsole.Tests.BufferedWriterTests
         [Test]
         public void Write_should_write_to_end_of_line_and_WriteLine_should_write_to_current_line_and_move_cursor_to_beginning_of_next_line()
         {
-            var console = new BufferedWriter(80, 20);
+            var console = new Window(80, 20, false);
             console.WriteLine("line1");
             console.Write("This ");
             console.Write("is ");
@@ -24,6 +24,12 @@ namespace Konsole.Tests.BufferedWriterTests
             };
             System.Console.WriteLine(console.BufferWrittenString);
             Assert.That(console.BufferWrittenTrimmed, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void When_writing_text_that_flows_over_multiple_lines_text_should_flow_over_to_next_lines()
+        {
+            Assert.Inconclusive("need to test writing something that will span 3 or more lines.");
         }
     }
 }

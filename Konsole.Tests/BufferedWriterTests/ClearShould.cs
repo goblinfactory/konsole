@@ -12,7 +12,7 @@ namespace Konsole.Tests.BufferedWriterTests
         [Test]
         public void clear_the_buffer()
         {
-            var con = new BufferedWriter(10,4);
+            var con = new Window(10,4, false);
             con.WriteLine("one");
             con.WriteLine("two");
             Assert.AreEqual(new [] { "one", "two"}, con.BufferWrittenTrimmed);
@@ -24,13 +24,13 @@ namespace Konsole.Tests.BufferedWriterTests
         [Test]
         public void reset_the_y_position()
         {
-            var con = new BufferedWriter(10, 2);
-            Assert.AreEqual(0,con.Y);
+            var con = new Window(10, 2, false);
+            Assert.AreEqual(0,con.CursorTop);
             con.WriteLine("one       ");
             con.WriteLine("two       ");
-            Assert.AreEqual(2, con.Y);
+            Assert.AreEqual(2, con.CursorTop);
             con.Clear();
-            Assert.AreEqual(0, con.Y);
+            Assert.AreEqual(0, con.CursorTop);
         }
     }
 }
