@@ -11,7 +11,8 @@ namespace Konsole.Internal
     /// </summary>
     public interface IReadableBuffer
     {
-        string ToApprovableText(Row[] rows);
+        string[] ToApprovableText(Row[] rows);
+        string ToApprovableString(Row[] rows);
     }
 
     /// <summary>
@@ -29,11 +30,18 @@ namespace Konsole.Internal
             _hiChar = hiChar;
             _normal = normal;
         }
-        public string ToApprovableText(Row[] rows)
+
+        public string ToApprovableString(Row[] rows)
         {
             var rowTexts = rows.Select(RowText);
             var text = string.Join("\r\n", rowTexts);
             return text;
+        }
+
+        public string[] ToApprovableText(Row[] rows)
+        {
+            var rowTexts = rows.Select(RowText);
+            return rowTexts.ToArray();
         }
 
         private string RowText(Row row)

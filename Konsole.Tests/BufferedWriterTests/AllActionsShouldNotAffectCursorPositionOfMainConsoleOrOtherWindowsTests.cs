@@ -12,7 +12,6 @@ namespace Konsole.Tests.BufferedWriterTests
         [Test]
         public void Print_and_WriteLine_tests()
         {
-            // #ADH : while this tests passes, it doesnt prove that echo causes the correct out to be displayed. Something to think about! mmm...interesting.
             var parent = new Window(10, 3, false);
 
             parent.WriteLine("one");

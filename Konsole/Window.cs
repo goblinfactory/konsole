@@ -100,13 +100,22 @@ namespace Konsole
         /// <param name="hiChar">the char to use to indicate a highlight</param>
         /// <param name="normal">the chart to use for all other</param>
         /// <returns></returns>
-        public string BufferHighlighted(ConsoleColor highliteColor, char hiChar = '#', char normal = ' ')
+        public string[] BufferHighlighted(ConsoleColor highliteColor, char hiChar = '#', char normal = ' ')
         {
             var buffer = new HiliteBuffer(highliteColor, hiChar, normal);
             var rows = _lines.Select(l => l.Value).ToArray();
-            var text = buffer.ToApprovableText(rows);
+            var texts = buffer.ToApprovableText(rows);
+            return texts;
+        }
+
+        public string BufferHighlightedString(ConsoleColor highliteColor, char hiChar = '#', char normal = ' ')
+        {
+            var buffer = new HiliteBuffer(highliteColor, hiChar, normal);
+            var rows = _lines.Select(l => l.Value).ToArray();
+            var text = buffer.ToApprovableString(rows);
             return text;
         }
+
 
 
         /// <summary>
@@ -152,10 +161,13 @@ namespace Konsole
         {
             gotoCursor();
             var text = string.Format(format, args);
-            if (_echo) _echoConsole.WriteLine(text);
             string overflow = "";
             var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow( _foreground, _background, Cursor.X, text);
             overflow = result.Overflow;
+
+            if (_echo) _echoConsole.WriteLine(text);
+            //if (_echo) _echoConsole.WriteLine(result.Written); write test first! doh.. (no one saw this! blush)
+
             Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
             if (overflow != null) WriteLine(overflow);
         }

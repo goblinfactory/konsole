@@ -5,7 +5,6 @@ using NUnit.Framework;
 
 namespace Konsole.Tests.BufferedWriterTests
 {
-    [UseReporter(typeof(DiffReporter))]
     public class HiliteTests
     {
         [Test]
@@ -14,7 +13,7 @@ namespace Konsole.Tests.BufferedWriterTests
             var normal = ConsoleColor.Black;
             var hilite = ConsoleColor.White;
 
-            var console = new Window(40, 10, false);
+            var console = new Window(11, 5, false);
             console.ForegroundColor = ConsoleColor.Red;
 
             console.BackgroundColor = normal;
@@ -30,10 +29,19 @@ namespace Konsole.Tests.BufferedWriterTests
             console.WriteLine("menu item 4");
             console.WriteLine("menu item 5");
 
+            var expected = new[]
+            {
+                " m e n u   i t e m   1",
+                " m e n u   i t e m   2",
+                " m e n u  #i#t#e#m   3",
+                " m e n u   i t e m   4",
+                " m e n u   i t e m   5"
+            };
+
             var hlBuffer = console.BufferHighlighted(hilite, '#', ' ');
-            System.Console.WriteLine(hlBuffer);
-            System.Console.WriteLine();
-            Approvals.Verify(hlBuffer);
+            Console.WriteLine(console.BufferHighlightedString(hilite, '#', ' '));
+            Console.WriteLine();
+            Assert.AreEqual(expected,hlBuffer);
         }
 
     }
