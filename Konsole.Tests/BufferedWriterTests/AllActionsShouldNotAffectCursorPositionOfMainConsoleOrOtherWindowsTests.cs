@@ -25,8 +25,7 @@ namespace Konsole.Tests.BufferedWriterTests
                 "three     "
             }, parent.BufferWritten);
             
-            var child = new Window(5,2, true);
-            child._echoConsole = parent;
+            var child = new Window(5,2, true, parent);
             child.WriteLine("XX");
             child.WriteLine("YY");
             Console.WriteLine(parent.BufferWrittenString);

@@ -28,6 +28,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 ### Backlog
 
+- need window `hide` and `show`. (consider option to redraw underlying screen, e.g. for modal boxes).
 - fix bug with `PrintAt` with text that overflows, causing crash.
 - Optional borders for windows
 - Merge two window borders to create neat single border.

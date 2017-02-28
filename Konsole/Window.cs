@@ -17,7 +17,7 @@ namespace Konsole
         private readonly bool _echo;
 
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
-        public IConsole _echoConsole { get; set; }
+        private IConsole _echoConsole { get; set; }
 
         
 
@@ -63,19 +63,19 @@ namespace Konsole
                 _echoConsole.CursorLeft = _cursor.X + _x;
             }
         }
-
-        public Window(bool echo = true) : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, echo) { }
-        public Window(int width, int height, bool echo = true) : this(0,0, width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
-        public Window(int x, int y, int width, int height, bool echo = true) : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo) { }
-        public Window(int x, int y, int width, int height, ConsoleColor color, ConsoleColor background, bool echo = true)
+        public Window() : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, null) { }
+        public Window(bool echo = true, IConsole echoConsole = null) : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
+        public Window(int width, int height, bool echo = true, IConsole echoConsole = null) : this(0,0, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
+        public Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null) : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
+        public Window(int x, int y, int width, int height, ConsoleColor color, ConsoleColor background, bool echo = true, IConsole echoConsole = null)
         {
             _x = x;
             _y = y;
             _echo = echo;
-            if(_echo) _echoConsole = new Writer();
-            _width = width == -1 ? _echoConsole.WindowWidth() : width;
-            _height = height == -1 ? _echoConsole.WindowHeight() : height;
-            
+            _echoConsole = echoConsole;
+            if(_echo && _echoConsole == null) _echoConsole = new Writer();
+            _width = width == -1 ? (_echoConsole?.WindowWidth() ?? 120) : width;
+            _height = height == -1 ? (_echoConsole?.WindowHeight() ?? 80) : height;
             _startColor = color;
             _startBackground = background;
             
