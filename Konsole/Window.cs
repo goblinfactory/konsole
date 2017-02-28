@@ -154,7 +154,8 @@ namespace Konsole
             var text = string.Format(format, args);
             if (_echo) _echoConsole.WriteLine(text);
             string overflow = "";
-            overflow = _lines[Cursor.Y].WriteFormattedAndReturnOverflow(_echoConsole, _foreground, _background, Cursor.X, text);
+            var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow( _foreground, _background, Cursor.X, text);
+            overflow = result.Overflow;
             Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
             if (overflow != null) WriteLine(overflow);
         }
@@ -180,7 +181,8 @@ namespace Konsole
             if (!_lines.ContainsKey(Cursor.Y)) throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer. Requested line number was:" + Cursor.Y);
             while (overflow != null)
             {
-                overflow = _lines[Cursor.Y].WriteFormattedAndReturnOverflow(_echoConsole, _foreground,_background, Cursor.X, text);
+                var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(_foreground, _background, Cursor.X, text);
+                overflow = result.Overflow;
 
                 var xinc = overflow?.Length ?? 0;
                 if (overflow == null)

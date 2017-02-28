@@ -90,18 +90,18 @@ namespace Konsole.Sample
         private static void TestWindows(IConsole con)
         {
             con.Clear();
-            var w = new Window(10,10);
-            //w.WriteLine("123456789-12345");
-            w.PrintAt(5,5,"1234567890");
-            Console.ReadKey();
-            return;
+            //var w = new Window(10,10);
+            ////w.WriteLine("123456789-12345");
+            //w.PrintAt(5,5,"1234567890");
+            //Console.ReadKey();
+            //return;
 
             con.Clear();
-            Console.WriteLine("staring client server");
+            Console.WriteLine("starting client server");
             var height = 30;
             int width = (Console.WindowWidth / 2) - 2;
-            var client = new Window(1, 2, width, height);
-            var server = new Window(width + 2, 2, width, height);
+            var client = new Window(1, 2, width, height, true);
+            var server = new Window(width + 2, 2, width, height, true); // server is echo'ing??
 
             // simulate a bunch of messages from my fake REST server
 
