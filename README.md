@@ -1,6 +1,9 @@
 # Konsole
 home of ProgressBar ( C# console progress bar with support for single or multithreaded progress updates ) and TestConsole ( The only 100%-ish* System.Console compatible test console, supporting color printing as well as .CursorTop and .CursorLeft.
 
+**Update 1st March 2017** 
+ - Currently feverishly Working on ver `2.0`, big change including many bug fixes, and new `Window` object. I recently started learning `0MQ` from scratch, using the `NetMQ` library, and needed a stupidly simple cross-platform console window library with 0 dependancies (which I couldn't find) so that I can write simple client server spike (experimental) projects that I can run with two windows side by side for client and server. Will update examples below as soon as vers 2.0 is released. See the [change-log](change-log.md) for a full description of what's coming.
+
 ![install-package Goblinfactory.Konsole](install-package.png)
 
 ## ProgressBar usage
