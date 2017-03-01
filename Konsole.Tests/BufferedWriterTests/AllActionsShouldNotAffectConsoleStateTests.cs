@@ -26,6 +26,12 @@ namespace Konsole.Tests.BufferedWriterTests
             _consoleState = _console.GetState();
         }
 
+        private void CheckState()
+        {
+            var actual = _console.GetState();
+            actual.ShouldBeEquivalentTo(_consoleState);
+        }
+
         [Test]
         public void Write_and_writeline_test()
         {
@@ -39,13 +45,45 @@ namespace Konsole.Tests.BufferedWriterTests
             CheckState();
         }
 
-
-        private void CheckState()
+        [Test]
+        public void ForegroundColor_test()
         {
-            var actual = _console.GetState();
-            actual.ShouldBeEquivalentTo(_consoleState);
+            var w = new Window(10, 10, _console);
+            CheckState();
+            //w.ForegroundColor = ConsoleColor.Red;
+            //CheckState();
+        }
+
+        [Test]
+        public void Constructor_1_test()
+        {
+            var w = new Window(2,2, 10, 10, true, _console);
+            CheckState();
+            //w.ForegroundColor = ConsoleColor.Red;
+            //CheckState();
+        }
+
+        [Test]
+        public void foo()
+        {
+            _console.Clear();
+            _console.WriteLine("one");
+            _console.WriteLine("two");
+            _console.WriteLine("three");
+            _consoleState = _console.GetState();
+            
+
+            var w = new Window(10, 10, _console);
+            CheckState();
+            w.ForegroundColor = ConsoleColor.Red;
+            return;
+            w.WriteLine("X");
+            _console.WriteLine("Y");
+            w.WriteLine("four");
+            
         }
     }
+
 
     public class WindowsShouldNotBeAffectedByParentStateChangesTests
     {

@@ -21,15 +21,27 @@ namespace Konsole.Sample
             public string FavouriteMovie { get; set; }
         }
 
+        private static void RandomStuff(IConsole con)
+        {
+            con.Clear();
+            con.WriteLine("one");
+            con.WriteLine("two");
+            con.WriteLine("three");
+            var w = new Window(10, 10, con);
+            w.ForegroundColor = ConsoleColor.Red;
+            w.WriteLine("X");
+            con.WriteLine("Y");
+            w.WriteLine("four");
+            Console.ReadKey();
+        }
+
+
         private static void Main(string[] args)
         {
             var con = new Window();
             char cmd = ' ';
             while (cmd != 'q')
             {
-                Console.WriteLine(Console.ForegroundColor);
-                Console.WriteLine();
-
                 printMenu(con);
                 cmd = Console.ReadKey(true).KeyChar;
                 switch (cmd)
@@ -66,6 +78,10 @@ namespace Konsole.Sample
                         TestBoxes();
                         break;
 
+                    case 'r':
+                        RandomStuff(con);
+                        break;
+
                     default:
                         break;
                 }
@@ -83,21 +99,14 @@ namespace Konsole.Sample
             con.WriteLine("p : progress bars");
             con.WriteLine("l : Parallel Demo");
             con.WriteLine("c : clear screen");
+            con.WriteLine("t : random test stuff (changes often on each checkin)");
             con.WriteLine("q : quit");
             con.WriteLine("");
         }
 
         private static void TestWindows(IConsole con)
         {
-            con.Clear();
-            var w = new Window(10,10, con);
-            w.ForegroundColor = ConsoleColor.Red;
-            w.WriteLine("line 1");
-            con.WriteLine("line 2");
-            ////w.WriteLine("123456789-12345");
-            //w.PrintAt(5,5,"1234567890");
-            Console.ReadKey();
-            return;
+
 
             con.Clear();
             Console.WriteLine("starting client server");
@@ -106,7 +115,6 @@ namespace Konsole.Sample
             var client = new Window(1, 2, width, height);
             var server = new Window(width + 2, 2, width, height);
             Console.CursorTop = 32;
-            Console.WriteLine("line 1");
             // simulate a bunch of messages from my fake REST server
 
             var messages = new[]
@@ -122,8 +130,6 @@ namespace Konsole.Sample
             server.WriteLine("SERVER");
             server.WriteLine("------");
 
-            Console.WriteLine("line 2");
-
             foreach (var m in messages)
             {
                 client.Send(m.Request);
@@ -133,17 +139,6 @@ namespace Konsole.Sample
                 client.WriteLine("");
                 server.WriteLine("");
             }
-            server.Recieve("get animals/cat");
-            server.Send("200 | OK | animals / cat |");
-
-            Console.WriteLine("line 3");
-
-            server.Recieve("get animals/dog");
-            server.Send("200 | OK | animals / dog |");
-
-            client.Recieve("200 | OK | animals / cat |");
-            client.Recieve("200 | OK | animals / dog |");
-            client.WriteLine("");
 
             Console.WriteLine("");
             Console.WriteLine("finished, press any key to continue");

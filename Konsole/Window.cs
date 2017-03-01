@@ -94,7 +94,6 @@ namespace Konsole
             Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
             _lines.Clear();
-            if (_echo) { _echoConsole.CursorTop = 0;}
             for (int i = 0; i < _height; i++) _lines.Add(i, new Row(_width, ' ', _startColor, _startBackground));
         }
 
