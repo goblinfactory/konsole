@@ -48,19 +48,25 @@ namespace Konsole.Tests.BufferedWriterTests
         [Test]
         public void ForegroundColor_test()
         {
-            var w = new Window(10, 10, _console);
+            var w = new Window(0, 0, _console);
+            w.ForegroundColor = ConsoleColor.DarkGray;
             CheckState();
-            //w.ForegroundColor = ConsoleColor.Red;
-            //CheckState();
         }
+
+        [Test]
+        public void BackgroundColor_test()
+        {
+            var w = new Window(0, 0, _console);
+            w.BackgroundColor = ConsoleColor.Red;
+            CheckState();
+        }
+
 
         [Test]
         public void Constructor_1_test()
         {
             var w = new Window(2,2, 10, 10, true, _console);
             CheckState();
-            //w.ForegroundColor = ConsoleColor.Red;
-            //CheckState();
         }
 
         [Test]

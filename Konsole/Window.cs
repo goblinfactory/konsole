@@ -21,8 +21,7 @@ namespace Konsole
 
         
 
-        private ConsoleColor _foreground;
-        private ConsoleColor _background;
+
         private readonly ConsoleColor _startColor;
         private readonly ConsoleColor _startBackground;
 
@@ -89,8 +88,8 @@ namespace Konsole
 
         private void init()
         {
-            _foreground = _startColor;
-            _background = _startBackground;
+            ForegroundColor = _startColor;
+            BackgroundColor = _startBackground;
             Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
             _lines.Clear();
@@ -166,7 +165,7 @@ namespace Konsole
             gotoCursor();
             var text = string.Format(format, args);
             string overflow = "";
-            var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow( _foreground, _background, Cursor.X, text);
+            var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow( ForegroundColor, BackgroundColor, Cursor.X, text);
             overflow = result.Overflow;
 
             if (_echo) _echoConsole.WriteLine(result.Written);
@@ -196,7 +195,7 @@ namespace Konsole
             if (!_lines.ContainsKey(Cursor.Y)) throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer. Requested line number was:" + Cursor.Y);
             while (overflow != null)
             {
-                var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(_foreground, _background, Cursor.X, text);
+                var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
                 overflow = result.Overflow;
 
                 var xinc = overflow?.Length ?? 0;
@@ -240,25 +239,9 @@ namespace Konsole
             return _width;
         }
 
-        public ConsoleColor BackgroundColor
-        {
-            get { return _background; }
-            set
-            {
-                if (_echo) _echoConsole.BackgroundColor = value;
-                _background = value;
-            }
-        }
+        public ConsoleColor BackgroundColor { get; set; }
 
-        public ConsoleColor ForegroundColor
-        {
-            get { return _foreground; }
-            set
-            {
-                if (_echo) _echoConsole.ForegroundColor = value;
-                _foreground = value;
-            }
-        }
+        public ConsoleColor ForegroundColor { get; set; }
 
         
 
