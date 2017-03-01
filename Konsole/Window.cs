@@ -50,7 +50,7 @@ namespace Konsole
                 _cursor = value;
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X!=0) _lastLineWrittenTo = _cursor.Y;
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X==0) _lastLineWrittenTo = _cursor.Y-1;
-                gotoCursor();
+                //gotoCursor();
             }
         }
 
@@ -63,10 +63,15 @@ namespace Konsole
                 _echoConsole.CursorLeft = _cursor.X + _x;
             }
         }
+
+        // to avoid constructor hell, and really hard errors, try to ensure that there is really only 1 constructor and all other constructors defer to that constructor. Do not get constructor A --> calls B --> calls C
+
         public Window() : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, null) { }
+        public Window(int width, int height, IConsole echo) : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, echo) { }
         public Window(bool echo = true, IConsole echoConsole = null) : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
         public Window(int width, int height, bool echo = true, IConsole echoConsole = null) : this(0,0, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
         public Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null) : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
+
         public Window(int x, int y, int width, int height, ConsoleColor color, ConsoleColor background, bool echo = true, IConsole echoConsole = null)
         {
             _x = x;

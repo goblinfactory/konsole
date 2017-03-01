@@ -49,6 +49,7 @@
     <Compile Include="Forms\ThickBoxStyle.cs" />
     <Compile Include="Internal\HiliteBuffer.cs" />
     <Compile Include="Internal\Cell.cs" />
+    <Compile Include="MockConsole.cs" />
     <Compile Include="WindowOld.cs" />
     <Compile Include="Writer.cs" />
     <Compile Include="Forms\BoxWriter.cs" />

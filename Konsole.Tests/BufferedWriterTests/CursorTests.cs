@@ -161,6 +161,14 @@ namespace Konsole.Tests.BufferedWriterTests
         }
 
 
+        [Test]
+        public void writing_to_child_windows_should_not_affect_main_console_cursor_position()
+        {
+            // i.e. any write that moves the real Console.Cursor needs to reset main Console State (color and cursor positions, after each action, printAt, Write, WriteLine, CusorTop CursorLeft, Foreground, Background )
+            // this is expected to the most common use case for a window
+            Assert.Inconclusive();
+        }
+
 
 
 

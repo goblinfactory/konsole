@@ -45,6 +45,14 @@
       <HintPath>..\packages\ApprovalUtilities.3.0.10\lib\net45\ApprovalUtilities.Net45.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentAssertions, Version=4.19.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.0\lib\net45\FluentAssertions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions.Core, Version=4.19.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.0\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -57,8 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BufferedWriterTests\AllActionsShouldNotAffectCursorPositionOfMainConsoleOrOtherWindowsTests.cs" />
+    <Compile Include="BufferedWriterTests\AllActionsShouldNotAffectConsoleStateTests.cs" />
     <Compile Include="BufferedWriterTests\ClearShould.cs" />
+    <Compile Include="BufferedWriterTests\ConstructorPreconditionTests.cs" />
     <Compile Include="BufferedWriterTests\EchoOntoAnotherConsoleTests.cs" />
     <Compile Include="BufferedWriterTests\HiliteTests.cs" />
     <Compile Include="BufferedWriterTests\OverflowTests.cs" />
