@@ -59,9 +59,11 @@
   <ItemGroup>
     <Compile Include="BufferedWriterTests\AllActionsShouldNotAffectCursorPositionOfMainConsoleOrOtherWindowsTests.cs" />
     <Compile Include="BufferedWriterTests\ClearShould.cs" />
+    <Compile Include="BufferedWriterTests\EchoOntoAnotherConsoleTests.cs" />
     <Compile Include="BufferedWriterTests\HiliteTests.cs" />
     <Compile Include="BufferedWriterTests\OverflowTests.cs" />
     <Compile Include="BufferedWriterTests\BufferTests.cs" />
+    <Compile Include="BufferedWriterTests\ScrollingTests.cs" />
     <Compile Include="BufferedWriterTests\WriteTests.cs" />
     <Compile Include="Forms\SplitScreenTests.cs" />
     <Compile Include="TestClasses\Address.cs" />
@@ -86,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BufferedWriterTests\OverflowTests.overflow_text_should_wrap_onto_next_line.approved.txt" />
-    <Content Include="BufferedWriterTests\HiliteTests.readable_buffer_should_show_which_lines_are_highlighted.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.draw_box_should_draw_box.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Merge.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.overlapping_boxes_and_merge_tests.ForScenario.Double.Double.Overlap.approved.txt" />

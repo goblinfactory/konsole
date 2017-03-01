@@ -101,7 +101,7 @@ namespace Konsole.Sample
             var height = 30;
             int width = (Console.WindowWidth / 2) - 2;
             var client = new Window(1, 2, width, height);
-            var server = new Window(width + 2, 2, width, height, false); 
+            var server = new Window(width + 2, 2, width, height); 
 
             // simulate a bunch of messages from my fake REST server
 

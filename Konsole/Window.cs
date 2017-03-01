@@ -165,8 +165,7 @@ namespace Konsole
             var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow( _foreground, _background, Cursor.X, text);
             overflow = result.Overflow;
 
-            if (_echo) _echoConsole.WriteLine(text);
-            //if (_echo) _echoConsole.WriteLine(result.Written); write test first! doh.. (no one saw this! blush)
+            if (_echo) _echoConsole.WriteLine(result.Written);
 
             Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
             if (overflow != null) WriteLine(overflow);
