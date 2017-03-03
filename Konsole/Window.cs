@@ -19,7 +19,7 @@ namespace Konsole
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
         private IConsole _echoConsole { get; set; }
 
-        
+
 
 
         private readonly ConsoleColor _startForeground;
@@ -35,7 +35,7 @@ namespace Konsole
         {
             get
             {
-                int row = y > (_height-1) ? (_height-1) : y;
+                int row = y > (_height - 1) ? (_height - 1) : y;
                 int col = x > (_width - 1) ? (_width - 1) : x;
                 return _lines[row].Cells[col];
             }
@@ -43,12 +43,12 @@ namespace Konsole
 
         private XY Cursor
         {
-            get { return _cursor;}
+            get { return _cursor; }
             set
             {
                 _cursor = value;
-                if (_cursor.Y > _lastLineWrittenTo && _cursor.X!=0) _lastLineWrittenTo = _cursor.Y;
-                if (_cursor.Y > _lastLineWrittenTo && _cursor.X==0) _lastLineWrittenTo = _cursor.Y-1;
+                if (_cursor.Y > _lastLineWrittenTo && _cursor.X != 0) _lastLineWrittenTo = _cursor.Y;
+                if (_cursor.Y > _lastLineWrittenTo && _cursor.X == 0) _lastLineWrittenTo = _cursor.Y - 1;
                 //gotoCursor();
             }
         }
@@ -65,24 +65,43 @@ namespace Konsole
 
         // to avoid constructor hell, and really hard errors, try to ensure that there is really only 1 constructor and all other constructors defer to that constructor. Do not get constructor A --> calls B --> calls C
 
-        public Window() : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, null) { }
-        public Window(int width, int height, IConsole echo) : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, echo) { }
-        public Window(bool echo = true, IConsole echoConsole = null) : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
-        public Window(int width, int height, bool echo = true, IConsole echoConsole = null) : this(0,0, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
-        public Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null) : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
+        public Window() : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, null)
+        {
+        }
 
-        public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background, bool echo = true, IConsole echoConsole = null)
+        public Window(int width, int height, IConsole echo)
+            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, echo)
+        {
+        }
+
+        public Window(bool echo = true, IConsole echoConsole = null)
+            : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
+        {
+        }
+
+        public Window(int width, int height, bool echo = true, IConsole echoConsole = null)
+            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
+        {
+        }
+
+        public Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null)
+            : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
+        {
+        }
+
+        public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
+            bool echo = true, IConsole echoConsole = null)
         {
             _x = x;
             _y = y;
             _echo = echo;
             _echoConsole = echoConsole;
-            if(_echo && _echoConsole == null) _echoConsole = new Writer();
+            if (_echo && _echoConsole == null) _echoConsole = new Writer();
             _width = width == -1 ? (_echoConsole?.WindowWidth() ?? 120) : width;
             _height = height == -1 ? (_echoConsole?.WindowHeight() ?? 80) : height;
             _startForeground = foreground;
             _startBackground = background;
-            
+
             init();
         }
 
@@ -124,10 +143,13 @@ namespace Konsole
         /// colors rendered using the `ColorMapper.cs`
         /// </summary>
         /// <returns></returns>
-        public string[] BufferWithColorChars()
+        public string[] BufferWithColor
         {
-            var buffer = _lines.Select(l => l.Value.ToStringWithColorChars());
-            return buffer.ToArray();
+            get
+            {
+                var buffer = _lines.Select(l => l.Value.ToStringWithColorChars());
+                return buffer.ToArray();
+            }
         }
 
         private string ColorString(Row row)
@@ -152,10 +174,7 @@ namespace Konsole
         /// </summary>
         public string[] BufferWritten // should be buffer written
         {
-            get
-            {
-                return _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString()).ToArray();
-            }
+            get { return _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString()).ToArray(); }
         }
 
         /// <summary>
@@ -171,23 +190,28 @@ namespace Konsole
         {
             get
             {
-                return _lines.Values.Take(_lastLineWrittenTo+1).Select( b => b.ToString().TrimEnd(new []{' '})).ToArray();
+                return
+                    _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString().TrimEnd(new[] {' '})).ToArray();
             }
         }
 
 
+
         public void WriteLine(string format, params object[] args)
         {
-            gotoCursor();
-            var text = string.Format(format, args);
-            string overflow = "";
-            var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow( ForegroundColor, BackgroundColor, Cursor.X, text);
-            overflow = result.Overflow;
+            SafeWrite(_echoConsole, () =>
+            {
+                gotoCursor();
+                var text = string.Format(format, args);
+                string overflow = "";
+                var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
+                overflow = result.Overflow;
 
-            if (_echo) _echoConsole.WriteLine(result.Written);
+                if (_echo) _echoConsole.WriteLine(result.Written);
 
-            Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
-            if (overflow != null) WriteLine(overflow);
+                Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
+                if (overflow != null) WriteLine(overflow);
+            });
         }
 
         public void Write(string format, params object[] args)
@@ -208,9 +232,9 @@ namespace Konsole
         {
             var overflow = "";
             // don't automatically expand buffer, for now, user should know what to expect, this is normally an error if you go beyond the expected length.
-            if (!_lines.ContainsKey(Cursor.Y)) throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer. Requested line number was:" + Cursor.Y);
             while (overflow != null)
             {
+                if (!_lines.ContainsKey(Cursor.Y)) throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer. Requested line number was:" + Cursor.Y);
                 var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
                 overflow = result.Overflow;
 
@@ -285,5 +309,25 @@ namespace Konsole
             Write(c.ToString());
         }
 
+
+        private void SafeWrite(IConsole parent, Action action)
+        {
+            if (parent == null)
+            {
+                action();
+                return;
+            }
+            var state = parent.GetState();
+            try
+            {
+                parent.ForegroundColor = ForegroundColor;
+                parent.BackgroundColor = BackgroundColor;
+                action();
+            }
+            finally
+            {
+                parent.RestoreState(state);
+            }
+        }
     }
 }

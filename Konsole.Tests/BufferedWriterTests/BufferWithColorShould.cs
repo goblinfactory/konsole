@@ -33,7 +33,7 @@ namespace Konsole.Tests.BufferedWriterTests
                 " kw kw kw kw kw kw"
             };
 
-            Assert.AreEqual(expected, c.BufferWithColorChars());
+            Assert.AreEqual(expected, c.BufferWithColor);
         }   
     }
 }
