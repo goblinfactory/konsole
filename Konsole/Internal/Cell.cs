@@ -25,4 +25,5 @@ namespace Konsole.Internal
         }
 
     }
+
 }

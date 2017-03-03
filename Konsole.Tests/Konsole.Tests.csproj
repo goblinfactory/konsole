@@ -66,7 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BufferedWriterTests\AllActionsShouldNotAffectConsoleStateTests.cs" />
+    <Compile Include="BufferedWriterTests\BufferWithColorShould.cs" />
     <Compile Include="BufferedWriterTests\ClearShould.cs" />
+    <Compile Include="BufferedWriterTests\ColorTests.cs" />
     <Compile Include="BufferedWriterTests\ConstructorPreconditionTests.cs" />
     <Compile Include="BufferedWriterTests\EchoOntoAnotherConsoleTests.cs" />
     <Compile Include="BufferedWriterTests\HideTests.cs" />

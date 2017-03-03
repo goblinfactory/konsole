@@ -22,7 +22,7 @@ namespace Konsole
         
 
 
-        private readonly ConsoleColor _startColor;
+        private readonly ConsoleColor _startForeground;
         private readonly ConsoleColor _startBackground;
 
         private readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
@@ -71,7 +71,7 @@ namespace Konsole
         public Window(int width, int height, bool echo = true, IConsole echoConsole = null) : this(0,0, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
         public Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null) : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole) { }
 
-        public Window(int x, int y, int width, int height, ConsoleColor color, ConsoleColor background, bool echo = true, IConsole echoConsole = null)
+        public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background, bool echo = true, IConsole echoConsole = null)
         {
             _x = x;
             _y = y;
@@ -80,7 +80,7 @@ namespace Konsole
             if(_echo && _echoConsole == null) _echoConsole = new Writer();
             _width = width == -1 ? (_echoConsole?.WindowWidth() ?? 120) : width;
             _height = height == -1 ? (_echoConsole?.WindowHeight() ?? 80) : height;
-            _startColor = color;
+            _startForeground = foreground;
             _startBackground = background;
             
             init();
@@ -88,12 +88,12 @@ namespace Konsole
 
         private void init()
         {
-            ForegroundColor = _startColor;
+            ForegroundColor = _startForeground;
             BackgroundColor = _startBackground;
             Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
             _lines.Clear();
-            for (int i = 0; i < _height; i++) _lines.Add(i, new Row(_width, ' ', _startColor, _startBackground));
+            for (int i = 0; i < _height; i++) _lines.Add(i, new Row(_width, ' ', _startForeground, _startBackground));
         }
 
         /// <summary>
@@ -119,6 +119,22 @@ namespace Konsole
             return text;
         }
 
+        /// <summary>
+        /// returns the buffer with additional 2 characters representing the background color and foreground color
+        /// colors rendered using the `ColorMapper.cs`
+        /// </summary>
+        /// <returns></returns>
+        public string[] BufferWithColorChars()
+        {
+            var buffer = _lines.Select(l => l.Value.ToStringWithColorChars());
+            return buffer.ToArray();
+        }
+
+        private string ColorString(Row row)
+        {
+            var chars = row.Cells.SelectMany(r => r.Value.ToChars()).ToArray();
+            return new string(chars);
+        }
 
 
         /// <summary>

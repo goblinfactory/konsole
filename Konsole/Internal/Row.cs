@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Konsole.Internal
@@ -19,6 +20,8 @@ namespace Konsole.Internal
 
         private readonly int _width;
         public Dictionary<int, Cell> Cells { get; private set; }
+
+
 
         public Row(int width, char c, ConsoleColor color, ConsoleColor background)
         {
@@ -65,6 +68,14 @@ namespace Konsole.Internal
                 sb.Append(c.Char);
             }
             return sb.ToString();
+        }
+
+
+        //returns the buffer with additional 2 characters representing the background color and foreground color
+        public string ToStringWithColorChars()
+        {
+            var chars = Cells.SelectMany(c => c.Value.ToChars()).ToArray();
+            return new string(chars);
         }
     }
 }
