@@ -9,7 +9,7 @@ namespace Konsole.Tests.WindowTests
     public class WriteShould
     {
         [Test]
-        public void Write_should_write_to_end_of_line_and_WriteLine_should_write_to_current_line_and_move_cursor_to_beginning_of_next_line()
+        public void write_to_end_of_line_and_WriteLine_should_write_to_current_line_and_move_cursor_to_beginning_of_next_line()
         {
             var console = new Window(80, 20, false);
             console.WriteLine("line1");
@@ -28,14 +28,9 @@ namespace Konsole.Tests.WindowTests
             Assert.That(console.BufferWrittenTrimmed, Is.EqualTo(expected));
         }
 
-        [Test]
-        public void When_writing_text_that_flows_over_multiple_lines_text_should_flow_over_to_next_lines()
-        {
-            Assert.Inconclusive("need to test writing something that will span 3 or more lines.");
-        }
 
         [Test]
-        public void print_to_the_parent()
+        public void print_to_the_parent_if_echo_set()
         {
             var console = new MockConsole(3, 3);
             console.ForegroundColor = ConsoleColor.Red;

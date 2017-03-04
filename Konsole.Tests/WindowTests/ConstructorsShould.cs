@@ -40,8 +40,11 @@ namespace Konsole.Tests.WindowTests
 
             //var w3 = new Window(0, 0, 10, 10, true, c);
             //state.ShouldBeEquivalentTo(c.State);
-
         }
+
+
+
+
 
 
 

@@ -65,16 +65,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WindowTests\AllActionsShouldNotAffectConsoleStateTests.cs" />
     <Compile Include="WindowTests\BackgroundColorShould.cs" />
+    <Compile Include="WindowTests\BufferHighLightedShould.cs" />
     <Compile Include="WindowTests\BufferWithColorShould.cs" />
     <Compile Include="WindowTests\ClearShould.cs" />
-    <Compile Include="WindowTests\ConstructorPreconditionTests.cs" />
     <Compile Include="WindowTests\ConstructorsShould.cs" />
+    <Compile Include="WindowTests\ConstructorWithSettingsShould.cs" />
+    <Compile Include="WindowTests\CursorTopShould.cs" />
+    <Compile Include="WindowTests\CursorLeftShould.cs" />
     <Compile Include="WindowTests\EchoOntoAnotherConsoleTests.cs" />
     <Compile Include="WindowTests\ForegroundColorShould.cs" />
     <Compile Include="WindowTests\HideTests.cs" />
-    <Compile Include="WindowTests\HiliteTests.cs" />
     <Compile Include="WindowTests\BufferTests.cs" />
     <Compile Include="Helpers\Precondition.cs" />
     <Compile Include="WindowTests\PrintAtShould.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="Internal\FormTests.MixedNumClass.cs" />
     <Compile Include="Lines\LineTests.cs" />
     <Compile Include="Forms\FormTests.cs" />
-    <Compile Include="WindowTests\CursorTests.cs" />
     <Compile Include="Progress\ProgressBarTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

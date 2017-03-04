@@ -24,18 +24,12 @@ namespace Konsole.Sample
         private static void RandomStuff(IConsole con)
         {
             con.Clear();
-            con.ForegroundColor = ConsoleColor.Gray;
-            con.BackgroundColor = ConsoleColor.Black;
             con.WriteLine("one");
 
-            var w = new Window(con);
-            w.ForegroundColor = ConsoleColor.Red;
-            w.BackgroundColor = ConsoleColor.Yellow;
+            var w = new Window(10,10,20,15, ConsoleColor.Black,ConsoleColor.DarkYellow, true, con);
+            w.WriteLine("new window");
 
-            w.PrintAt(5,4,"BOO!");
             con.WriteLine("two");
-
-            w.PrintAt(30,10,"BOO!");
             con.WriteLine("three");
             Console.ReadKey();
         }

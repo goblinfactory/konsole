@@ -74,7 +74,9 @@ namespace Konsole
         }
 
         public Window(IConsole echoConsole)
-    : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, echoConsole){}
+            : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, echoConsole)
+        {
+        }
 
         public Window(bool echo = true, IConsole echoConsole = null)
             : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
@@ -100,7 +102,7 @@ namespace Konsole
             _echoConsole = echoConsole;
             if (_echo && _echoConsole == null) _echoConsole = new Writer();
             _width = width == -1 ? (_echoConsole?.WindowWidth() ?? 120) : width;
-            _height = height == -1 ? (_echoConsole?.WindowHeight?? 80) : height;
+            _height = height == -1 ? (_echoConsole?.WindowHeight ?? 80) : height;
             _startForeground = foreground;
             _startBackground = background;
 
@@ -115,6 +117,7 @@ namespace Konsole
             _lastLineWrittenTo = -1;
             _lines.Clear();
             for (int i = 0; i < _height; i++) _lines.Add(i, new Row(_width, ' ', _startForeground, _startBackground));
+            //for (int i = 0; i < _height; i++) PrintAt(0, i, new string(' ', WindowWidth()));
         }
 
         /// <summary>
@@ -357,6 +360,7 @@ namespace Konsole
             Cursor = new XY(x,y);
             Write(c.ToString());
         }
+
 
 
         public void DoCommand(IConsole console, Action action)

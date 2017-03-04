@@ -23,6 +23,54 @@ namespace Konsole.Tests.WindowTests
             Assert.AreEqual(expected, c.Buffer);
         }
 
+
+        [Test]
+        public void print_the_text_at_the_required_x_y_coordinate()
+        {
+            var console = new Window(5, 5, false);
+            console.PrintAt(0, 0, "*");
+            console.PrintAt(2, 2, "*");
+            console.PrintAt(4, 4, "*");
+            // all lines are trimmed
+            var trimmed = new[]
+            {
+                "*",
+                "",
+                "  *",
+                "",
+                "    *",
+            };
+
+            var buffer = new[]
+            {
+                "*    ",
+                "     ",
+                "  *  ",
+                "     ",
+                "    *"
+            };
+            Assert.That(console.Buffer, Is.EqualTo(buffer));
+        }
+
+
+        [Test]
+        public void overflow_any_overflow_text_to_next_line()
+        {
+            var console = new Window(5, 5, false);
+            console.PrintAt(2, 2, "12345");
+
+            var expected = new[]
+            {
+                "     ",
+                "     ",
+                "  123",
+                "45   ",
+                "     "
+            };
+            Assert.AreEqual(expected, console.Buffer);
+        }
+
+
         [Test]
         public void print_to_the_parent()
         {

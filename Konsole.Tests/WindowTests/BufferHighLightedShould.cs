@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
 {
-    public class HiliteTests
+    class BufferHighLightedShould
     {
         [Test]
-        public void readable_buffer_should_show_which_lines_are_highlighted()
+        public void return_a_buffer_line_using_provided_char_to_indicate_any_printed_character_with_a_matching_background_color()
         {
             var normal = ConsoleColor.Black;
             var hilite = ConsoleColor.White;
@@ -37,9 +41,7 @@ namespace Konsole.Tests.WindowTests
             };
 
             var hlBuffer = console.BufferHighlighted(hilite, '#', ' ');
-            Console.WriteLine(console.BufferHighlightedString(hilite, '#', ' '));
-            Console.WriteLine();
-            Assert.AreEqual(expected,hlBuffer);
+            Assert.AreEqual(expected, hlBuffer);
         }
 
     }

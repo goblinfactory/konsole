@@ -7,7 +7,7 @@ namespace Konsole.Tests.WindowTests
     class WriteLineShould
     {
         [Test]
-        public void preserve_the_foreground_and_background_color()
+        public void write_using_the_currently_set_fore_and_background_colors()
         {
             var console = new MockConsole(3, 3);
             console.ForegroundColor = ConsoleColor.Red;
@@ -57,19 +57,15 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void not_increment_cursortop_or_left_of_parent_window()
+        public void not_change_state_of_parent_console()
         {
-            var parent = new Window(80,20,false);
+            var parent = new Window(80, 20, false);
             var state = parent.State;
 
             var console = new Window(parent);
 
             console.WriteLine("This");
             state.ShouldBeEquivalentTo(parent.State);
-
-            console.WriteLine(" is a test line.");
-            state.ShouldBeEquivalentTo(parent.State);
-            
         }
 
     }
