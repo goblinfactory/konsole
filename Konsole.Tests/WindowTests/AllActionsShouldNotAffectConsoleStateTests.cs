@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Konsole.Tests.BufferedWriterTests
+namespace Konsole.Tests.WindowTests
 {
     public class AllActionsShouldNotAffectConsoleStateTests
     {
@@ -45,13 +41,6 @@ namespace Konsole.Tests.BufferedWriterTests
             CheckState();
         }
 
-        [Test]
-        public void ForegroundColor_test()
-        {
-            var w = new Window(0, 0, _console);
-            w.ForegroundColor = ConsoleColor.DarkGray;
-            CheckState();
-        }
 
         [Test]
         public void BackgroundColor_test()

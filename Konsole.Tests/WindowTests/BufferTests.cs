@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace Konsole.Tests.BufferedWriterTests
+namespace Konsole.Tests.WindowTests
 {
     [TestFixture]
     public class BufferTests

@@ -1,7 +1,7 @@
 ﻿using ApprovalTests.Reporters;
 using NUnit.Framework;
 
-namespace Konsole.Tests.BufferedWriterTests
+namespace Konsole.Tests.WindowTests
 {
     [UseReporter(typeof(DiffReporter))]
     public class CursorTests

@@ -1,9 +1,7 @@
 ﻿using System;
-using ApprovalTests;
-using ApprovalTests.Reporters;
 using NUnit.Framework;
 
-namespace Konsole.Tests.BufferedWriterTests
+namespace Konsole.Tests.WindowTests
 {
     public class HiliteTests
     {

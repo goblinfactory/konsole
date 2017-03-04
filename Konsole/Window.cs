@@ -100,7 +100,7 @@ namespace Konsole
             _echoConsole = echoConsole;
             if (_echo && _echoConsole == null) _echoConsole = new Writer();
             _width = width == -1 ? (_echoConsole?.WindowWidth() ?? 120) : width;
-            _height = height == -1 ? (_echoConsole?.WindowHeight() ?? 80) : height;
+            _height = height == -1 ? (_echoConsole?.WindowHeight?? 80) : height;
             _startForeground = foreground;
             _startBackground = background;
 
@@ -268,9 +268,12 @@ namespace Konsole
         }
 
 
-        public int WindowHeight()
+        public int WindowHeight
         {
-            return _height;
+            get
+            {
+                return _height;
+            }
         }
 
         public int CursorTop

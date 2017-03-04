@@ -7,7 +7,7 @@ namespace Konsole
     {
         ConsoleState State { get; set; }
         int WindowWidth();
-        int WindowHeight();
+        int WindowHeight { get; }
         int CursorTop { get; set; }
         int CursorLeft { get; set; }
         ConsoleColor ForegroundColor { get; set; }
