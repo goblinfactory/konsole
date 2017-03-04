@@ -10,6 +10,30 @@ namespace Konsole.Tests.WindowTests
 {
     class ConstructorWithSettingsShould
     {
+        public class FillBackgroundShould
+        {
+            [Test]
+            public void not_change_parent_state()
+            {
+                var con = new MockConsole(5, 5);
+                var state = con.State;
+                var settings = new WindowSettings()
+                {
+                    X = 1,
+                    Y = 1,
+                    Height = 3,
+                    Width = 3,
+                    ForegroundColor = ConsoleColor.Red,
+                    BackgroundColor = ConsoleColor.DarkYellow,
+                    Echo = true,
+                    EchoConsole = con,
+                    FillBackground = true
+                };
+                var w = new Window(settings);
+                con.State.ShouldBeEquivalentTo(state);
+            }
+        }
+
         [Test]
         public void support_optional_title_and_border()
         {

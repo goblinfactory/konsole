@@ -23,10 +23,24 @@ namespace Konsole.Sample
 
         private static void RandomStuff(IConsole con)
         {
+            // this doesnt work properly! PrintAt seems to be moving the con cursor?!
             con.Clear();
             con.WriteLine("one");
 
-            var w = new Window(10,10,20,15, ConsoleColor.Black,ConsoleColor.DarkYellow, true, con);
+            var settings = new WindowSettings()
+            {
+                X = 10,
+                Y = 10,
+                Width = 20,
+                Height = 15,
+                ForegroundColor = ConsoleColor.Black,
+                BackgroundColor = ConsoleColor.DarkYellow,
+                Echo = true,
+                EchoConsole = con,
+                FillBackground = true
+            };
+
+            var w = new Window(settings);
             w.WriteLine("new window");
 
             con.WriteLine("two");
