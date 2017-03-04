@@ -27,6 +27,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
   * `.BufferHilighted` `string[]` returns an 'approve-able' text buffer where each character is represented by 2 characters with one of of them representing the background color of the buffer.
 
 ### Backlog
+- Auto-documentation. 
 - I think there's quite a bit of duplication in the tests, overflow being tested in multiple places, need to cleanup tests.
 - need window `hide` and `show`. (consider option to redraw underlying screen, e.g. for modal boxes).
 - fix bug with `PrintAt` with text that overflows, causing crash.

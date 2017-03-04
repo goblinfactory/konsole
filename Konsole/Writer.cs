@@ -19,6 +19,18 @@ namespace Konsole
             Console.Write(format, args);
         }
 
+        public ConsoleState State
+        {
+            get {  return new ConsoleState(Console.ForegroundColor,Console.BackgroundColor, Console.CursorTop, Console.CursorLeft);}
+            set
+            {
+                Console.ForegroundColor = value.ForegroundColor;
+                Console.BackgroundColor = value.BackgroundColor;
+                Console.CursorTop = value.Top;
+                Console.CursorLeft = value.Left;
+            }
+        }
+
         public int WindowWidth()
         {
             return Console.WindowWidth;
@@ -73,11 +85,6 @@ namespace Konsole
         public ConsoleColor BackgroundColor {
             get { return Console.BackgroundColor; }
             set { Console.BackgroundColor = value; }
-        }
-
-        public void SetCursorPosition(int x, int y)
-        {
-            Console.SetCursorPosition(x, y);
         }
 
         public void PrintAt(int x, int y, string format, params object[] args)

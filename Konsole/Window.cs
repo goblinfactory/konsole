@@ -49,7 +49,6 @@ namespace Konsole
                 _cursor = value;
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X != 0) _lastLineWrittenTo = _cursor.Y;
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X == 0) _lastLineWrittenTo = _cursor.Y - 1;
-                //gotoCursor();
             }
         }
 
@@ -73,6 +72,9 @@ namespace Konsole
             : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, echo)
         {
         }
+
+        public Window(IConsole echoConsole)
+    : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, echoConsole){}
 
         public Window(bool echo = true, IConsole echoConsole = null)
             : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
@@ -199,9 +201,9 @@ namespace Konsole
 
         public void WriteLine(string format, params object[] args)
         {
-            SafeWrite(_echoConsole, () =>
+            // we want to reset the state of parent, but not this object
+            DoCommand(_echoConsole, () =>
             {
-                gotoCursor();
                 var text = string.Format(format, args);
                 string overflow = "";
                 var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
@@ -227,31 +229,42 @@ namespace Konsole
             init();
         }
 
-
         public void Write(string text)
         {
-            var overflow = "";
-            // don't automatically expand buffer, for now, user should know what to expect, this is normally an error if you go beyond the expected length.
-            while (overflow != null)
+            _write(text);
+        }
+
+
+        //TODO: convert everything to redirect all calls to PrintAt, so that writing to parent works flawlessly!
+        private void _write(string text)
+        {
+            DoCommand(_echoConsole, () =>
             {
-                if (!_lines.ContainsKey(Cursor.Y)) throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer. Requested line number was:" + Cursor.Y);
-                var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
-                overflow = result.Overflow;
-
-                var xinc = overflow?.Length ?? 0;
-                if (overflow == null)
+                var overflow = "";
+                // don't automatically expand buffer, for now, user should know what to expect, this is normally an error if you go beyond the expected length.
+                while (overflow != null)
                 {
-                    Cursor = Cursor.IncX(text.Length);
+                    if (!_lines.ContainsKey(Cursor.Y))
+                        throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer. Requested line number was:" + Cursor.Y);
+                    var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
+                    overflow = result.Overflow;
+                    if (_echo && _echoConsole != null)
+                    {
+                        _echoConsole.ForegroundColor = ForegroundColor;
+                        _echoConsole.BackgroundColor = BackgroundColor;
+                        _echoConsole.PrintAt(CursorLeft, CursorTop, result.Written);
+                    }
+                    if (overflow == null)
+                    {
+                        Cursor = Cursor.IncX(text.Length);
+                    }
+                    else
+                    {
+                        Cursor = new XY(0, Cursor.Y + 1);
+                    }
+                    text = overflow;
                 }
-                else
-                {
-                    Cursor = new XY(0, Cursor.Y + 1);
-                    //Write(overflow);
-                    //overflow = null;
-                }
-
-                text = overflow;
-            }
+            });
         }
 
 
@@ -284,24 +297,57 @@ namespace Konsole
         public ConsoleColor ForegroundColor { get; set; }
 
         
-
+        /// <summary>
+        /// prints text at x and y location, without affecting the current window or parent state
+        /// </summary>
         public void PrintAt(int x, int y, string format, params object[] args)
         {
-            Cursor = new XY(x,y);
-            Write(format, args);
+            var text = string.Format(format, args);
+            PrintAt(x,y,text);
         }
-
-        public void SetCursorPosition(int x, int y)
-        {
-            Cursor = new XY(x, y);
-        }
-
 
         public void PrintAt(int x, int y, string text)
         {
-            Cursor = new XY(x,y);
-            Write(text);
+            DoCommand(this, () =>
+            {
+                Cursor = new XY(x, y);
+                Write(text);
+            });
+
         }
+
+        public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background = null)
+        {
+            DoCommand(_echoConsole, () =>
+            {
+                DoCommand(this, () =>
+                {
+                    State = new ConsoleState(foreground, background ?? BackgroundColor, y, x);
+                    Write(text);
+                });
+            });
+        }
+
+
+        public ConsoleState State
+        {
+            get
+            {
+                return new ConsoleState(ForegroundColor, BackgroundColor, CursorTop, CursorLeft);
+            }
+
+            set
+            {
+                CursorLeft = value.Left;
+                CursorTop = value.Top;
+                ForegroundColor = value.ForegroundColor;
+                BackgroundColor = value.BackgroundColor;
+            }
+
+        }
+
+
+
 
         public void PrintAt(int x, int y, char c)
         {
@@ -310,23 +356,24 @@ namespace Konsole
         }
 
 
-        private void SafeWrite(IConsole parent, Action action)
+        public void DoCommand(IConsole console, Action action)
         {
-            if (parent == null)
+            if (console == null)
             {
                 action();
                 return;
             }
-            var state = parent.GetState();
+            var state = console.State;
             try
             {
-                parent.ForegroundColor = ForegroundColor;
-                parent.BackgroundColor = BackgroundColor;
+                console.ForegroundColor = ForegroundColor;
+                console.BackgroundColor = BackgroundColor;
+                gotoCursor();
                 action();
             }
             finally
             {
-                parent.RestoreState(state);
+                console.State = state;
             }
         }
     }

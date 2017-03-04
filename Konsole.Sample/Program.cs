@@ -24,16 +24,19 @@ namespace Konsole.Sample
         private static void RandomStuff(IConsole con)
         {
             con.Clear();
-            con.ForegroundColor = ConsoleColor.Red;
-            con.BackgroundColor = ConsoleColor.White;
-            con.CursorTop = 2;
-            con.WriteLine("apples");
+            con.ForegroundColor = ConsoleColor.Gray;
+            con.BackgroundColor = ConsoleColor.Black;
+            con.WriteLine("one");
 
-            var w = new Window(5,5, 5,3);
-            w.ForegroundColor = ConsoleColor.Yellow;
-            w.BackgroundColor = ConsoleColor.Black;
-            w.WriteLine("one");
-            w.WriteLine("two");
+            var w = new Window(con);
+            w.ForegroundColor = ConsoleColor.Red;
+            w.BackgroundColor = ConsoleColor.Yellow;
+
+            w.PrintAt(5,4,"BOO!");
+            con.WriteLine("two");
+
+            w.PrintAt(30,10,"BOO!");
+            con.WriteLine("three");
             Console.ReadKey();
         }
 
@@ -101,7 +104,7 @@ namespace Konsole.Sample
             con.WriteLine("p : progress bars");
             con.WriteLine("l : Parallel Demo");
             con.WriteLine("c : clear screen");
-            con.WriteLine("t : random test stuff (changes often on each checkin)");
+            con.WriteLine("r : random test stuff (changes often on each checkin)");
             con.WriteLine("q : quit");
             con.WriteLine("");
         }

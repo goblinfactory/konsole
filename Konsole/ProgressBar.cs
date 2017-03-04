@@ -45,8 +45,7 @@ namespace Konsole
         {
             lock (_locker)
             {
-                var state = _console.GetState();
-                // save current position
+                var state = _console.State;
                 _current = current;
                 try
                 {
@@ -65,7 +64,7 @@ namespace Konsole
                 }
                 finally
                 {
-                    _console.RestoreState(state);
+                    _console.State = state;
                 }
             }
         }
@@ -85,7 +84,7 @@ namespace Konsole
         public ConsoleColor BackgroundColor { get; set; }
 
         // for now, not including any width or height settings. (don't know if these can be changed? none of our code does so leaving off.)
-        public ConsoleState(ConsoleColor foreground, ConsoleColor background, int top, int left)
+        public ConsoleState(ConsoleColor foreground, ConsoleColor background, int top, int left) // NB always X then Y .. need to swap these around
         {
             ForegroundColor = foreground;
             BackgroundColor = background;
@@ -94,21 +93,6 @@ namespace Konsole
         }
     }
 
-    public static class ConsoleStateManager
-    {
-        public static ConsoleState GetState(this IConsole console)
-        {
-            return new ConsoleState(console.ForegroundColor, console.BackgroundColor, console.CursorTop,console.CursorLeft);
-        }
-
-        // don't like messing with state, eurgh, will fix this later!
-        public static void RestoreState(this IConsole console, ConsoleState state)
-        {
-            console.CursorLeft = state.Left;
-            console.CursorTop = state.Top;
-            console.ForegroundColor = state.ForegroundColor;
-        }
-    }
 
 }
 

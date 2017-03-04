@@ -23,12 +23,12 @@ namespace Konsole.Tests.BufferedWriterTests
             _console.ForegroundColor = ConsoleColor.Red;
             _console.BackgroundColor = ConsoleColor.Yellow;
             _console.Write("Warning!");
-            _consoleState = _console.GetState();
+            _consoleState = _console.State;
         }
 
         private void CheckState()
         {
-            var actual = _console.GetState();
+            var actual = _console.State;
             actual.ShouldBeEquivalentTo(_consoleState);
         }
 
@@ -76,7 +76,7 @@ namespace Konsole.Tests.BufferedWriterTests
             _console.WriteLine("one");
             _console.WriteLine("two");
             _console.WriteLine("three");
-            _consoleState = _console.GetState();
+            _consoleState = _console.State;
             
 
             var w = new Window(10, 10, _console);

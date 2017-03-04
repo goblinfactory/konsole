@@ -5,13 +5,13 @@ namespace Konsole
 {
     public interface IConsole : IWriteLine
     {
+        ConsoleState State { get; set; }
         int WindowWidth();
         int WindowHeight();
         int CursorTop { get; set; }
         int CursorLeft { get; set; }
         ConsoleColor ForegroundColor { get; set; }
         ConsoleColor BackgroundColor { get; set; }
-        void SetCursorPosition(int x, int y);
         void PrintAt(int x, int y, string format, params object[] args);
         void PrintAt(int x, int y, string text);
         void PrintAt(int x, int y, char c);

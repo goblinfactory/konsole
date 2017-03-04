@@ -72,23 +72,6 @@ namespace Konsole.Tests.BufferedWriterTests
         public class CursorTop_tests
         {
             [Test]
-            public void calling_writeline_should_increment_cursortop_position()
-            {
-                var console = new Window(80, 20, false);
-                Assert.AreEqual(0, console.CursorTop);
-                console.WriteLine("line1");
-                Assert.AreEqual(1, console.CursorTop);
-                console.Write("This ");
-                Assert.AreEqual(1, console.CursorTop);
-                console.Write("is ");
-                Assert.AreEqual(1, console.CursorTop);
-                console.WriteLine("a test line.");
-                Assert.AreEqual(2, console.CursorTop);
-                console.WriteLine("line 3");
-                Assert.AreEqual(3, console.CursorTop);
-            }
-
-            [Test]
             public void setting_cursor_top_to_a_previously_written_line_should_allow_us_to_overwrite_previously_written_lines()
             {
                 var console = new Window(80, 20, false);
