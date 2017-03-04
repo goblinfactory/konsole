@@ -15,6 +15,7 @@ namespace Konsole
         private readonly int _width;
         private readonly int _height;
         private readonly bool _echo;
+        private readonly bool _fillBackground = false;
 
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
         private IConsole _echoConsole { get; set; }
@@ -52,16 +53,6 @@ namespace Konsole
             }
         }
 
-        private void gotoCursor()
-        {
-            if (_echo)
-            {
-                // since this is a window, that's offset of x,y on parent, do the offset now
-                _echoConsole.CursorTop = _cursor.Y + _y;
-                _echoConsole.CursorLeft = _cursor.X + _x;
-            }
-        }
-
         // to avoid constructor hell, and really hard errors, try to ensure that there is really only 1 constructor and all other constructors defer to that constructor. Do not get constructor A --> calls B --> calls C
 
         public Window() : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, null)
@@ -93,6 +84,21 @@ namespace Konsole
         {
         }
 
+        public Window(WindowSettings settings)
+        {
+            _x = settings.X;
+            _y = settings.Y;
+            _echo = settings.Echo;
+            _echoConsole = settings.EchoConsole;
+            if (_echo && _echoConsole == null) _echoConsole = new Writer();
+            _width = settings.Width ?? (_echoConsole?.WindowWidth() ?? 120);
+            _height = settings.Height ?? (_echoConsole?.WindowHeight ?? 80);
+            _startForeground = settings.ForegroundColor;
+            _startBackground = settings.BackgroundColor;
+            _fillBackground = settings.FillBackground;
+            init();
+        }
+
         public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
             bool echo = true, IConsole echoConsole = null)
         {
@@ -117,7 +123,10 @@ namespace Konsole
             _lastLineWrittenTo = -1;
             _lines.Clear();
             for (int i = 0; i < _height; i++) _lines.Add(i, new Row(_width, ' ', _startForeground, _startBackground));
-            //for (int i = 0; i < _height; i++) PrintAt(0, i, new string(' ', WindowWidth()));
+            if (_fillBackground)
+            {
+                for (int i = 0; i < _height; i++) PrintAt(0, i, new string(' ', WindowWidth()));
+            }
         }
 
         /// <summary>
@@ -383,5 +392,16 @@ namespace Konsole
                 console.State = state;
             }
         }
+
+        private void gotoCursor()
+        {
+            if (_echo)
+            {
+                // since this is a window, that's offset of x,y on parent, do the offset now
+                _echoConsole.CursorTop = _cursor.Y + _y;
+                _echoConsole.CursorLeft = _cursor.X + _x;
+            }
+        }
+
     }
 }

@@ -7,6 +7,29 @@ namespace Konsole.Tests.WindowTests
     class WriteLineShould
     {
         [Test]
+        public void write_relative_to_the_window_being_printed_to_not_the_parent()
+        {
+            var c = new MockConsole(6, 4);
+            c.WriteLine("------");
+            c.WriteLine("------");
+            c.WriteLine("------");
+            c.WriteLine("------");
+            var w = new Window(1, 1, 4, 2, true, c);
+            w.WriteLine("X");
+            w.WriteLine("Y");
+            var expected = new[]
+            {
+                "------",
+                "-X----",
+                "-Y----",
+                "------"
+            };
+            Console.WriteLine(c.BufferWrittenString);
+            c.Buffer.ShouldBeEquivalentTo(expected);
+        }
+
+
+        [Test]
         public void write_using_the_currently_set_fore_and_background_colors()
         {
             var console = new MockConsole(3, 3);

@@ -7,16 +7,11 @@ using NUnit.Framework;
 
 namespace Konsole.Tests
 {
-    public class ProgressBarTests
+    public class RefreshShould
     {
-        //[Test]
-        //public void EnsureNoAbandonedFiles()
-        //{
-        //    ApprovalMaintenance.VerifyNoAbandonedFiles();
-        //}
 
         [Test]
-        public void refresh_should_show_progress_title_and_progress_bar()
+        public void show_progress_title_and_progress_bar()
         {
             var testoutput = new StringBuilder();
             var console = new Window(80,20, false);
@@ -37,7 +32,7 @@ namespace Konsole.Tests
 
         
         [Test]
-        public void should_still_update_progress_even_when_writing_lines_after_progress_bar()
+        public void update_progress_even_when_writing_lines_after_progress_bar()
         {
             var console = new Window(40,10, false);
             console.WriteLine("line 1");
@@ -65,7 +60,7 @@ namespace Konsole.Tests
         }
 
         [Test]
-        public void should_still_update_progress_even_when_Writing_text_after_progress_bar()
+        public void update_progress_even_when_Writing_text_after_progress_bar()
         {
             var console = new Window(40, 10, false);
             console.Write("Some text"); // this text gets overwritten because progress bar is a full width screen control.

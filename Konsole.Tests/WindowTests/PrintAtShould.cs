@@ -7,6 +7,27 @@ namespace Konsole.Tests.WindowTests
 {
     public class PrintAtShould
     {
+
+        [Test]
+        public void print_relative_to_the_window_being_printed_to_not_the_parent()
+        {
+            var c = new MockConsole(6,4);
+            var w = new Window(1,1, 4, 2,true, c);
+            w.WriteLine("....");
+            w.WriteLine("....");
+            w.PrintAt(0,0,"X");
+            w.PrintAt(1,1,"Y");
+            var expected = new[]
+            {
+                "      ",
+                " X... ",
+                " .Y.. ",
+                "      "
+            };
+            Console.WriteLine(c.BufferWrittenString);
+            c.Buffer.ShouldBeEquivalentTo(expected);
+        }
+
         [Test]
         public void Not_change_cursor_position_when_printing()
         {

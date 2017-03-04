@@ -9,6 +9,28 @@ namespace Konsole.Tests.WindowTests
     public class WriteShould
     {
         [Test]
+        public void write_relative_to_the_window_being_printed_to_not_the_parent()
+        {
+            var c = new MockConsole(6, 4);
+            c.WriteLine("------");
+            c.WriteLine("------");
+            c.WriteLine("------");
+            c.WriteLine("------");
+            var w = new Window(1, 1, 4, 2, true, c);
+            w.Write("X");
+            w.Write(" Y");
+            var expected = new[]
+            {
+                "------",
+                "-X Y--",
+                "------",
+                "------"
+            };
+            Console.WriteLine(c.BufferWrittenString);
+            c.Buffer.ShouldBeEquivalentTo(expected);
+        }
+
+        [Test]
         public void write_to_end_of_line_and_WriteLine_should_write_to_current_line_and_move_cursor_to_beginning_of_next_line()
         {
             var console = new Window(80, 20, false);

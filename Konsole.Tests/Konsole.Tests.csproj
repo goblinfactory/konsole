@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProgressBarTests\NextShould.cs" />
     <Compile Include="WindowTests\BackgroundColorShould.cs" />
     <Compile Include="WindowTests\BufferHighLightedShould.cs" />
     <Compile Include="WindowTests\BufferWithColorShould.cs" />
@@ -89,7 +90,7 @@
     <Compile Include="Internal\FormTests.MixedNumClass.cs" />
     <Compile Include="Lines\LineTests.cs" />
     <Compile Include="Forms\FormTests.cs" />
-    <Compile Include="Progress\ProgressBarTests.cs" />
+    <Compile Include="ProgressBarTests\RefreshShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

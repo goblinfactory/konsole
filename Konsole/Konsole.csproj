@@ -52,6 +52,7 @@
     <Compile Include="Internal\Cell.cs" />
     <Compile Include="MockConsole.cs" />
     <Compile Include="WindowOld.cs" />
+    <Compile Include="WindowSetting.cs" />
     <Compile Include="Writer.cs" />
     <Compile Include="Forms\BoxWriter.cs" />
     <Compile Include="Forms\FieldReader.cs" />

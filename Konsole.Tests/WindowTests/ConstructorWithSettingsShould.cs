@@ -20,7 +20,9 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void allow_you_to_fill_the_new_window_with_background()
         {
-            Assert.Inconclusive("New behavior");
+            // The constructor has an indirect dependancy on PrintAt, used by Init() in constructor. bit dangerous! ;-o
+            // i.e. if PrintAt fails, then this test will most likely also fail with a false negative.
+
             var con = new MockConsole(5, 5);
             var expected1 = new[]
             {
@@ -30,9 +32,20 @@ namespace Konsole.Tests.WindowTests
                 " wk wk wk wk wk",
                 " wk wk wk wk wk"
             };
+
             con.BufferWithColor.ShouldBeEquivalentTo(expected1);
-            var w = new Window(1, 1, 3, 3, ConsoleColor.Red, ConsoleColor.DarkYellow, true, con);
-            //w.Write("12");
+            var settings = new WindowSettings() {
+                X = 1,
+                Y = 1,
+                Height = 3,
+                Width =  3,
+                ForegroundColor = ConsoleColor.Red,
+                BackgroundColor = ConsoleColor.DarkYellow,
+                Echo = true,
+                EchoConsole = con,
+                FillBackground = true
+            };
+            var w = new Window(settings);
 
             var expected2 = new[]
             {

@@ -31,6 +31,11 @@ namespace Konsole.Sample
 
             con.WriteLine("two");
             con.WriteLine("three");
+
+            w.PrintAt(0,0,"X");
+            w.PrintAt(1,1,"X");
+            w.PrintAt(2,2,"X");
+
             Console.ReadKey();
         }
 
