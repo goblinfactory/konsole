@@ -264,7 +264,7 @@ namespace Konsole
                     {
                         _echoConsole.ForegroundColor = ForegroundColor;
                         _echoConsole.BackgroundColor = BackgroundColor;
-                        _echoConsole.PrintAt(CursorLeft, CursorTop, result.Written);
+                        _echoConsole.PrintAt(CursorLeft + _x, CursorTop + _y, result.Written);
                     }
                     if (overflow == null)
                     {
