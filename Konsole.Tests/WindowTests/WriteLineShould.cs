@@ -14,7 +14,7 @@ namespace Konsole.Tests.WindowTests
             c.WriteLine("------");
             c.WriteLine("------");
             c.WriteLine("------");
-            var w = new Window(1, 1, 4, 2, true, c);
+            var w = new Window(1, 1, 4, 2, true, c, K.Transparent);
             w.WriteLine("X");
             w.WriteLine("Y");
             var expected = new[]
@@ -46,7 +46,7 @@ namespace Konsole.Tests.WindowTests
 
             Assert.AreEqual(expectedBefore, console.BufferWithColor);
 
-            var w = new Window(1, 1, 2, 2, ConsoleColor.Black, ConsoleColor.White, true, console);
+            var w = new Window(1, 1, 2, 2, ConsoleColor.Black, ConsoleColor.White, true, console, K.Transparent);
             w.ForegroundColor = ConsoleColor.Yellow;
             w.BackgroundColor = ConsoleColor.Black;
             w.WriteLine("Y");

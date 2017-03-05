@@ -209,7 +209,7 @@ namespace Konsole.Sample
 
         public static void TestBoxes()
         {
-            System.Console.Clear();
+            Console.Clear();
             var console = new Writer();
             
             int height = 18;
@@ -294,14 +294,14 @@ namespace Konsole.Sample
                 pb.Refresh(i++, name);
                 int pause = startingPauseMilliseconds - (1 * (i * (startingPauseMilliseconds - 1) / cnt));
                 if (pause > 0) Thread.Sleep(pause);
-                if (System.Console.KeyAvailable)
+                if (Console.KeyAvailable)
                 {
-                    if (System.Console.ReadKey().Key == ConsoleKey.P)
+                    if (Console.ReadKey().Key == ConsoleKey.P)
                     {
                         Thread.Sleep(2000);
                         continue;
                     }
-                    System.Console.WriteLine("key press detected, stopped before end.");
+                    Console.WriteLine("key press detected, stopped before end.");
                     break;
                 }
             }
@@ -329,24 +329,24 @@ namespace Konsole.Sample
                 bar.Refresh(0, d);
                 tasks.Add(new Task(() => ProcessFiles(d, files, bar)));
             }
-            System.Console.WriteLine("ready press enter.");
-            System.Console.ReadLine();
+            Console.WriteLine("ready press enter.");
+            Console.ReadLine();
 
             foreach (var t in tasks) t.Start();
             Task.WaitAll(tasks.ToArray());
-            System.Console.WriteLine("done.");
-            System.Console.ReadLine();
+            Console.WriteLine("done.");
+            Console.ReadLine();
 
         }
 
         public void SimplestUsage()
         {
-            System.Console.WriteLine("Simplest usage");
+            Console.WriteLine("Simplest usage");
             var pb = new ProgressBar(50);
             pb.Refresh(0, "connecting to server to download 50 files sychronously.");
-            System.Console.ReadLine();
+            Console.ReadLine();
             pb.Refresh(5, "downloading file 5");
-            System.Console.ReadLine();
+            Console.ReadLine();
             pb.Refresh(50, "finished.");
             return;
         }

@@ -83,8 +83,8 @@ namespace Konsole
         {
         }
 
-        public Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null)
-            : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
+        public Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null, params K[] options)
+            : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole, options)
         {
         }
 

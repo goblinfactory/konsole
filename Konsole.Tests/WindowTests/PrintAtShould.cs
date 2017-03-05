@@ -133,7 +133,7 @@ namespace Konsole.Tests.WindowTests
 
             Precondition.Check( ()=> expectedBefore.ShouldBeEquivalentTo(console.BufferWithColor));
 
-            var w = new Window(console);
+            var w = new Window(console, K.Transparent);
             w.ForegroundColor = ConsoleColor.DarkGreen;
             w.BackgroundColor = ConsoleColor.DarkCyan;
             w.PrintAt(1, 1, "YY");

@@ -16,7 +16,7 @@ namespace Konsole.Tests.WindowTests
             c.WriteLine("------");
             c.WriteLine("------");
             c.WriteLine("------");
-            var w = new Window(1, 1, 4, 2, true, c);
+            var w = new Window(1, 1, 4, 2, true, c, K.Transparent);
             w.Write("X");
             w.Write(" Y");
             var expected = new[]
