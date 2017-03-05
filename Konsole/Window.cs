@@ -131,6 +131,10 @@ namespace Konsole
             return window;
         }
 
+        public ProgressBar ProgressBar(int max)
+        {
+            return new ProgressBar(max, this);
+        }
 
         public Window(WindowSettings settings)
         {

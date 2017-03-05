@@ -27,28 +27,13 @@ namespace Konsole.Sample
             con.Clear();
             con.WriteLine("one");
 
-            //var settings = new WindowSettings()
-            //{
-            //    X = 10,
-            //    Y = 10,
-            //    Width = 20,
-            //    Height = 10,
-            //    ForegroundColor = ConsoleColor.Black,
-            //    BackgroundColor = ConsoleColor.DarkYellow,
-            //    Echo = true,
-            //    EchoConsole = con,
-            //    FillBackground = true
-            //};
-
-            var w = Window.Open(5,5,20,10);
+            var w = Window.Open(5,5,60,10);
             w.WriteLine("new window");
 
             con.WriteLine("two");
             con.WriteLine("three");
 
-            w.PrintAt(0,0,"X");
-            w.PrintAt(1,1,"X");
-            w.PrintAt(2,2,"X");
+            ProgressivelyFasterDemo(50,w);
 
             Console.ReadKey();
             con.Clear();
@@ -296,9 +281,9 @@ namespace Konsole.Sample
             }
         }
 
-        public static void ProgressivelyFasterDemo(int startingPauseMilliseconds = 50)
+        public static void ProgressivelyFasterDemo(int startingPauseMilliseconds = 50, Window window = null)
         {
-            var pb = new ProgressBar(300);
+            var pb = window?.ProgressBar(300) ?? new ProgressBar(300);
             var names = TestData.MakeNames(300);
             int cnt = names.Count();
             int i = 1;
