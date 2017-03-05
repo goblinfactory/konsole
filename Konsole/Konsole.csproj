@@ -50,6 +50,7 @@
     <Compile Include="Internal\CellColorMapper.cs" />
     <Compile Include="Internal\HiliteBuffer.cs" />
     <Compile Include="Internal\Cell.cs" />
+    <Compile Include="K.cs" />
     <Compile Include="MockConsole.cs" />
     <Compile Include="WindowSetting.cs" />
     <Compile Include="Writer.cs" />

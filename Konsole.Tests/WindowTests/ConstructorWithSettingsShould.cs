@@ -27,8 +27,7 @@ namespace Konsole.Tests.WindowTests
                     ForegroundColor = ConsoleColor.Red,
                     BackgroundColor = ConsoleColor.DarkYellow,
                     Echo = true,
-                    EchoConsole = con,
-                    FillBackground = true
+                    EchoConsole = con
                 };
                 var w = new Window(settings);
                 con.State.ShouldBeEquivalentTo(state);
@@ -108,8 +107,7 @@ namespace Konsole.Tests.WindowTests
                 ForegroundColor = ConsoleColor.Red,
                 BackgroundColor = ConsoleColor.DarkYellow,
                 Echo = true,
-                EchoConsole = con,
-                FillBackground = true
+                EchoConsole = con
             };
             var w = new Window(settings);
 

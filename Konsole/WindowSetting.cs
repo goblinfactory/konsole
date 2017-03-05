@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Konsole.Drawing;
 
 namespace Konsole
 {
@@ -18,7 +13,7 @@ namespace Konsole
         public ConsoleColor ForegroundColor { get; set; } = ConsoleColor.White;
         public int? Height { get; set; } = null;
         public int? Width { get; set; } = null;
-        public bool FillBackground { get; set; } = false;
+        public bool Transparent { get; set; } = false;
 
         public WindowSettings Clone()
         {

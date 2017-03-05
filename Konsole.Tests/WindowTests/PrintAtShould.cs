@@ -99,8 +99,10 @@ namespace Konsole.Tests.WindowTests
             console.ForegroundColor = ConsoleColor.Red;
             console.BackgroundColor = ConsoleColor.White;
             console.PrintAt(0, 0, "X");
+            // if the window was not transparent, then this window would overwrite (blank out) the 'X' just printed above, and test would fail.
+            // setting the window to transparent, keeps the underlying text visible. (showing through all non printed areas).
+            var w = new Window(console, K.Transparent);
 
-            var w = new Window(console);
             w.PrintAt(3, 1, "123");
 
             var expectedAfter = new[]

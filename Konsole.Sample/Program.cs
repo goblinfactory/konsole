@@ -27,7 +27,9 @@ namespace Konsole.Sample
             con.Clear();
             con.WriteLine("one");
 
-            var w = Window.Open(5,5,60,10);
+            
+            var w = Window.Open(5,5,60,10, LineThickNess.Double, ConsoleColor.Black, ConsoleColor.DarkCyan);
+
             w.WriteLine("new window");
 
             con.WriteLine("two");

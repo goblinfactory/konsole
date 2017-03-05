@@ -16,13 +16,14 @@ namespace Konsole
         private readonly int _width;
         private readonly int _height;
         private readonly bool _echo;
-        private readonly bool _fillBackground = false;
+        private readonly K[] _options;
 
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
         private IConsole _echoConsole { get; set; }
 
 
-
+        private bool _transparent = false;
+        public bool Transparent {  get {  return _transparent; } }
 
         private readonly ConsoleColor _startForeground;
         private readonly ConsoleColor _startBackground;
@@ -65,8 +66,10 @@ namespace Konsole
         {
         }
 
-        public Window(IConsole echoConsole)
-            : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, echoConsole)
+        //Window will clear the parent console area in the overlapping window.
+        // this constructor is safe to have params after IConsole because it's the only constructor that starts with IConsole, all other constructors have other strongly typed first parameter. (i.e. avoid parameter confusion)
+        public Window(IConsole echoConsole, params K[] options)
+            : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, echoConsole, options)
         {
         }
 
@@ -116,12 +119,14 @@ namespace Konsole
             return window;
         }
 
-        public static Window Open(int x, int y, int width, int height, LineThickNess thickNess = LineThickNess.Double)
+        public static Window Open(int x, int y, int width, int height, LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray, ConsoleColor backgroundColor = ConsoleColor.Black)
         {
-            var window = new Window(x+1,y+1, width-2, height-2, ConsoleColor.Gray,ConsoleColor.Black,true);
+            var window = new Window(x+1,y+1, width-2, height-2, foregroundColor,backgroundColor,true);
             var state = window._echoConsole.State;
             try
             {
+                window._echoConsole.ForegroundColor = foregroundColor;
+                window._echoConsole.BackgroundColor = backgroundColor;
                 new Draw(window._echoConsole).Box(x,y,x + window._width, y + window._height);
             }
             finally
@@ -142,21 +147,21 @@ namespace Konsole
             _y = settings.Y;
             _echo = settings.Echo;
             _echoConsole = settings.EchoConsole;
+            _transparent = settings.Transparent;
             if (_echo && _echoConsole == null) _echoConsole = new Writer();
             _width = settings.Width ?? (_echoConsole?.WindowWidth() ?? 120);
             _height = settings.Height ?? (_echoConsole?.WindowHeight ?? 80);
             _startForeground = settings.ForegroundColor;
             _startBackground = settings.BackgroundColor;
-            _fillBackground = settings.FillBackground;
             init();
         }
 
-        public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
-            bool echo = true, IConsole echoConsole = null)
+        public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,bool echo = true, IConsole echoConsole = null, params K[] options)
         {
             _x = x;
             _y = y;
             _echo = echo;
+            _options = options;
             _echoConsole = echoConsole;
             if (_echo && _echoConsole == null) _echoConsole = new Writer();
             _width = width == -1 ? (_echoConsole?.WindowWidth() ?? 120) : width;
@@ -164,6 +169,7 @@ namespace Konsole
             _startForeground = foreground;
             _startBackground = background;
 
+            if (options.Contains(K.Transparent)) _transparent = true;
             init();
         }
 
@@ -171,14 +177,15 @@ namespace Konsole
         {
             ForegroundColor = _startForeground;
             BackgroundColor = _startBackground;
-            Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
             _lines.Clear();
-            for (int i = 0; i < _height; i++) _lines.Add(i, new Row(_width, ' ', _startForeground, _startBackground));
-            if (_fillBackground)
+            for (int i = 0; i < _height; i++)
             {
-                for (int i = 0; i < _height; i++) PrintAt(0, i, new string(' ', WindowWidth()));
+                _lines.Add(i, new Row(_width, ' ', ForegroundColor, BackgroundColor));
+                if(!_transparent) PrintAt(0, i, new string(' ', _width));
             }
+            Cursor = new XY(0, 0);
+            _lastLineWrittenTo = -1;
         }
 
         /// <summary>
@@ -286,10 +293,8 @@ namespace Konsole
             Write(text);
         }
 
-
         public void Clear()
         {
-            if (_echo) _echoConsole.Clear();
             init();
         }
 
@@ -345,8 +350,6 @@ namespace Konsole
             get { return Cursor.Y; }
             set { Cursor = Cursor.WithY(value); }
         }
-
-        public XY XY { get; set; }
 
         public int CursorLeft
         {

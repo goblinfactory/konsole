@@ -1,15 +1,58 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
 {
     public class ClearShould
     {
+        public class WhenClearingWithDifferentBackgroundColor_should
+        {
+            private ConsoleState _state;
+            private Window _con;
+            private Window _window;
+
+            [SetUp]
+            public void setup()
+            {
+                _con = new MockConsole(5, 3);
+                _state = _con.State;
+                _window = new Window(3, 0, 2, 2, ConsoleColor.White, ConsoleColor.DarkCyan, true, _con);
+                _window.Clear();
+            }
+
+            [Test]
+            public void set_the_background_color_of_the_window()
+            {
+                _con.BufferWithColor.ShouldBeEquivalentTo(new [] {
+                    " wk wk wk wC wC",
+                    " wk wk wk wC wC",
+                    " wk wk wk wk wk"
+                });
+            }
+
+            [Test]
+            public void not_affect_console_state()
+            {
+                _con.State.ShouldBeEquivalentTo(_state);
+            }
+
+            [Test]
+            public void keep_own_cursor_at_top_left()
+            {
+                _con.CursorTop.Should().Be(0);
+                _con.CursorLeft.Should().Be(0);
+            }
+
+        }
+
+
         [Test]
-        public void clear_the_buffer_test2()
+        public void clear_the_window_and_buffer_of_any_written_lines()
         {
             var con = new MockConsole(10,4);
-            var w1 = new Window(5, 2, con);
+            var w1 = new Window(7, 2, con);
             w1.WriteLine("one");
             w1.WriteLine("two");
             Assert.AreEqual(new[] { "one", "two" }, w1.BufferWrittenTrimmed);
@@ -17,7 +60,7 @@ namespace Konsole.Tests.WindowTests
             w1.Clear();
             w1.WriteLine("three");
             Assert.AreEqual(new string[] { "three"}, w1.BufferWrittenTrimmed);
-            Assert.AreEqual(new string[] { "three"}, con.BufferWrittenTrimmed);
+            Assert.AreEqual(new string[] { "three", ""}, con.BufferWrittenTrimmed);
         }
 
         [Test]
