@@ -148,9 +148,10 @@ namespace Konsole.Tests.WindowTests
 
 
         [Test]
-        public void not_change_the_parent_echo_console_fore_or_background_color()
+        public void not_change_the_parent_state()
         {
             var console = new MockConsole(3, 3);
+            console.WriteLine("X");
             var state = console.State;
 
             var w = new Window(console);
@@ -161,17 +162,6 @@ namespace Konsole.Tests.WindowTests
         }
 
 
-        [Test]
-        public void preserve_the_cursor_position()
-        {
-            var console = new MockConsole(3, 3);
-            var state = console.State;
-
-            var w = new Window(console);
-            w.PrintAt(2, 2, "Y");
-
-            console.State.ShouldBeEquivalentTo(state);
-        }
 
 
     }

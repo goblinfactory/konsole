@@ -384,7 +384,8 @@ namespace Konsole
             {
                 console.ForegroundColor = ForegroundColor;
                 console.BackgroundColor = BackgroundColor;
-                gotoCursor();
+
+                GotoEchoCursor(console); 
                 action();
             }
             finally
@@ -393,14 +394,11 @@ namespace Konsole
             }
         }
 
-        private void gotoCursor()
+        private void GotoEchoCursor(IConsole console)
         {
-            if (_echo)
-            {
-                // since this is a window, that's offset of x,y on parent, do the offset now
-                _echoConsole.CursorTop = _cursor.Y + _y;
-                _echoConsole.CursorLeft = _cursor.X + _x;
-            }
+            // since this is a window, that's offset of x,y on parent, do the offset now
+            console.CursorTop = _cursor.Y + _y;
+            console.CursorLeft = _cursor.X + _x;
         }
 
     }
