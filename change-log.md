@@ -27,6 +27,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
   * `.BufferHilighted` `string[]` returns an 'approve-able' text buffer where each character is represented by 2 characters with one of of them representing the background color of the buffer.
 
 ### Backlog
+
 - Auto-documentation. 
 - I think there's quite a bit of duplication in the tests, overflow being tested in multiple places, need to cleanup tests.
 - need window `hide` and `show`. (consider option to redraw underlying screen, e.g. for modal boxes).
@@ -35,13 +36,13 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 - Merge two window borders to create neat single border.
 - allow for printing off the screen without crashing.
 - scrolling.
-- faster window printing. (currently prints character by character, very ...VEERY SLOW!) not good enough!
 - Investigate if possible to print using native windows and Mac, Linux API's and switch out depending on platform detection, fallback to slower rendering.
 - fix clear issues. Demo program not clearing properly.
 - Window not printing `ForegroundColor` correctly.
 
 ### Added
 
+- Faster window printing. was printing character by character, very ...VEERY SLOW!) not good enough!
 - `BackgroundColor` added to `IConsole`
 - new method `BufferString` 
 - new property `Cell this[int x, int y]` on `BufferedWriter` (allows for interrogating fore and background colour at X,Y position on a buffered writer.)
