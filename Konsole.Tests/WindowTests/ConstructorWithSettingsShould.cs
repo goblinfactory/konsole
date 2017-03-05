@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Konsole.Drawing;
 using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
@@ -37,8 +38,49 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void support_optional_title_and_border()
         {
-            // nest a child window inside the parent window to support the offsetting
-            Assert.Inconclusive("New requirement");
+            Assert.Inconclusive();
+            //var con = new MockConsole(8, 7);
+            //var expected1 = new[]
+            //{
+            //    "        ",
+            //    "        ",
+            //    "        ",
+            //    "        ",
+            //    "        ",
+            //    "        ",
+            //    "        "
+            //};
+
+            //con.Buffer.ShouldBeEquivalentTo(expected1);
+            //var settings = new WindowSettings()
+            //{
+            //    X = 1,
+            //    Y = 1,
+            //    Height = 5,
+            //    Width = 5,
+            //    ForegroundColor = ConsoleColor.Red,
+            //    BackgroundColor = ConsoleColor.DarkYellow,
+            //    Echo = true,
+            //    EchoConsole = con,
+            //    FillBackground = true,
+            //    Title = "test",
+            //    BorderThickness = LineThickNess.Single,
+            //    Border = true
+            //};
+            //var w = new Window(settings);
+
+            //var expected2 = new[]
+            //{
+            //    "        ",
+            //    " ┌test┐ ",
+            //    " │    │ ",
+            //    " │    │ ",
+            //    " │    │ ",
+            //    " └────┘ ",
+            //    "        ",
+            //};
+
+            //con.Buffer.ShouldBeEquivalentTo(expected2);
         }
 
         [Test]

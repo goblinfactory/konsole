@@ -19,8 +19,11 @@ namespace Konsole
         public int? Height { get; set; } = null;
         public int? Width { get; set; } = null;
         public bool FillBackground { get; set; } = false;
-        public bool Border { get; set; } = false;
-        public LineThickNess BorderThickness { get; set; } = LineThickNess.Single;
-        public string Title { get; set; } = null;
+
+        public WindowSettings Clone()
+        {
+            var settings = (WindowSettings)MemberwiseClone();
+            return settings;
+        }
     }
 }

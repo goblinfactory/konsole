@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Konsole.Drawing;
 using Konsole.Internal;
 
 namespace Konsole
@@ -83,6 +84,53 @@ namespace Konsole
             : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
         {
         }
+
+        public static Window Open(WindowSettings settings)
+        {
+            var newSettings = settings.Clone();
+            // todo check size, and throw exception if too small!
+            // todo check if window can exist inside parent!
+            newSettings.X = settings.X + 1;
+            newSettings.Y = settings.Y + 1;
+            newSettings.Width = settings.Width - 2;
+            newSettings.Height = settings.Height - 2;
+            var window = new Window(newSettings);
+            var state = window._echoConsole.State;
+            try
+            {
+                var con = window._echoConsole;
+                con.ForegroundColor = settings.ForegroundColor;
+                con.BackgroundColor = settings.BackgroundColor;
+                new Draw(window._echoConsole)
+                    .Box(
+                        settings.X,
+                        settings.Y,
+                        settings.X + window._width,
+                        settings.Y + window._height
+                    );
+            }
+            finally
+            {
+                window._echoConsole.State = state;
+            }
+            return window;
+        }
+
+        public static Window Open(int x, int y, int width, int height, LineThickNess thickNess = LineThickNess.Double)
+        {
+            var window = new Window(x+1,y+1, width-2, height-2, ConsoleColor.Gray,ConsoleColor.Black,true);
+            var state = window._echoConsole.State;
+            try
+            {
+                new Draw(window._echoConsole).Box(x,y,x + window._width, y + window._height);
+            }
+            finally
+            {
+                window._echoConsole.State = state;
+            }
+            return window;
+        }
+
 
         public Window(WindowSettings settings)
         {

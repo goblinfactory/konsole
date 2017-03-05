@@ -27,20 +27,20 @@ namespace Konsole.Sample
             con.Clear();
             con.WriteLine("one");
 
-            var settings = new WindowSettings()
-            {
-                X = 10,
-                Y = 10,
-                Width = 20,
-                Height = 15,
-                ForegroundColor = ConsoleColor.Black,
-                BackgroundColor = ConsoleColor.DarkYellow,
-                Echo = true,
-                EchoConsole = con,
-                FillBackground = true
-            };
+            //var settings = new WindowSettings()
+            //{
+            //    X = 10,
+            //    Y = 10,
+            //    Width = 20,
+            //    Height = 10,
+            //    ForegroundColor = ConsoleColor.Black,
+            //    BackgroundColor = ConsoleColor.DarkYellow,
+            //    Echo = true,
+            //    EchoConsole = con,
+            //    FillBackground = true
+            //};
 
-            var w = new Window(settings);
+            var w = Window.Open(5,5,20,10);
             w.WriteLine("new window");
 
             con.WriteLine("two");
@@ -51,6 +51,7 @@ namespace Konsole.Sample
             w.PrintAt(2,2,"X");
 
             Console.ReadKey();
+            con.Clear();
         }
 
 
@@ -128,11 +129,11 @@ namespace Konsole.Sample
 
             con.Clear();
             Console.WriteLine("starting client server");
-            var height = 30;
+            var height = 20;
             int width = (Console.WindowWidth / 2) - 2;
             var client = new Window(1, 2, width, height);
             var server = new Window(width + 2, 2, width, height);
-            Console.CursorTop = 32;
+            Console.CursorTop = 22;
             // simulate a bunch of messages from my fake REST server
 
             var messages = new[]
