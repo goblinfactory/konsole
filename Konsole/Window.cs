@@ -11,7 +11,7 @@ namespace Konsole
 
     public class Window : IConsole
     {
-        private bool OverflowBottom
+        public bool OverflowBottom
         {
             get { return CursorTop > (_height - 1); }
         }
@@ -28,7 +28,11 @@ namespace Konsole
 
 
         private bool _transparent = false;
+
+        public bool Clipping { get { return _clipping; } }
         private bool _clipping = true;
+
+        public bool Scrolling {  get {  return _scrolling; } }
         private bool _scrolling = false;
 
         public bool Transparent {  get {  return _transparent; } }

@@ -8,6 +8,7 @@ namespace Konsole.Tests.WindowTests
     public class PrintAtShould
     {
 
+        [Category(CrossCuttingConcerns.Scrolling)]
         public class WhenScrollingDisabled
         {
             [Test]

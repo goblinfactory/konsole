@@ -6,6 +6,7 @@ namespace Konsole.Tests.WindowTests
 {
     class WriteLineShould
     {
+        [Category(CrossCuttingConcerns.Scrolling)]
         public class WhenScrollingEnabled
         {
             public void scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
@@ -14,6 +15,7 @@ namespace Konsole.Tests.WindowTests
             }
         }
 
+        [Category(CrossCuttingConcerns.Scrolling)]
         public class WhenScrollingDisabled
         {
             [Test]
@@ -36,14 +38,6 @@ namespace Konsole.Tests.WindowTests
             }
 
 
-            /// <summary>
-            /// EOF indicator is currently (0,Height+1) so that when printing, we can detect we are hear and initiate a scroll if needed before printing.
-            /// </summary>
-            [Test]
-            public void when_first_character_overflows_the_end_of_screen_set_XY_to_EOF_indicator()
-            {
-                Assert.Inconclusive("new requirement");    
-            }
         }
 
 

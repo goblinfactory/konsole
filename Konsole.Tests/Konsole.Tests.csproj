@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrossCuttingConcerns.cs" />
     <Compile Include="ProgressBarTests\NextShould.cs" />
     <Compile Include="WindowTests\BackgroundColorShould.cs" />
     <Compile Include="WindowTests\BufferHighLightedShould.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="WindowTests\BufferTests.cs" />
     <Compile Include="Helpers\Precondition.cs" />
     <Compile Include="WindowTests\OpenShould.cs" />
+    <Compile Include="WindowTests\OverflowBottomShould.cs" />
     <Compile Include="WindowTests\PrintAtShould.cs" />
     <Compile Include="WindowTests\ScrollingTests.cs" />
     <Compile Include="WindowTests\WriteLineShould.cs" />
