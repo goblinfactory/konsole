@@ -74,7 +74,7 @@
     <Compile Include="WindowTests\ConstructorWithSettingsShould.cs" />
     <Compile Include="WindowTests\CursorTopShould.cs" />
     <Compile Include="WindowTests\CursorLeftShould.cs" />
-    <Compile Include="WindowTests\EchoOntoAnotherConsoleTests.cs" />
+    <Compile Include="WindowTests\EchoPropertyTests.cs" />
     <Compile Include="WindowTests\ForegroundColorShould.cs" />
     <Compile Include="WindowTests\HideTests.cs" />
     <Compile Include="WindowTests\BufferTests.cs" />

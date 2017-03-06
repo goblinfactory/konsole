@@ -6,6 +6,48 @@ namespace Konsole.Tests.WindowTests
 {
     class WriteLineShould
     {
+        public class WhenScrollingEnabled
+        {
+            public void scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
+            {
+                Assert.Inconclusive("new requirement");
+            }
+        }
+
+        public class WhenScrollingDisabled
+        {
+            [Test]
+            public void clip_all_text_that_overflows_the_bottom_of_the_screen_and_not_scroll_the_screen()
+            {
+                var c = new MockConsole(6, 4);
+                c.WriteLine("one");
+                c.WriteLine("two");
+                c.WriteLine("three");
+                c.WriteLine("four");
+                c.WriteLine("five");
+                var expected = new[]
+                {
+                "one   ",
+                "two   ",
+                "three ",
+                "four  "    
+                };
+                c.Buffer.ShouldBeEquivalentTo(expected);
+            }
+
+
+            /// <summary>
+            /// EOF indicator is currently (0,Height+1) so that when printing, we can detect we are hear and initiate a scroll if needed before printing.
+            /// </summary>
+            [Test]
+            public void when_first_character_overflows_the_end_of_screen_set_XY_to_EOF_indicator()
+            {
+                Assert.Inconclusive("new requirement");    
+            }
+        }
+
+
+
         [Test]
         public void write_relative_to_the_window_being_printed_to_not_the_parent()
         {

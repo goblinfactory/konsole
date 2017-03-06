@@ -23,6 +23,9 @@ namespace Konsole
 
 
         private bool _transparent = false;
+        private bool _clipping = true;
+        private bool _scrolling = false;
+
         public bool Transparent {  get {  return _transparent; } }
 
         private readonly ConsoleColor _startForeground;
@@ -169,7 +172,21 @@ namespace Konsole
             _startForeground = foreground;
             _startBackground = background;
 
+            // todo : refactor : setting options, move out to seperate class and-or method
             if (options.Contains(K.Transparent)) _transparent = true;
+            if (options.Contains(K.Clipping) && options.Contains(K.Scrolling)) throw new ArgumentOutOfRangeException(nameof(options),"Cannot specify Clipping as well as Scrolling; pick 1, or leave both out. Clipping is default.");
+                if (options.Contains(K.Clipping))
+            {
+                _clipping = true;
+                _scrolling = false;
+            }
+
+            if (options.Contains(K.Scrolling))
+            {
+                _scrolling = false;
+                _clipping = true;
+            }
+
             init();
         }
 

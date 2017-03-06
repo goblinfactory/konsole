@@ -23,24 +23,64 @@ namespace Konsole.Sample
 
         private static void RandomStuff(IConsole con)
         {
-            // this doesnt work properly! PrintAt seems to be moving the con cursor?!
-            con.Clear();
-            con.WriteLine("one");
+            // experiment to see if we can read a block of the screen by using move and redirecting input and output
+            // see http://stackoverflow.com/questions/12355378/read-from-location-on-console-c-sharp
 
-            
+            // windows specific 
+            // more information https://msdn.microsoft.com/en-us/library/windows/desktop/ms681913(v=vs.85).aspx
+
+            con.WriteLine("testing opening a dialog window and running one of the demos");
+            con.WriteLine(" ('f' progressively faster) inside it");
             var w = Window.Open(5,5,60,10, LineThickNess.Double, ConsoleColor.Black, ConsoleColor.DarkCyan);
-
             w.WriteLine("new window");
-
-            con.WriteLine("two");
-            con.WriteLine("three");
-
             ProgressivelyFasterDemo(50,w);
 
-            Console.ReadKey();
-            con.Clear();
         }
 
+
+        private static void RunCommand(IConsole con, char cmd)
+        {
+            switch (cmd)
+            {
+                case 'f':
+                    TestForms();
+                    break;
+
+                case 'w':
+                    TestWindows(con);
+                    break;
+
+                case 'r':
+                    RandomStuff(con);
+                    break;
+
+                case 'h':
+                    TestHilite(con);
+                    break;
+
+                case 'l':
+                    ParallelDemo();
+                    break;
+
+                case 'd':
+                    ProgressivelyFasterDemo();
+                    break;
+
+                case 'p':
+                    Progress(con);
+                    break;
+
+                case 'b':
+                    TestBoxes();
+                    break;
+
+
+
+                default:
+                    break;
+            }
+
+        }
 
         private static void Main(string[] args)
         {
@@ -48,78 +88,48 @@ namespace Konsole.Sample
             char cmd = ' ';
             while (cmd != 'q')
             {
+                con.Clear();
                 printMenu(con);
                 cmd = Console.ReadKey(true).KeyChar;
-                switch (cmd)
-                {
-                    case 'c':
-                        con.Clear();
-                        Console.Clear();
-                        printMenu(con);
-                        break;
-
-                        
-                    case 'l':
-                        Console.Clear();
-                        ParallelDemo();
-                        break;
-
-                    case 'f':
-                        Console.Clear();
-                        ProgressivelyFasterDemo();
-                        break;
-
-                    case 'w':
-                        TestWindows(con);
-                        break;
-                        
-                    case 'h':
-                        TestHilite();
-                        break;
-                    case 'p':
-                        Progress(con);
-                        break;
-
-                    case 'b':
-                        TestBoxes();
-                        break;
-
-                    case 'r':
-                        RandomStuff(con);
-                        break;
-
-                    default:
-                        break;
-                }
-
+                if (cmd == 'q') break;
+                var state = con.State;
+                con.Clear();
+                Console.Clear();
+                RunCommand(con, cmd);
+                Console.ReadKey(true);
+                con.State = state;
             }
         }
 
-        private static void printMenu(Window con)
+        private static void printMenu(IConsole con)
         {
+            con.WriteLine("Misc demo and test projects - press key to run demo");
+            con.WriteLine("press key again to return to menu"); 
+            con.WriteLine("---------------------------------------------------");
+            
             con.WriteLine("");
+            con.WriteLine("f : Forms : auto forms from objects");
             con.WriteLine("w : windows");
+            con.WriteLine("r : random test stuff. Changes often on each checkin.");
+            con.WriteLine("    (Open a dialog window and run one of the other tests 'f' inside it.)");
             con.WriteLine("h : hiliting");
             con.WriteLine("b : boxes");
-            con.WriteLine("f : progressively faster demo");
+            con.WriteLine("d : progressively faster 'd'emo");
             con.WriteLine("p : progress bars");
             con.WriteLine("l : Parallel Demo");
             con.WriteLine("c : clear screen");
-            con.WriteLine("r : random test stuff (changes often on each checkin)");
             con.WriteLine("q : quit");
             con.WriteLine("");
         }
 
         private static void TestWindows(IConsole con)
         {
-
-
-            con.Clear();
-            Console.WriteLine("starting client server");
+            con.WriteLine("starting client server demo");
             var height = 20;
-            int width = (Console.WindowWidth / 2) - 2;
-            var client = new Window(1, 2, width, height);
-            var server = new Window(width + 2, 2, width, height);
+            int width = (Console.WindowWidth / 3) - 3;
+            var client = new Window(1, 3, width, height, ConsoleColor.Gray, ConsoleColor.DarkBlue);
+            var server = new Window(width + 2, 3, width, height);
+            
             Console.CursorTop = 22;
             // simulate a bunch of messages from my fake REST server
 
@@ -146,16 +156,19 @@ namespace Konsole.Sample
                 server.WriteLine("");
             }
 
-            Console.WriteLine("");
-            Console.WriteLine("finished, press any key to continue");
-            Console.ReadKey();
-            Console.Clear();
+            client.WriteLine("this is a long line that will wrap over the end of the window.");
+
+            
+            var nameWindow = Window.Open(width * 2 + 3, 3, width, height + 1); // HACK is this an error? shouldn't have to add 1 to height?
+            var names = TestData.MakeNames(height-2);
+            con.ForegroundColor = ConsoleColor.DarkGray;
+            con.WriteLine("If you see ??? in any of the names, that's because Windows terminal does not print all UTF8 characters. (This prints correctly in Linux and Mac).");
+            foreach(var name in names) nameWindow.WriteLine(name);
         }
 
 
         private static void Progress(IConsole con)
         {
-            Console.Clear();
             Console.WriteLine("'p' Test Progress bars");
             Console.WriteLine("----------------------");
 
@@ -172,44 +185,33 @@ namespace Konsole.Sample
             }
             pb.Refresh(10, "All cats loaded.");
             Console.WriteLine(" Done!");
-            Console.ReadKey(true);
-            Console.Clear();
         }
 
 
-        private static void TestHilite()
+        private static void TestHilite(IConsole con)
         {
             var normal = ConsoleColor.Black;
             var hilite = ConsoleColor.White;
 
             var console = new Window(40, 10, true);
-            var fore = console.ForegroundColor;
-            try
-            {
-                console.ForegroundColor = ConsoleColor.Red;
+            console.ForegroundColor = ConsoleColor.Red;
 
-                console.BackgroundColor = normal;
-                console.WriteLine("menu item 1");
-                console.WriteLine("menu item 2");
-                console.Write("menu ");
+            console.BackgroundColor = normal;
+            console.WriteLine("menu item 1");
+            console.WriteLine("menu item 2");
+            console.Write("menu ");
 
-                console.BackgroundColor = hilite;
-                console.Write("item");
+            console.BackgroundColor = hilite;
+            console.Write("item");
 
-                console.BackgroundColor = normal;
-                console.WriteLine(" 3");
-                console.WriteLine("menu item 4");
-                console.WriteLine("menu item 5");
-            }
-            finally
-            {
-                console.ForegroundColor = fore;
-            }
+            console.BackgroundColor = normal;
+            console.WriteLine(" 3");
+            console.WriteLine("menu item 4");
+            console.WriteLine("menu item 5");
         }
 
         public static void TestBoxes()
         {
-            Console.Clear();
             var console = new Writer();
             
             int height = 18;
@@ -232,7 +234,6 @@ namespace Konsole.Sample
                 .Line(ex - 5, ey - 4, ex - 5, ey - 2, LineThickNess.Single);  // faulty! need to fix
                             
             console.PrintAt(sx+2, sy+1, "DEMO INVOICE");
-            console.CursorTop = ey+1;
         }
 
         public static void TestForms()
@@ -296,12 +297,7 @@ namespace Konsole.Sample
                 if (pause > 0) Thread.Sleep(pause);
                 if (Console.KeyAvailable)
                 {
-                    if (Console.ReadKey().Key == ConsoleKey.P)
-                    {
-                        Thread.Sleep(2000);
-                        continue;
-                    }
-                    Console.WriteLine("key press detected, stopped before end.");
+                    Console.ReadKey(true);
                     break;
                 }
             }
@@ -335,8 +331,6 @@ namespace Konsole.Sample
             foreach (var t in tasks) t.Start();
             Task.WaitAll(tasks.ToArray());
             Console.WriteLine("done.");
-            Console.ReadLine();
-
         }
 
         public void SimplestUsage()
