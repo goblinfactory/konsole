@@ -11,6 +11,11 @@ namespace Konsole
 
     public class Window : IConsole
     {
+        private bool OverflowBottom
+        {
+            get { return CursorTop > (_height - 1); }
+        }
+
         private readonly int _x;
         private readonly int _y;
         private readonly int _width;
@@ -289,6 +294,7 @@ namespace Konsole
 
         public void WriteLine(string format, params object[] args)
         {
+            if (OverflowBottom) return;
             // we want to reset the state of parent, but not this object
             DoCommand(_echoConsole, () =>
             {
@@ -324,6 +330,7 @@ namespace Konsole
         //TODO: convert everything to redirect all calls to PrintAt, so that writing to parent works flawlessly!
         private void _write(string text)
         {
+            if (_clipping && OverflowBottom) return;
             DoCommand(_echoConsole, () =>
             {
                 var overflow = "";
@@ -347,6 +354,7 @@ namespace Konsole
                     else
                     {
                         Cursor = new XY(0, Cursor.Y + 1);
+                        if (_clipping && OverflowBottom) break;
                     }
                     text = overflow;
                 }
