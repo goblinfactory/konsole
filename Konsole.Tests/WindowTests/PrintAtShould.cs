@@ -8,6 +8,23 @@ namespace Konsole.Tests.WindowTests
     public class PrintAtShould
     {
 
+        public class WhenScrollingDisabled
+        {
+            [Test]
+            public void clip_all_text_that_overflows_the_bottom_of_the_screen_and_not_scroll_the_screen()
+            {
+                var c = new MockConsole(6, 3);
+                c.PrintAt(2,2, "APPLES!");
+                var expected = new[]
+                {
+                "      ",
+                "      ",
+                "  APPL"
+                };
+                c.Buffer.ShouldBeEquivalentTo(expected);
+            }
+        }
+
         [Test]
         public void print_relative_to_the_window_being_printed_to_not_the_parent()
         {
