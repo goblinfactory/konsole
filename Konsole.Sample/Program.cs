@@ -117,7 +117,6 @@ namespace Konsole.Sample
             con.WriteLine("d : progressively faster 'd'emo");
             con.WriteLine("p : progress bars");
             con.WriteLine("l : Parallel Demo");
-            con.WriteLine("c : clear screen");
             con.WriteLine("q : quit");
             con.WriteLine("");
         }
@@ -342,7 +341,6 @@ namespace Konsole.Sample
             pb.Refresh(5, "downloading file 5");
             Console.ReadLine();
             pb.Refresh(50, "finished.");
-            return;
         }
 
 
