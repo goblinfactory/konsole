@@ -28,10 +28,12 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 ### Backlog
 
+- Implement my `C` form builder pattern from 1985, just for fun ;-D
 - Auto-documentation. 
+- simple menu system.
 - I think there's quite a bit of duplication in the tests, overflow being tested in multiple places, need to cleanup tests.
 - need window `hide` and `show`. (consider option to redraw underlying screen, e.g. for modal boxes).
-- fix bug with `PrintAt` with text that overflows, causing crash.
+
 - Optional borders for windows
 - Merge two window borders to create neat single border.
 - allow for printing off the screen without crashing.
@@ -61,6 +63,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 ### Fixed
 
+- fix bug with `PrintAt`, `Write` and `WriteLine` with text that overflows, causing crash.
 - fix bug when calling clear on bufferedWriter and crashing. (was not resetting Y position.)
 - fix bug, calling `refresh` on progress bar changing cursor position.
 - fix bug, Write (not WriteLine) causes progress bar to print from last X position and overflows.

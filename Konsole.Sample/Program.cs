@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using Konsole.Drawing;
 using Konsole.Forms;
 using Konsole.Internal;
+using Konsole.Sample.Demos;
 
 namespace Konsole.Sample
 {
@@ -43,11 +43,11 @@ namespace Konsole.Sample
             switch (cmd)
             {
                 case 'f':
-                    TestForms();
+                    FormsDemo.Run();
                     break;
 
                 case 'w':
-                    TestWindows(con);
+                    WindowDemo.Run(con);
                     break;
 
                 case 'r':
@@ -55,7 +55,7 @@ namespace Konsole.Sample
                     break;
 
                 case 'h':
-                    TestHilite(con);
+                    HiliteDemo.Run(con);
                     break;
 
                 case 'l':
@@ -67,13 +67,12 @@ namespace Konsole.Sample
                     break;
 
                 case 'p':
-                    Progress(con);
+                    ProgressBarDemo.Run(con);
                     break;
 
                 case 'b':
-                    TestBoxes();
+                    BoxesDemo.Run();
                     break;
-
 
 
                 default:
@@ -121,138 +120,7 @@ namespace Konsole.Sample
             con.WriteLine("");
         }
 
-        private static void TestWindows(IConsole con)
-        {
-            con.WriteLine("starting client server demo");
-            var height = 20;
-            int width = (Console.WindowWidth / 3) - 3;
-            var client = new Window(1, 3, width, height, ConsoleColor.Gray, ConsoleColor.DarkBlue);
-            var server = new Window(width + 2, 3, width, height);
-            
-            Console.CursorTop = 22;
-            // simulate a bunch of messages from my fake REST server
 
-            var messages = new[]
-            {
-                new { Request = "put foo", Response = "404|Not Found|foo|"},
-                new { Request = "post animals/cat", Response = "201|Created|animals/cat|"},
-                new { Request = "post animals/dog", Response = "201|Created|animals/dog|"},
-                new { Request = "get animals", Response = "206 | Partial content | animals |[`animals/cat`, `animals/dog`]"}
-
-            };
-            client.WriteLine("CLIENT");
-            client.WriteLine("------");
-            server.WriteLine("SERVER");
-            server.WriteLine("------");
-
-            foreach (var m in messages)
-            {
-                client.Send(m.Request);
-                server.Recieve(m.Request);
-                server.Send(m.Response);
-                client.Recieve(m.Response);
-                client.WriteLine("");
-                server.WriteLine("");
-            }
-
-            client.WriteLine("this is a long line that will wrap over the end of the window.");
-
-            
-            var nameWindow = Window.Open(width * 2 + 3, 3, width, height + 1); // HACK is this an error? shouldn't have to add 1 to height?
-            var names = TestData.MakeNames(height-2);
-            con.ForegroundColor = ConsoleColor.DarkGray;
-            con.WriteLine("If you see ??? in any of the names, that's because Windows terminal does not print all UTF8 characters. (This prints correctly in Linux and Mac).");
-            foreach(var name in names) nameWindow.WriteLine(name);
-        }
-
-
-        private static void Progress(IConsole con)
-        {
-            Console.WriteLine("'p' Test Progress bars");
-            Console.WriteLine("----------------------");
-
-            var pb = new ProgressBar(10);
-            var pb2 = new ProgressBar(30);
-            Console.Write("loading...");
-            for (int i = 0; i < 10; i++)
-            {
-                Thread.Sleep(500);
-                Console.Write($" {i}");
-                pb.Refresh(i, $"loading cat {i}");
-                pb2.Refresh(i, $"loading dog {i}");
-
-            }
-            pb.Refresh(10, "All cats loaded.");
-            Console.WriteLine(" Done!");
-        }
-
-
-        private static void TestHilite(IConsole con)
-        {
-            var normal = ConsoleColor.Black;
-            var hilite = ConsoleColor.White;
-
-            var console = new Window(40, 10, true);
-            console.ForegroundColor = ConsoleColor.Red;
-
-            console.BackgroundColor = normal;
-            console.WriteLine("menu item 1");
-            console.WriteLine("menu item 2");
-            console.Write("menu ");
-
-            console.BackgroundColor = hilite;
-            console.Write("item");
-
-            console.BackgroundColor = normal;
-            console.WriteLine(" 3");
-            console.WriteLine("menu item 4");
-            console.WriteLine("menu item 5");
-        }
-
-        public static void TestBoxes()
-        {
-            var console = new Writer();
-            
-            int height = 18;
-            int sy = 2;
-            int sx = 2;
-            int width = 60;
-            int ex = sx + width;
-            int ey = sy + height;
-            int col1 = 20;
-
-            var draw = new Draw(console, LineThickNess.Double);
-            draw
-                .Box(sx, sy, ex, ey, "my test box")
-                .Line(sx, sy + 2, ex, sy + 2)
-                .Line(sx + col1, sy, sx + col1, sy + 2, LineThickNess.Single)
-                //.Box(sx + 35, ey - 4, ex - 5, ey - 2); faulty! need to fix
-                .Line(sx + 35, ey - 4, ex - 5, ey - 4, LineThickNess.Double)
-                .Line(sx + 35, ey - 2, ex - 5, ey - 2, LineThickNess.Double)
-                .Line(sx + 35, ey - 4, sx + 35, ey - 2, LineThickNess.Single) // faulty! need to fix
-                .Line(ex - 5, ey - 4, ex - 5, ey - 2, LineThickNess.Single);  // faulty! need to fix
-                            
-            console.PrintAt(sx+2, sy+1, "DEMO INVOICE");
-        }
-
-        public static void TestForms()
-        {
-            var form1 = new Form(80,new ThickBoxStyle());
-            var person = new Person()
-            {
-                FirstName = "Fred",
-                LastName = "Astair",
-                FieldWithLongerName = "22 apples",
-                FavouriteMovie = "Night of the Day of the Dawn of the Son of the Bride of the Return of the Revenge of the Terror of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating Subhumanoid Zombified Living Dead, Part 2: In Shocking 2-D"
-            };
-            form1.Show(person);
-
-            // works with anonymous types
-            new Form().Show(new {Height = "40px", Width = "200px"}, "Demo Box");
-
-            // change the box style, and width, thickbox
-            new Form(40, new ThickBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
-        }
 
         public class Cat
         {
@@ -352,8 +220,7 @@ namespace Konsole.Sample
                 bar.Next(new FileInfo(file).Name);
                 Thread.Sleep(150);
             }
-        } 
-
+        }
     }
 
     // fake Assert class so that I can have an Assert without referencing nunit in the sample project
