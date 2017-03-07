@@ -33,7 +33,7 @@ namespace Konsole.Sample
             con.WriteLine(" ('f' progressively faster) inside it");
             var w = Window.Open(5,5,60,10, LineThickNess.Double, ConsoleColor.Black, ConsoleColor.DarkCyan);
             w.WriteLine("new window");
-            ProgressivelyFasterDemo(50,w);
+            ProgressBarDemo.ProgressivelyFasterDemo(50,w);
 
         }
 
@@ -63,17 +63,16 @@ namespace Konsole.Sample
                     break;
 
                 case 'd':
-                    ProgressivelyFasterDemo();
+                    ProgressBarDemo.ProgressivelyFasterDemo();
                     break;
 
                 case 'p':
-                    ProgressBarDemo.Run(con);
+                    ProgressBarDemo.SimpleDemo(con);
                     break;
 
                 case 'b':
                     BoxesDemo.Run();
                     break;
-
 
                 default:
                     break;
@@ -151,25 +150,7 @@ namespace Konsole.Sample
             }
         }
 
-        public static void ProgressivelyFasterDemo(int startingPauseMilliseconds = 50, Window window = null)
-        {
-            var pb = window?.ProgressBar(300) ?? new ProgressBar(300);
-            var names = TestData.MakeNames(300);
-            int cnt = names.Count();
-            int i = 1;
-            foreach (var name in names)
-            {
-                pb.Refresh(i++, name);
-                int pause = startingPauseMilliseconds - (1 * (i * (startingPauseMilliseconds - 1) / cnt));
-                if (pause > 0) Thread.Sleep(pause);
-                if (Console.KeyAvailable)
-                {
-                    Console.ReadKey(true);
-                    break;
-                }
-            }
 
-        }
 
 
         static void ParallelDemo()
