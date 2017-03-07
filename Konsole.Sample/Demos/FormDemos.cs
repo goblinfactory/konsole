@@ -7,12 +7,12 @@ using Konsole.Forms;
 
 namespace Konsole.Sample.Demos
 {
-    public class FormsDemo
+    public class FormDemos
     {
         public static void Run()
         {
             var form1 = new Form(80, new ThickBoxStyle());
-            var person = new Program.Person()
+            var person = new Person()
             {
                 FirstName = "Fred",
                 LastName = "Astair",
@@ -29,4 +29,13 @@ namespace Konsole.Sample.Demos
         }
 
     }
+
+    internal class Person
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FieldWithLongerName { get; set; }
+        public string FavouriteMovie { get; set; }
+    }
+
 }

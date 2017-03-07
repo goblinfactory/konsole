@@ -43,10 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Demos\BoxesDemo.cs" />
-    <Compile Include="Demos\FormsDemo.cs" />
+    <Compile Include="Demos\BoxeDemos.cs" />
+    <Compile Include="Demos\FormDemos.cs" />
     <Compile Include="Demos\HiliteDemo.cs" />
-    <Compile Include="Demos\ProgressBarDemo.cs" />
+    <Compile Include="Demos\ProgressBarDemos.cs" />
     <Compile Include="Demos\WindowDemo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -7,7 +7,7 @@ using Konsole.Drawing;
 
 namespace Konsole.Sample.Demos
 {
-    public class BoxesDemo
+    public class BoxeDemos
     {
         public static void Run()
         {

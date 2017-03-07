@@ -53,4 +53,23 @@ namespace Konsole.Sample.Demos
         }
 
     }
+
+    public static class SendRec
+    {
+        public static void Send(this Window con, string text)
+        {
+            con.WriteLine(text);
+        }
+
+        public static void Recieve(this Window con, string text)
+        {
+            // awful, but will do...for rudimentary testing!
+            var c = con.BackgroundColor;
+            con.BackgroundColor = ConsoleColor.DarkYellow;
+            con.WriteLine(text);
+            con.BackgroundColor = c;
+        }
+
+    }
+
 }
