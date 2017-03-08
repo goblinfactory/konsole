@@ -12,7 +12,8 @@ namespace Konsole
     /// </summary>
     public class MockConsole : Window
     {
-        public MockConsole() : base(120,60,false) { }
-        public MockConsole(int width, int height) : base(width, height ,false) { }
+        public MockConsole(int x, int y, params K[] options) : base(x, y, null, options) { }
+        public MockConsole() : base(120, 60, false) { }
+        public MockConsole(int width, int height) : base(width, height, false) { }
     }
 }

@@ -9,26 +9,6 @@ namespace Konsole.Tests.WindowTests
     public class WriteShould
     {
 
-        public class WhenScrollingDisabled
-        {
-            [Test]
-            public void clip_all_text_that_overflows_the_bottom_of_the_screen_and_not_scroll_the_screen()
-            {
-                var c = new MockConsole(6, 3);
-                c.CursorTop = 2;
-                c.CursorLeft = 2;
-                c.Write("APPLES!");
-                var expected = new[]
-                {
-                "      ",
-                "      ",
-                "  APPL"
-                };
-                c.Buffer.ShouldBeEquivalentTo(expected);
-            }
-        }
-
-
         [Test]
         public void write_relative_to_the_window_being_printed_to_not_the_parent()
         {

@@ -61,12 +61,12 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void set_clipping_as_default_if_nothing_specified()
+        public void set_scrolling_as_default_if_nothing_specified()
         {
             var c = new MockConsole();
             var w = new Window(10, 10, c);
-            Assert.True(w.Clipping);
-            Assert.False(w.Scrolling);
+            Assert.True(w.Scrolling);
+            Assert.False(w.Clipping);
         }
 
     }

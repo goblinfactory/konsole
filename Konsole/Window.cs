@@ -11,10 +11,7 @@ namespace Konsole
 
     public class Window : IConsole
     {
-        public bool OverflowBottom
-        {
-            get { return CursorTop > (_height - 1); }
-        }
+        public bool OverflowBottom => CursorTop >= _height;
 
         private readonly int _x;
         private readonly int _y;
@@ -30,10 +27,10 @@ namespace Konsole
         private bool _transparent = false;
 
         public bool Clipping { get { return _clipping; } }
-        private bool _clipping = true;
+        private bool _clipping = false;
 
         public bool Scrolling {  get {  return _scrolling; } }
-        private bool _scrolling = false;
+        private bool _scrolling = true;
 
         public bool Transparent {  get {  return _transparent; } }
 
@@ -61,7 +58,10 @@ namespace Konsole
             get { return _cursor; }
             set
             {
-                _cursor = value;
+                int x = value.X >= _width ? (_width - 1) : value.X;
+                int y = value.Y > _height ? _height : value.Y;
+                _cursor = new XY(x,y);
+                
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X != 0) _lastLineWrittenTo = _cursor.Y;
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X == 0) _lastLineWrittenTo = _cursor.Y - 1;
             }
@@ -308,20 +308,8 @@ namespace Konsole
 
         public void WriteLine(string format, params object[] args)
         {
-            if (OverflowBottom) return;
-            // we want to reset the state of parent, but not this object
-            DoCommand(_echoConsole, () =>
-            {
-                var text = string.Format(format, args);
-                string overflow = "";
-                var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
-                overflow = result.Overflow;
-
-                if (_echo) _echoConsole.WriteLine(result.Written);
-
-                Cursor = new XY(0, Cursor.Y < _height ? Cursor.Y + 1 : _height);
-                if (overflow != null) WriteLine(overflow);
-            });
+            Write(format,args);
+            Cursor = new XY(0, Cursor.Y + 1);
         }
 
         public void Write(string format, params object[] args)
@@ -340,19 +328,29 @@ namespace Konsole
             _write(text);
         }
 
+        // scroll the screen up 1 line, and pop the top line off the buffer
+        public void ScrollUp()
+        {
+
+            for (int i = 0; i < (_height-1); i++)
+            {
+                _lines[i] = _lines[i+1];
+            }
+            _lines[_height-1] = new Row(_width, ' ', ForegroundColor, BackgroundColor);
+            Cursor = new XY(0, _height-1);
+        }
 
         //TODO: convert everything to redirect all calls to PrintAt, so that writing to parent works flawlessly!
         private void _write(string text)
         {
             if (_clipping && OverflowBottom) return;
+            if (OverflowBottom) ScrollUp();
             DoCommand(_echoConsole, () =>
             {
                 var overflow = "";
-                // don't automatically expand buffer, for now, user should know what to expect, this is normally an error if you go beyond the expected length.
                 while (overflow != null)
                 {
-                    if (!_lines.ContainsKey(Cursor.Y))
-                        throw new ArgumentOutOfRangeException("Reached the bottom of your console window. (Y) Value. Please extend the size of your console buffer. Requested line number was:" + Cursor.Y);
+                    if (!_lines.ContainsKey(Cursor.Y)) return;
                     var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
                     overflow = result.Overflow;
                     if (_echo && _echoConsole != null)

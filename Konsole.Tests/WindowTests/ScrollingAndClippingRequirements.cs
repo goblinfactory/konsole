@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
-using Konsole.Tests.WindowTests;
 using NUnit.Framework;
 
-namespace Konsole.Tests.CrossCuttingConcerns
+namespace Konsole.Tests.WindowTests
 {
     /// <summary>
     /// I'm using the convention of "RequirementXYZ" when a requirement relates to the class itself and not to a single method, where MethodXShould is the naming convention.
@@ -21,12 +16,13 @@ namespace Konsole.Tests.CrossCuttingConcerns
             {
                 // need to test PrintAt, Write, WriteLine
                 var c = new MockConsole(6, 4);
-                Assert.True(c.Clipping);
-                c.WriteLine("one");
-                c.WriteLine("two");
-                c.WriteLine("three");
-                c.WriteLine("four");
-                c.WriteLine("five");
+                var w = new Window(6, 4, c, K.Clipping);
+                Assert.True(w.Clipping);
+                w.WriteLine("one");
+                w.WriteLine("two");
+                w.WriteLine("three");
+                w.WriteLine("four");
+                w.WriteLine("five");
                 var expected = new[]
                 {
             "one   ",
@@ -34,7 +30,7 @@ namespace Konsole.Tests.CrossCuttingConcerns
             "three ",
             "four  "
             };
-                c.Buffer.ShouldBeEquivalentTo(expected);
+                w.Buffer.ShouldBeEquivalentTo(expected);
             }
 
         }
@@ -44,11 +40,29 @@ namespace Konsole.Tests.CrossCuttingConcerns
             [Test]
             public void scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
             {
-                Assert.Inconclusive("new requirement");
+                var c = new MockConsole(6, 4);
+                var w = new Window(6, 4, c, K.Scrolling);
+                Assert.True(w.Scrolling);
+                w.WriteLine("one");
+                w.WriteLine("two");
+                w.WriteLine("three");
+                w.WriteLine("four");
+                w.WriteLine("five");
+                var expected = new[]
+                {
+            "two   ",
+            "three ",
+            "four  ",
+            "five  "
+            };
+
+                Console.WriteLine(w.BufferWrittenString);
+                w.Buffer.ShouldBeEquivalentTo(expected);
             }
 
         }
 
-
     }
+
+
 }
