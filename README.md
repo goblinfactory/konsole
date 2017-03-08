@@ -103,6 +103,22 @@ On the backlog; add additional field types, complex objects, and editing.
         }
 ```
 
+
+## Building the solution
+
+ (before pushing this to github, do a fresh checkout and confirm 100% this does in fact work, or I'll look amazingly stupid! )
+
+ ### using visual studio
+
+ 1. git clone abc
+ 2. double click sln file.
+ 3. right click Konsole.Tests, select run all tests. (if you have resharper)
+ 
+ ### or via command line
+
+ 1. git clone abc
+ 2. cd root, run 'cmd XYZ' (`TBD`!)
+
 ## ChangeLog
 
 * [changelog](change-log.md)
@@ -110,9 +126,9 @@ On the backlog; add additional field types, complex objects, and editing.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## Why I recently renamed MockConsole to TestConsole
+## `TestConsole` vs `Mock<IConsole>`
 
-Because it' much more than just a mock. Below is a comparison of how someone might test an Invoice class using a traditional `Mock<IConsole>` and the same test, using a `Konsole.TestConsole`. To make it a fair comparison I'm comparing to [NSubstitute](http://nsubstitute.github.io/) which is quite terse and one of my favourite mocking frameworks.
+Below is a comparison of how someone might test an Invoice class using a traditional `Mock<IConsole>` and the same test, using a `Konsole.TestConsole`. To make it a fair comparison I'm comparing to [NSubstitute](http://nsubstitute.github.io/) which is quite terse and one of my favourite mocking frameworks.
 
 ```csharp
 
@@ -192,7 +208,7 @@ A: If your class references a public well known ` IConsole ` or ` IWriteLine ` i
 
 <sub>* By 100%-ish I mean 'some', enough to make TestConsole useful enough and accurate enough that I couldn't have written a high quality progress-bar without it ;-D If you use MockConsole to help you write a console utility and find it's lacking some important features, please contact me, I'd love to hear from you and see if I can update MockConsole to help you.</sub>
 
-##Support, Feedback, Suggestions
+## Support, Feedback, Suggestions
 
 Please drop me a tweet if you find Konsole useful or are using it in production. 
 

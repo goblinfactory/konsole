@@ -42,11 +42,32 @@ namespace Konsole.Tests.WindowTests
             //state.ShouldBeEquivalentTo(c.State);
         }
 
+        [Test]
+        public void set_scrolling_if_specified()
+        {
+            var c = new MockConsole();
+            var w = new Window(10, 10, c, K.Scrolling);
+            Assert.True(w.Scrolling);
+            Assert.False(w.Clipping);
+        }
 
+        [Test]
+        public void set_clipping_if_specified()
+        {
+            var c = new MockConsole();
+            var w = new Window(10, 10, c, K.Clipping);
+            Assert.True(w.Clipping);
+            Assert.False(w.Scrolling);
+        }
 
-
-
-
+        [Test]
+        public void set_clipping_as_default_if_nothing_specified()
+        {
+            var c = new MockConsole();
+            var w = new Window(10, 10, c);
+            Assert.True(w.Clipping);
+            Assert.False(w.Scrolling);
+        }
 
     }
 }

@@ -65,7 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrossCuttingConcerns.cs" />
+    <Compile Include="WindowTests\OverflowBottomRequirements.cs" />
+    <Compile Include="WindowTests\ScrollingAndClippingRequirements.cs" />
     <Compile Include="ProgressBarTests\NextShould.cs" />
     <Compile Include="WindowTests\BackgroundColorShould.cs" />
     <Compile Include="WindowTests\BufferHighLightedShould.cs" />

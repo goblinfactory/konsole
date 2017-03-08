@@ -7,6 +7,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void No_requirements_yet()
         {
+            // move to printAt, write and writeline
             Assert.Inconclusive();
         }
 

@@ -73,6 +73,16 @@ namespace Konsole
         {
         }
 
+        public Window(int width, int height, IConsole console, params K[] options)
+            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, console, options)
+        {
+        }
+
+        public Window(int width, int height, params K[] options)
+            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, null, options)
+        {
+        }
+
         public Window(int width, int height, IConsole echo)
             : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, echo)
         {
@@ -192,8 +202,8 @@ namespace Konsole
 
             if (options.Contains(K.Scrolling))
             {
-                _scrolling = false;
-                _clipping = true;
+                _scrolling = true;
+                _clipping = false;
             }
 
             init();

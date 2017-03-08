@@ -8,10 +8,9 @@ using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
 {
-    [Category(CrossCuttingConcerns.Scrolling)]
+
     class OverflowBottomShould
     {
-        [Test]
         public void indicate_when_printing_has_gone_off_the_bottom_of_the_screen()
         {
             var c = new MockConsole(6,4);

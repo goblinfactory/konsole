@@ -6,39 +6,6 @@ namespace Konsole.Tests.WindowTests
 {
     class WriteLineShould
     {
-        [Category(CrossCuttingConcerns.Scrolling)]
-        public class WhenScrollingEnabled
-        {
-            public void scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
-            {
-                Assert.Inconclusive("new requirement");
-            }
-        }
-
-        [Category(CrossCuttingConcerns.Scrolling)]
-        public class WhenScrollingDisabled
-        {
-            [Test]
-            public void clip_all_text_that_overflows_the_bottom_of_the_screen_and_not_scroll_the_screen()
-            {
-                var c = new MockConsole(6, 4);
-                c.WriteLine("one");
-                c.WriteLine("two");
-                c.WriteLine("three");
-                c.WriteLine("four");
-                c.WriteLine("five");
-                var expected = new[]
-                {
-                "one   ",
-                "two   ",
-                "three ",
-                "four  "    
-                };
-                c.Buffer.ShouldBeEquivalentTo(expected);
-            }
-
-
-        }
 
 
 
