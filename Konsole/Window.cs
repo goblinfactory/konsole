@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+
 using System.Linq;
 using Konsole.Drawing;
 using Konsole.Internal;
@@ -38,10 +38,12 @@ namespace Konsole
         private readonly ConsoleColor _startForeground;
         private readonly ConsoleColor _startBackground;
 
-        private readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
+        protected  readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
 
         private XY _cursor;
         private int _lastLineWrittenTo = -1;
+
+
 
         public Cell this[int x, int y]
         {
@@ -143,17 +145,18 @@ namespace Konsole
 
         public static Window Open(int x, int y, int width, int height, string title, LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray, ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
         {
-            var window = new Window(x+1,y+1, width-2, height-2, foregroundColor,backgroundColor,true, console);
-            var state = window._echoConsole.State;
+            var echoConsole = console ?? new Writer();
+            var window = new Window(x+1,y+1, width-2, height-2, foregroundColor,backgroundColor,true, echoConsole);
+            var state = echoConsole.State;
             try
             {
-                window._echoConsole.ForegroundColor = foregroundColor;
-                window._echoConsole.BackgroundColor = backgroundColor;
-                new Draw(window._echoConsole).Box(x,y,x + (width-1),y + (height-1), title, LineThickNess.Double);
+                echoConsole.ForegroundColor = foregroundColor;
+                echoConsole.BackgroundColor = backgroundColor;
+                new Draw(echoConsole).Box(x,y,x + (width-1),y + (height-1), title, LineThickNess.Double);
             }
             finally
             {
-                window._echoConsole.State = state;
+                echoConsole.State = state;
             }
             return window;
         }
@@ -325,7 +328,7 @@ namespace Konsole
             init();
         }
 
-        public void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
+        public virtual void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
         {
             if (!_echo) return;
@@ -345,6 +348,7 @@ namespace Konsole
         }
 
         // scroll the screen up 1 line, and pop the top line off the buffer
+        //NB!Need to test if this is cross platform ?
         public void ScrollUp()
         {
             for (int i = 0; i < (_height-1); i++)
@@ -353,10 +357,10 @@ namespace Konsole
             }
             _lines[_height-1] = new Row(_width, ' ', ForegroundColor, BackgroundColor);
             Cursor = new XY(0, _height-1);
-            //NB!Need to test if this is cross platform ?
-            //if (_echo && _echoConsole != null) 
-            MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
-           // _echoConsole?.ScrollUp();
+            if (_echoConsole != null)
+            {
+                _echoConsole.MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
+            }
         }
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Konsole.Internal;
 
 namespace Konsole
 {
@@ -15,5 +16,22 @@ namespace Konsole
         public MockConsole(int x, int y, params K[] options) : base(x, y, null, options) { }
         public MockConsole() : base(120, 60, false) { }
         public MockConsole(int width, int height) : base(width, height, false) { }
+
+        public override void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
+            char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
+        {
+            for (int i = sourceTop-1; i < sourceTop + (sourceHeight-1); i++)
+            {
+                for (int x = sourceLeft; x < sourceLeft + sourceWidth; x++)
+                {
+                    _lines[i].Cells[x] = _lines[i + 1].Cells[x];
+                }
+            }
+            for (int x = sourceLeft; x < sourceLeft + sourceWidth; x++)
+            {
+                _lines[sourceTop + sourceHeight-1].Cells[x] = new Cell(sourceChar,sourceForeColor, sourceBackColor);
+            }
+
+        }
     }
 }

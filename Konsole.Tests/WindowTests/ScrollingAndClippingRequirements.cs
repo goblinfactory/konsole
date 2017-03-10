@@ -56,8 +56,13 @@ namespace Konsole.Tests.WindowTests
             "five  "
             };
 
-                Console.WriteLine(w.BufferWrittenString);
-                w.Buffer.ShouldBeEquivalentTo(expected);
+                Console.WriteLine("---");
+                Console.WriteLine(c.BufferWrittenString);
+                Console.WriteLine("---");
+                //w.Buffer.ShouldBeEquivalentTo(expected);
+
+                // this test is faulty because we're assering on the Window and not the MockConsole
+                c.Buffer.ShouldBeEquivalentTo(expected);
             }
 
         }

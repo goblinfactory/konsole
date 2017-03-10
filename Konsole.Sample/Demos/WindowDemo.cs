@@ -10,12 +10,11 @@ namespace Konsole.Sample.Demos
         public static void ScrollingDemo(IConsole con)
         {
             var w = Window.Open(5,5,50,20, "");
-            var names = TestData.MakeNames(40);
+            var names = TestData.MakeNames(150);
             con.ForegroundColor = ConsoleColor.DarkGray;
             foreach (var name in names)
             {
                 w.WriteLine(name);
-                Thread.Sleep(100);
             }
 
         }
