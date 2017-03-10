@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Konsole.Drawing;
 using Konsole.Internal;
@@ -41,7 +42,6 @@ namespace Konsole
 
         private XY _cursor;
         private int _lastLineWrittenTo = -1;
-        private object _lock = new object();
 
         public Cell this[int x, int y]
         {
@@ -141,15 +141,15 @@ namespace Konsole
             return window;
         }
 
-        public static Window Open(int x, int y, int width, int height, LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray, ConsoleColor backgroundColor = ConsoleColor.Black)
+        public static Window Open(int x, int y, int width, int height, string title, LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray, ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
         {
-            var window = new Window(x+1,y+1, width-2, height-2, foregroundColor,backgroundColor,true);
+            var window = new Window(x+1,y+1, width-2, height-2, foregroundColor,backgroundColor,true, console);
             var state = window._echoConsole.State;
             try
             {
                 window._echoConsole.ForegroundColor = foregroundColor;
                 window._echoConsole.BackgroundColor = backgroundColor;
-                new Draw(window._echoConsole).Box(x,y,x + window._width, y + window._height);
+                new Draw(window._echoConsole).Box(x,y,x + (width-1),y + (height-1), title, LineThickNess.Double);
             }
             finally
             {
@@ -308,8 +308,10 @@ namespace Konsole
 
         public void WriteLine(string format, params object[] args)
         {
+            if (!_clipping && OverflowBottom)
+                ScrollUp();
             Write(format,args);
-            Cursor = new XY(0, Cursor.Y + 1);
+            Cursor = new XY(0, Cursor.Y+1);
         }
 
         public void Write(string format, params object[] args)
@@ -323,6 +325,20 @@ namespace Konsole
             init();
         }
 
+        public void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
+            char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
+        {
+            if (!_echo) return;
+            if (_echoConsole!=null)
+                _echoConsole.MoveBufferArea(sourceLeft,sourceTop,sourceWidth,sourceHeight,targetLeft,targetTop,sourceChar,sourceForeColor,sourceBackColor);
+                
+            else
+            {
+                throw new ApplicationException("Should never get here, something gone wrong in the logic, possibly in the constructor checks?");
+            }
+
+        }
+
         public void Write(string text)
         {
             _write(text);
@@ -331,20 +347,25 @@ namespace Konsole
         // scroll the screen up 1 line, and pop the top line off the buffer
         public void ScrollUp()
         {
-
             for (int i = 0; i < (_height-1); i++)
             {
                 _lines[i] = _lines[i+1];
             }
             _lines[_height-1] = new Row(_width, ' ', ForegroundColor, BackgroundColor);
             Cursor = new XY(0, _height-1);
+            //NB!Need to test if this is cross platform ?
+            //if (_echo && _echoConsole != null) 
+            MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
+           // _echoConsole?.ScrollUp();
         }
+
+
 
         //TODO: convert everything to redirect all calls to PrintAt, so that writing to parent works flawlessly!
         private void _write(string text)
         {
-            if (_clipping && OverflowBottom) return;
-            if (OverflowBottom) ScrollUp();
+            if (_clipping && OverflowBottom)
+                return;
             DoCommand(_echoConsole, () =>
             {
                 var overflow = "";
@@ -367,6 +388,8 @@ namespace Konsole
                     {
                         Cursor = new XY(0, Cursor.Y + 1);
                         if (_clipping && OverflowBottom) break;
+                        if(OverflowBottom)
+                            ScrollUp();
                     }
                     text = overflow;
                 }

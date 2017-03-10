@@ -107,9 +107,22 @@ namespace Konsole
             Console.Write(c);
         }
 
+        public void ScrollUp()
+        {
+            // do nothing
+        }
+
         public void Clear()
         {
             Console.Clear();
         }
+
+
+        public void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
+            char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
+        {
+            Console.MoveBufferArea(sourceLeft, sourceTop, sourceWidth, sourceHeight, targetLeft, targetTop, sourceChar, sourceForeColor, sourceBackColor);
+        }
+
     }
 }

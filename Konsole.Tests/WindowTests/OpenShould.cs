@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Konsole.Drawing;
 using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
@@ -12,8 +14,45 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void open_a_window_with_border_using_default_values()
         {
-            // NB! see the Program demo code for Windows, it looks like the window is being opened with the incorrect size?
-            Assert.Inconclusive("todo");   
+            var c = new MockConsole(10,5);
+            var w = Window.Open(0, 0, 10, 5,"title", LineThickNess.Double, ConsoleColor.White, ConsoleColor.Black, c);
+            w.WriteLine("one");
+            w.WriteLine("two");
+            w.WriteLine("three");
+            Console.WriteLine(c.BufferString);
+            var expected = new[]
+            {
+                "╔════════╗",
+                "║one     ║",
+                "║two     ║",
+                "║three   ║",
+                "╚════════╝"
+            };
+            c.BufferWritten.ShouldBeEquivalentTo(expected);
         }
+
+
+        [Test]
+        public void open_a_window_that_can_be_scrolled()
+        {
+            var c = new MockConsole(10, 8);
+            var w = Window.Open(0, 0, 10, 5, "title", LineThickNess.Double, ConsoleColor.White, ConsoleColor.Black, c);
+            w.WriteLine("one");
+            w.WriteLine("two");
+            w.WriteLine("three");
+            w.WriteLine("four");
+            Console.WriteLine(c.BufferString);
+            var expected = new[]
+            {
+                "╔════════╗",
+                "║two     ║",
+                "║three   ║",
+                "║four    ║",
+                "╚════════╝"
+            };
+
+            c.BufferWritten.ShouldBeEquivalentTo(expected);
+        }
+
     }
 }

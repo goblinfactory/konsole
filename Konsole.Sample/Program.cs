@@ -14,19 +14,42 @@ namespace Konsole.Sample
     class Program
     {
 
+        // random notes and links
+
+        // experiment to see if we can read a block of the screen by using move and redirecting input and output
+        // see http://stackoverflow.com/questions/12355378/read-from-location-on-console-c-sharp
+
+        // windows specific 
+        // more information https://msdn.microsoft.com/en-us/library/windows/desktop/ms681913(v=vs.85).aspx
+
+
+
         private static void RandomStuff(IConsole con)
         {
-            // experiment to see if we can read a block of the screen by using move and redirecting input and output
-            // see http://stackoverflow.com/questions/12355378/read-from-location-on-console-c-sharp
+            var w = Window.Open(0, 0, 10, 5, "title", LineThickNess.Double, ConsoleColor.DarkYellow, ConsoleColor.Yellow, con);
+            w.WriteLine("one");
+            w.WriteLine("two");
+            w.WriteLine("three");
+            w.WriteLine("four");
+            w.WriteLine("five");
 
-            // windows specific 
-            // more information https://msdn.microsoft.com/en-us/library/windows/desktop/ms681913(v=vs.85).aspx
+            var expected = new[]
+            {
+                "╔════════╗",
+                "║three   ║",
+                "║four    ║",
+                "║five    ║",
+                "╚════════╝"
+            };
+            return;
 
-            con.WriteLine("testing opening a dialog window and running one of the demos");
-            con.WriteLine(" ('f' progressively faster) inside it");
-            var w = Window.Open(5,5,60,10, LineThickNess.Double, ConsoleColor.Black, ConsoleColor.DarkCyan);
-            w.WriteLine("new window");
-            ProgressBarDemos.ProgressivelyFasterDemo(50,w);
+            //c.BufferWritten.ShouldBeEquivalentTo(expected);
+
+            //con.WriteLine("testing opening a dialog window and running one of the demos");
+            //con.WriteLine(" ('f' progressively faster) inside it");
+            //var w = Window.Open(5,5,60,10,"random", LineThickNess.Double, ConsoleColor.Black, ConsoleColor.DarkCyan);
+            //w.WriteLine("new window");
+            //ProgressBarDemos.ProgressivelyFasterDemo(50,w);
 
         }
 
@@ -57,6 +80,10 @@ namespace Konsole.Sample
 
                 case 'd':
                     ProgressBarDemos.ProgressivelyFasterDemo();
+                    break;
+
+                case 's':
+                    WindowDemo.ScrollingDemo(con);
                     break;
 
                 case 'p':
@@ -105,6 +132,7 @@ namespace Konsole.Sample
             con.WriteLine("    (Open a dialog window and run one of the other tests 'f' inside it.)");
             con.WriteLine("h : hiliting");
             con.WriteLine("b : boxes");
+            con.WriteLine("s : scrolling demo");
             con.WriteLine("d : progressively faster 'd'emo");
             con.WriteLine("p : progress bars");
             con.WriteLine("l : Parallel Demo");

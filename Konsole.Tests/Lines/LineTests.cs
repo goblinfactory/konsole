@@ -52,6 +52,14 @@ namespace Konsole.Tests
         }
 
         [Test]
+        public void should_render_title()
+        {
+            // test different sizes of title from 0 through to overflow size.
+            // test different size boxes, from 0 through to large.
+            Assert.Inconclusive("new requirement");
+        }
+
+        [Test]
         public void should_support_drawing_any_positive_size_boxes()
         {
             var console = new Window(200, 100, false);

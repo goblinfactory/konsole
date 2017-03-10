@@ -28,6 +28,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 
 ### Backlog
 
+- Add title to box drawing and window open.
 - Implement my `C` form builder pattern from 1985, just for fun ;-D
 - Auto-documentation. 
 - simple menu system.

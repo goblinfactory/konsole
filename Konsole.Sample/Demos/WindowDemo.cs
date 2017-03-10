@@ -1,10 +1,25 @@
 ﻿using System;
+using System.Threading;
+using Konsole.Drawing;
 using Konsole.Internal;
 
 namespace Konsole.Sample.Demos
 {
     internal class WindowDemo
     {
+        public static void ScrollingDemo(IConsole con)
+        {
+            var w = Window.Open(5,5,50,20, "");
+            var names = TestData.MakeNames(40);
+            con.ForegroundColor = ConsoleColor.DarkGray;
+            foreach (var name in names)
+            {
+                w.WriteLine(name);
+                Thread.Sleep(100);
+            }
+
+        }
+
         public static void Run(IConsole con)
         {
             con.WriteLine("starting client server demo");
@@ -42,14 +57,15 @@ namespace Konsole.Sample.Demos
             client.WriteLine("this is a long line that will wrap over the end of the window.");
 
 
-            var nameWindow = Window.Open(width * 2 + 3, 3, width, height + 1); // HACK is this an error? shouldn't have to add 1 to height?
+            var nameWindow = Window.Open(width * 2 + 3, 3, width, height + 1,"names"); // HACK is this an error? shouldn't have to add 1 to height?
 
             // let's print 300 names (300 WriteLine statements) that will roll right off 
             // the bottom of the screen, and should be clipped.
             var names = TestData.MakeNames(300);
             con.ForegroundColor = ConsoleColor.DarkGray;
             con.WriteLine("If you see ??? in any of the names, that's because Windows terminal does not print all UTF8 characters. (This prints correctly in Linux and Mac).");
-            foreach (var name in names) nameWindow.WriteLine(name);
+            foreach (var name in names)
+                nameWindow.WriteLine(name);
         }
 
     }
