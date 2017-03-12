@@ -13,7 +13,7 @@ namespace Konsole.Tests.WindowTests
         public void print_relative_to_the_window_being_printed_to_not_the_parent()
         {
             var c = new MockConsole(6,4);
-            var w = new Window(1,1, 4, 2,true, c);
+            var w = new Window(1,1, 4, 2,c);
             w.WriteLine("....");
             w.WriteLine("....");
             w.PrintAt(0,0,"X");

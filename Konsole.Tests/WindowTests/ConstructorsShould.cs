@@ -37,7 +37,7 @@ namespace Konsole.Tests.WindowTests
             var w2 = new Window(0,0,c);
             state.ShouldBeEquivalentTo(c.State);
 
-            var w3 = new Window(0,0,10,10,true,c);
+            var w3 = new Window(0,0,10,10,c);
             state.ShouldBeEquivalentTo(c.State);
         }
 
