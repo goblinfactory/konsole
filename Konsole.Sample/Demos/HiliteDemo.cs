@@ -13,7 +13,7 @@ namespace Konsole.Sample.Demos
             var normal = ConsoleColor.Black;
             var hilite = ConsoleColor.White;
 
-            var console = new Window(40, 10, true);
+            var console = new MockConsole(40, 10);
             console.ForegroundColor = ConsoleColor.Red;
 
             console.BackgroundColor = normal;

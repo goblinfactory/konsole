@@ -7,7 +7,7 @@ namespace Konsole.Tests.WindowTests
             [Test]
             public void setting_cursor_top_to_a_previously_written_line_should_allow_us_to_overwrite_previously_written_lines()
             {
-                var console = new Window(80, 20, false);
+                var console = new MockConsole(80, 20);
                 console.WriteLine("line 0");
                 console.WriteLine("line 1");
                 console.WriteLine("line 2");

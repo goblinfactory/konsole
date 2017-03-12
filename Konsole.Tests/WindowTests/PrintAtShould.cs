@@ -49,7 +49,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void print_the_text_at_the_required_x_y_coordinate()
         {
-            var console = new Window(5, 5, false);
+            var console = new MockConsole(5, 5);
             console.PrintAt(0, 0, "*");
             console.PrintAt(2, 2, "*");
             console.PrintAt(4, 4, "*");
@@ -78,7 +78,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void overflow_any_overflow_text_to_next_line()
         {
-            var console = new Window(5, 5, false);
+            var console = new MockConsole(5, 5);
             console.PrintAt(2, 2, "12345");
 
             var expected = new[]

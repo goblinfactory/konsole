@@ -75,7 +75,7 @@ namespace Konsole.Tests.WindowTests
         {
             var sw = new Stopwatch();
             sw.Start();
-            var con = new Window(10, 4, false);
+            var con = new MockConsole(10, 4);
             for (int i = 0; i < 100; i++)
             {
                 con.WriteLine("one");
@@ -104,7 +104,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void reset_the_y_position()
         {
-            var con = new Window(10, 2, false);
+            var con = new MockConsole(10, 2);
             Assert.AreEqual(0,con.CursorTop);
             con.WriteLine("one       ");
             con.WriteLine("two       ");

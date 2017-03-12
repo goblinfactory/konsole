@@ -10,7 +10,7 @@ namespace Konsole.Tests.WindowTests
             [Test]
             public void not_return_lines_not_written_to()
             {
-                var console = new Window(10, 10, false);
+                var console = new MockConsole(10, 10);
                 console.WriteLine("1");
                 console.WriteLine("2");
                 var lines = console.BufferWritten;
@@ -24,7 +24,7 @@ namespace Konsole.Tests.WindowTests
             [Test]
             public void return_all_lines_in_between_any_lines_written_to()
             {
-                var console = new Window(10, 10, false);
+                var console = new MockConsole(10, 10);
                 console.PrintAt(1, 1, "A");
                 console.PrintAt(3, 3, "B");
                 var lines = console.BufferWritten;
@@ -44,7 +44,7 @@ namespace Konsole.Tests.WindowTests
             [Test]
             public void return_all_lines()
             {
-                var con = new Window(10, 2, false);
+                var con = new MockConsole(10, 2);
                 con.WriteLine("one");
                 con.WriteLine("two");
                 Assert.AreEqual(new[] { "one       ", "two       " }, con.Buffer);
@@ -53,7 +53,7 @@ namespace Konsole.Tests.WindowTests
             [Test]
             public void not_be_trimmed()
             {
-                var con = new Window(10, 2, false);
+                var con = new MockConsole(10, 2);
                 Assert.AreEqual(new[] { "          ", "          " }, con.Buffer);
             }
 

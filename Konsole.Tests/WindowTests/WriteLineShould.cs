@@ -68,7 +68,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void increment_cursortop_position_of_calling_window()
         {
-            var console = new Window(80, 20, false);
+            var console = new MockConsole(80, 20);
             Assert.AreEqual(0, console.CursorTop);
             console.WriteLine("line1");
             Assert.AreEqual(1, console.CursorTop);
@@ -85,7 +85,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void not_change_state_of_parent_console()
         {
-            var parent = new Window(80, 20, false);
+            var parent = new MockConsole(80, 20);
             var state = parent.State;
 
             var console = new Window(parent);

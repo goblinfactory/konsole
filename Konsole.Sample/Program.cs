@@ -26,22 +26,31 @@ namespace Konsole.Sample
 
         private static void RandomStuff(IConsole con)
         {
-            var w = Window.Open(0, 0, 10, 5, "title", LineThickNess.Double, ConsoleColor.DarkYellow, ConsoleColor.Yellow, con);
-            w.WriteLine("one");
-            w.WriteLine("two");
-            w.WriteLine("three");
-            w.WriteLine("four");
-            w.WriteLine("five");
+            //var w = new Window(10,10,false,null);
+            // what happens with
+            // ... small sizes? (0 and 1?)
+            // ... nested windows?
 
-            var expected = new[]
-            {
-                "╔════════╗",
-                "║three   ║",
-                "║four    ║",
-                "║five    ║",
-                "╚════════╝"
-            };
+            //var w = new Window(20,10,ConsoleColor.Red, ConsoleColor.DarkYellow, null);
+            //w.WriteLine("hello");
             return;
+
+            //var w = Window.Open(0, 0, 10, 5, "title", LineThickNess.Double, ConsoleColor.DarkYellow, ConsoleColor.Yellow, con);
+            //w.WriteLine("one");
+            //w.WriteLine("two");
+            //w.WriteLine("three");
+            //w.WriteLine("four");
+            //w.WriteLine("five");
+
+            //var expected = new[]
+            //{
+            //    "╔════════╗",
+            //    "║three   ║",
+            //    "║four    ║",
+            //    "║five    ║",
+            //    "╚════════╝"
+            //};
+            //return;
 
             //c.BufferWritten.ShouldBeEquivalentTo(expected);
 

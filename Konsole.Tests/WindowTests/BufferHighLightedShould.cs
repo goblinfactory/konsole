@@ -15,7 +15,7 @@ namespace Konsole.Tests.WindowTests
             var normal = ConsoleColor.Black;
             var hilite = ConsoleColor.White;
 
-            var console = new Window(11, 5, false);
+            var console = new MockConsole(11, 5);
             console.ForegroundColor = ConsoleColor.Red;
 
             console.BackgroundColor = normal;

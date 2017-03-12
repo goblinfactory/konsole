@@ -10,6 +10,21 @@ namespace Konsole.Tests.WindowTests
 {
     class ConstructorsShould
     {
+        //todo .. some manual experiments
+        // try to break it... using 'random' then  update tests appropriately.
+
+        [Test]
+        public void not_allow_window_to_exceed_parent_boundaries()
+        {
+            Assert.Inconclusive("new requirements");
+        }
+
+        [Test]
+        public void not_allow_negative_values()
+        {
+            Assert.Inconclusive("new requirements");
+        }
+
         [Test]
         public void Not_change_parent_state()
         {

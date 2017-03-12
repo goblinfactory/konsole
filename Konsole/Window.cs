@@ -85,8 +85,15 @@ namespace Konsole
         {
         }
 
-        public Window(int width, int height, IConsole echo)
-            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, echo)
+
+        public Window(int width, int height, ConsoleColor foreground, ConsoleColor background, K[] options )
+            : this(0, 0, width, height, foreground, background, true, null, options)
+        {
+        }
+
+
+        public Window(int width, int height, IConsole echoConsole)
+            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole)
         {
         }
 
@@ -97,12 +104,7 @@ namespace Konsole
         {
         }
 
-        public Window(bool echo = true, IConsole echoConsole = null)
-            : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
-        {
-        }
-
-        public Window(int width, int height, bool echo = true, IConsole echoConsole = null)
+        protected Window(int width, int height, bool echo = true, IConsole echoConsole = null)
             : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
         {
         }

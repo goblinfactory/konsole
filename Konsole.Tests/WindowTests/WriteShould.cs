@@ -34,7 +34,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void write_to_end_of_line_and_WriteLine_should_write_to_current_line_and_move_cursor_to_beginning_of_next_line()
         {
-            var console = new Window(80, 20, false);
+            var console = new MockConsole(80, 20);
             console.WriteLine("line1");
             console.Write("This ");
             console.Write("is ");
@@ -77,7 +77,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void not_increment_cursortop_or_left_of_parent_window()
         {
-            var parent = new Window(80, 20, false);
+            var parent = new MockConsole(80, 20);
             var state = parent.State;
 
             var console = new Window(parent);

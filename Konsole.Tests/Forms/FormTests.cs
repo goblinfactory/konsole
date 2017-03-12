@@ -21,7 +21,7 @@ namespace Konsole.Tests
         [Test]
         public void Show_should_show_the_form_inline_at_the_next_line_below_current_cursor_position()
         {
-            var console = new Window(200, 20, false);
+            var console = new MockConsole(200, 20);
             var form = new Form(console);
             var person = new Person()
             {
@@ -107,7 +107,7 @@ namespace Konsole.Tests
         [Test]
         public void Numeric_types_both_nullable_and_non_nullable_should_be_supported()
         {
-            var console = new Window(200, 20, false);
+            var console = new MockConsole(200, 20);
             var form = new Form(console);
             var numclass = new TestClasses.FormTests.MixedNumClass
             {
