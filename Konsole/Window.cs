@@ -131,37 +131,6 @@ namespace Konsole
         {
         }
 
-        //public static Window Open(WindowSettings settings)
-        //{
-        //    var newSettings = settings.Clone();
-        //    // todo check size, and throw exception if too small!
-        //    // todo check if window can exist inside parent!
-        //    newSettings.X = settings.X + 1;
-        //    newSettings.Y = settings.Y + 1;
-        //    newSettings.Width = settings.Width - 2;
-        //    newSettings.Height = settings.Height - 2;
-        //    var window = new Window(newSettings);
-        //    var state = window._echoConsole.State;
-        //    try
-        //    {
-        //        var con = window._echoConsole;
-        //        con.ForegroundColor = settings.ForegroundColor;
-        //        con.BackgroundColor = settings.BackgroundColor;
-        //        new Draw(window._echoConsole)
-        //            .Box(
-        //                settings.X,
-        //                settings.Y,
-        //                settings.X + window._width,
-        //                settings.Y + window._height
-        //            );
-        //    }
-        //    finally
-        //    {
-        //        window._echoConsole.State = state;
-        //    }
-        //    return window;
-        //}
-
         public static Window Open(int x, int y, int width, int height, string title, LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray, ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
         {
             var echoConsole = console ?? new Writer();
@@ -184,21 +153,6 @@ namespace Konsole
         {
             return new ProgressBar(max, this);
         }
-
-        //public Window(WindowSettings settings)
-        //{
-        //    _x = settings.X;
-        //    _y = settings.Y;
-        //    _echo = settings.Echo;
-        //    _echoConsole = settings.EchoConsole;
-        //    _transparent = settings.Transparent;
-        //    if (_echo && _echoConsole == null) _echoConsole = new Writer();
-        //    _width = settings.Width ?? (_echoConsole.WindowWidth ?? 120);
-        //    _height = settings.Height ?? (_echoConsole?.WindowHeight ?? 80);
-        //    _startForeground = settings.ForegroundColor;
-        //    _startBackground = settings.BackgroundColor;
-        //    init();
-        //}
 
         public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
             IConsole echoConsole, params K[] options) : this(x,y, width, height, foreground, background, true, echoConsole, options)
