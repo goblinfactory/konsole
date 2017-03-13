@@ -70,7 +70,7 @@ namespace Konsole
 
         // to avoid constructor hell, and really hard errors, try to ensure that there is really only 1 constructor and all other constructors defer to that constructor. Do not get constructor A --> calls B --> calls C
 
-        public Window() : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, null)
+        public Window() : this(0, 0, (int?)null, (int?)null, ConsoleColor.White, ConsoleColor.Black, true, null)
         {
         }
 
@@ -117,7 +117,7 @@ namespace Konsole
         //Window will clear the parent console area in the overlapping window.
         // this constructor is safe to have params after IConsole because it's the only constructor that starts with IConsole, all other constructors have other strongly typed first parameter. (i.e. avoid parameter confusion)
         public Window(IConsole echoConsole, params K[] options)
-            : this(0, 0, -1, -1, ConsoleColor.White, ConsoleColor.Black, true, echoConsole, options)
+            : this(0, 0, (int?)(null), (int?)null, ConsoleColor.White, ConsoleColor.Black, true, echoConsole, options)
         {
         }
 
@@ -166,20 +166,31 @@ namespace Konsole
             
         }
 
-        protected Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,bool echo = true, IConsole echoConsole = null, params K[] options)
+        protected Window(int x, int y, int? width, int? height, ConsoleColor foreground, ConsoleColor background,bool echo = true, IConsole echoConsole = null, params K[] options)
         {
             _x = x;
             _y = y;
             _echo = echo;
             _echoConsole = echoConsole;
+            // move set width to external static method
             if (_echo && _echoConsole == null) _echoConsole = new Writer();
-            _width = width == -1 ? (_echoConsole?.WindowWidth ?? 120) : width;
-            _height = height == -1 ? (_echoConsole?.WindowHeight ?? 80) : height;
+            _width = GetStartWidth(width);
+            _height = GetStsartHeight(height);
             _startForeground = foreground;
             _startBackground = background;
 
             SetOptions(options);
             init();
+        }
+
+        private int GetStsartHeight(int? height)
+        {
+            return height ?? (_echoConsole?.WindowHeight ?? 80);
+        }
+
+        private int GetStartWidth(int? width)
+        {
+            return width ?? (_echoConsole?.WindowWidth ?? 120);
         }
 
         private void SetOptions(K[] options)

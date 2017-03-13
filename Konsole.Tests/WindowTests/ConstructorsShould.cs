@@ -19,8 +19,15 @@ namespace Konsole.Tests.WindowTests
             Assert.Inconclusive();
             var c = new MockConsole();
             var w1 = new Window(c, 20, 10, ConsoleColor.Black, ConsoleColor.DarkYellow);
-            var w2 = new Window(w1, 5, 0, 20, 5, ConsoleColor.Red, ConsoleColor.White);            
-            //w2.WindowWidth()
+            var w2 = new Window(w1, 11, 6, 20, 10, ConsoleColor.Red, ConsoleColor.White);
+            Assert.AreEqual(10, w2.WindowWidth);
+            Assert.AreEqual(5, w2.WindowHeight);
+        }
+
+        [Test]
+        public void not_allow_start_x_y_values_outside_of_parent_window()
+        {
+            Assert.Inconclusive();
         }
 
         [Test]
