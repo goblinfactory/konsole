@@ -31,18 +31,8 @@ namespace Konsole
             }
         }
 
-        public int WindowWidth()
-        {
-            return Console.WindowWidth;
-        }
-
-        public int WindowHeight
-        {
-            get
-            {
-                return Console.WindowHeight;
-            }
-        }
+        public int WindowWidth => Console.WindowWidth;
+        public int WindowHeight => Console.WindowHeight;
 
         public int CursorLeft
         {

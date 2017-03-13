@@ -6,7 +6,7 @@ namespace Konsole
     public interface IConsole : IWriteLine
     {
         ConsoleState State { get; set; }
-        int WindowWidth();
+        int WindowWidth { get; }
         int WindowHeight { get; }
         int CursorTop { get; set; }
         int CursorLeft { get; set; }

@@ -16,7 +16,7 @@ namespace Konsole.Tests.WindowTests
             {
                 // need to test PrintAt, Write, WriteLine
                 var c = new MockConsole(6, 4);
-                var w = new Window(6, 4, c, K.Clipping);
+                var w = new Window(c, 6, 4, K.Clipping);
                 Assert.True(w.Clipping);
                 w.WriteLine("one");
                 w.WriteLine("two");
@@ -41,7 +41,7 @@ namespace Konsole.Tests.WindowTests
             public void scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
             {
                 var c = new MockConsole(6, 4);
-                var w = new Window(6, 4, c, K.Scrolling);
+                var w = new Window(c, 6, 4, K.Scrolling);
                 Assert.True(w.Scrolling);
                 w.WriteLine("one");
                 w.WriteLine("two");

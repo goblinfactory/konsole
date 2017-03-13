@@ -19,7 +19,6 @@ namespace Konsole
         private readonly int _width;
         private readonly int _height;
         private readonly bool _echo;
-        private readonly K[] _options;
 
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
         private IConsole _echoConsole { get; set; }
@@ -75,7 +74,7 @@ namespace Konsole
         {
         }
 
-        public Window(int width, int height, IConsole console, params K[] options)
+        public Window(IConsole console, int width, int height, params K[] options)
             : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, console, options)
         {
         }
@@ -85,7 +84,7 @@ namespace Konsole
         {
         }
 
-        public Window(int width, int height, ConsoleColor foreground, ConsoleColor background,  IConsole console,params K[] options)
+        public Window(IConsole console, int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)
             : this(0, 0, width, height, foreground, background, true, console, options)
         {
         }
@@ -95,13 +94,22 @@ namespace Konsole
         {
         }
 
-        public Window(int width, int height, ConsoleColor foreground, ConsoleColor background, K[] options )
+        public Window(int width, int height, ConsoleColor foreground, ConsoleColor background,params K[] options )
             : this(0, 0, width, height, foreground, background, true, null, options)
         {
         }
 
+        public Window(IConsole echoConsole, int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background)
+            : this(x, y, width, height, foreground, background, true, echoConsole)
+        {
+        }
 
-        public Window(int width, int height, IConsole echoConsole)
+        public Window(IConsole echoConsole, int x, int y, int width, int height)
+            : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole)
+        {
+        }
+
+        public Window(IConsole echoConsole, int width, int height)
             : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole)
         {
         }
@@ -113,12 +121,6 @@ namespace Konsole
         {
         }
 
-        protected Window(int width, int height, bool echo = true, IConsole echoConsole = null)
-            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole)
-        {
-        }
-
-
         public Window(int x, int y, int width, int height, IConsole echoConsole = null, params K[] options)
             : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole, options)
         {
@@ -129,36 +131,36 @@ namespace Konsole
         {
         }
 
-        public static Window Open(WindowSettings settings)
-        {
-            var newSettings = settings.Clone();
-            // todo check size, and throw exception if too small!
-            // todo check if window can exist inside parent!
-            newSettings.X = settings.X + 1;
-            newSettings.Y = settings.Y + 1;
-            newSettings.Width = settings.Width - 2;
-            newSettings.Height = settings.Height - 2;
-            var window = new Window(newSettings);
-            var state = window._echoConsole.State;
-            try
-            {
-                var con = window._echoConsole;
-                con.ForegroundColor = settings.ForegroundColor;
-                con.BackgroundColor = settings.BackgroundColor;
-                new Draw(window._echoConsole)
-                    .Box(
-                        settings.X,
-                        settings.Y,
-                        settings.X + window._width,
-                        settings.Y + window._height
-                    );
-            }
-            finally
-            {
-                window._echoConsole.State = state;
-            }
-            return window;
-        }
+        //public static Window Open(WindowSettings settings)
+        //{
+        //    var newSettings = settings.Clone();
+        //    // todo check size, and throw exception if too small!
+        //    // todo check if window can exist inside parent!
+        //    newSettings.X = settings.X + 1;
+        //    newSettings.Y = settings.Y + 1;
+        //    newSettings.Width = settings.Width - 2;
+        //    newSettings.Height = settings.Height - 2;
+        //    var window = new Window(newSettings);
+        //    var state = window._echoConsole.State;
+        //    try
+        //    {
+        //        var con = window._echoConsole;
+        //        con.ForegroundColor = settings.ForegroundColor;
+        //        con.BackgroundColor = settings.BackgroundColor;
+        //        new Draw(window._echoConsole)
+        //            .Box(
+        //                settings.X,
+        //                settings.Y,
+        //                settings.X + window._width,
+        //                settings.Y + window._height
+        //            );
+        //    }
+        //    finally
+        //    {
+        //        window._echoConsole.State = state;
+        //    }
+        //    return window;
+        //}
 
         public static Window Open(int x, int y, int width, int height, string title, LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray, ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
         {
@@ -183,20 +185,20 @@ namespace Konsole
             return new ProgressBar(max, this);
         }
 
-        public Window(WindowSettings settings)
-        {
-            _x = settings.X;
-            _y = settings.Y;
-            _echo = settings.Echo;
-            _echoConsole = settings.EchoConsole;
-            _transparent = settings.Transparent;
-            if (_echo && _echoConsole == null) _echoConsole = new Writer();
-            _width = settings.Width ?? (_echoConsole?.WindowWidth() ?? 120);
-            _height = settings.Height ?? (_echoConsole?.WindowHeight ?? 80);
-            _startForeground = settings.ForegroundColor;
-            _startBackground = settings.BackgroundColor;
-            init();
-        }
+        //public Window(WindowSettings settings)
+        //{
+        //    _x = settings.X;
+        //    _y = settings.Y;
+        //    _echo = settings.Echo;
+        //    _echoConsole = settings.EchoConsole;
+        //    _transparent = settings.Transparent;
+        //    if (_echo && _echoConsole == null) _echoConsole = new Writer();
+        //    _width = settings.Width ?? (_echoConsole.WindowWidth ?? 120);
+        //    _height = settings.Height ?? (_echoConsole?.WindowHeight ?? 80);
+        //    _startForeground = settings.ForegroundColor;
+        //    _startBackground = settings.BackgroundColor;
+        //    init();
+        //}
 
         public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
             IConsole echoConsole, params K[] options) : this(x,y, width, height, foreground, background, true, echoConsole, options)
@@ -215,18 +217,24 @@ namespace Konsole
             _x = x;
             _y = y;
             _echo = echo;
-            _options = options;
             _echoConsole = echoConsole;
             if (_echo && _echoConsole == null) _echoConsole = new Writer();
-            _width = width == -1 ? (_echoConsole?.WindowWidth() ?? 120) : width;
+            _width = width == -1 ? (_echoConsole?.WindowWidth ?? 120) : width;
             _height = height == -1 ? (_echoConsole?.WindowHeight ?? 80) : height;
             _startForeground = foreground;
             _startBackground = background;
 
-            // todo : refactor : setting options, move out to seperate class and-or method
+            SetOptions(options);
+            init();
+        }
+
+        private void SetOptions(K[] options)
+        {
             if (options.Contains(K.Transparent)) _transparent = true;
-            if (options.Contains(K.Clipping) && options.Contains(K.Scrolling)) throw new ArgumentOutOfRangeException(nameof(options),"Cannot specify Clipping as well as Scrolling; pick 1, or leave both out. Clipping is default.");
-                if (options.Contains(K.Clipping))
+            if (options.Contains(K.Clipping) && options.Contains(K.Scrolling))
+                throw new ArgumentOutOfRangeException(nameof(options),
+                    "Cannot specify Clipping as well as Scrolling; pick 1, or leave both out. Clipping is default.");
+            if (options.Contains(K.Clipping))
             {
                 _clipping = true;
                 _scrolling = false;
@@ -237,8 +245,6 @@ namespace Konsole
                 _scrolling = true;
                 _clipping = false;
             }
-
-            init();
         }
 
         private void init()
@@ -450,9 +456,9 @@ namespace Konsole
             set { Cursor = Cursor.WithX(value); }
         }
 
-        public int WindowWidth()
+        public int WindowWidth
         {
-            return _width;
+            get { return _width; }
         }
 
         public ConsoleColor BackgroundColor { get; set; }

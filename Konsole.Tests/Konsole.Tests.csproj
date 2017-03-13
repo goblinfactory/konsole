@@ -73,7 +73,6 @@
     <Compile Include="WindowTests\BufferWithColorShould.cs" />
     <Compile Include="WindowTests\ClearShould.cs" />
     <Compile Include="WindowTests\ConstructorsShould.cs" />
-    <Compile Include="WindowTests\ConstructorWithSettingsShould.cs" />
     <Compile Include="WindowTests\CursorTopShould.cs" />
     <Compile Include="WindowTests\CursorLeftShould.cs" />
     <Compile Include="WindowTests\EchoPropertyTests.cs" />

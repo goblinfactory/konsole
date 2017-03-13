@@ -27,8 +27,9 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
   * `.BufferHilighted` `string[]` returns an 'approve-able' text buffer where each character is represented by 2 characters with one of of them representing the background color of the buffer.
 
 ### Backlog (not all will go into 2.0)
-- be more consistent, move IConsole to first parameter 
-- make Window class thread safe?
+- investigate supporting clipping when printing i.e. overlapping windows - this may not be possible without being very slow, or using native window calls.
+- (done) be more consistent, move IConsole to first parameter 
+- (not for a while!) make Window class thread safe?
 - add manual (demos) tests for threading
 - add tests for out of range values
 - move Draw to Window. 

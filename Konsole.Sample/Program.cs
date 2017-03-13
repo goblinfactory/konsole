@@ -30,8 +30,12 @@ namespace Konsole.Sample
             // ... small sizes? (0 and 1?)
             // ... nested windows?
 
-            var w = new Window(20, 10, ConsoleColor.Red, ConsoleColor.DarkYellow);
-            w.WriteLine("hello");
+            var w1 = new Window(20, 10, ConsoleColor.Black, ConsoleColor.DarkYellow);
+            w1.WriteLine("hello");
+            var w2 = new Window(w1, 5, 0, 20, 5, ConsoleColor.Red, ConsoleColor.White);
+            w2.PrintAt(5,2,"X");
+            w1.WriteLine("this will overwrite");
+
             return;
 
             //var w = Window.Open(0, 0, 10, 5, "title", LineThickNess.Double, ConsoleColor.DarkYellow, ConsoleColor.Yellow, con);

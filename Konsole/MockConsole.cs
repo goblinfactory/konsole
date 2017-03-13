@@ -13,11 +13,18 @@ namespace Konsole
     /// </summary>
     public class MockConsole : Window
     {
-        public MockConsole(int x, int y, params K[] options) : base(x, y, null, options) { }
+        public MockConsole(int x, int y, params K[] options) 
+            : base(null, x, y, options) { }
+
         public MockConsole(int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options) 
             : base(0,0, width, height, foreground, background, false, null, options) { }
-        public MockConsole() : base(120, 60, false) { }
-        public MockConsole(int width, int height) : base(width, height, false) { }
+
+        public MockConsole() 
+            : base(0,0, 120, 60, ConsoleColor.White, ConsoleColor.Black, false, null) { }
+
+        public MockConsole(int width, int height) 
+            : base(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, false, null) { }
+
 
         public override void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)

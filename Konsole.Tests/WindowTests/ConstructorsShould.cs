@@ -14,9 +14,13 @@ namespace Konsole.Tests.WindowTests
         // try to break it... using 'random' then  update tests appropriately.
 
         [Test]
-        public void not_allow_window_to_exceed_parent_boundaries()
+        public void should_clip_child_window_to_not_exceed_parent_boundaries()
         {
-            Assert.Inconclusive("new requirements");
+            Assert.Inconclusive();
+            var c = new MockConsole();
+            var w1 = new Window(c, 20, 10, ConsoleColor.Black, ConsoleColor.DarkYellow);
+            var w2 = new Window(w1, 5, 0, 20, 5, ConsoleColor.Red, ConsoleColor.White);            
+            //w2.WindowWidth()
         }
 
         [Test]
@@ -34,7 +38,7 @@ namespace Konsole.Tests.WindowTests
             var w1 = new Window(c);
             state.ShouldBeEquivalentTo(c.State);
 
-            var w2 = new Window(0,0,c);
+            var w2 = new Window(c, 0, 0);
             state.ShouldBeEquivalentTo(c.State);
 
             var w3 = new Window(0,0,10,10,c);
@@ -61,7 +65,7 @@ namespace Konsole.Tests.WindowTests
         public void set_scrolling_if_specified()
         {
             var c = new MockConsole();
-            var w = new Window(10, 10, c, K.Scrolling);
+            var w = new Window(c, 10, 10, K.Scrolling);
             Assert.True(w.Scrolling);
             Assert.False(w.Clipping);
         }
@@ -70,7 +74,7 @@ namespace Konsole.Tests.WindowTests
         public void set_clipping_if_specified()
         {
             var c = new MockConsole();
-            var w = new Window(10, 10, c, K.Clipping);
+            var w = new Window(c, 10, 10, K.Clipping);
             Assert.True(w.Clipping);
             Assert.False(w.Scrolling);
         }
@@ -79,7 +83,7 @@ namespace Konsole.Tests.WindowTests
         public void set_scrolling_as_default_if_nothing_specified()
         {
             var c = new MockConsole();
-            var w = new Window(10, 10, c);
+            var w = new Window(c, 10, 10);
             Assert.True(w.Scrolling);
             Assert.False(w.Clipping);
         }
