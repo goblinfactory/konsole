@@ -49,7 +49,7 @@ namespace Konsole.Tests.WindowTests
 
             Assert.AreEqual(expectedBefore, console.BufferWithColor);
 
-            var w = new Window(1, 1, 2, 2, ConsoleColor.Black, ConsoleColor.White, true, console, K.Transparent);
+            var w = new Window(1, 1, 2, 2, ConsoleColor.Black, ConsoleColor.White, console, K.Transparent);
             w.ForegroundColor = ConsoleColor.Yellow;
             w.BackgroundColor = ConsoleColor.Black;
             w.WriteLine("Y");

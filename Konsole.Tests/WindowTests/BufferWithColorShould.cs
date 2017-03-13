@@ -8,7 +8,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void include_foreground_and_background_rendered_as_seperate_characters()
         {
-            var c = new Window(0, 0, 6, 3, foreground: ConsoleColor.Black, background: ConsoleColor.White, echo: false);
+            var c = new MockConsole(6, 3, ConsoleColor.Black, ConsoleColor.White);
 
             // [ xx ] with brackets in black and xx in red : see CellColorMapper.cs
 

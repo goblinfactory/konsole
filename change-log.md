@@ -27,6 +27,9 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
   * `.BufferHilighted` `string[]` returns an 'approve-able' text buffer where each character is represented by 2 characters with one of of them representing the background color of the buffer.
 
 ### Backlog (not all will go into 2.0)
+- be more consistent, move IConsole to first parameter 
+- make Window class thread safe?
+- add manual (demos) tests for threading
 - add tests for out of range values
 - move Draw to Window. 
 - Add title to box drawing and window open.

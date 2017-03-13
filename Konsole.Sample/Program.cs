@@ -23,16 +23,15 @@ namespace Konsole.Sample
         // more information https://msdn.microsoft.com/en-us/library/windows/desktop/ms681913(v=vs.85).aspx
 
 
-
         private static void RandomStuff(IConsole con)
         {
-            //var w = new Window(10,10,false,null);
+
             // what happens with
             // ... small sizes? (0 and 1?)
             // ... nested windows?
 
-            //var w = new Window(20,10,ConsoleColor.Red, ConsoleColor.DarkYellow, null);
-            //w.WriteLine("hello");
+            var w = new Window(20, 10, ConsoleColor.Red, ConsoleColor.DarkYellow);
+            w.WriteLine("hello");
             return;
 
             //var w = Window.Open(0, 0, 10, 5, "title", LineThickNess.Double, ConsoleColor.DarkYellow, ConsoleColor.Yellow, con);

@@ -85,6 +85,15 @@ namespace Konsole
         {
         }
 
+        public Window(int width, int height, ConsoleColor foreground, ConsoleColor background,  IConsole console,params K[] options)
+            : this(0, 0, width, height, foreground, background, true, console, options)
+        {
+        }
+
+        public Window(int width, int height, ConsoleColor foreground, ConsoleColor background)
+            : this(0, 0, width, height, foreground, background, true, null)
+        {
+        }
 
         public Window(int width, int height, ConsoleColor foreground, ConsoleColor background, K[] options )
             : this(0, 0, width, height, foreground, background, true, null, options)
@@ -189,7 +198,19 @@ namespace Konsole
             init();
         }
 
-        public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,bool echo = true, IConsole echoConsole = null, params K[] options)
+        public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
+            IConsole echoConsole, params K[] options) : this(x,y, width, height, foreground, background, true, echoConsole, options)
+        {
+            
+        }
+
+        public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
+            params K[] options) : this(x,y,width, height, foreground, background, true, null, options)
+        {
+            
+        }
+
+        protected Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,bool echo = true, IConsole echoConsole = null, params K[] options)
         {
             _x = x;
             _y = y;

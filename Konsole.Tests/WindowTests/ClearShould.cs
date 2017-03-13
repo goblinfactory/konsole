@@ -18,7 +18,7 @@ namespace Konsole.Tests.WindowTests
             {
                 _con = new MockConsole(5, 3);
                 _state = _con.State;
-                _window = new Window(3, 0, 2, 2, ConsoleColor.White, ConsoleColor.DarkCyan, true, _con);
+                _window = new Window(3, 0, 2, 2, ConsoleColor.White, ConsoleColor.DarkCyan, _con);
                 _window.Clear();
             }
 

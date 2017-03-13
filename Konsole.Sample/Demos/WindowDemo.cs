@@ -24,8 +24,8 @@ namespace Konsole.Sample.Demos
             con.WriteLine("starting client server demo");
             var height = 20;
             int width = (Console.WindowWidth / 3) - 3;
-            var client = new Window(1, 3, width, height, ConsoleColor.Gray, ConsoleColor.DarkBlue);
-            var server = new Window(width + 2, 3, width, height);
+            var client = new Window(1, 3, width, height, ConsoleColor.Gray, ConsoleColor.DarkBlue, con);
+            var server = new Window(width + 2, 3, width, height, con);
 
             Console.CursorTop = 22;
             // simulate a bunch of messages from my fake REST server
