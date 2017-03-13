@@ -174,8 +174,8 @@ namespace Konsole
             _echoConsole = echoConsole;
             // move set width to external static method
             if (_echo && _echoConsole == null) _echoConsole = new Writer();
-            _width = GetStartWidth(width);
-            _height = GetStsartHeight(height);
+            _width = GetStartWidth(echo, width, x, echoConsole);
+            _height = GetStartHeight(echo, height, y, echoConsole);
             _startForeground = foreground;
             _startBackground = background;
 
@@ -183,14 +183,26 @@ namespace Konsole
             init();
         }
 
-        private int GetStsartHeight(int? height)
+        private static int GetStartHeight(bool echo, int? height, int y, IConsole echoConsole)
         {
-            return height ?? (_echoConsole?.WindowHeight ?? 80);
+            //int echoHeight = echoConsole?.WindowHeight ?? 80;
+            //int maxHeight = (echoHeight - y);
+            return height ?? (echoConsole?.WindowHeight ?? 80);
+            //return (height ?? 0) > maxHeight ? maxHeight : height;
         }
 
-        private int GetStartWidth(int? width)
+        private static int GetStartWidth(bool echo, int? width, int x, IConsole echoConsole)
         {
-            return width ?? (_echoConsole?.WindowWidth ?? 120);
+            // if echo is false, then this is a mock console and the width is never capped
+
+            int echoWidth = echoConsole?.WindowWidth ?? 120;
+            int maxWidth = (echoWidth - x);
+            int w = width ?? (echoConsole?.WindowWidth ?? 120);
+            if (echo && w > maxWidth) w = maxWidth;
+            return w;
+            
+            //if (width == null) return maxWidth;
+            //return width.Value <= maxWidth ? width.Value : maxWidth;
         }
 
         private void SetOptions(K[] options)

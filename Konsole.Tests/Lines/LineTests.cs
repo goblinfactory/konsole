@@ -19,7 +19,7 @@ namespace Konsole.Tests
         [Test]
         public void draw_box_should_draw_box()
         {
-            var console = new MockConsole(200, 20);
+            var console = new MockConsole(120, 20);
             // draw box 40 wide, and 6 high
             new Draw(console).Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
             Approvals.Verify(console.BufferWrittenString);
@@ -28,7 +28,7 @@ namespace Konsole.Tests
         [Test]
         public void should_be_able_to_draw_complex_forms_with_mixed_lines()
         {
-            var console = new MockConsole(200, 50);
+            var console = new MockConsole(120, 50);
             int height = 18;
             int sy = 2;
             int sx = 2;
@@ -62,7 +62,7 @@ namespace Konsole.Tests
         [Test]
         public void should_support_drawing_any_positive_size_boxes()
         {
-            var console = new MockConsole(200, 100);
+            var console = new MockConsole(120, 100);
             var line = new Draw(console);
 
             // negative width box should not render anything

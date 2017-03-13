@@ -27,6 +27,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
   * `.BufferHilighted` `string[]` returns an 'approve-able' text buffer where each character is represented by 2 characters with one of of them representing the background color of the buffer.
 
 ### Backlog (not all will go into 2.0)
+- rename 'echo' to (isMockConsole and invert) or, override behavior and remove altogether from Window.
 - investigate supporting clipping when printing i.e. overlapping windows - this may not be possible without being very slow, or using native window calls. This might also contradict the nature of the 'window' as being a thing that allows you to quickly print to your window, so a sub window is just a shortcut to actually print to that window.
 - (done) be more consistent, move IConsole to first parameter 
 - (not for a while!) make Window class thread safe?
