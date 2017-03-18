@@ -433,6 +433,20 @@ namespace Konsole
             set { Cursor = Cursor.WithX(value); }
         }
 
+        public Colors Colors
+        {
+            get
+            {
+                return new Colors(ForegroundColor, BackgroundColor);
+            }
+            set
+            {
+                ForegroundColor = value.Foreground;
+                BackgroundColor = value.Background;
+            }
+        }
+
+
         public int WindowWidth
         {
             get { return _width; }
@@ -502,7 +516,9 @@ namespace Konsole
         }
 
 
-
+        /// <summary>
+        /// Run command and preserve the state, i.e. restore the console state after running command.
+        /// </summary>
         public void DoCommand(IConsole console, Action action)
         {
             if (console == null)
@@ -513,9 +529,6 @@ namespace Konsole
             var state = console.State;
             try
             {
-                console.ForegroundColor = ForegroundColor;
-                console.BackgroundColor = BackgroundColor;
-
                 GotoEchoCursor(console); 
                 action();
             }

@@ -39,14 +39,20 @@ namespace Konsole.Forms
             }
         }
 
-        public Form(int width, IBoxStyle boxStyle, IConsole console = null)
+        public Form(int width, IBoxStyle boxStyle) : this(width, boxStyle, null)
+        { }
+
+        public Form(int width, IBoxStyle boxStyle, IConsole console)
         {
             _width = width;
             _boxStyle = boxStyle ?? new ThinBoxStyle();
             _console = console ?? new Writer();
         }
 
-        public void Show<T>(T item, string title = null)
+        /// <summary>
+        /// form is written (inline) at current cursor position, and cursor is updated to next line below form, with left=0
+        /// </summary>
+        public void Write<T>(T item, string title = null)
         {
             var t = typeof (T);
             var boxtitle = title ?? t.Name;

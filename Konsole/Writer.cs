@@ -40,6 +40,19 @@ namespace Konsole
             set { Console.CursorLeft = value;  }
         }
 
+
+        public Colors Colors
+        {
+            get
+            {
+                return new Colors(ForegroundColor, BackgroundColor);
+            }
+            set
+            {
+                ForegroundColor = value.Foreground;
+                BackgroundColor = value.Background;
+            }
+        }
         public int CursorTop
         {
             get { return Console.CursorTop; }
@@ -67,6 +80,27 @@ namespace Konsole
         {
             get { return Console.CursorLeft; } 
             set { Console.CursorLeft= value; }
+        }
+
+        /// <summary>
+        /// Run command and preserve the state, i.e. restore the console state after running command.
+        /// </summary>
+        public void DoCommand(IConsole console, Action action)
+        {
+            if (console == null)
+            {
+                action();
+                return;
+            }
+            var state = console.State;
+            try
+            {
+                action();
+            }
+            finally
+            {
+                console.State = state;
+            }
         }
 
         public ConsoleColor ForegroundColor
@@ -99,7 +133,7 @@ namespace Konsole
 
         public void ScrollUp()
         {
-            // do nothing
+            // do nothing?? mmm.
         }
 
         public void Clear()

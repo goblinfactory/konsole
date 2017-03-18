@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ApprovalTests;
-using ApprovalTests.Maintenance;
+﻿using ApprovalTests;
 using ApprovalTests.Reporters;
+using FluentAssertions;
 using Konsole.Forms;
-using Konsole.Internal;
 using Konsole.Tests.TestClasses;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
-namespace Konsole.Tests
+namespace Konsole.Tests.Forms
 {
     [UseReporter(typeof (DiffReporter))]
     public class FormTests
@@ -32,9 +24,21 @@ namespace Konsole.Tests
                     "Night of the Day of the Dawn of the Son of the Bride of the Return of the Revenge of the Terror of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating Subhumanoid Zombified Living Dead, Part 2: In Shocking 2-D"
             };
             console.WriteLine("line1");
-            form.Show(person);
+            form.Write(person);
             console.WriteLine("line2");
-            Approvals.Verify(console.BufferWrittenString);
+            var expected = new[]
+            {
+                "line1",
+                " ┌─────────────────────────────────── Person ───────────────────────────────────┐",
+                " │ First Name                      : Freddy                                     │",
+                " │ Last Name                       : Astair                                     │",                                                                                                                       
+                " │ A Field With A Much Longer Name : 22 apples                                  │",                                                                                                                       
+                " │ Favourite Movie                 : Night of the Day of the Dawn of the Son ...│",                                                                                                                       
+                " └──────────────────────────────────────────────────────────────────────────────┘",                                                                                                                       
+                "line2"
+            };
+
+            console.BufferWrittenTrimmed.ShouldBeEquivalentTo(expected);
         }
 
         //[Test]
@@ -123,7 +127,7 @@ namespace Konsole.Tests
                 FloatNull = null,
                 FloatEpsilon = float.Epsilon
             };
-            form.Show(numclass);
+            form.Write(numclass);
             Approvals.Verify(console.BufferWrittenString);
             System.Console.WriteLine(console.BufferWrittenString);
         }

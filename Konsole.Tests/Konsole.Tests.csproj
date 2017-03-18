@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WindowTests\DoCommandShould.cs" />
     <Compile Include="WindowTests\OverflowBottomRequirements.cs" />
     <Compile Include="WindowTests\ScrollingAndClippingRequirements.cs" />
     <Compile Include="ProgressBarTests\NextShould.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Forms\FormTests.cs" />
     <Compile Include="ProgressBarTests\RefreshShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WriterTests\DoCOmmandShould.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -117,7 +119,6 @@
     <Content Include="Lines\Drawing_LineTests.should_support_drawing_any_positive_size_boxes.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.TestApprovals.received.txt" />
     <Content Include="Forms\FormTests.Numeric_types_both_nullable_and_non_nullable_should_be_supported.approved.txt" />
-    <Content Include="Forms\FormTests.Show_should_show_the_form_inline_at_the_next_line_below_current_cursor_position.approved.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

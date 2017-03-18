@@ -32,7 +32,7 @@ namespace Konsole.Sample
 
             var w1 = new Window(20, 10, ConsoleColor.Black, ConsoleColor.DarkYellow);
             w1.WriteLine("hello");
-            var w2 = new Window(w1, 5, 0, 20, 5, ConsoleColor.Red, ConsoleColor.White);
+            var w2 = new Window(w1, 5, 0, 20, 35, ConsoleColor.Red, ConsoleColor.White);
             w2.PrintAt(5,2,"X");
             w1.WriteLine("this will overwrite");
 
@@ -71,7 +71,7 @@ namespace Konsole.Sample
             switch (cmd)
             {
                 case 'f':
-                    FormDemos.Run();
+                    FormDemos.Run(con);
                     break;
 
                 case 'w':
