@@ -42,7 +42,7 @@ namespace Konsole.Forms
         public Form(int width, IBoxStyle boxStyle) : this(null, width, boxStyle)
         { }
 
-        public Form(int width, IConsole console) : this(console, width, new ThinBoxStyle())
+        public Form(IConsole console, int width) : this(console, width, new ThinBoxStyle())
         {
             
         }
