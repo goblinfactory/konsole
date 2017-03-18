@@ -88,7 +88,7 @@
     <Compile Include="WindowTests\WriteShould.cs" />
     <Compile Include="FormTests\SplitScreenTests.cs" />
     <Compile Include="Internal\Address.cs" />
-    <Compile Include="FormTests\FormEditTests.cs" />
+    <Compile Include="FormTests\EditShould.cs" />
     <Compile Include="Internal\Person.cs" />
     <Compile Include="Internal\FormTests.MixedNumClass.cs" />
     <Compile Include="Lines\LineTests.cs" />

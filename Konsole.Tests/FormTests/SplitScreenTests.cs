@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ApprovalTests;
-using ApprovalTests.Reporters;
-using Konsole.Forms;
-using Konsole.Internal;
-using Konsole.Tests.TestClasses;
+﻿using ApprovalTests.Reporters;
 using NUnit.Framework;
 
-namespace Konsole.Tests.Forms
+namespace Konsole.Tests.FormTests
 {
     [UseReporter(typeof(DiffReporter))]
     class SplitScreenTests

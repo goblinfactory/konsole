@@ -1,12 +1,10 @@
-﻿using System;
-using ApprovalTests;
+﻿using ApprovalTests;
 using Konsole.Forms;
-using Konsole.Internal;
 using Konsole.Tests.TestClasses;
 
-namespace Konsole.Tests.Forms
+namespace Konsole.Tests.FormTests
 {
-    public class FormEditTests
+    public class EditShould
     {
         // not yet implemented
         public void when_opening_first_field_should_be_highlighted()

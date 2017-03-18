@@ -1,17 +1,12 @@
-﻿using System;
-using ApprovalTests;
-using ApprovalTests.Reporters;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Konsole.Forms;
 using Konsole.Tests.TestClasses;
 using NUnit.Framework;
 
-namespace Konsole.Tests.Forms
+namespace Konsole.Tests.FormTests
 {
-    [UseReporter(typeof (DiffReporter))]
     public class ShowShould
     {
-
 
         [Test]
         public void show_the_form_inline_at_the_next_line_below_current_cursor_position_and_update_cursor()
