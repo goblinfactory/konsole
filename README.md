@@ -1,13 +1,18 @@
-# Konsole
-home of ProgressBar ( C# console progress bar with support for single or multithreaded progress updates ) and TestConsole ( The only 100%-ish* System.Console compatible test console, supporting color printing as well as .CursorTop and .CursorLeft.
+# Konsole library
 
-**Update 1st March 2017** 
- - Currently working on ver `2.0`, big change and new `Window` object. Will update examples below as soon as vers `2.0` is released. See the [change-log](change-log.md) for a full description of what's coming.
- - `6th March` : Just have `Scrolling` and `Clipping` to finish and I will be releasing `2.0-beta`. I plan on releasing official 2.0.0 package shortly afterwards as I need it quite urgently on other projects.
+home of the simple cross platform console libary consisting of:
+
+### ProgressBar , Window  , Form , Draw & MockConsole
+
+
+---
+
+
 
 ## Installing
 
 ![install-package Goblinfactory.Konsole](install-package.png)
+
 
 ## ProgressBar usage
 ```csharp
@@ -25,27 +30,69 @@ home of ProgressBar ( C# console progress bar with support for single or multith
 ![sample output](progressbar.gif)
 [sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
 
-## Form usage
+## Window usage
 
-First draft of Konsole (forms) is working. Starting with readonly forms. Below are examples showing auto rendering of simple objects.
-(Currently only text fields, readonly, simple objects.)
-On the backlog; add additional field types, complex objects, and editing. 
-27.03.2016 - Forms is not yet part of the latest nuget package. Will be adding forms to the nuget package when a few more features are in the github code.
+  - ( 100%-ish console compatible window, supporting all normal console writing to a windowed section of the screen) 
+  - Supports scrolling and clipping of console output.
+  - typical uses, for showing a scrolling output, e.g. build output in a window, while showing higher level progress in another window.
+  - automatic borders
+  - full color support
 
 ```csharp
-        
+            var con = new Window(200,50);
+            con.WriteLine("starting client server demo");
+            var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con);
+            var server = new Window(25, 4, 20, 20, con);
+            client.WriteLine("CLIENT");
+            client.WriteLine("------");
+            server.WriteLine("SERVER");
+            server.WriteLine("------");
+            client.WriteLine("<-- PUT some long text to show wrapping");
+            server.WriteLine(ConsoleColor.DarkYellow, "--> PUT some long text to show wrapping");
+            server.WriteLine(ConsoleColor.Red, "<-- 404|Not Found|some long text to show wrapping|");
+            client.WriteLine(ConsoleColor.Red, "--> 404|Not Found|some long text to show wrapping|");
+
+            con.WriteLine("starting names demo");
+            // let's open a window with a box around it by using Window.Open
+            var names = Window.Open(50, 4, 40, 10, "names");
+            TestData.MakeNames(40).OrderByDescending(n => n).ToList()
+                 .ForEach(n => names.WriteLine(n));
+
+            con.WriteLine("starting numbers demo");
+            var numbers = Window.Open(50, 15, 40, 10, "numbers", 
+                  LineThickNess.Double,ConsoleColor.White,ConsoleColor.Blue);
+            Enumerable.Range(1,200).ToList()
+                 .ForEach(i => numbers.WriteLine(i.ToString())); // shows scrolling
+```
+**gives you**
+
+![window simple demo](docs/window-demo.png)
+
+## Form usage
+
+  - quickly and neatly render an object and it's properties in a window or to the console.
+  - support multiple border styles.
+  - Support C# objects or dynamic objects
+
+Readonly forms are currently rendered. Below are examples showing auto rendering of simple objects.
+(Currently only text fields, readonly, simple objects.)
+On the backlog; add additional field types, complex objects, and editing. 
+
+```csharp
         using Konsole.Form;
         ...
-
             var form1 = new Form(80,new ThickBoxStyle());
             var person = new Person()
             {
                 FirstName = "Fred",
                 LastName = "Astair",
                 FieldWithLongerName = "22 apples",
-                FavouriteMovie = "Night of the Day of the Dawn of the Son of the Bride of the Return of the Revenge of the Terror of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating Subhumanoid Zombified Living Dead, Part 2: In Shocking 2-D"
+                FavouriteMovie = "Night of the Day of the Dawn of the Son 
+                of the Bride of the Return of the Revenge of the Terror 
+                of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating 
+                Subhumanoid Zombified Living Dead, Part 2: In Shocking 2-D"
             };
-            form1.Show(person);
+            form1.Write(person);
 ```
 
 ![sample output](Form-Person.png)
@@ -54,7 +101,7 @@ On the backlog; add additional field types, complex objects, and editing.
 ```csharp        
 
            // works with anonymous types
-            new Form().Show(new {Height = "40px", Width = "200px"}, "Demo Box");
+            new Form().Write(new {Height = "40px", Width = "200px"}, "Demo Box");
 ```
 ![sample output](Form-DemoBox.png)
 
@@ -66,7 +113,12 @@ On the backlog; add additional field types, complex objects, and editing.
 ![sample output](Form-Permissions.png)
 
 
-## IConsole, TestConsole and ConsoleWriter usage
+## MockConsole (substitute), and IConsole (interface) usage
+
+Use MockConsole as a real (fully functional) System.Console substitute, that renders with 100% fidelity to an internal buffer that can be used to assert correct console behavior of any object writing using IConsole.
+MockConsole can even render out a text representation of the current state of the the console, including representations for the foreground and background color of anything written.
+
+All the test for this library have been written using `MockConsole.` For a fully detailed examples of `MockConsole` being stretched to the limits, see `Konsole.Tests.WindowTests`.
 
 ```csharp
         
@@ -92,7 +144,7 @@ On the backlog; add additional field types, complex objects, and editing.
                 var console = new TestConsole(80, 20);
                 var cat = new Cat(console);
                 cat.Greet();
-                Assert.AreEqual(console.TrimmedLines, new[] {"Prrr!", "Meow!"});
+                Assert.AreEqual(console.BufferWrittenTrimmed, new[] {"Prrr!", "Meow!"});
             }
             {
                 // create an instance of a cat that will purr to the real Console
@@ -110,14 +162,13 @@ On the backlog; add additional field types, complex objects, and editing.
 
  ### using visual studio
 
- 1. git clone abc
+ 1. `git clone https://github.com/goblinfactory/konsole.git`
  2. double click sln file.
  3. right click Konsole.Tests, select run all tests. (if you have resharper)
  
  ### or via command line
 
- 1. git clone abc
- 2. cd root, run 'cmd XYZ' (`TBD`!)
+ TBD.
 
 ## ChangeLog
 
@@ -126,9 +177,9 @@ On the backlog; add additional field types, complex objects, and editing.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## `TestConsole` vs `Mock<IConsole>`
+## `MockConsole` vs `Mock<IConsole>`
 
-Below is a comparison of how someone might test an Invoice class using a traditional `Mock<IConsole>` and the same test, using a `Konsole.TestConsole`. To make it a fair comparison I'm comparing to [NSubstitute](http://nsubstitute.github.io/) which is quite terse and one of my favourite mocking frameworks.
+Below is a comparison of how someone might test an Invoice class using a traditional `Mock<IConsole>` and the same test, using a `Konsole.MockConsole`. To make it a fair comparison I'm comparing to [NSubstitute](http://nsubstitute.github.io/) which is quite terse and one of my favourite mocking frameworks.
 
 ```csharp
 
@@ -183,12 +234,12 @@ Below is a comparison of how someone might test an Invoice class using a traditi
                 * some random message on the footer
 ";
         
-                IConsole console = new TestConsole();
+                var console = new MockConsole();
                 var invoice = new Invoice(console);
                 invoice.AddLine(2, "Semi Skimmed Milk", "2 pints", "£",1.00);
                 invoice.AddLine(3, "Warburtons Crumpets", "6 pack", "£",0.89);
                 invoice.Print();
-                Assert.AreEqual(console.Buffer,expected);
+                Assert.AreEqual(console.BufferString,expected);
                 });
             }
                 
@@ -200,31 +251,24 @@ Below is a comparison of how someone might test an Invoice class using a traditi
 
 ``` 
 
-## What's the value of a simple IWriteLine and IConsole interface?
+## Draw usage
 
-Q: At first glance it seems absurd to have a nuget package that has so little in it; Why would you want to reference Konsole to get access to a 4 line IWriteLine interface, instead of simply writing your own? 
 
-A: If your class references a public well known ` IConsole ` or ` IWriteLine ` interface, then when other people use your class, they can pass in to your class, anything at all that implements ` IWriteLine ` or ` IConsole `.  This is subtle but hugely important. This free's you to write your class, knowing your class will be compatible with anyone else's classes that implement IWriteLine without you having to ask them to please reference and use your version of IConsole. 
 
-<sub>* By 100%-ish I mean 'some', enough to make TestConsole useful enough and accurate enough that I couldn't have written a high quality progress-bar without it ;-D If you use MockConsole to help you write a console utility and find it's lacking some important features, please contact me, I'd love to hear from you and see if I can update MockConsole to help you.</sub>
 
 ## Support, Feedback, Suggestions
 
-Please drop me a tweet if you find Konsole useful or are using it in production. 
-
-While no-one is publically using Konsole It makes sense for me to make any type of breaking changes as are needed from time to time straight to master on github.
-
-As soon as people start telling me that they're starting to use Konsole then I will have to consider what I push to github, and may have to switch to working on different branches, depending on the overhead that adds. 
-
-basically; please give me a shout out if you're using Konsole, that would really help me a ton.
-
+Please drop me a tweet if you find Konsole useful. Latest updates to Konsole was written at Snowcode 2017.
 keep chillin!
+
+    O__
+    _/`.\
+        `=( 
 
 Alan
 
-p.s. join us at snowcode the event! 
-
-[www.snowcode.com](www.snowcode.com) 
+[p.s. join us at snowcode 2018! ](http://www.snowcode.com?refer=konsole) <br/>
+[www.snowcode.com](http://www.snowcode.com?refer=konsole) <br/>
 (free dev conf at great ski resort)<br/>
 developers + party + snow + great learning
 

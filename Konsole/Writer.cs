@@ -14,10 +14,40 @@ namespace Konsole
             Console.WriteLine(format, args);
         }
 
+        public void WriteLine(ConsoleColor color, string format, params object[] args)
+        {
+            var foreground = ForegroundColor;
+            try
+            {
+                ForegroundColor = color;
+                WriteLine(format, args);
+            }
+            finally
+            {
+                ForegroundColor = foreground;
+            }
+        }
+
         public void Write(string format, params object[] args)
         {
             Console.Write(format, args);
         }
+
+        public void Write(ConsoleColor color, string format, params object[] args)
+        {
+            var foreground = ForegroundColor;
+            try
+            {
+                ForegroundColor = color;
+                Write(format, args);
+            }
+            finally
+            {
+                ForegroundColor = foreground;
+            }
+        }
+
+
 
         public ConsoleState State
         {

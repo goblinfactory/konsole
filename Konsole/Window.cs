@@ -26,18 +26,29 @@ namespace Konsole
 
         private bool _transparent = false;
 
-        public bool Clipping { get { return _clipping; } }
+        public bool Clipping
+        {
+            get { return _clipping; }
+        }
+
         private bool _clipping = false;
 
-        public bool Scrolling {  get {  return _scrolling; } }
+        public bool Scrolling
+        {
+            get { return _scrolling; }
+        }
+
         private bool _scrolling = true;
 
-        public bool Transparent {  get {  return _transparent; } }
+        public bool Transparent
+        {
+            get { return _transparent; }
+        }
 
         private readonly ConsoleColor _startForeground;
         private readonly ConsoleColor _startBackground;
 
-        protected  readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
+        protected readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
 
         private XY _cursor;
         private int _lastLineWrittenTo = -1;
@@ -61,8 +72,8 @@ namespace Konsole
             {
                 int x = value.X >= _width ? (_width - 1) : value.X;
                 int y = value.Y > _height ? _height : value.Y;
-                _cursor = new XY(x,y);
-                
+                _cursor = new XY(x, y);
+
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X != 0) _lastLineWrittenTo = _cursor.Y;
                 if (_cursor.Y > _lastLineWrittenTo && _cursor.X == 0) _lastLineWrittenTo = _cursor.Y - 1;
             }
@@ -70,7 +81,7 @@ namespace Konsole
 
         // to avoid constructor hell, and really hard errors, try to ensure that there is really only 1 constructor and all other constructors defer to that constructor. Do not get constructor A --> calls B --> calls C
 
-        public Window() : this(0, 0, (int?)null, (int?)null, ConsoleColor.White, ConsoleColor.Black, true, null)
+        public Window() : this(0, 0, (int?) null, (int?) null, ConsoleColor.White, ConsoleColor.Black, true, null)
         {
         }
 
@@ -84,7 +95,8 @@ namespace Konsole
         {
         }
 
-        public Window(IConsole console, int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)
+        public Window(IConsole console, int width, int height, ConsoleColor foreground, ConsoleColor background,
+            params K[] options)
             : this(0, 0, width, height, foreground, background, true, console, options)
         {
         }
@@ -94,12 +106,13 @@ namespace Konsole
         {
         }
 
-        public Window(int width, int height, ConsoleColor foreground, ConsoleColor background,params K[] options )
+        public Window(int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)
             : this(0, 0, width, height, foreground, background, true, null, options)
         {
         }
 
-        public Window(IConsole echoConsole, int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background)
+        public Window(IConsole echoConsole, int x, int y, int width, int height, ConsoleColor foreground,
+            ConsoleColor background)
             : this(x, y, width, height, foreground, background, true, echoConsole)
         {
         }
@@ -117,7 +130,7 @@ namespace Konsole
         //Window will clear the parent console area in the overlapping window.
         // this constructor is safe to have params after IConsole because it's the only constructor that starts with IConsole, all other constructors have other strongly typed first parameter. (i.e. avoid parameter confusion)
         public Window(IConsole echoConsole, params K[] options)
-            : this(0, 0, (int?)(null), (int?)null, ConsoleColor.White, ConsoleColor.Black, true, echoConsole, options)
+            : this(0, 0, (int?) (null), (int?) null, ConsoleColor.White, ConsoleColor.Black, true, echoConsole, options)
         {
         }
 
@@ -126,21 +139,25 @@ namespace Konsole
         {
         }
 
-        protected Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null, params K[] options)
+        protected Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null,
+            params K[] options)
             : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole, options)
         {
         }
 
-        public static Window Open(int x, int y, int width, int height, string title, LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray, ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
+        public static Window Open(int x, int y, int width, int height, string title,
+            LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray,
+            ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
         {
             var echoConsole = console ?? new Writer();
-            var window = new Window(x+1,y+1, width-2, height-2, foregroundColor,backgroundColor,true, echoConsole);
+            var window = new Window(x + 1, y + 1, width - 2, height - 2, foregroundColor, backgroundColor, true,
+                echoConsole);
             var state = echoConsole.State;
             try
             {
                 echoConsole.ForegroundColor = foregroundColor;
                 echoConsole.BackgroundColor = backgroundColor;
-                new Draw(echoConsole).Box(x,y,x + (width-1),y + (height-1), title, LineThickNess.Double);
+                new Draw(echoConsole).Box(x, y, x + (width - 1), y + (height - 1), title, LineThickNess.Double);
             }
             finally
             {
@@ -155,18 +172,20 @@ namespace Konsole
         }
 
         public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
-            IConsole echoConsole, params K[] options) : this(x,y, width, height, foreground, background, true, echoConsole, options)
+            IConsole echoConsole, params K[] options)
+            : this(x, y, width, height, foreground, background, true, echoConsole, options)
         {
-            
+
         }
 
         public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
-            params K[] options) : this(x,y,width, height, foreground, background, true, null, options)
+            params K[] options) : this(x, y, width, height, foreground, background, true, null, options)
         {
-            
+
         }
 
-        protected Window(int x, int y, int? width, int? height, ConsoleColor foreground, ConsoleColor background,bool echo = true, IConsole echoConsole = null, params K[] options)
+        protected Window(int x, int y, int? width, int? height, ConsoleColor foreground, ConsoleColor background,
+            bool echo = true, IConsole echoConsole = null, params K[] options)
         {
             _x = x;
             _y = y;
@@ -200,7 +219,7 @@ namespace Konsole
             int w = width ?? (echoConsole?.WindowWidth ?? 120);
             if (echo && w > maxWidth) w = maxWidth;
             return w;
-            
+
             //if (width == null) return maxWidth;
             //return width.Value <= maxWidth ? width.Value : maxWidth;
         }
@@ -233,7 +252,7 @@ namespace Konsole
             for (int i = 0; i < _height; i++)
             {
                 _lines.Add(i, new Row(_width, ' ', ForegroundColor, BackgroundColor));
-                if(!_transparent) PrintAt(0, i, new string(' ', _width));
+                if (!_transparent) PrintAt(0, i, new string(' ', _width));
             }
             Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
@@ -320,6 +339,19 @@ namespace Konsole
         }
 
 
+        public void WriteLine(ConsoleColor color, string format, params object[] args)
+        {
+            var foreground = ForegroundColor;
+            try
+            {
+                ForegroundColor = color;
+                WriteLine(format, args);
+            }
+            finally
+            {
+                ForegroundColor = foreground;
+            }
+        }
 
         public void WriteLine(string format, params object[] args)
         {
@@ -327,6 +359,21 @@ namespace Konsole
                 ScrollUp();
             Write(format,args);
             Cursor = new XY(0, Cursor.Y+1);
+        }
+
+        public void Write(ConsoleColor color, string format, params object[] args)
+        {
+            var foreground = ForegroundColor;
+            try
+            {
+                ForegroundColor = color;
+                Write(format, args);
+            }
+            finally
+            {
+                ForegroundColor = foreground;
+            }
+;
         }
 
         public void Write(string format, params object[] args)

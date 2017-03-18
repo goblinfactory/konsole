@@ -25,6 +25,11 @@ namespace Konsole.Sample
 
         private static void RandomStuff(IConsole con)
         {
+            var c1 = new MockConsole();
+            var pb = new ProgressBar(50);
+            pb.Refresh(25,"cats");
+            return;
+
 
             // what happens with
             // ... small sizes? (0 and 1?)
@@ -72,6 +77,10 @@ namespace Konsole.Sample
             {
                 case 'f':
                     FormDemos.Run(con);
+                    break;
+
+                case '1':
+                    WindowDemo.SimpleDemo(con);
                     break;
 
                 case 'w':
@@ -140,6 +149,7 @@ namespace Konsole.Sample
             con.WriteLine("");
             con.WriteLine("f : Forms : auto forms from objects");
             con.WriteLine("w : windows");
+            con.WriteLine("1 : simple window demo");
             con.WriteLine("r : random test stuff. Changes often on each checkin.");
             con.WriteLine("    (Open a dialog window and run one of the other tests 'f' inside it.)");
             con.WriteLine("h : hiliting");
