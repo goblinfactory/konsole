@@ -1,4 +1,5 @@
-﻿using ApprovalTests;
+﻿using System;
+using ApprovalTests;
 using ApprovalTests.Reporters;
 using FluentAssertions;
 using Konsole.Forms;
@@ -8,10 +9,12 @@ using NUnit.Framework;
 namespace Konsole.Tests.Forms
 {
     [UseReporter(typeof (DiffReporter))]
-    public class FormTests
+    public class ShowShould
     {
+
+
         [Test]
-        public void Show_should_show_the_form_inline_at_the_next_line_below_current_cursor_position()
+        public void show_the_form_inline_at_the_next_line_below_current_cursor_position_and_update_cursor()
         {
             var console = new MockConsole(200, 20);
             var form = new Form(console);
@@ -41,34 +44,6 @@ namespace Konsole.Tests.Forms
             console.BufferWrittenTrimmed.ShouldBeEquivalentTo(expected);
         }
 
-        //[Test]
-        //public void ShowAt_should_show_the_form_inline_at_the_required_cursor_position_and_not_change_current_cursor_position()
-        //{
-        //    var console = new TestConsole(100, 20);
-        //    var form = new Form(console);
-        //    var box= new 
-        //    {
-        //        Height = 11.4M,
-        //        Width = 20.32M
-        //    };
-        //    console.WriteLine("line1");
-        //    form.Show(box, "test");
-        //    console.WriteLine("line2");
-        //    Approvals.Verify(console.Buffer);
-        //}
-
-
-        // todo; add in test so that form is visible here in the test.
-
-        // show dialog, with caption
-        // show dialog async!
-
-        // public void should_support_any_width 
-        // e.g. so that we think carefully about clipping
-        // if it works at 3 chars, then it will work at 2000!
-        // also, will allow us to dynamically 'collapse' forms
-        // and have them 'autosize' to fit neatly together
-        // when 'composing' forms.
 
         //public void nested_objects_should_render_as_sub_boxes()
         //{
@@ -109,10 +84,10 @@ namespace Konsole.Tests.Forms
 
 
         [Test]
-        public void Numeric_types_both_nullable_and_non_nullable_should_be_supported()
+        public void support_Numeric_types_both_nullable_and_non_nullable()
         {
             var console = new MockConsole(200, 20);
-            var form = new Form(console);
+            var form = new Form(console, 54, new ThinBoxStyle());
             var numclass = new TestClasses.FormTests.MixedNumClass
             {
                 IntMinValue = int.MaxValue,
@@ -128,8 +103,23 @@ namespace Konsole.Tests.Forms
                 FloatEpsilon = float.Epsilon
             };
             form.Write(numclass);
-            Approvals.Verify(console.BufferWrittenString);
-            System.Console.WriteLine(console.BufferWrittenString);
+            var expected = new[]
+            {
+                " ┌────────────────── MixedNumClass  ──────────────────┐",
+                " │ Int Min Value     : 2147483647                     │",
+                " │ Int Null          :                                │",
+                " │ Int Field         : 123                            │",
+                " │ Decimal Min Value : -79228162514264337593543950335 │",
+                " │ Decimal Max Value : 79228162514264337593543950335  │",
+                " │ Decimal Field     : 123.456789                     │",
+                " │ Float Field       : 10.1234                        │",
+                " │ Float Max Value   : 3.402823E+38                   │",
+                " │ Float Min Value   : -3.402823E+38                  │",
+                " │ Float Null        :                                │",
+                " │ Float Epsilon     : 1.401298E-45                   │",
+                " └────────────────────────────────────────────────────┘"
+            };
+            console.BufferWrittenTrimmed.ShouldBeEquivalentTo(expected);
         }
 
 

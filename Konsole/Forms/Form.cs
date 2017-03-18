@@ -26,9 +26,9 @@ namespace Konsole.Forms
         private readonly IBoxStyle _boxStyle;
         private readonly IConsole _console;
         
-        public Form(IConsole console = null) : this(80, null, console) { }
-        public Form(int width) : this(width, null, null) {}
-        public Form() : this(80, null, null) { }
+        public Form(IConsole console = null) : this(console, 80, null) { }
+        public Form(int width) : this(null, width, null) {}
+        public Form() : this(null, 80, null) { }
 
         public int Width
         {
@@ -39,10 +39,15 @@ namespace Konsole.Forms
             }
         }
 
-        public Form(int width, IBoxStyle boxStyle) : this(width, boxStyle, null)
+        public Form(int width, IBoxStyle boxStyle) : this(null, width, boxStyle)
         { }
 
-        public Form(int width, IBoxStyle boxStyle, IConsole console)
+        public Form(int width, IConsole console) : this(console, width, new ThinBoxStyle())
+        {
+            
+        }
+
+        public Form(IConsole console, int width, IBoxStyle boxStyle)
         {
             _width = width;
             _boxStyle = boxStyle ?? new ThinBoxStyle();

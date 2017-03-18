@@ -86,13 +86,13 @@
     <Compile Include="WindowTests\PrintAtShould.cs" />
     <Compile Include="WindowTests\WriteLineShould.cs" />
     <Compile Include="WindowTests\WriteShould.cs" />
-    <Compile Include="Forms\SplitScreenTests.cs" />
+    <Compile Include="FormTests\SplitScreenTests.cs" />
     <Compile Include="Internal\Address.cs" />
-    <Compile Include="Forms\FormEditTests.cs" />
+    <Compile Include="FormTests\FormEditTests.cs" />
     <Compile Include="Internal\Person.cs" />
     <Compile Include="Internal\FormTests.MixedNumClass.cs" />
     <Compile Include="Lines\LineTests.cs" />
-    <Compile Include="Forms\FormTests.cs" />
+    <Compile Include="FormTests\ShowShould.cs" />
     <Compile Include="ProgressBarTests\RefreshShould.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WriterTests\DoCOmmandShould.cs" />
@@ -118,7 +118,7 @@
     <Content Include="Lines\Drawing_LineTests.should_be_able_to_draw_complex_forms_with_mixed_lines.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.should_support_drawing_any_positive_size_boxes.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.TestApprovals.received.txt" />
-    <Content Include="Forms\FormTests.Numeric_types_both_nullable_and_non_nullable_should_be_supported.approved.txt" />
+    <Content Include="FormTests\FormTests.Numeric_types_both_nullable_and_non_nullable_should_be_supported.approved.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
