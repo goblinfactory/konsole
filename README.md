@@ -1,9 +1,10 @@
 # Konsole library
 
-home of the simple cross platform console libary consisting of:
+home of the simple console libary consisting of:
 
 ### ProgressBar , Window  , Form , Draw & MockConsole
 
+*(not currently cross platform, windows only for now, am working on this.)**
 
 ---
 
