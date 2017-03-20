@@ -3,11 +3,12 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased] will become [2.0.0.0]
+## [2.0.0.0] - 2017-03-18
 
 New core `Window` functionality, plus big class renames, main interface `IConsole` has changed from `1.0` and `2.0`.
 
 ### Breaking changes
+- refactor all constructors, move `IConsole` parameter to 1st param.
 - rename `Form.Show` to `Form.Write` (form is written at current cursor position, and position is updated)
 - change `IConsole` `WindowWidth` from a `method` to a `property`.
 - rename `Console` to `Window`
@@ -16,6 +17,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
 - rename `HilighterBuffer` to `BufferHilighted`
 - rename `.Buffer` to `BufferWrittenString` 
 - rename `.TrimmedLines` to `.BufferWrittenTrimmed`
+- rename 'echo' to (isMockConsole and invert) or, override behavior and remove altogether from Window.
 - `Cell` class gets extra property, `Background`
 - `Cell` property rename `.Color` to `.Foreground`
 
@@ -27,37 +29,8 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
   * `.BufferWrittenString` `string` Get the entire buffer for all lines written to, as a single `crln` concatenated string.
   * `.BufferHilighted` `string[]` returns an 'approve-able' text buffer where each character is represented by 2 characters with one of of them representing the background color of the buffer.
 
-### Backlog (not all will go into 2.0)
-- appharbor CI/CD testing with fake or cake.
-- rename 'echo' to (isMockConsole and invert) or, override behavior and remove altogether from Window.
-- investigate supporting clipping when printing i.e. overlapping windows - this may not be possible without being very slow, or using native window calls. This might also contradict the nature of the 'window' as being a thing that allows you to quickly print to your window, so a sub window is just a shortcut to actually print to that window.
-- (done) be more consistent, move IConsole to first parameter 
-- (not for a while!) make Window class thread safe?
-- add manual (demos) tests for threading
-- add tests for out of range values
-- move Draw to Window. 
-- Add title to box drawing and window open.
-- Implement my `C` form builder pattern from 1985, just for fun ;-D
-- Auto-documentation. 
-- simple menu system.
-- I think there's quite a bit of duplication in the tests, overflow being tested in multiple places, need to cleanup tests.
-- need window `hide` and `show`. (consider option to redraw underlying screen, e.g. for modal boxes).
-
-- Optional borders for windows
-- Merge two window borders to create neat single border.
-- allow for printing off the screen without crashing.
-- scrolling.
-- Investigate if possible to print using native windows and Mac, Linux API's and switch out depending on platform detection, fallback to slower rendering.
-- fix clear issues. Demo program not clearing properly.
-- Window not printing `ForegroundColor` correctly.
-
 ### Added
-
-- Faster window printing. was printing character by character, very ...VEERY SLOW!) not good enough!
-- `BackgroundColor` added to `IConsole`
-- new method `BufferString` 
-- new property `Cell this[int x, int y]` on `BufferedWriter` (allows for interrogating fore and background colour at X,Y position on a buffered writer.)
-- new core windowing functionality via class `Window` (subclass of `BufferedWriter`) Usage as follows
+- new `Window` class, allowing users to print to windows sections of the screen, including either clipped or scrolling of output when out exceeds window.
 
 ```csharp
 
@@ -69,9 +42,19 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
     ...
 
 ```
+- more demos, and demos now more useful for learning how `Konsole` works. See `Konsole.Sample` project.
+- refactored demos to seperate demo classes, seperating functionality being demoed.
+- Faster window printing. was printing character by character, very ...VEERY SLOW!) not good enough!
+- `BackgroundColor` added to `IConsole`
+- new method `BufferString` 
+- new property `Cell this[int x, int y]` on `BufferedWriter` (allows for interrogating fore and background colour at X,Y position on a buffered writer.)
+
 
 ### Fixed
-
+- fix bug , printing off screen was crashing.
+- removed quite a bit of duplication in the unit test code.
+- fix : Window sometimes not printing `ForegroundColor` correctly.
+- fix clear issues. Demo program not clearing properly.
 - fix bug with `PrintAt`, `Write` and `WriteLine` with text that overflows, causing crash.
 - fix bug when calling clear on bufferedWriter and crashing. (was not resetting Y position.)
 - fix bug, calling `refresh` on progress bar changing cursor position.
