@@ -1,6 +1,7 @@
 # backlog
 
 ### Backlog 
+- support progressbar with text to left, not below. (for more compact displays when using lots of progress bars.)
 - multiplatform
 - overlapping windows and scrolling.
 - clipping when printing on overlapping windows - this may not be possible without being very slow, or using native window calls. This might also contradict the nature of the 'window' as being a thing that allows you to quickly print to your window, so a sub window is just a shortcut to actually print to that window.
