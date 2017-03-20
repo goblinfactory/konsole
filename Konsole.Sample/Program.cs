@@ -28,6 +28,9 @@ namespace Konsole.Sample
             var c1 = new MockConsole();
             var pb = new ProgressBar(50);
             pb.Refresh(25,"cats");
+            Console.ReadKey(true);
+            pb.Max = 60;
+            Console.ReadKey(true);
             return;
 
 

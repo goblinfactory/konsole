@@ -4,7 +4,7 @@ namespace Konsole
 {
     public class ProgressBar
     {
-        private readonly int _max;
+        private int _max;
         private readonly char _character;
         private readonly IConsole _console;
         private readonly string _format;
@@ -54,7 +54,15 @@ namespace Konsole
             }
         }
 
-        public int Max { get { return _max; }}
+        public int Max
+        {
+            get { return _max; }
+            set
+            {
+                _max = value;
+                Refresh(_current, _item);
+            }
+        }
 
         public void Refresh(int current, string format, params object[] args)
         {
@@ -66,11 +74,13 @@ namespace Konsole
 
         private string _line1 ="";
         private string _line2 ="";
+        private string _item = "";
 
         public void Refresh(int current, string item)
         {
             lock (_locker)
             {
+                _item = item;
                 var itemText = item ?? "";
                 var state = _console.State;
                 _current = current;

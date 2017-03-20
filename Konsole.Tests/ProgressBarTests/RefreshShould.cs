@@ -13,7 +13,6 @@ namespace Konsole.Tests
         [Test]
         public void show_progress_title_and_progress_bar()
         {
-            var testoutput = new StringBuilder();
             var console = new MockConsole(80,20);
             var pb1 = new ProgressBar(10, console);
             var pb2 = new ProgressBar(10, console);
