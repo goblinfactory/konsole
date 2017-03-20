@@ -10,19 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - fix `ProgressBar` constructor not threadsafe.
 - `ProgressBar.Refresh` with `null` text throws exception.
 
-### Added : high
+### Added : medium
 
 - new readonly property `ProgressBar.Y` : Current Console Y position.
 - new readonly property `ProgressBar.Line1` : Current Line1 Text.
 - new readonly property `ProgressBar.Line2` : Current Line2 text.
-
-
-### Added : low
-
 - Update Sample  paral`(l)`el test, to use fake directories and fake file names.
 -  `TestData.MakeFileNames` : generate random (unique) file names. `public static string[] MakeFileNames(int howMany = 4200, params string[] extensions)`
 - `TestData.MakeNames` now supports option to generate names without special characters.
-- `TestData.MakeObjectNames` : New test data method to generated believable random object names `public static string[] MakeObjectNames(int howMany = 4200, string format = "{0}{1}")`
+- `TestData.MakeObjectNames` : New test data method to generate believable random object names `public static string[] MakeObjectNames(int howMany = 4200, string format = "{0}{1}")`
 
 ## [2.0.0.0] - 2017-03-18
 

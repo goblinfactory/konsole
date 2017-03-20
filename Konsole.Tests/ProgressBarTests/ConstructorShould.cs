@@ -16,7 +16,12 @@ namespace Konsole.Tests.ProgressBarTests
         [Test]
         public void move_cursor_down_two_lines_to_preserve_space_for_the_progressbar()
         {
-            Assert.Inconclusive();
+            var con = new MockConsole();
+            Assert.AreEqual(0, con.CursorTop);
+            var pb1 = new ProgressBar(10,con);
+            Assert.AreEqual(2, con.CursorTop);
+            var pb2 = new ProgressBar(10,con);
+            Assert.AreEqual(4, con.CursorTop);
         }
 
         [Test]
