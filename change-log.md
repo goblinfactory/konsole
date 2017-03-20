@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed - high
 
+- fix `ProgressBar` constructor not threadsafe.
 - `ProgressBar.Refresh` with `null` text throws exception.
 
 ### Added : high
