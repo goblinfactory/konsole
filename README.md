@@ -4,7 +4,9 @@ home of the simple console libary consisting of:
 
 ### ProgressBar , Window  , Form , Draw & MockConsole
 
-*(not currently cross platform, windows only for now, am working on this.)**
+**Cross platform notes**
+ProgressBar has been manually tested with Mono on Mac in version 1.0. I don't currently have any automated testing in place for OSX (mono) and Linux. That's all on the backlog.
+It's possible I might split out the ProgressBar into a seperate nuget package, since that appeared to work remarkably well cross platform, while `Window` makes calls to some `System.Console` methods that are not supported in Mono.
 
 ---
 
