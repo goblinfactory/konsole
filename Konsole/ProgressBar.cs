@@ -16,17 +16,42 @@ namespace Konsole
 
         public ProgressBar(int max) : this(max, '#', FORMAT, new Writer()) { }
         public ProgressBar(int max, IConsole console) : this(max, '#', FORMAT, console) { }
+
+        /// <summary>
+        ///  private hook to make this class easier to test in multithreaded scenarios.
+        /// </summary>
+        protected Action OnConstructor = () => { };
+
+        public int Y
+        {
+            get { return _y; }
+        }
+
+        public string Line1
+        {
+            get { return _line1; }
+        }
+
+        public string Line2
+        {
+            get { return _line2; }
+        }
+
         public ProgressBar(int max, char character, string format, IConsole console)
         {
-            _console = console;
-            _y = _console.CursorTop;
-            _c = _console.ForegroundColor;
-            _current = 0;
-            _max = max;
-            _character = character;
-            _format = format ?? FORMAT; 
-            _console.WriteLine("");
-            _console.WriteLine("");
+            lock (_locker)
+            {
+                _console = console;
+                _y = _console.CursorTop;
+                _c = _console.ForegroundColor;
+                _current = 0;
+                _max = max;
+                _character = character;
+                _format = format ?? FORMAT;
+                // reserve the space we need to print
+                _console.WriteLine("");
+                _console.WriteLine("");
+            }
         }
 
         public int Max { get { return _max; }}
@@ -39,7 +64,8 @@ namespace Konsole
 
         private static object _locker = new object();
 
-
+        private string _line1 ="";
+        private string _line2 ="";
 
         public void Refresh(int current, string item)
         {
@@ -60,8 +86,9 @@ namespace Konsole
                     _console.ForegroundColor = ConsoleColor.Green;
                     _console.WriteLine(bar);
                     _console.ForegroundColor = _c;
-                    _console.WriteLine(itemText.PadRight(_console.WindowWidth-2));
-
+                    _line2 = itemText.PadRight(_console.WindowWidth - 2);
+                    _console.WriteLine(_line2);
+                    _line1 = $"{line} {bar}";
                 }
                 finally
                 {

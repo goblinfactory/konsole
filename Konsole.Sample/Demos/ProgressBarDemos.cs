@@ -70,6 +70,42 @@ namespace Konsole.Sample.Demos
             }
 
         }
+        public static void ParallelConstructorDemo()
+        {
+            Console.WriteLine("ready press enter.");
+            Console.ReadLine();
+
+            var dirCnt = 15;
+            var filesPerDir = 100;
+            var fileCnt = dirCnt * filesPerDir;
+            var r = new Random();
+            var q = new ConcurrentQueue<string>();
+            foreach (var name in TestData.MakeNames(2000)) q.Enqueue(name);
+            var dirs = TestData.MakeObjectNames(dirCnt).Select(dir => new
+            {
+                name = dir,
+                cnt = r.Next(filesPerDir)
+            });
+
+            var tasks = new List<Task>();
+            var bars = new ConcurrentBag<ProgressBar>();
+            foreach (var d in dirs)
+            {
+                var files = q.Dequeue(d.cnt).ToArray();
+                if (files.Length == 0) continue;
+                tasks.Add(new Task(() =>
+                {
+                    var bar = new ProgressBar(files.Count());
+                    bars.Add(bar);
+                    bar.Refresh(0, d.name);
+                    ProcessFakeFiles(d.name, files, bar);
+                }));
+            }
+
+            foreach (var t in tasks) t.Start();
+            Task.WaitAll(tasks.ToArray());
+            Console.WriteLine("done.");
+        }
 
 
 

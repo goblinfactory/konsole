@@ -99,6 +99,10 @@ namespace Konsole.Sample
                     ProgressBarDemos.ParallelDemo();
                     break;
 
+                case '2':
+                    ProgressBarDemos.ParallelConstructorDemo();
+                    break;
+
                 case 'd':
                     ProgressBarDemos.ProgressivelyFasterDemo();
                     break;
@@ -157,7 +161,8 @@ namespace Konsole.Sample
             con.WriteLine("s : scrolling demo");
             con.WriteLine("d : progressively faster 'd'emo");
             con.WriteLine("p : progress bars");
-            con.WriteLine("l : Parallel Demo");
+            con.WriteLine("l : Parallel Demo passing ProgressBars to threads");
+            con.WriteLine("2 : Parallel Demo creating ProgressBar inside thread");
             con.WriteLine("q : quit");
             con.WriteLine("");
         }

@@ -40,7 +40,8 @@ namespace Konsole
             {
                 _lines[sourceTop + sourceHeight-1].Cells[x] = new Cell(sourceChar,sourceForeColor, sourceBackColor);
             }
-
         }
+
+
     }
 }

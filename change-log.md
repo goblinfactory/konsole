@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - `ProgressBar.Refresh` with `null` text throws exception.
 
+### Added : high
+
+- new readonly property `ProgressBar.Y` : Current Console Y position.
+- new readonly property `ProgressBar.Line1` : Current Line1 Text.
+- new readonly property `ProgressBar.Line2` : Current Line2 text.
+
+
 ### Added : low
 
 - Update Sample  paral`(l)`el test, to use fake directories and fake file names.
