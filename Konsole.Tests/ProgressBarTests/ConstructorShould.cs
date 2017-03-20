@@ -26,7 +26,7 @@ namespace Konsole.Tests.ProgressBarTests
             sw.Start();
             int numThreads = 50;
             // what do I mean by 'threadsafe' specifically? i.e. what am I going to test that should be happening?
-            // create 10 threads, start all as fast as possible, ensure each of the progressbars get a unique position and none of the progress bars overlap 
+            // create (N) threads, start all as fast as possible, ensure each of the progressbars get a unique position and none of the progress bars overlap 
             var bag = new List<ProgressBar>();
             var console = new MockConsole(80, numThreads * 2 + 1);
             var tasks = new Task[numThreads];
