@@ -70,9 +70,6 @@
     <Compile Include="XY.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Konsole - Copy.nuspec">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Konsole.nuspec">
       <SubType>Designer</SubType>
     </None>

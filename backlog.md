@@ -1,6 +1,7 @@
 # backlog
 
 ### Backlog 
+- Move TestData to seperate nuget `Goblinfactory.TestData`
 - support progressbar with text to left, not below. (for more compact displays when using lots of progress bars.)
 - multiplatform
 - overlapping windows and scrolling.

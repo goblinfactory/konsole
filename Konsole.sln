@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		push.bat = push.bat
 		readme-sample-parallel.md = readme-sample-parallel.md
 		README.md = README.md
+		test-data.md = test-data.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage", "TestPackage\TestPackage.csproj", "{6BB369A1-0457-4F45-86B7-D1E4AF90EB64}"
@@ -28,6 +29,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konsole.Tests", "Konsole.Tests\Konsole.Tests.csproj", "{E01C01FC-011F-4D5C-A56D-D9692EB3DAD5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage.V2", "TestPackage.V2\TestPackage.V2.csproj", "{0C717BEC-8330-43D2-818D-C648C983177E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage.V2.0.1", "TestPackage.V2.0.1\TestPackage.V2.0.1.csproj", "{4953B093-5CA7-49FD-B9B0-A15A65D637DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +58,10 @@ Global
 		{0C717BEC-8330-43D2-818D-C648C983177E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C717BEC-8330-43D2-818D-C648C983177E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C717BEC-8330-43D2-818D-C648C983177E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4953B093-5CA7-49FD-B9B0-A15A65D637DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4953B093-5CA7-49FD-B9B0-A15A65D637DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4953B093-5CA7-49FD-B9B0-A15A65D637DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4953B093-5CA7-49FD-B9B0-A15A65D637DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
