@@ -3,6 +3,19 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [unreleased] - 2017-03-20
+
+### Fixed - high
+
+- `ProgressBar.Refresh` with `null` text throws exception.
+
+### Added : low
+
+- Update Sample  paral`(l)`el test, to use fake directories and fake file names.
+-  `TestData.MakeFileNames` : generate random (unique) file names. `public static string[] MakeFileNames(int howMany = 4200, params string[] extensions)`
+- `TestData.MakeNames` now supports option to generate names without special characters.
+- `TestData.MakeObjectNames` : New test data method to generated believable random object names `public static string[] MakeObjectNames(int howMany = 4200, string format = "{0}{1}")`
+
 ## [2.0.0.0] - 2017-03-18
 
 New core `Window` functionality, plus big class renames, main interface `IConsole` has changed from `1.0` and `2.0`.
@@ -30,7 +43,7 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
   * `.BufferHilighted` `string[]` returns an 'approve-able' text buffer where each character is represented by 2 characters with one of of them representing the background color of the buffer.
 
 ### Added
-- new `Window` class, allowing users to print to windows sections of the screen, including either clipped or scrolling of output when out exceeds window.
+- new `Window` class, with significant functionality, ... allowing users to print to windows sections of the screen, including either clipped or scrolling of output when out exceeds window.
 
 ```csharp
 

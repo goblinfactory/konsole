@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,24 @@ using Konsole.Internal;
 
 namespace Konsole.Sample.Demos
 {
+    public static class QueueExtensions
+    {
+        public static IEnumerable<T> Dequeue<T>(this ConcurrentQueue<T> src, int x)
+        {
+            int cnt = 0;
+            bool more = true;
+            while (more && cnt<x)
+            {
+                T item;
+                more = src.TryDequeue(out item);
+                cnt++;
+                yield return item;
+            }
+
+            
+        }
+    }
+
     class ProgressBarDemos
     {
         public static void SimpleDemo(IConsole con)
@@ -53,7 +72,42 @@ namespace Konsole.Sample.Demos
         }
 
 
+
         public static void ParallelDemo()
+        {
+            Console.WriteLine("ready press enter.");
+            Console.ReadLine();
+
+            var dirCnt = 10;
+            var filesPerDir = 100;
+            var fileCnt = dirCnt * filesPerDir;
+            var r = new Random();
+            var q = new ConcurrentQueue<string>();
+            foreach (var name in TestData.MakeNames(2000)) q.Enqueue(name);
+            var dirs = TestData.MakeObjectNames(dirCnt).Select(dir => new
+            {
+                name = dir,
+                cnt = r.Next(filesPerDir)
+            });
+
+            var tasks = new List<Task>();
+            var bars = new List<ProgressBar>();
+            foreach (var d in dirs)
+            {
+                var files = q.Dequeue(d.cnt).ToArray();
+                if (files.Length == 0) continue;
+                var bar = new ProgressBar(files.Count());
+                bars.Add(bar);
+                bar.Refresh(0, d.name);
+                tasks.Add(new Task(() => ProcessFakeFiles(d.name, files, bar)));
+            }
+
+            foreach (var t in tasks) t.Start();
+            Task.WaitAll(tasks.ToArray());
+            Console.WriteLine("done.");
+        }
+
+        public static void Parallel2Demo()
         {
             // demo; take the first 10 directories that have files from solution root and then pretends to process (list) them.
             // processing of each directory happens on a different thread, to simulate multiple background tasks, 
@@ -71,7 +125,7 @@ namespace Konsole.Sample.Demos
                 var bar = new ProgressBar(files.Count());
                 bars.Add(bar);
                 bar.Refresh(0, d);
-                tasks.Add(new Task(() => ProcessFiles(d, files, bar)));
+                tasks.Add(new Task(() => ProcessRealFiles(d, files, bar)));
             }
             Console.WriteLine("ready press enter.");
             Console.ReadLine();
@@ -81,7 +135,18 @@ namespace Konsole.Sample.Demos
             Console.WriteLine("done.");
         }
 
-        public static void ProcessFiles(string directory, string[] files, ProgressBar bar)
+        public static void ProcessFakeFiles(string directory, string[] files, ProgressBar bar)
+        {
+            var cnt = files.Count();
+            foreach (var file in files)
+            {
+                bar.Next(file);
+                Thread.Sleep(50);
+            }
+        }
+
+
+        public static void ProcessRealFiles(string directory, string[] files, ProgressBar bar)
         {
             var cnt = files.Count();
             foreach (var file in files)

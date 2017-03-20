@@ -45,6 +45,7 @@ namespace Konsole
         {
             lock (_locker)
             {
+                var itemText = item ?? "";
                 var state = _console.State;
                 _current = current;
                 try
@@ -59,7 +60,7 @@ namespace Konsole
                     _console.ForegroundColor = ConsoleColor.Green;
                     _console.WriteLine(bar);
                     _console.ForegroundColor = _c;
-                    _console.WriteLine(item.PadRight(_console.WindowWidth-2));
+                    _console.WriteLine(itemText.PadRight(_console.WindowWidth-2));
 
                 }
                 finally
