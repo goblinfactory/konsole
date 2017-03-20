@@ -119,6 +119,10 @@ namespace Konsole.Sample
                     BoxeDemos.Run();
                     break;
 
+                case 't':
+                    TestDataDemo.Run(con);
+                    break;
+
                 default:
                     break;
             }
@@ -163,6 +167,7 @@ namespace Konsole.Sample
             con.WriteLine("p : progress bars");
             con.WriteLine("l : Parallel Demo passing ProgressBars to threads");
             con.WriteLine("2 : Parallel Demo creating ProgressBar inside thread");
+            con.WriteLine("t : test data demo");
             con.WriteLine("q : quit");
             con.WriteLine("");
         }

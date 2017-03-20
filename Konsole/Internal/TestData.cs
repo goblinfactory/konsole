@@ -58,14 +58,15 @@ namespace Konsole.Internal
         public static string[] MakeFileNames(int howMany = 4200, params string[] extensions)
         {
             if (extensions.Length == 0) return new string[] {};
-            int cnt = howMany/extensions.Length;
-            var onames = MakeObjectNames(cnt);
-            var filenames = from file in onames
-                from ext in extensions
-                select $"{file}.{ext}";
+            var len = extensions.Length;
+            var r = new Random();
+            Func<int,string> ext2 = i => extensions[r.Next(len)];
 
-            var shuffled = ShuffleStrings(filenames);
-            return shuffled.Take(howMany).ToArray();
+            var onames = MakeObjectNames(howMany)
+                .Select((o, i) => $"{o}{ext2(i)}")
+                .ToArray();
+            return onames;
+
         }
 
 
