@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.2] - 2017-03-20
+
+### Added 
+
+- Can set `ProgressBar.Max` after creating a progressbar, and UX will be updated.
+
 ## [2.0.1] - 2017-03-20
 
 ### Fixed - high
