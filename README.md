@@ -157,8 +157,6 @@ All the test for this library have been written using `MockConsole.` For a fully
 
 ## Building the solution
 
- (before pushing this to github, do a fresh checkout and confirm 100% this does in fact work, or I'll look amazingly stupid! )
-
  ### using visual studio
 
  1. `git clone https://github.com/goblinfactory/konsole.git`
@@ -216,10 +214,13 @@ Below is a comparison of how someone might test an Invoice class using a traditi
              // then this test fails even though the desired output is written to the console.
         }
         
-        // using a Test Double like Konsole.TestConsole the test above becomes
+```
 
+using a Test Double like `Konsole.MockConsole` the test above becomes
+
+```csharp
         [Test]
-        public void testing_Invoice_class_using_TestConsole()
+        public void testing_Invoice_class_using_MockConsole()
             {
                 var expected = @"
                  ACME WHoleSale Foody 
@@ -244,7 +245,7 @@ Below is a comparison of how someone might test an Invoice class using a traditi
                 
             // Now, if someone accidentally changes your currency formatter, this test will wail
             // when the rendered output to the Console suddenly changes, bwaaam! Instant Fail.
-            // Score one for TestConsole, sweetness, life is good!
+            // Score one for MockConsole, sweetness, life is good!
         }
 
 
