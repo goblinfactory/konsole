@@ -10,7 +10,7 @@ namespace Konsole.Tests.ProgressBarTests
     public class SettingMaxShould
     {
         [Test]
-        public void update_the_display_using_the_new_max()
+        public void update_the_display_using_the_new_max_when_number_decreases()
         {
             var console = new MockConsole(80, 20);
             var pb = new ProgressBar(10, console);
@@ -25,11 +25,37 @@ namespace Konsole.Tests.ProgressBarTests
             pb.Max = 20;
             var expected2 = new[]
             {
-                "Item 2     of 20   . (10 %) ##########                                          ",
+                "Item 2     of 20   . (10 %) #####                                               ",
                 "cats                                                                            ",
             };
             Assert.AreEqual(expected2, console.BufferWritten);
 
         }
+
+
+        [Test]
+        public void update_the_display_using_the_new_max_when_number_increases()
+        {
+            Assert.Fail();
+            //var console = new MockConsole(80, 20);
+            //var pb = new ProgressBar(10, console);
+            //pb.Refresh(2, "cats");
+            //var expected1 = new[]
+            //{
+            //    "Item 2     of 10   . (20 %) ##########                                          ",
+            //    "cats                                                                            ",
+            //};
+            //Assert.AreEqual(expected1, console.BufferWritten);
+
+            //pb.Max = 20;
+            //var expected2 = new[]
+            //{
+            //    "Item 2     of 20   . (10 %) #####                                               ",
+            //    "cats                                                                            ",
+            //};
+            //Assert.AreEqual(expected2, console.BufferWritten);
+
+        }
+
     }
 }

@@ -65,6 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormTests\PaddingShould.cs" />
+    <Compile Include="MenuTests\PressingMenuKeyShould.cs" />
     <Compile Include="ProgressBarTests\ConstructorShould.cs" />
     <Compile Include="ProgressBarTests\SettingMaxShould.cs" />
     <Compile Include="WindowTests\DoCommandShould.cs" />

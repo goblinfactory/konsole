@@ -26,52 +26,11 @@ namespace Konsole.Sample
 
         private static void RandomStuff(IConsole con)
         {
-            var c1 = new MockConsole();
-            var pb = new ProgressBar(50);
+            var pb = new ProgressBar(50, con);
             pb.Refresh(25,"cats");
             Console.ReadKey(true);
-            pb.Max = 60;
+            pb.Max = 40;
             Console.ReadKey(true);
-            return;
-
-
-            // what happens with
-            // ... small sizes? (0 and 1?)
-            // ... nested windows?
-
-            var w1 = new Window(20, 10, ConsoleColor.Black, ConsoleColor.DarkYellow);
-            w1.WriteLine("hello");
-            var w2 = new Window(w1, 5, 0, 20, 35, ConsoleColor.Red, ConsoleColor.White);
-            w2.PrintAt(5,2,"X");
-            w1.WriteLine("this will overwrite");
-
-            return;
-
-            //var w = Window.Open(0, 0, 10, 5, "title", LineThickNess.Double, ConsoleColor.DarkYellow, ConsoleColor.Yellow, con);
-            //w.WriteLine("one");
-            //w.WriteLine("two");
-            //w.WriteLine("three");
-            //w.WriteLine("four");
-            //w.WriteLine("five");
-
-            //var expected = new[]
-            //{
-            //    "╔════════╗",
-            //    "║three   ║",
-            //    "║four    ║",
-            //    "║five    ║",
-            //    "╚════════╝"
-            //};
-            //return;
-
-            //c.BufferWritten.ShouldBeEquivalentTo(expected);
-
-            //con.WriteLine("testing opening a dialog window and running one of the demos");
-            //con.WriteLine(" ('f' progressively faster) inside it");
-            //var w = Window.Open(5,5,60,10,"random", LineThickNess.Double, ConsoleColor.Black, ConsoleColor.DarkCyan);
-            //w.WriteLine("new window");
-            //ProgressBarDemos.ProgressivelyFasterDemo(50,w);
-
         }
 
 
@@ -132,20 +91,16 @@ namespace Konsole.Sample
             var con = new Window();
             var output = new Window(con, 35,0, 70, 20, ConsoleColor.White, ConsoleColor.DarkCyan);
 
-            char cmd = ' ';
-
             con.WriteLine("this test should be above the menu");
+
             var menu = new Menu(con, output, 'q', 30,
 
                 new MenuItem('f',"Auto forms from objects", FormDemos.Run),
+                new MenuItem('r',"Random stuff", RandomStuff),
                 new MenuItem('b',"draw boxes and lines", BoxeDemos.Run),
-                new MenuItem('t',"test data demo", TestDataDemo.Run),
-                new MenuItem('d',"dummy menu item do nothing", (c) =>
-                {
-                    c.WriteLine("test");
-                    Console.ReadKey();
-                })
-            );
+                new MenuItem('t',"test data demo", TestDataDemo.Run)
+            
+                );
 
             // todo, make this the default behavior?
             menu.BeforeMenu = output.Clear;
@@ -153,14 +108,11 @@ namespace Konsole.Sample
 
             menu.Run();
             con.WriteLine("this test should appear below the menu");
-
-
         }
 
         private static void printMenu(IConsole con)
         {
             con.WriteLine("");
-            con.WriteLine("f : Forms : auto forms from objects");
             con.WriteLine("w : windows");
             con.WriteLine("1 : simple window demo");
             con.WriteLine("r : random test stuff. Changes often on each checkin.");
