@@ -46,6 +46,7 @@
     <Compile Include="Demos\BoxeDemos.cs" />
     <Compile Include="Demos\FormDemos.cs" />
     <Compile Include="Demos\HiliteDemo.cs" />
+    <Compile Include="Demos\Menus.cs" />
     <Compile Include="Demos\ProgressBarDemos.cs" />
     <Compile Include="Demos\TestDataDemo.cs" />
     <Compile Include="Demos\WindowDemo.cs" />

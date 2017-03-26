@@ -15,6 +15,7 @@ namespace Konsole
         void DoCommand(IConsole console, Action action);
         ConsoleColor ForegroundColor { get; set; }
         ConsoleColor BackgroundColor { get; set; }
+        bool CursorVisible { get; set; }
         void PrintAt(int x, int y, string format, params object[] args);
         void PrintAt(int x, int y, string text);
         void PrintAt(int x, int y, char c);

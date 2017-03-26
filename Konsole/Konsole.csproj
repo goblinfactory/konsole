@@ -52,6 +52,10 @@
     <Compile Include="Internal\HiliteBuffer.cs" />
     <Compile Include="Internal\Cell.cs" />
     <Compile Include="K.cs" />
+    <Compile Include="IReadKey.cs" />
+    <Compile Include="KeyReader.cs" />
+    <Compile Include="Menus\Menu.cs" />
+    <Compile Include="Menus\MenuItem.cs" />
     <Compile Include="MockConsole.cs" />
     <Compile Include="Writer.cs" />
     <Compile Include="Forms\BoxWriter.cs" />

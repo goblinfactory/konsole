@@ -3,16 +3,19 @@ using System.Linq;
 using System.Threading;
 using Konsole.Drawing;
 using Konsole.Internal;
+using Konsole.Menus;
 
 namespace Konsole.Sample.Demos
 {
-    internal class WindowDemo
+    public class WindowDemo
     {
-        public static void ScrollingDemo(IConsole con)
+        private readonly IConsole _con;
+
+        public void ScrollingDemo()
         {
             var w = Window.Open(5,5,50,20, "");
             var names = TestData.MakeNames(150);
-            con.ForegroundColor = ConsoleColor.DarkGray;
+            _con.ForegroundColor = ConsoleColor.DarkGray;
             foreach (var name in names)
             {
                 w.WriteLine(name);
@@ -20,11 +23,16 @@ namespace Konsole.Sample.Demos
 
         }
 
-        public static void SimpleDemo(IConsole con)
+        public WindowDemo(IConsole console)
         {
-            con.WriteLine("starting client server demo");
-            var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con);
-            var server = new Window(25, 4, 20, 20, con);
+            _con = console;
+        }
+
+        public void SimpleDemo()
+        {
+            _con.WriteLine("starting client server demo");
+            var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, _con);
+            var server = new Window(25, 4, 20, 20, _con);
             client.WriteLine("CLIENT");
             client.WriteLine("------");
             server.WriteLine("SERVER");
@@ -34,12 +42,12 @@ namespace Konsole.Sample.Demos
             server.WriteLine(ConsoleColor.Red, "<-- 404|Not Found|some long text to show wrapping|");
             client.WriteLine(ConsoleColor.Red, "--> 404|Not Found|some long text to show wrapping|");
 
-            con.WriteLine("starting names demo");
+            _con.WriteLine("starting names demo");
             // let's open a window with a box around it by using Window.Open
             var names = Window.Open(50, 4, 40, 10, "names");
             TestData.MakeNames(40).OrderByDescending(n => n).ToList().ForEach(n => names.WriteLine(n));
 
-            con.WriteLine("starting numbers demo");
+            _con.WriteLine("starting numbers demo");
             var numbers = Window.Open(50, 15, 40, 10, "numbers", LineThickNess.Double,ConsoleColor.White,ConsoleColor.Blue);
             Enumerable.Range(1,200).ToList().ForEach(i => numbers.WriteLine(i.ToString()));
 

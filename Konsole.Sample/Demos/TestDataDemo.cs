@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Konsole.Drawing;
 using Konsole.Internal;
+using Konsole.Menus;
 
 namespace Konsole.Sample.Demos
 {
@@ -23,6 +24,7 @@ namespace Konsole.Sample.Demos
             var objNames = TestData.MakeObjectNames(100);
             foreach (var oname in objNames)
                 w2.WriteLine(oname);
+            Console.ReadKey(true);
         }
 
 

@@ -51,7 +51,7 @@ namespace Konsole
 
         public ConsoleState State
         {
-            get {  return new ConsoleState(Console.ForegroundColor,Console.BackgroundColor, Console.CursorTop, Console.CursorLeft);}
+            get {  return new ConsoleState(Console.ForegroundColor,Console.BackgroundColor, Console.CursorTop, Console.CursorLeft, Console.CursorVisible );}
             set
             {
                 Console.ForegroundColor = value.ForegroundColor;
@@ -142,6 +142,12 @@ namespace Konsole
         public ConsoleColor BackgroundColor {
             get { return Console.BackgroundColor; }
             set { Console.BackgroundColor = value; }
+        }
+
+        public bool CursorVisible
+        {
+            get { return Console.CursorVisible; }
+            set { Console.CursorVisible = value; }
         }
 
         public void PrintAt(int x, int y, string format, params object[] args)

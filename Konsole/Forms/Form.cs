@@ -26,7 +26,7 @@ namespace Konsole.Forms
         private readonly IBoxStyle _boxStyle;
         private readonly IConsole _console;
         
-        public Form(IConsole console = null) : this(console, 80, null) { }
+        public Form(IConsole console = null) : this(console, console?.WindowWidth-1 ?? 80, null) { }
         public Form(int width) : this(null, width, null) {}
         public Form() : this(null, 80, null) { }
 

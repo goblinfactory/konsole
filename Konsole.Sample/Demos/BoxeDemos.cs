@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Konsole.Drawing;
+using Konsole.Menus;
 
 namespace Konsole.Sample.Demos
 {
     public class BoxeDemos
     {
-        public static void Run()
+        public static void Run(IConsole console)
         {
-            var console = new Writer();
-
             int height = 18;
             int sy = 2;
             int sx = 2;

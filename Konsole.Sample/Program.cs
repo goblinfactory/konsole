@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Konsole.Drawing;
 using Konsole.Forms;
 using Konsole.Internal;
+using Konsole.Menus;
 using Konsole.Sample.Demos;
 
 namespace Konsole.Sample
@@ -83,7 +84,7 @@ namespace Konsole.Sample
                     break;
 
                 case '1':
-                    WindowDemo.SimpleDemo(con);
+                    new WindowDemo(con).SimpleDemo();
                     break;
 
                 case 'w':
@@ -111,20 +112,14 @@ namespace Konsole.Sample
                     break;
 
                 case 's':
-                    WindowDemo.ScrollingDemo(con);
+                    new WindowDemo(con).ScrollingDemo();
                     break;
 
                 case 'p':
                     ProgressBarDemos.SimpleDemo(con);
                     break;
 
-                case 'b':
-                    BoxeDemos.Run();
-                    break;
 
-                case 't':
-                    TestDataDemo.Run(con);
-                    break;
 
                 default:
                     break;
@@ -135,28 +130,35 @@ namespace Konsole.Sample
         private static void Main(string[] args)
         {
             var con = new Window();
+            var output = new Window(con, 35,0, 70, 20, ConsoleColor.White, ConsoleColor.DarkCyan);
+
             char cmd = ' ';
-            while (cmd != 'q')
-            {
-                con.Clear();
-                printMenu(con);
-                cmd = Console.ReadKey(true).KeyChar;
-                if (cmd == 'q') break;
-                var state = con.State;
-                con.Clear();
-                Console.Clear();
-                RunCommand(con, cmd);
-                Console.ReadKey(true);
-                con.State = state;
-            }
+
+            con.WriteLine("this test should be above the menu");
+            var menu = new Menu(con, output, 'q', 30,
+
+                new MenuItem('f',"Auto forms from objects", FormDemos.Run),
+                new MenuItem('b',"draw boxes and lines", BoxeDemos.Run),
+                new MenuItem('t',"test data demo", TestDataDemo.Run),
+                new MenuItem('d',"dummy menu item do nothing", (c) =>
+                {
+                    c.WriteLine("test");
+                    Console.ReadKey();
+                })
+            );
+
+            // todo, make this the default behavior?
+            menu.BeforeMenu = output.Clear;
+            menu.AfterMenu = output.Clear;
+
+            menu.Run();
+            con.WriteLine("this test should appear below the menu");
+
+
         }
 
         private static void printMenu(IConsole con)
         {
-            con.WriteLine("Misc demo and test projects - press key to run demo");
-            con.WriteLine("press key again to return to menu"); 
-            con.WriteLine("---------------------------------------------------");
-            
             con.WriteLine("");
             con.WriteLine("f : Forms : auto forms from objects");
             con.WriteLine("w : windows");
@@ -164,13 +166,12 @@ namespace Konsole.Sample
             con.WriteLine("r : random test stuff. Changes often on each checkin.");
             con.WriteLine("    (Open a dialog window and run one of the other tests 'f' inside it.)");
             con.WriteLine("h : hiliting");
-            con.WriteLine("b : boxes");
             con.WriteLine("s : scrolling demo");
             con.WriteLine("d : progressively faster 'd'emo");
             con.WriteLine("p : progress bars");
             con.WriteLine("l : Parallel Demo passing ProgressBars to threads");
             con.WriteLine("2 : Parallel Demo creating ProgressBar inside thread");
-            con.WriteLine("t : test data demo");
+  
             con.WriteLine("q : quit");
             con.WriteLine("");
         }

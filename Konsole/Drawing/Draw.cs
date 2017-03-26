@@ -32,9 +32,10 @@ namespace Konsole.Drawing
         public static IBoxStyle ThickBox = new ThickBoxStyle();
         public static IBoxStyle ThinBox = new ThinBoxStyle();
 
-        public void Box(int sx, int sy, int ex, int ey, LineThickNess thickness = LineThickNess.Single)
+        public Draw Box(int sx, int sy, int ex, int ey, LineThickNess thickness = LineThickNess.Single)
         {
             Box(sx, sy, ex, ey, "", thickness);
+            return this;
         }
 
 

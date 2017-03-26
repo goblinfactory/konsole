@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Linq;
+using System.Runtime.InteropServices;
 using Konsole.Drawing;
 using Konsole.Internal;
 
@@ -501,6 +502,22 @@ namespace Konsole
 
         public ConsoleColor BackgroundColor { get; set; }
 
+        private bool _noEchoCursorVisible = true;
+
+        public bool CursorVisible
+        {
+            get { return _echoConsole?.CursorVisible ?? _noEchoCursorVisible; }
+            set
+            {
+                if(_echoConsole==null)
+                    _noEchoCursorVisible = value;
+                else
+                    _echoConsole.CursorVisible = value;
+            }
+        }
+
+
+
         public ConsoleColor ForegroundColor { get; set; }
 
         
@@ -529,7 +546,7 @@ namespace Konsole
             {
                 DoCommand(this, () =>
                 {
-                    State = new ConsoleState(foreground, background ?? BackgroundColor, y, x);
+                    State = new ConsoleState(foreground, background ?? BackgroundColor, y, x, CursorVisible);
                     Write(text);
                 });
             });
@@ -540,7 +557,7 @@ namespace Konsole
         {
             get
             {
-                return new ConsoleState(ForegroundColor, BackgroundColor, CursorTop, CursorLeft);
+                return new ConsoleState(ForegroundColor, BackgroundColor, CursorTop, CursorLeft, CursorVisible);
             }
 
             set

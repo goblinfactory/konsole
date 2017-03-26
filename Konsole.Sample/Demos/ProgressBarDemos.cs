@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Konsole.Internal;
+using Konsole.Menus;
 
 namespace Konsole.Sample.Demos
 {
@@ -50,7 +51,6 @@ namespace Konsole.Sample.Demos
         }
 
 
-
         public static void ProgressivelyFasterDemo(int startingPauseMilliseconds = 50, Window window = null)
         {
             var pb = window?.ProgressBar(300) ?? new ProgressBar(300);
@@ -70,6 +70,8 @@ namespace Konsole.Sample.Demos
             }
 
         }
+
+
         public static void ParallelConstructorDemo()
         {
             Console.WriteLine("ready press enter.");
@@ -106,7 +108,6 @@ namespace Konsole.Sample.Demos
             Task.WaitAll(tasks.ToArray());
             Console.WriteLine("done.");
         }
-
 
 
         public static void ParallelDemo()

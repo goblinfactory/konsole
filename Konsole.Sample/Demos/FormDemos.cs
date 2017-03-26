@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Konsole.Forms;
+using Konsole.Menus;
 
 namespace Konsole.Sample.Demos
 {
-    public class FormDemos
+    public static class FormDemos
     {
-        public static void Run(IConsole con)
+        public static void Run(IConsole _console)
         {
-            con.Colors = new Colors(ConsoleColor.White, ConsoleColor.DarkYellow);
-            var form1 = new Form(80, new ThickBoxStyle());
+            _console.Colors = new Colors(ConsoleColor.White, ConsoleColor.DarkYellow);
+            var form1 = new Form(_console, _console.WindowWidth -1, new ThickBoxStyle());
             
             var person = new Person()
             {
@@ -24,12 +25,13 @@ namespace Konsole.Sample.Demos
             form1.Write(person);
             
             // works with anonymous types
-            con.Colors = new Colors(ConsoleColor.White, ConsoleColor.DarkBlue);
-            new Form().Write(new { Height = "40px", Width = "200px" }, "Demo Box");
+            _console.Colors = new Colors(ConsoleColor.White, ConsoleColor.DarkBlue);
+            new Form(_console).Write(new { Height = "40px", Width = "200px" }, "Demo Box");
 
             // change the box style, and width, thickbox
-            con.Colors = new Colors(ConsoleColor.Yellow, ConsoleColor.DarkRed);
-            new Form(40, new ThickBoxStyle()).Write(new { AddUser = "true", CloseAccount = "false", OpenAccount = "true" }, "Permissions");
+            _console.Colors = new Colors(ConsoleColor.Yellow, ConsoleColor.DarkRed);
+            new Form(_console, 40, new ThickBoxStyle()).Write(new { AddUser = "true", CloseAccount = "false", OpenAccount = "true" }, "Permissions");
+            Console.ReadKey(true);
         }
 
     }
