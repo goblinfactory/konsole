@@ -17,8 +17,8 @@ namespace Konsole.Menus
         private readonly char _quit;
         private readonly IReadKey _keyreader;
         private readonly int _width;
-        private Dictionary<char, MenuItem> _menuItems = new Dictionary<char, MenuItem>();
-
+        private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
+        private Dictionary<char,int> _keyBindings = new Dictionary<char, int>();
 
         // hooks for clearing screen and redrawing menu, if required
         public Action BeforeMenu = () => { };
@@ -34,11 +34,15 @@ namespace Konsole.Menus
         /// </summary>
         public bool EnableShortCut { get; set; } = true;
         public ConsoleColor Background { get; set; } = ConsoleColor.DarkBlue;
-        public ConsoleColor Foreground { get; set; } = ConsoleColor.White;
+        public ConsoleColor Foreground { get; set; } = ConsoleColor.Gray;
         public ConsoleColor SelectedItemBackground { get; set; } = ConsoleColor.White;
         public ConsoleColor SelectedItemForeground { get; set; } = ConsoleColor.Red;
+        public ConsoleColor MessageBackground { get; set; } = ConsoleColor.Blue;
+        public ConsoleColor MessageForeground { get; set; } = ConsoleColor.White;
         public ConsoleColor ShortCutKeyForeground { get; set; } = ConsoleColor.Yellow;
         public ConsoleColor ShortCutKeyBackground { get; set; } = ConsoleColor.DarkBlue;
+
+        // need MenuTheme
 
         public LineThickNess LineThickNess { get; set; } = LineThickNess.Single;
         private int _messageHeight = 4;
@@ -58,6 +62,13 @@ namespace Konsole.Menus
 
         public IReadKey Keyreader { get; set; }
 
+
+        public Menu(IConsole console, char quit, int width, params MenuItem[] menuActions)
+            : this(console, null, quit, width, menuActions)
+        {
+            
+        }
+
         public Menu(IConsole console, IConsole output, char quit, int width, params MenuItem[] menuActions)
         {
             _keyreader = new KeyReader();
@@ -65,13 +76,21 @@ namespace Konsole.Menus
             _output = output;
             _quit = quit;
             _width = width;
-            foreach (var menu in menuActions)
+            for(int i = 0; i<menuActions.Length; i++)
             {
-                _menuItems.Add(menu.Key, menu);
+                var item = menuActions[i];
+                var key = item.Key;
+                if(key.HasValue) _keyBindings.Add(key.Value, i);
+                _menuItems.Add(i, item);
+                
             }
             if (menuActions == null || menuActions.Length == 0)
                 throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
             _height = menuActions.Length;
+            _window = Window.OpenInline(_console, _width, _height,  Foreground, Background);
+            if (MessageHeight > 0)
+                _messageWindow = Window.OpenInline(_console, _width, _messageHeight, MessageForeground, MessageBackground);
+            _console.CursorTop += _height + _messageHeight;
         }
 
         private int _current = 0;
@@ -97,19 +116,9 @@ namespace Konsole.Menus
         private Window _window;
         private Window _messageWindow;
 
-        public void DrawBorder()
-        {
-            var ex = _width + 2;
-            var ey = _height + 2;
-
-            new Draw(_console)
-                .Box(0, 0, ex, ey)
-                .Box(0, ey, ex, ey + MessageHeight + 2);
-        }
 
         public void Refresh()
         {
-            DrawBorder();
             DrawMenu();
         }
 
@@ -166,11 +175,6 @@ namespace Konsole.Menus
         private void _run()
         {
             _console.CursorVisible = false;
-            _window = Window.Open(0, 0, _width+2, _height+2, "menu", LineThickNess, Foreground, Background, _console); // need to set these windows to clip!
-            //_window = new Window(_console, 1, );
-
-            _window.CursorVisible = false;
-            _messageWindow = Window.Open(0, _height + 3, _width + 2, 4, "menu", LineThickNess, Foreground, Background, _console); // need to set this window to clip!
             var state = _console.State;
             ConsoleKeyInfo cmd;
             
@@ -185,8 +189,9 @@ namespace Konsole.Menus
                     DrawMenu();
                     continue;
                 }
-                if (!_menuItems.ContainsKey(cmd.KeyChar)) continue;
-                var item = _menuItems[cmd.KeyChar];
+                if (!_keyBindings.ContainsKey(cmd.KeyChar)) continue;
+                var itemKey = _keyBindings[cmd.KeyChar];
+                var item = _menuItems[itemKey];
 
                 try
                 {

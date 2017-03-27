@@ -66,10 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormTests\PaddingShould.cs" />
+    <Compile Include="MenuTests\ConstructorShould.cs" />
+    <Compile Include="MenuTests\PressingEnterShould.cs" />
     <Compile Include="MenuTests\PressingMenuKeyShould.cs" />
     <Compile Include="ProgressBarTests\ConstructorShould.cs" />
     <Compile Include="ProgressBarTests\SettingMaxShould.cs" />
     <Compile Include="WindowTests\DoCommandShould.cs" />
+    <Compile Include="WindowTests\OpenInlineShould.cs" />
     <Compile Include="WindowTests\OverflowBottomRequirements.cs" />
     <Compile Include="WindowTests\ScrollingAndClippingRequirements.cs" />
     <Compile Include="ProgressBarTests\NextShould.cs" />

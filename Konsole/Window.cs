@@ -128,6 +128,26 @@ namespace Konsole
         {
         }
 
+        // TODO: fix the window constructors, second parameter is sometimes height, and sometimes not!
+        public Window(IConsole echoConsole, int height, ConsoleColor foreground, ConsoleColor background)
+    : this(0, 0, echoConsole.WindowWidth, height, foreground, background, true, echoConsole)
+        {
+        }
+
+        public static Window OpenInline(IConsole echoConsole, int width, int height, ConsoleColor foreground, ConsoleColor background)
+        {
+            var w = new Window(0, echoConsole.CursorTop, width, height, foreground, background, true, echoConsole);
+            echoConsole.CursorTop += height;
+            return w;
+        }
+
+        public static Window OpenInline(IConsole echoConsole, int height)
+        {
+            var w = new Window(0, echoConsole.CursorTop, echoConsole.WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole);
+            echoConsole.CursorTop += height;
+            return w;
+        } 
+
         //Window will clear the parent console area in the overlapping window.
         // this constructor is safe to have params after IConsole because it's the only constructor that starts with IConsole, all other constructors have other strongly typed first parameter. (i.e. avoid parameter confusion)
         public Window(IConsole echoConsole, params K[] options)

@@ -28,6 +28,7 @@ namespace Konsole.Tests.WindowTests
             Assert.Inconclusive();
         }
 
+
         [Test]
         public void not_allow_negative_values()
         {

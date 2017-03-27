@@ -3,6 +3,15 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [unreleased]
+
+### Added
+
+- `Window.OpenInline(console, height)` : opens a new window 'inline' full width of the console, 'height' rows tall, and moves the cursor to below the window. See `Window.OpenInlineShould` test.
+- `MockKeyboard` : Mock keyboard for queueing up keystrokes. Includes Autoreply. Use to simulate user input during unit tests.
+- `IReadKeys` : for console input.
+- `Menu` : for rendering menus and capturing user input.
+
 ## [2.0.2] - 2017-03-20
 
 ### Added 
