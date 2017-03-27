@@ -18,7 +18,7 @@ namespace Konsole.Tests.MenuTests
             var con = new MockConsole(10,10);
             var output = new MockConsole();
             
-            var m = new Menu(con, output, 'q', 10, new MenuItem('a', "item 1", c => { }));
+            var m = new Menu(con, output, 'q', 10, new MenuItem('a',"item 1", "item 1 helptext", c => { }));
 
 
             var expected = new[]
@@ -53,9 +53,9 @@ namespace Konsole.Tests.MenuTests
             var con = new MockConsole(10, 10);
             var output = new MockConsole();
             var m = new Menu(con, output, 'q', 10, 
-                new MenuItem('a', "item 1", c => { }),
-                new MenuItem('b', "item 2", c => { }),
-                new MenuItem('c', "item 3", c => { })
+                new MenuItem('a', "item 1", "item 1 helptext", c => { }),
+                new MenuItem('b', "item 2", "item 2 helptext", c => { }),
+                new MenuItem('c', "item 3", "item 3 helptext", c => { })
                 );
             var expected = new[]
             {

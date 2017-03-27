@@ -89,7 +89,9 @@ namespace Konsole.Menus
             _height = menuActions.Length;
             _window = Window.OpenInline(_console, _width, _height,  Foreground, Background);
             if (MessageHeight > 0)
-                _messageWindow = Window.OpenInline(_console, _width, _messageHeight, MessageForeground, MessageBackground);
+                //_messageWindow = Window.OpenInline(_console, _width, _messageHeight, MessageForeground, MessageBackground);
+                _messageWindow = Window.Open(0, _console.CursorTop, _width, _messageHeight, "help",
+                    LineThickNess.Single, MessageForeground, MessageBackground);
             _console.CursorTop += _height + _messageHeight;
         }
 
@@ -136,6 +138,8 @@ namespace Konsole.Menus
                     if (i == Current)
                     {
                         _window.PrintAtColor(SelectedItemForeground, left, i, item.Title, SelectedItemBackground);
+                        _messageWindow.Clear();
+                        _messageWindow.Write(item.Description);
                     }
                     else
                     {

@@ -92,13 +92,14 @@ namespace Konsole.Sample
             var output = new Window(con, 35,0, 70, 20, ConsoleColor.White, ConsoleColor.DarkCyan);
 
             con.WriteLine("this test should be above the menu");
+            con.WriteLine("");
 
             var menu = new Menu(con, output, 'q', 30,
 
-                new MenuItem('f',"Auto forms from objects", FormDemos.Run),
-                new MenuItem('r',"Random stuff", RandomStuff),
-                new MenuItem('b',"draw boxes and lines", BoxeDemos.Run),
-                new MenuItem('t',"test data demo", TestDataDemo.Run)
+                new MenuItem('f',"FORMS", "Auto forms from objects", FormDemos.Run),
+                new MenuItem('r',"RANDOM","Random stuff", RandomStuff),
+                new MenuItem('b',"BOXES","draw boxes and lines", BoxeDemos.Run),
+                new MenuItem('t',"TESTDATA", "draw two windows demonstrating test data as well as clipping", TestDataDemo.Run)
             
                 );
 
