@@ -119,31 +119,33 @@ namespace Konsole.Menus
         private Window _messageWindow;
 
 
-        public void Refresh()
-        {
-            DrawMenu();
-        }
 
         // todo; move to seperate class : IMenuRender
-        private void DrawMenu()
+        protected virtual void Refresh()
         {
             int left = EnableShortCut ? 4 : 0;
+            int shortcutLen = 4;
             lock (_locker)
             {
                 for (int i = 0; i < Height; i++)
                 {
                     var item = this[i];
-                    if (EnableShortCut) _window.PrintAtColor(ShortCutKeyForeground, 0, i, $"'{item.Key}' ", ShortCutKeyBackground);
-                    
+                    int textLen = EnableShortCut ? (_width - shortcutLen) : _width;
+                    var text = string.Format($"{{0,-{textLen}}} .", item.Title);
+
                     if (i == Current)
                     {
-                        _window.PrintAtColor(SelectedItemForeground, left, i, item.Title, SelectedItemBackground);
+                        // print the shortcut using the selected item background colour
+                        if (EnableShortCut) _window.PrintAtColor(ShortCutKeyForeground, 0, i, $"'{item.Key}' ", SelectedItemBackground);
+                        _window.PrintAtColor(SelectedItemForeground, left, i, text, SelectedItemBackground);
                         _messageWindow.Clear();
                         _messageWindow.Write(item.Description);
                     }
                     else
                     {
-                        _window.PrintAtColor(Foreground, left, i, item.Title, Background);
+                        // print the shortcut using the shortcut background colour
+                        if (EnableShortCut) _window.PrintAtColor(ShortCutKeyForeground, 0, i, $"'{item.Key}' ", ShortCutKeyBackground);
+                        _window.PrintAtColor(Foreground, left, i, text, Background);
                     }
                 }
             }
@@ -190,7 +192,7 @@ namespace Konsole.Menus
                 if (move!=0)
                 {
                     MoveSelection(move);
-                    DrawMenu();
+                    Refresh();
                     continue;
                 }
                 if (!_keyBindings.ContainsKey(cmd.KeyChar)) continue;

@@ -1,6 +1,7 @@
 # backlog
 
 ### Backlog 
+- be able to print ColorStrings (so that they can easily be passed around) 
 - fix the window constructors, second parameter is sometimes height, and sometimes not!
 - Move TestData to seperate nuget `Goblinfactory.TestData`
 - support progressbar with text to left, not below. (for more compact displays when using lots of progress bars.)

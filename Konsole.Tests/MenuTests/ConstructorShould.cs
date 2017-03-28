@@ -13,7 +13,7 @@ namespace Konsole.Tests.MenuTests
     public class ConstructorShould
     {
         [Test]
-        public void only_create_helptext_window_when_output_console_p()
+        public void only_create_helptext_window_if_helptextHeight_given()
         {
             var con = new MockConsole(10,10);
             var output = new MockConsole();

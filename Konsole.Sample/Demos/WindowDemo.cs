@@ -20,7 +20,7 @@ namespace Konsole.Sample.Demos
             {
                 w.WriteLine(name);
             }
-
+        
         }
 
         public WindowDemo(IConsole console)
