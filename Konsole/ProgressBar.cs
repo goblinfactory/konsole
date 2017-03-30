@@ -14,8 +14,9 @@ namespace Konsole
 
         public const string FORMAT = "Item {0,-5} of {1,-5}. ({2,-3}%) ";
 
-        public ProgressBar(int max) : this(max, '#', FORMAT, new Writer()) { }
-        public ProgressBar(int max, IConsole console) : this(max, '#', FORMAT, console) { }
+        public ProgressBar(int max) : this(max, '#', FORMAT, new Writer(), "") { }
+        public ProgressBar(int max, string title) : this(max, '#', FORMAT, new Writer(), title) { }
+        public ProgressBar(int max, IConsole console) : this(max, '#', FORMAT, console, "") { }
 
         /// <summary>
         ///  private hook to make this class easier to test in multithreaded scenarios.
@@ -27,6 +28,8 @@ namespace Konsole
             get { return _y; }
         }
 
+        public string Title { get; private set; }
+
         public string Line1
         {
             get { return _line1; }
@@ -37,10 +40,11 @@ namespace Konsole
             get { return _line2; }
         }
 
-        public ProgressBar(int max, char character, string format, IConsole console)
+        public ProgressBar(int max, char character, string format, IConsole console, string title)
         {
             lock (_locker)
             {
+                Title = title;
                 _console = console;
                 _y = _console.CursorTop;
                 _c = _console.ForegroundColor;
@@ -49,6 +53,10 @@ namespace Konsole
                 _character = character;
                 _format = format ?? FORMAT;
                 // reserve the space we need to print
+                if (!string.IsNullOrWhiteSpace(Title))
+                {
+                    _console.WriteLine(Title);
+                }
                 _console.WriteLine("");
                 _console.WriteLine("");
             }
@@ -92,6 +100,10 @@ namespace Konsole
                     _console.CursorTop = _y;
                     _console.CursorLeft = 0; // hard code to full screen. Later if we change this to support a width and offset we can revise this. good enough for now.
                     _console.ForegroundColor = _c;
+                    if (!string.IsNullOrWhiteSpace(Title))
+                    {
+                        _console.WriteLine(Title);
+                    }
                     _console.Write(line);
                     _console.ForegroundColor = ConsoleColor.Green;
                     _console.WriteLine(bar);
