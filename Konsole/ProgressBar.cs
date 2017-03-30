@@ -40,6 +40,8 @@ namespace Konsole
             get { return _line2; }
         }
 
+        public ProgressBar(int max, char character, string format, IConsole console) : this(max, character, format, console, "") { }
+
         public ProgressBar(int max, char character, string format, IConsole console, string title)
         {
             lock (_locker)
