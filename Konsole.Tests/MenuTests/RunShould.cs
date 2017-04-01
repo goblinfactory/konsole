@@ -16,7 +16,7 @@ namespace Konsole.Tests.MenuTests
         {
             var con = new MockConsole(10, 5);
             var output = new MockConsole();
-
+            
             var m = new Menu(con, output, "MENU", ConsoleKey.Escape, 10,
                 new MenuItem('a', "item 1", c => { }),
                 new MenuItem('b', "item 2", c => { }),
@@ -61,13 +61,13 @@ namespace Konsole.Tests.MenuTests
                  " wk wk aB aB aB aB aB aB aB aB aB aB wk wk wk",
                  " wk wk aB aBMaBEaBNaBUaB aB aB aB aB wk wk wk",
                  " wk wk aB aB-aB-aB-aB-aB-aB-aB aB aB wk wk wk",
-                 " wk wk aB aBiBatBaeBamBa Ba1Ba aB aB wk wk wk",
-                 " wk wk aB aBiaBtaBeaBmaB aB2aB aB aB wk wk wk",
-                 " wk wk aB aBiaBtaBeaBmaB aB3aB aB aB wk wk wk",
+                 " wk wk aB aBiBatBaeBamBa Baawa aB aB wk wk wk",
+                 " wk wk aB aBiaBtaBeaBmaB aBbwB aB aB wk wk wk",
+                 " wk wk aB aBiaBtaBeaBmaB aBcaB aB aB wk wk wk",
                  " wk wk aB aB aB aB aB aB aB aB aB aB wk wk wk"
             };
-
-            foreach (var line in con.BufferWithColor) Console.WriteLine(line);
+            
+            foreach(var line in con.BufferWithColor) Console.WriteLine(line);
             con.BufferWithColor.ShouldBeEquivalentTo(expected);
         }
 
