@@ -11,6 +11,15 @@ namespace Konsole
 
     public static class ConsoleKeyInfoExtensions
     {
+        public static bool SameAs(this ConsoleKey lhs, ConsoleKey? rhs)
+        {
+            if (rhs == null) return false;
+            char lkey = (char) lhs;
+            char rkey = (char) rhs;
+            return char.ToUpper(lkey) == char.ToUpper(rkey);
+        }
+
+
         public static ConsoleKeyInfo ToKeypress(this char key)
         {
             return new ConsoleKeyInfo(key, (ConsoleKey)key, false, false, false);

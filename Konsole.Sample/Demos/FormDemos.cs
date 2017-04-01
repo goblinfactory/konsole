@@ -31,7 +31,6 @@ namespace Konsole.Sample.Demos
             // change the box style, and width, thickbox
             _console.Colors = new Colors(ConsoleColor.Yellow, ConsoleColor.DarkRed);
             new Form(_console, 40, new ThickBoxStyle()).Write(new { AddUser = "true", CloseAccount = "false", OpenAccount = "true" }, "Permissions");
-            Console.ReadKey(true);
         }
 
     }

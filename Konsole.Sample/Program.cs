@@ -83,6 +83,18 @@ namespace Konsole.Sample
 
         }
 
+        //private static void Test()
+        //{
+        //    Console.WriteLine("test");
+        //    var m = new Menu("MENU", 'q', 20,
+        //        new MenuItem('f', "Form demo", c => { }),
+        //        new MenuItem('b', "TWO boxes", c => { }),
+        //        new MenuItem('A', "BADAA!", c => { }),
+        //        new MenuItem('p', "Parallel", c => { }),
+        //        new MenuItem('r', "RANDOM STUFF", c => { })
+        //        );
+        //    m.Run();
+        //}
 
         private static void Main(string[] args)
         {
@@ -92,20 +104,19 @@ namespace Konsole.Sample
             con.WriteLine("this test should be above the menu");
             con.WriteLine("");
 
-            var menu = new Menu(con, output, "DEMO SAMPLES", 'q', 30, 
+            var menu = new Menu(con, output, "DEMO SAMPLES", ConsoleKey.Escape, 30, 
 
                 new MenuItem('f',"FORMS",  FormDemos.Run),
                 new MenuItem('r',"RANDOM", RandomStuff),
                 new MenuItem('p',"PROGRESSBAR 1", ProgressBarDemos.ParallelDemo),
                 new MenuItem('b',"BOXES",BoxeDemos.Run),
                 new MenuItem('t',"TESTDATA", TestDataDemo.Run),
-                new MenuItem('q',"EXIT", null)
+                new MenuItem(ConsoleKey.Escape,"EXIT", null)
 
             );
 
             // todo, make this the default behavior?
             menu.BeforeMenu = output.Clear;
-            menu.AfterMenu = output.Clear;
 
             menu.Run();
             con.WriteLine("this test should appear below the menu");

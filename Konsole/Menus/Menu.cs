@@ -17,6 +17,7 @@ namespace Konsole.Menus
         public ConsoleColor Background { get; set; } = ConsoleColor.DarkBlue;
         public ConsoleColor Border { get; set; } = ConsoleColor.DarkBlue;
         public ConsoleColor Foreground { get; set; } = ConsoleColor.Gray;
+        public ConsoleColor ShortcutKeyHilite { get; set; } = ConsoleColor.White;
         public ConsoleColor SelectedItemBackground { get; set; } = ConsoleColor.Gray;
         public ConsoleColor SelectedItemForeground { get; set; } = ConsoleColor.DarkBlue;
     }
@@ -50,13 +51,13 @@ namespace Konsole.Menus
 
         private readonly IConsole _console;
         private readonly IConsole _output;
-        private readonly char _quit;
+        private readonly ConsoleKey _quit;
         private readonly int _width;
 
         //private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
         private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
 
-        private Dictionary<char,int> _keyBindings = new Dictionary<char, int>();
+        private Dictionary<ConsoleKey,int> _keyBindings = new Dictionary<ConsoleKey, int>();
 
         // hooks for clearing screen and redrawing menu, if required
         public Action BeforeMenu = () => { };
@@ -86,18 +87,18 @@ namespace Konsole.Menus
 
         public IReadKey Keyboard { get; set; }
 
-        public Menu(string title, char quit, int width, params MenuItem[] menuActions) : this(new Writer(), null, title, quit, width, menuActions)
+        public Menu(string title, ConsoleKey quit, int width, params MenuItem[] menuActions) : this(new Writer(), null, title, quit, width, menuActions)
         {
 
         }
 
-        public Menu(IConsole console, string title, char quit, int width, params MenuItem[] menuActions)
+        public Menu(IConsole console, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
             : this(console, null,title, quit, width, menuActions)
         {
             
         }
 
-        public Menu(IConsole console, IConsole output, string title, char quit, int width, params MenuItem[] menuActions)
+        public Menu(IConsole console, IConsole output, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
         {
             Title = title;
             Keyboard  = Keyboard ?? new KeyReader();
@@ -146,14 +147,39 @@ namespace Konsole.Menus
                 {
                     var item = model.MenuItems[i];
                     var text = item.Title.FixLeft(len);
+                    
 
                     if (i == model.Current)
                     {
                         con.PrintAtColor(model.Theme.SelectedItemForeground, left, i+3, text, model.Theme.SelectedItemBackground);
+                        if (item.Key != null)
+                        {
+                            var key = item.Key.Value;
+                            
+                            int sub = text.IndexOfAny(new[] { char.ToLower((char)key), char.ToUpper((char)key) });
+                            if (sub != -1)
+                            {
+                                string shortcut = text.Substring(sub, 1);
+                                con.PrintAtColor(model.Theme.ShortcutKeyHilite, left + sub, i + 3, shortcut, model.Theme.SelectedItemBackground);
+                            }
+                        }
+                        
                     }
                     else
                     {
                         con.PrintAtColor(model.Theme.Foreground, left, i+3, text, model.Theme.Background);
+                        if (item.Key != null)
+                        {
+                            var key = item.Key.Value;
+                            
+                            int sub = text.IndexOfAny(new[] { char.ToLower((char)key), char.ToUpper((char)key) });
+                            if (sub != -1)
+                            {
+                                string shortcut = text.Substring(sub, 1);
+                                con.PrintAtColor(model.Theme.ShortcutKeyHilite, left + sub, i + 3, shortcut, model.Theme.Background);
+                            }
+                        }
+
                     }
                 }
             }
@@ -191,13 +217,13 @@ namespace Konsole.Menus
         {
             _console.CursorVisible = false;
             var state = _console.State;
-            ConsoleKeyInfo cmd;
+            ConsoleKey cmd;
             
             Refresh();
 
-            while ((cmd = Keyboard.ReadKey()).KeyChar != _quit)
+            while ((cmd = Keyboard.ReadKey().Key) != _quit)
             {
-                int move = isMoveMenuKey(cmd.Key);
+                int move = isMoveMenuKey(cmd);
                 if (move!=0)
                 {
                     MoveSelection(move);
@@ -205,22 +231,36 @@ namespace Konsole.Menus
                     continue;
                 }
 
-                if (cmd.Key == ConsoleKey.Enter)
+                if (cmd == ConsoleKey.Enter)
                 {
                     var currentItem  = _menuItems[Current];
                     if (currentItem?.Key == _quit) throw new ExitMenu();
                     RunItem(state, currentItem);
                     continue;
                 }
-                if (!_keyBindings.ContainsKey(cmd.KeyChar)) continue;
+                if (!_keyBindings.ContainsKey(cmd)) continue;
 
-                var itemKey = _keyBindings[cmd.KeyChar];
+                var itemKey = _keyBindings[cmd];
                 var item = _menuItems[itemKey];
                 // setting a menu item to null is equivalent to exit.
-                if (item == null) return; 
+                if (item == null) return;
+                SetSelected(cmd);
                 RunItem(state, item);
             }
 
+        }
+
+        private void SetSelected(ConsoleKey key)
+        {
+            for (int i = 0; i < _menuItems.Count; i++)
+            {
+                if (key.SameAs(_menuItems[i].Key))
+                {
+                    _current = i;
+                    Refresh();
+                    return;
+                }
+            }
         }
 
         private void RunItem(ConsoleState state, MenuItem item)
@@ -241,8 +281,8 @@ namespace Konsole.Menus
 
         private void MoveSelection(int move)
         {
-            _current= (_current + move) % _height;
-            if (_current < 0) _current = _height-1;
+            _current= (_current + move) % NumMenus;
+            if (_current < 0) _current = NumMenus - 1;
         }
 
 

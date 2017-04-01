@@ -46,7 +46,7 @@ namespace Konsole.Tests.MenuTests
             var output = new MockConsole(20,20);
             int i = 0;
 
-            var menu = new Menu(con, output, "TITLE", 'q', 20,
+            var menu = new Menu(con, output, "TITLE", ConsoleKey.Escape, 20,
                 new MenuItem("ONE", (d) => { d.WriteLine("cats"); }),
                 new MenuItem("TWO", (d) => { d.WriteLine("dogs"); }),
                 new MenuItem("TWO", (d) => { d.WriteLine("mice"); }),
