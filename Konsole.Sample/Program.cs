@@ -58,9 +58,6 @@ namespace Konsole.Sample
                     HiliteDemo.Run(con);
                     break;
 
-                case 'l':
-                    ProgressBarDemos.ParallelDemo();
-                    break;
 
                 case '2':
                     ProgressBarDemos.ParallelConstructorDemo();
@@ -98,6 +95,7 @@ namespace Konsole.Sample
 
                 new MenuItem('f',"FORMS", "Auto forms from objects", FormDemos.Run),
                 new MenuItem('r',"RANDOM","Random stuff", RandomStuff),
+                new MenuItem('p',"PROGRESSBAR 1", "simpluate lots of progress bars and files being downloaded in parallel", ProgressBarDemos.ParallelDemo),
                 new MenuItem('b',"BOXES","draw boxes and lines", BoxeDemos.Run),
                 new MenuItem('t',"TESTDATA", "draw two windows demonstrating test data as well as clipping", TestDataDemo.Run)
             

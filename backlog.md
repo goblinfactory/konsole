@@ -1,6 +1,22 @@
+# Roadmap
+
+## [2.1]
+
+### Adding
+
+- Menus : `Menu`, `MenuItem`
+- new 1 liner `ProgressBar`.
+
+### breaking changes
+
+- refactor ProgressBar Constructors : move IConsole to front and make sure all parameters are in order.
+- ProgressBar to switch to 1 liner
+- support extended style from `v2` by passing in `PbStyle.Simple`, `PbStyle.Extended` options.
+
 # backlog
 
 ### Backlog 
+- progress bar to have background color and border width, for simple funky PBs!
 - be able to print ColorStrings (so that they can easily be passed around) 
 - fix the window constructors, second parameter is sometimes height, and sometimes not!
 - Move TestData to seperate nuget `Goblinfactory.TestData`

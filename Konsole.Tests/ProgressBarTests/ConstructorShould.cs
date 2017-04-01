@@ -11,6 +11,16 @@ using NUnit.Framework;
 
 namespace Konsole.Tests.ProgressBarTests
 {
+
+    public class ConstructorWithTextShould
+    {
+        [Test]
+        public void create_simple_1_liner_progress_bar()
+        {
+         Assert.Inconclusive();   
+        }
+    }
+
     public class ConstructorShould
     {
         [Test]
@@ -23,6 +33,19 @@ namespace Konsole.Tests.ProgressBarTests
             var pb2 = new ProgressBar(10,con);
             Assert.AreEqual(4, con.CursorTop);
         }
+
+        //[Test]
+        public void render_the_progressBar_in_its_starting_state()
+        {
+            
+            var con = new MockConsole(40,8);
+            //var pb1 = new ProgressBar(10, "CATS", con);
+            //var pb2 = new ProgressBar(10, "DOGS", con);
+            Console.WriteLine(con.BufferString);
+            Assert.AreEqual(4, con.CursorTop);
+            
+        }
+
 
         [Test]
         public void be_threadsafe()

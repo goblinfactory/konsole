@@ -12,12 +12,14 @@ namespace Konsole.Tests.MenuTests
         [Test]
         public void hilight_current_menu_item()
         {
+            Assert.Inconclusive();
             Assert.Fail("todo : write this test");
         }
 
         [Test]
         public void execute_the_matching_menu_item()
         {
+            Assert.Inconclusive();
             Assert.Fail("todo : write this test");
         }
     }

@@ -110,9 +110,9 @@ namespace Konsole.Sample.Demos
         }
 
 
-        public static void ParallelDemo()
+        public static void ParallelDemo(IConsole console)
         {
-            Console.WriteLine("ready press enter.");
+            console.WriteLine("ready press enter.");
             Console.ReadLine();
 
             var dirCnt = 10;
@@ -133,7 +133,7 @@ namespace Konsole.Sample.Demos
             {
                 var files = q.Dequeue(d.cnt).ToArray();
                 if (files.Length == 0) continue;
-                var bar = new ProgressBar(files.Count());
+                var bar = new ProgressBar(files.Count(), console);
                 bars.Add(bar);
                 bar.Refresh(0, d.name);
                 tasks.Add(new Task(() => ProcessFakeFiles(d.name, files, bar)));
@@ -142,6 +142,7 @@ namespace Konsole.Sample.Demos
             foreach (var t in tasks) t.Start();
             Task.WaitAll(tasks.ToArray());
             Console.WriteLine("done.");
+            Console.ReadLine();
         }
 
         public static void Parallel2Demo()
