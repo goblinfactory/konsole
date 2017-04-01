@@ -10,14 +10,50 @@ using Konsole.Drawing;
 
 namespace Konsole.Menus
 {
+    public class Theme
+    {
+        public ConsoleColor Background { get; set; } = ConsoleColor.DarkBlue;
+        public ConsoleColor Border { get; set; } = ConsoleColor.DarkBlue;
+        public ConsoleColor Foreground { get; set; } = ConsoleColor.Gray;
+        public ConsoleColor SelectedItemBackground { get; set; } = ConsoleColor.Gray;
+        public ConsoleColor SelectedItemForeground { get; set; } = ConsoleColor.DarkBlue;
+    }
+
+    public class Model
+    {
+        public Window Window { get; }
+        public string Title { get; }
+        public int Current { get; }
+        public int Height { get; }
+        public int Width { get; }
+        public MenuItem[] MenuItems { get; }
+        public Theme Theme { get; }
+
+        public Model(Window window, string title, int current, int height, int width, MenuItem[] menuItems, Theme theme)
+        {
+            Window = window;
+            Title = title;
+            Current = current;
+            Height = height;
+            Width = width;
+            MenuItems = menuItems;
+            Theme = theme;
+        }
+    }
+
     public class Menu
     {
+
+
+
         private readonly IConsole _console;
         private readonly IConsole _output;
         private readonly char _quit;
-        private readonly IReadKey _keyreader;
         private readonly int _width;
+
+        //private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
         private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
+
         private Dictionary<char,int> _keyBindings = new Dictionary<char, int>();
 
         // hooks for clearing screen and redrawing menu, if required
@@ -33,67 +69,8 @@ namespace Konsole.Menus
         /// Enable to display the shortcut key for the menu
         /// </summary>
         public bool EnableShortCut { get; set; } = true;
-        public ConsoleColor Background { get; set; } = ConsoleColor.DarkBlue;
-        public ConsoleColor Foreground { get; set; } = ConsoleColor.Gray;
-        public ConsoleColor SelectedItemBackground { get; set; } = ConsoleColor.White;
-        public ConsoleColor SelectedItemForeground { get; set; } = ConsoleColor.Red;
-        public ConsoleColor MessageBackground { get; set; } = ConsoleColor.Blue;
-        public ConsoleColor MessageForeground { get; set; } = ConsoleColor.White;
-        public ConsoleColor ShortCutKeyForeground { get; set; } = ConsoleColor.Yellow;
-        public ConsoleColor ShortCutKeyBackground { get; set; } = ConsoleColor.DarkBlue;
-
-        // need MenuTheme
-
-        public LineThickNess LineThickNess { get; set; } = LineThickNess.Single;
-        private int _messageHeight = 4;
-
-        public int MessageHeight
-        {
-            get { return _messageHeight; }
-            set
-            {
-                _messageHeight = value;
-                Refresh();
-            }
-        }
-
-
-        private static object _locker = new object();
-
-        public IReadKey Keyreader { get; set; }
-
-
-        public Menu(IConsole console, char quit, int width, params MenuItem[] menuActions)
-            : this(console, null, quit, width, menuActions)
-        {
-            
-        }
-
-        public Menu(IConsole console, IConsole output, char quit, int width, params MenuItem[] menuActions)
-        {
-            _keyreader = new KeyReader();
-            _console = console;
-            _output = output;
-            _quit = quit;
-            _width = width;
-            for(int i = 0; i<menuActions.Length; i++)
-            {
-                var item = menuActions[i];
-                var key = item.Key;
-                if(key.HasValue) _keyBindings.Add(key.Value, i);
-                _menuItems.Add(i, item);
-                
-            }
-            if (menuActions == null || menuActions.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
-            _height = menuActions.Length;
-            _window = Window.OpenInline(_console, _width, _height,  Foreground, Background);
-            if (MessageHeight > 0)
-                //_messageWindow = Window.OpenInline(_console, _width, _messageHeight, MessageForeground, MessageBackground);
-                _messageWindow = Window.Open(0, _console.CursorTop, _width, _messageHeight, "help",
-                    LineThickNess.Single, MessageForeground, MessageBackground);
-            _console.CursorTop += _height + _messageHeight;
-        }
+        public Theme Theme { get; set;  } = new Theme();
+        public string Title { get; set; } = "";
 
         private int _current = 0;
 
@@ -103,49 +80,78 @@ namespace Konsole.Menus
         }
 
         private int _top = 0;
-        private int _height = 0;
+        private int _height;
 
-        public int Height
+        public int NumMenus { get; }
+        public int Height { get; }
+
+        private static object _locker = new object();
+
+        public IReadKey Keyboard { get; set; }
+
+        public Menu(IConsole console, string title, char quit, int width, params MenuItem[] menuActions)
+            : this(console, null,title, quit, width, menuActions)
         {
-            get { return _height; }
-            set
+            
+        }
+
+        public Menu(IConsole console, IConsole output, string title, char quit, int width, params MenuItem[] menuActions)
+        {
+            Title = title;
+            Keyboard  = Keyboard ?? new KeyReader();
+            _console = console;
+            _output = output;
+            _quit = quit;
+            _width = width;
+            NumMenus = menuActions.Length;
+            for(int i = 0; i<menuActions.Length; i++)
             {
-                _height = value;
-                Refresh();
+                var item = menuActions[i];
+                var key = item.Key;
+                if(key.HasValue) _keyBindings.Add(key.Value, i);
+                _menuItems.Add(i, item);
+
             }
+            if (menuActions == null || menuActions.Length == 0)
+                throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
+            _height = menuActions.Length + 4;
+            _window = Window.OpenInline(_console, 2, _width, _height, Theme.Foreground, Theme.Background, K.Clipping);
+            _console.CursorTop += _height;
         }
 
         private Window _window;
-        private Window _messageWindow;
 
+        public Action<Model> Render = (model) => { _refresh(model); };
 
-
-        // todo; move to seperate class : IMenuRender
-        protected virtual void Refresh()
+        public void Refresh()
         {
-            int left = EnableShortCut ? 4 : 0;
-            int shortcutLen = 4;
+            var items = _menuItems.Values.ToArray();
+            var model = new Model( _window, Title, Current, Height, _width, items, Theme);
+            _refresh(model);
+        }
+
+        private static void _refresh(Model model)
+        {
+            var con = model.Window;
+            int cnt = model.MenuItems.Length;
+            int left = 2;
             lock (_locker)
             {
-                for (int i = 0; i < Height; i++)
+                int len = model.Width - 4;
+                con.PrintAtColor(model.Theme.Foreground, 2, 1, model.Title.FixLeft(len), model.Theme.Background);
+                con.PrintAtColor(model.Theme.Foreground, 2, 2, new string('-',len), model.Theme.Background);
+                for (int i = 0; i < cnt; i++)
                 {
-                    var item = this[i];
-                    int textLen = EnableShortCut ? (_width - shortcutLen) : _width;
-                    var text = string.Format($"{{0,-{textLen}}} .", item.Title);
+                    var item = model.MenuItems[i];
+                    var text = item.Title.FixLeft(len);
 
-                    if (i == Current)
+                    if (i == model.Current)
                     {
-                        // print the shortcut using the selected item background colour
-                        if (EnableShortCut) _window.PrintAtColor(ShortCutKeyForeground, 0, i, $"'{item.Key}' ", SelectedItemBackground);
-                        _window.PrintAtColor(SelectedItemForeground, left, i, text, SelectedItemBackground);
-                        _messageWindow.Clear();
-                        _messageWindow.Write(item.Description);
+                        con.PrintAtColor(model.Theme.SelectedItemForeground, left, i+3, text, model.Theme.SelectedItemBackground);
                     }
                     else
                     {
-                        // print the shortcut using the shortcut background colour
-                        if (EnableShortCut) _window.PrintAtColor(ShortCutKeyForeground, 0, i, $"'{item.Key}' ", ShortCutKeyBackground);
-                        _window.PrintAtColor(Foreground, left, i, text, Background);
+                        con.PrintAtColor(model.Theme.Foreground, left, i+3, text, model.Theme.Background);
                     }
                 }
             }
@@ -161,9 +167,6 @@ namespace Konsole.Menus
         {
             w.PrintAtColor(ConsoleColor.White, 0, 0, $"Error :{e.Message}", ConsoleColor.Red);
         };
-
-        public string Title { get; set; } = "Menu";
-
 
         public void Run()
         {
@@ -186,7 +189,7 @@ namespace Konsole.Menus
             
             Refresh();
 
-            while ((cmd = _keyreader.ReadKey()).KeyChar != _quit)
+            while ((cmd = Keyboard.ReadKey()).KeyChar != _quit)
             {
                 int move = isMoveMenuKey(cmd.Key);
                 if (move!=0)
@@ -204,10 +207,6 @@ namespace Konsole.Menus
                     _console.State = state;
                     BeforeMenu();
                     item.Action(_output);
-                }
-                catch (Exception ex)
-                {
-                    OnError(ex, _messageWindow);
                 }
                 finally
                 {

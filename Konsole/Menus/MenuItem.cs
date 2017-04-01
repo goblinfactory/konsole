@@ -9,20 +9,18 @@ namespace Konsole.Menus
         public string Description { get; }
         public Action<IConsole> Action { get; }
 
-        public MenuItem(char key, string title, string description, Action<IConsole> action)
+        public MenuItem(char key, string title, Action<IConsole> action)
         {
             Key = key;
             Title = title;
             Action = action;
-            Description = description;
         }
 
-        public MenuItem(string title, string description, Action<IConsole> action)
+        public MenuItem(string title, Action<IConsole> action)
         {
             Key = null;
             Title = title;
             Action = action;
-            Description = description;
         }
 
     }

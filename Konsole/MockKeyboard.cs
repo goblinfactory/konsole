@@ -8,6 +8,15 @@ using System.Threading.Tasks;
 
 namespace Konsole
 {
+
+    public static class ConsoleKeyInfoExtensions
+    {
+        public static ConsoleKeyInfo ToKeypress(this char key)
+        {
+            return new ConsoleKeyInfo(key, (ConsoleKey)key, false, false, false);
+        }
+    }
+
     public class MockKeyboard : IReadKey
     {
         private readonly Queue<ConsoleKeyInfo> _keypresses = new Queue<ConsoleKeyInfo>();
@@ -16,6 +25,12 @@ namespace Konsole
         {
             // not threadsafe, but this is for testing so good enough.
             foreach (var key in keys) _keypresses.Enqueue(key);
+        }
+
+        public MockKeyboard(params char[] keys)
+        {
+            // not threadsafe, but this is for testing so good enough.
+            foreach (var key in keys) _keypresses.Enqueue(key.ToKeypress());
         }
 
         public MockKeyboard()

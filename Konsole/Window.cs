@@ -134,9 +134,9 @@ namespace Konsole
         {
         }
 
-        public static Window OpenInline(IConsole echoConsole, int width, int height, ConsoleColor foreground, ConsoleColor background)
+        public static Window OpenInline(IConsole echoConsole, int padLeft, int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)
         {
-            var w = new Window(0, echoConsole.CursorTop, width, height, foreground, background, true, echoConsole);
+            var w = new Window(padLeft, echoConsole.CursorTop, width, height, foreground, background, true, echoConsole, options);
             echoConsole.CursorTop += height;
             return w;
         }

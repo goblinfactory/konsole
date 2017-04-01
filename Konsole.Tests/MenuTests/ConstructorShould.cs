@@ -12,25 +12,15 @@ namespace Konsole.Tests.MenuTests
     
     public class ConstructorShould
     {
-        [Test]
-        public void only_create_helptext_window_if_helptextHeight_given()
-        {
-            Assert.Inconclusive();
-            var con = new MockConsole(10,10);
-            var output = new MockConsole();
-            
-            var m = new Menu(con, output, 'q', 10, new MenuItem('a',"item 1", "item 1 helptext", c => { }));
-
-
-            var expected = new[]
-            {
-                ""
-            };
-            // create without console
-        }
 
         [Test]
         public void display_menu_inline_and_move_cursor_below_menu()
+        {
+            Assert.Inconclusive("new feature");
+        }
+
+        [Test]
+        public void allow_you_to_assing_function_keys_to_menus()
         {
             Assert.Inconclusive("new feature");
         }
@@ -45,29 +35,6 @@ namespace Konsole.Tests.MenuTests
         public void autosize_the_menu_to_widest_menu_item_if_no_width_provided()
         {
             Assert.Inconclusive("new feature");
-        }
-
-
-        [Test]
-        public void render_one_line_per_menu_item()
-        {
-            Assert.Inconclusive();
-            var con = new MockConsole(10, 10);
-            var output = new MockConsole();
-            var m = new Menu(con, output, 'q', 10, 
-                new MenuItem('a', "item 1", "item 1 helptext", c => { }),
-                new MenuItem('b', "item 2", "item 2 helptext", c => { }),
-                new MenuItem('c', "item 3", "item 3 helptext", c => { })
-                );
-            var expected = new[]
-            {
-                "item 1",
-                "item 2",
-                "item 3"
-            };
-
-            Console.WriteLine(con.BufferString);
-            con.Buffer.ShouldBeEquivalentTo(expected);
         }
 
     }

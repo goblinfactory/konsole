@@ -91,15 +91,16 @@ namespace Konsole.Sample
             con.WriteLine("this test should be above the menu");
             con.WriteLine("");
 
-            var menu = new Menu(con, output, 'q', 30,
+            var menu = new Menu(con, output, "DEMO SAMPLES", 'q', 30, 
 
-                new MenuItem('f',"FORMS", "Auto forms from objects", FormDemos.Run),
-                new MenuItem('r',"RANDOM","Random stuff", RandomStuff),
-                new MenuItem('p',"PROGRESSBAR 1", "simpluate lots of progress bars and files being downloaded in parallel", ProgressBarDemos.ParallelDemo),
-                new MenuItem('b',"BOXES","draw boxes and lines", BoxeDemos.Run),
-                new MenuItem('t',"TESTDATA", "draw two windows demonstrating test data as well as clipping", TestDataDemo.Run)
-            
-                );
+                new MenuItem('f',"FORMS",  FormDemos.Run),
+                new MenuItem('r',"RANDOM", RandomStuff),
+                new MenuItem('p',"PROGRESSBAR 1", ProgressBarDemos.ParallelDemo),
+                new MenuItem('b',"BOXES",BoxeDemos.Run),
+                new MenuItem('t',"TESTDATA", TestDataDemo.Run),
+                new MenuItem('q',"EXIT", null)
+
+            );
 
             // todo, make this the default behavior?
             menu.BeforeMenu = output.Clear;
