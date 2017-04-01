@@ -83,6 +83,7 @@ namespace Konsole.Sample
 
         }
 
+
         private static void Main(string[] args)
         {
             var con = new Window();

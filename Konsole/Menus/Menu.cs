@@ -10,6 +10,8 @@ using Konsole.Drawing;
 
 namespace Konsole.Menus
 {
+    // throw at any time to exit the menu.
+
     public class Theme
     {
         public ConsoleColor Background { get; set; } = ConsoleColor.DarkBlue;
@@ -61,11 +63,6 @@ namespace Konsole.Menus
         public Action AfterMenu = () => { };
 
         /// <summary>
-        /// Whether pressing enter once a menu item has been highlighted will run that menu item.
-        /// </summary>
-        public bool PressEnterToSelect { get; } = true;
-
-        /// <summary>
         /// Enable to display the shortcut key for the menu
         /// </summary>
         public bool EnableShortCut { get; set; } = true;
@@ -88,6 +85,11 @@ namespace Konsole.Menus
         private static object _locker = new object();
 
         public IReadKey Keyboard { get; set; }
+
+        public Menu(string title, char quit, int width, params MenuItem[] menuActions) : this(new Writer(), null, title, quit, width, menuActions)
+        {
+
+        }
 
         public Menu(IConsole console, string title, char quit, int width, params MenuItem[] menuActions)
             : this(console, null,title, quit, width, menuActions)
@@ -175,6 +177,10 @@ namespace Konsole.Menus
             {
                 _run();
             }
+            catch (ExitMenu)
+            {
+                
+            }
             finally
             {
                 _console.State = state;
@@ -198,24 +204,40 @@ namespace Konsole.Menus
                     Refresh();
                     continue;
                 }
+
+                if (cmd.Key == ConsoleKey.Enter)
+                {
+                    var currentItem  = _menuItems[Current];
+                    if (currentItem?.Key == _quit) throw new ExitMenu();
+                    RunItem(state, currentItem);
+                    continue;
+                }
                 if (!_keyBindings.ContainsKey(cmd.KeyChar)) continue;
+
                 var itemKey = _keyBindings[cmd.KeyChar];
                 var item = _menuItems[itemKey];
-
-                try
-                {
-                    _console.State = state;
-                    BeforeMenu();
-                    item.Action(_output);
-                }
-                finally
-                {
-                    AfterMenu();
-                    _console.State = state;
-                }
+                // setting a menu item to null is equivalent to exit.
+                if (item == null) return; 
+                RunItem(state, item);
             }
 
         }
+
+        private void RunItem(ConsoleState state, MenuItem item)
+        {
+            try
+            {
+                _console.State = state;
+                BeforeMenu();
+                item.Action?.Invoke(_output);
+            }
+            finally
+            {
+                AfterMenu();
+                _console.State = state;
+            }
+        }
+
 
         private void MoveSelection(int move)
         {

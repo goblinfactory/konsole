@@ -37,5 +37,38 @@ namespace Konsole.Tests.MenuTests
             Console.WriteLine(con.BufferString);
             con.Buffer.ShouldBeEquivalentTo(expected);
         }
+
+
+        [Test]
+        public void render_the_menu_with_correct_theme_colours()
+        {
+            var con = new MockConsole(15, 7);
+            var output = new MockConsole();
+
+            var m = new Menu(con, output, "MENU", 'q', 10,
+                new MenuItem('a', "item 1", c => { }),
+                new MenuItem('b', "item 2", c => { }),
+                new MenuItem('c', "item 3", c => { })
+                );
+            m.Keyboard = new MockKeyboard('q');
+            m.Run();
+
+            // text below looks funny, that's because I've encoded the color of each character in the strings
+            // so that I can verify that the foreground and background colors are correct. 
+            // which i cannot do using standard C# strings.
+            var expected = new[]
+            {
+                 " wk wk aB aB aB aB aB aB aB aB aB aB wk wk wk",
+                 " wk wk aB aBMaBEaBNaBUaB aB aB aB aB wk wk wk",
+                 " wk wk aB aB-aB-aB-aB-aB-aB-aB aB aB wk wk wk",
+                 " wk wk aB aBiBatBaeBamBa Ba1Ba aB aB wk wk wk",
+                 " wk wk aB aBiaBtaBeaBmaB aB2aB aB aB wk wk wk",
+                 " wk wk aB aBiaBtaBeaBmaB aB3aB aB aB wk wk wk",
+                 " wk wk aB aB aB aB aB aB aB aB aB aB wk wk wk"
+            };
+            
+            con.BufferWithColor.ShouldBeEquivalentTo(expected);
+        }
+
     }
 }

@@ -15,6 +15,11 @@ namespace Konsole
         {
             return new ConsoleKeyInfo(key, (ConsoleKey)key, false, false, false);
         }
+
+        public static ConsoleKeyInfo ToKeypress(this ConsoleKey key)
+        {
+            return new ConsoleKeyInfo((char)key, key, false, false, false);
+        }
     }
 
     public class MockKeyboard : IReadKey
@@ -25,6 +30,11 @@ namespace Konsole
         {
             // not threadsafe, but this is for testing so good enough.
             foreach (var key in keys) _keypresses.Enqueue(key);
+        }
+
+        public MockKeyboard(params ConsoleKey[] keys)
+        {
+            foreach (var key in keys) _keypresses.Enqueue(key.ToKeypress());
         }
 
         public MockKeyboard(params char[] keys)

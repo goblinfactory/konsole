@@ -17,5 +17,12 @@ namespace Konsole.Tests.MenuTests
             //var m = new Menu(c,)
         }
 
+
+        [Test]
+        public void exit_menu_if_item_keybinding_is_quit_key()
+        {
+            Assert.Inconclusive();
+        }
+
     }
 }

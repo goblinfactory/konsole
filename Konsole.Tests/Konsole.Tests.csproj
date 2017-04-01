@@ -70,6 +70,7 @@
     <Compile Include="MenuTests\PressingEnterShould.cs" />
     <Compile Include="MenuTests\PressingMenuKeyShould.cs" />
     <Compile Include="MenuTests\RunShould.cs" />
+    <Compile Include="MenuTests\ThrowingExitMenuShould.cs" />
     <Compile Include="ProgressBarTests\ConstructorShould.cs" />
     <Compile Include="ProgressBarTests\SettingMaxShould.cs" />
     <Compile Include="WindowTests\DoCommandShould.cs" />
