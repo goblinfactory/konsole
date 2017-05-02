@@ -9,13 +9,13 @@ namespace Konsole.Sample.Demos
 {
     public class WindowDemo
     {
-        private readonly IConsole _con;
+        private readonly IConsole _con2;
 
         public void ScrollingDemo()
         {
             var w = Window.Open(5,5,50,20, "");
             var names = TestData.MakeNames(150);
-            _con.ForegroundColor = ConsoleColor.DarkGray;
+            _con2.ForegroundColor = ConsoleColor.DarkGray;
             foreach (var name in names)
             {
                 w.WriteLine(name);
@@ -23,16 +23,12 @@ namespace Konsole.Sample.Demos
         
         }
 
-        public WindowDemo(IConsole console)
+        public static void Run2(IConsole console)
         {
-            _con = console;
-        }
-
-        public void SimpleDemo()
-        {
-            _con.WriteLine("starting client server demo");
-            var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, _con);
-            var server = new Window(25, 4, 20, 20, _con);
+            var con = console;
+            con.WriteLine("starting client server demo");
+            var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con);
+            var server = new Window(25, 4, 25, 20, con);
             client.WriteLine("CLIENT");
             client.WriteLine("------");
             server.WriteLine("SERVER");
@@ -41,14 +37,17 @@ namespace Konsole.Sample.Demos
             server.WriteLine(ConsoleColor.DarkYellow, "--> PUT some long text to show wrapping");
             server.WriteLine(ConsoleColor.Red, "<-- 404|Not Found|some long text to show wrapping|");
             client.WriteLine(ConsoleColor.Red, "--> 404|Not Found|some long text to show wrapping|");
+            
+            // line below will cause some faulty (offset) scrolling.
+            //for(int i = 0; i<30; i++) client.WriteLine(i.ToString());
 
-            _con.WriteLine("starting names demo");
+            con.WriteLine("starting names demo");
             // let's open a window with a box around it by using Window.Open
-            var names = Window.Open(50, 4, 40, 10, "names");
+            var names = Window.Open(78, 4, 40, 10, "names");
             TestData.MakeNames(40).OrderByDescending(n => n).ToList().ForEach(n => names.WriteLine(n));
 
-            _con.WriteLine("starting numbers demo");
-            var numbers = Window.Open(50, 15, 40, 10, "numbers", LineThickNess.Double,ConsoleColor.White,ConsoleColor.Blue);
+            con.WriteLine("starting numbers demo");
+            var numbers = Window.Open(78, 15, 40, 10, "numbers", LineThickNess.Double,ConsoleColor.White,ConsoleColor.Blue);
             Enumerable.Range(1,200).ToList().ForEach(i => numbers.WriteLine(i.ToString()));
 
         }
@@ -57,7 +56,7 @@ namespace Konsole.Sample.Demos
         {
             con.WriteLine("starting client server demo");
             var height = 20;
-            int width = (Console.WindowWidth / 3) - 3;
+            int width = (con.WindowWidth / 3) - 3;
             var client = new Window(1, 3, width, height, ConsoleColor.Gray, ConsoleColor.DarkBlue, con);
             var server = new Window(width + 2, 3, width, height, con);
 

@@ -37,6 +37,7 @@ namespace Konsole.Tests.MenuTests
             Assert.Inconclusive("new feature");
         }
 
+
         [Test]
         public void support_defining_menu_without_shortcut_keys()
         {
@@ -47,16 +48,17 @@ namespace Konsole.Tests.MenuTests
             int i = 0;
 
             var menu = new Menu(con, output, "TITLE", ConsoleKey.Escape, 20,
-                new MenuItem("ONE", (d) => { d.WriteLine("cats"); }),
-                new MenuItem("TWO", (d) => { d.WriteLine("dogs"); }),
-                new MenuItem("TWO", (d) => { d.WriteLine("mice"); }),
-                new MenuItem("QUIT", null )
+                new MenuItem("ONE", c => { c.WriteLine("cats"); }),
+                new MenuItem("TWO", c => { c.WriteLine("dogs"); }),
+                new MenuItem("TWO", c => { c.WriteLine("mice"); }),
+                MenuItem.Quit("QUIT")
             );
-            menu.Keyboard = new MockKeyboard(ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
+            menu.Keyboard = new MockKeyboard(ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.Escape);
             menu.Run();
             output.BufferWrittenTrimmed.ShouldBeEquivalentTo(new []
                 {
-                 "dogs"   
+                 "dogs",
+                 "mice"   
                 });
         }
 

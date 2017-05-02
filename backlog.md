@@ -2,6 +2,14 @@
 
 ## [2.1]
 
+### fix
+
+- manually test Konsole.Sample, currently giving very odd behavior! (if you resize window it dies, if your window is not wide enough, or, if the cursor is already near the bottom of the screen and scrolling kicks in, you're stuffed.)
+- Konsole sample - demo must make sure window is wide enough.
+- fix : allow user to specify exit character, e.g. `q` or `x` in addition to `ConsoleKey.Escape`.
+- allow menu to run code witout having to send it to a 'window', i.e. can send to the default console.
+
+
 ### Adding
 
 - Menus : `Menu`, `MenuItem`

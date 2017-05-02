@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Konsole\Konsole.csproj">
-      <Project>{90808A57-0462-4D92-94F8-DA95B7931895}</Project>
+      <Project>{90808a57-0462-4d92-94f8-da95b7931895}</Project>
       <Name>Konsole</Name>
     </ProjectReference>
   </ItemGroup>

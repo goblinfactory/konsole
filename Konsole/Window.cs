@@ -86,19 +86,9 @@ namespace Konsole
         {
         }
 
-        public Window(IConsole console, int width, int height, params K[] options)
-            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, console, options)
-        {
-        }
 
         public Window(int width, int height, params K[] options)
             : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, null, options)
-        {
-        }
-
-        public Window(IConsole console, int width, int height, ConsoleColor foreground, ConsoleColor background,
-            params K[] options)
-            : this(0, 0, width, height, foreground, background, true, console, options)
         {
         }
 
@@ -112,9 +102,20 @@ namespace Konsole
         {
         }
 
+        public Window(IConsole console, int width, int height, ConsoleColor foreground, ConsoleColor background,
+            params K[] options)
+            : this(0, 0, width, height, foreground, background, true, console, options)
+        {
+        }
+
         public Window(IConsole echoConsole, int x, int y, int width, int height, ConsoleColor foreground,
             ConsoleColor background)
             : this(x, y, width, height, foreground, background, true, echoConsole)
+        {
+        }
+
+        public Window(IConsole console, int width, int height, params K[] options)
+    : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, console, options)
         {
         }
 
@@ -166,6 +167,8 @@ namespace Konsole
         {
         }
 
+
+
         public static Window Open(int x, int y, int width, int height, string title,
             LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray,
             ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
@@ -178,7 +181,8 @@ namespace Konsole
             {
                 echoConsole.ForegroundColor = foregroundColor;
                 echoConsole.BackgroundColor = backgroundColor;
-                new Draw(echoConsole).Box(x, y, x + (width - 1), y + (height - 1), title, LineThickNess.Double);
+                new Draw(echoConsole).Box(x, y, x + (width - 1), y + (height - 1), title, thickNess);
+
             }
             finally
             {
@@ -627,6 +631,19 @@ namespace Konsole
             // since this is a window, that's offset of x,y on parent, do the offset now
             console.CursorTop = _cursor.Y + _y;
             console.CursorLeft = _cursor.X + _x;
+        }
+
+        public void Fill(ConsoleColor color, int sx, int sy, int width, int height)
+        {
+            DoCommand(this, () =>
+            {
+                ForegroundColor = color;
+                var line = new String(' ', width);
+                for (int y = sy; y < height; y++)
+                {
+                    PrintAt(sx, y, line);
+                }
+            });
         }
 
     }

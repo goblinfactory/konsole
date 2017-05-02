@@ -12,9 +12,11 @@ using Konsole.Sample.Demos;
 
 namespace Konsole.Sample
 {
+
+
     class Program
     {
-
+        
         // random notes and links
 
         // experiment to see if we can read a block of the screen by using move and redirecting input and output
@@ -42,10 +44,6 @@ namespace Konsole.Sample
                     FormDemos.Run(con);
                     break;
 
-                case '1':
-                    new WindowDemo(con).SimpleDemo();
-                    break;
-
                 case 'w':
                     WindowDemo.Run(con);
                     break;
@@ -67,10 +65,6 @@ namespace Konsole.Sample
                     ProgressBarDemos.ProgressivelyFasterDemo();
                     break;
 
-                case 's':
-                    new WindowDemo(con).ScrollingDemo();
-                    break;
-
                 case 'p':
                     ProgressBarDemos.SimpleDemo(con);
                     break;
@@ -83,62 +77,34 @@ namespace Konsole.Sample
 
         }
 
-        //private static void Test()
-        //{
-        //    Console.WriteLine("test");
-        //    var m = new Menu("MENU", 'q', 20,
-        //        new MenuItem('f', "Form demo", c => { }),
-        //        new MenuItem('b', "TWO boxes", c => { }),
-        //        new MenuItem('A', "BADAA!", c => { }),
-        //        new MenuItem('p', "Parallel", c => { }),
-        //        new MenuItem('r', "RANDOM STUFF", c => { })
-        //        );
-        //    m.Run();
-        //}
-
         private static void Main(string[] args)
         {
-            var con = new Window();
-            var output = new Window(con, 35,0, 70, 20, ConsoleColor.White, ConsoleColor.DarkCyan);
+            var left = Window.Open(30, 10, 20, 10, "client", LineThickNess.Single, ConsoleColor.White,ConsoleColor.DarkGreen);
+            var right = Window.Open(60, 10, 20, 10, "server", LineThickNess.Single, ConsoleColor.White,ConsoleColor.DarkBlue);
+            left.WriteLine("left content");
+            right.WriteLine("right content");
 
-            con.WriteLine("this test should be above the menu");
-            con.WriteLine("");
+            var mo = Menu.WithOutput(28, 25, "Samples", "output",
 
-            var menu = new Menu(con, output, "DEMO SAMPLES", ConsoleKey.Escape, 30, 
-
-                new MenuItem('f',"FORMS",  FormDemos.Run),
-                new MenuItem('r',"RANDOM", RandomStuff),
-                new MenuItem('p',"PROGRESSBAR 1", ProgressBarDemos.ParallelDemo),
-                new MenuItem('b',"BOXES",BoxeDemos.Run),
-                new MenuItem('t',"TESTDATA", TestDataDemo.Run),
-                new MenuItem(ConsoleKey.Escape,"EXIT", null)
+                new MenuItem('f', "Forms", FormDemos.Run),
+                new MenuItem('b', "Boxes", BoxeDemos.Run),
+                new MenuItem('s', "Scrolling", WindowDemo.Run2),
+                new MenuItem('p', "ProgressBar1", ProgressBarDemos.ParallelDemo),
+                new MenuItem('q', "ProgressBar2", ProgressBarDemos.ParallelDemo),
+                new MenuItem('t', "Test data", TestDataDemo.Run),
+                new MenuItem('c', "clear screen", c => c.Clear()),
+                new MenuItem('r', "RANDOM", RandomStuff)
 
             );
 
-            // todo, make this the default behavior?
-            menu.BeforeMenu = output.Clear;
-
+            var menu = mo.Menu;
+            var output = mo.Output;
+            menu.BeforeMenu = () => output.Clear();
             menu.Run();
-            con.WriteLine("this test should appear below the menu");
+
         }
 
-        private static void printMenu(IConsole con)
-        {
-            con.WriteLine("");
-            con.WriteLine("w : windows");
-            con.WriteLine("1 : simple window demo");
-            con.WriteLine("r : random test stuff. Changes often on each checkin.");
-            con.WriteLine("    (Open a dialog window and run one of the other tests 'f' inside it.)");
-            con.WriteLine("h : hiliting");
-            con.WriteLine("s : scrolling demo");
-            con.WriteLine("d : progressively faster 'd'emo");
-            con.WriteLine("p : progress bars");
-            con.WriteLine("l : Parallel Demo passing ProgressBars to threads");
-            con.WriteLine("2 : Parallel Demo creating ProgressBar inside thread");
-  
-            con.WriteLine("q : quit");
-            con.WriteLine("");
-        }
+
 
     }
 }

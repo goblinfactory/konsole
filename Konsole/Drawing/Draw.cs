@@ -41,7 +41,7 @@ namespace Konsole.Drawing
 
         public Draw Box(int sx, int sy, int ex, int ey, string title, LineThickNess? thicknessOverride = null)
         {
-            var thickness = thicknessOverride ?? Thickness; 
+            var thickness = thicknessOverride ?? Thickness;
             int width = (ex - sx) + 1;
             int height = (ey - sy) + 1;
             // if box is not visible, return.
@@ -54,7 +54,6 @@ namespace Konsole.Drawing
                 _console.PrintAt(sx, sy, '☐');
                 return this;
             }
-
             var line = (thickness == LineThickNess.Single) ? ThinBox : ThickBox;
             DrawCorners(sx,sy,ex,ey, line);
              // top edge
@@ -65,6 +64,15 @@ namespace Konsole.Drawing
             Line(ex, sy + 1, ex, ey - 1, thickness);
             // bottom edge
             Line(sx + 1, ey, ex - 1, ey, thickness);
+            // print centered title
+            var titleText = $" {title} ";
+            int len = titleText.Length;
+            int maxLen = width - 2;
+            if (len > maxLen)
+            {
+                titleText = titleText.Substring(0, maxLen);
+            }
+            _console.PrintAt((-1 + sx + (width/2)) -(titleText.Length/2), sy, titleText);
             return this;
         }
 
@@ -128,6 +136,8 @@ namespace Konsole.Drawing
             PrintAtAndMerge(sx, ey, line.L, LineMerger.Position.Last);
             return this;
         }
+
+
 
         private void DrawCorners(int sx, int sy, int ex, int ey, IBoxStyle line)
         {

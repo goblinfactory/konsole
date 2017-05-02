@@ -2,35 +2,69 @@
 
 namespace Konsole.Menus
 {
+
+
     public class MenuItem
     {
         public ConsoleKey? Key { get; }
         public string Title { get; }
         public string Description { get; }
-        public Action<IConsole> Action { get; }
+        public Action Action { get; }
+        public Action<IConsole> ConsoleAction { get; } = null;
         public bool IsDefault { get; set; }
 
-        public MenuItem(char? key, string title, Action<IConsole> action, bool isDefault = false)
+
+
+        //public MenuItem(char? key, string title, Action action, bool isDefault = false)
+        //{
+        //    Key = (ConsoleKey?)key;
+        //    Title = title;
+        //    Action = action;
+        //    IsDefault = isDefault;
+        //}
+
+        //public MenuItem(ConsoleKey key, string title, Action action, bool isDefault = false)
+        //{
+        //    Key = key;
+        //    Title = title;
+        //    Action = action;
+        //    IsDefault = isDefault;
+        //}
+
+        public MenuItem(char key, string title, Action action) 
         {
-            Key = (ConsoleKey?)key;
+            Key = (ConsoleKey)key;
             Title = title;
             Action = action;
-            IsDefault = isDefault;
+            ConsoleAction = null;
         }
 
-        public MenuItem(ConsoleKey key, string title, Action<IConsole> action, bool isDefault = false)
+        public MenuItem(char key, string title, Action<IConsole> action)
         {
-            Key = key;
+            Key = (ConsoleKey) key;
             Title = title;
-            Action = action;
-            IsDefault = isDefault;
+            Action = null;
+            ConsoleAction = action;
         }
 
         public MenuItem(string title, Action<IConsole> action)
         {
             Key = null;
             Title = title;
+            ConsoleAction = action;
+            Action = null;
+        }
+
+        public MenuItem(string title, Action action)
+        {
+            Key = null;
+            Title = title;
             Action = action;
+        }
+
+        public static MenuItem Quit(string title)
+        {
+            return new MenuItem('q', title, (Action)null);
         }
 
     }
