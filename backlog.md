@@ -4,6 +4,8 @@
 
 ### fix
 
+- proper multithreaded support across windows. (if you have two windows and two threads, different colors) then it fails to synchronise the writes.
+- menu will crash if you give it two menuItems with the same shortcut key. (work it out, not rocket science!)
 - manually test Konsole.Sample, currently giving very odd behavior! (if you resize window it dies, if your window is not wide enough, or, if the cursor is already near the bottom of the screen and scrolling kicks in, you're stuffed.)
 - Konsole sample - demo must make sure window is wide enough.
 - fix : allow user to specify exit character, e.g. `q` or `x` in addition to `ConsoleKey.Escape`.

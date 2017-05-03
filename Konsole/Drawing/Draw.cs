@@ -70,9 +70,13 @@ namespace Konsole.Drawing
             int maxLen = width - 2;
             if (len > maxLen)
             {
-                titleText = titleText.Substring(0, maxLen);
+                titleText = maxLen > 0 ? titleText.Substring(0, maxLen) : "";
             }
-            _console.PrintAt((-1 + sx + (width/2)) -(titleText.Length/2), sy, titleText);
+            if (!string.IsNullOrWhiteSpace(titleText))
+            {
+                _console.PrintAt((sx + (width / 2)) - (titleText.Length / 2), sy, titleText);
+            }
+            
             return this;
         }
 

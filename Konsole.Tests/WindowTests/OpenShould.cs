@@ -22,7 +22,7 @@ namespace Konsole.Tests.WindowTests
             Console.WriteLine(c.BufferString);
             var expected = new[]
             {
-                "╔════════╗",
+                "╔═ title ╗",
                 "║one     ║",
                 "║two     ║",
                 "║three   ║",
@@ -46,7 +46,7 @@ namespace Konsole.Tests.WindowTests
             Console.WriteLine(c.BufferString);
             var expected = new[]
             {
-                "╔════════╗",
+                "╔═ title ╗",
                 "║two     ║",
                 "║three   ║",
                 "║four    ║",

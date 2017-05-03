@@ -167,8 +167,6 @@ namespace Konsole
         {
         }
 
-
-
         public static Window Open(int x, int y, int width, int height, string title,
             LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray,
             ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)

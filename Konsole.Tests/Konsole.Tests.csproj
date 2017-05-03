@@ -93,6 +93,7 @@
     <Compile Include="WindowTests\OpenShould.cs" />
     <Compile Include="WindowTests\OverflowBottomShould.cs" />
     <Compile Include="WindowTests\PrintAtShould.cs" />
+    <Compile Include="WindowTests\SpikeThreadTests.cs" />
     <Compile Include="WindowTests\WriteLineShould.cs" />
     <Compile Include="WindowTests\WriteShould.cs" />
     <Compile Include="FormTests\SplitScreenTests.cs" />
@@ -128,6 +129,9 @@
     <Content Include="Lines\Drawing_LineTests.should_support_drawing_any_positive_size_boxes.approved.txt" />
     <Content Include="Lines\Drawing_LineTests.TestApprovals.received.txt" />
     <Content Include="MenuTests\RunShould.render_the_menu_with_default_item_selected_and_with_correct_colours.approved.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ThreadingTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
