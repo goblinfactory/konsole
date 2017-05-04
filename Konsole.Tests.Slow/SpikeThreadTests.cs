@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using Konsole.Drawing;
-using Konsole.Menus;
 using NUnit.Framework;
 
-namespace Konsole.Tests.WindowTests
+namespace Konsole.Tests.Slow
 {
     public static class TaskHelper
     {
@@ -21,7 +17,6 @@ namespace Konsole.Tests.WindowTests
     }
 
     [UseReporter(typeof(DiffReporter))]
-    //[TestFixture,Explicit("thread tests are slow tests, need to run manually and-or-from scheduled build server.")]
     public class SpikeThreadTests
     {
         [Test]
@@ -43,6 +38,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void WindowsWithFourBackgroundThreads()
         {
+            // run this up to 8000 without the concurrent writer and you'll see what I had to fix.
             int max = 8000;
             var console = new MockConsole(80, 20);
             var w1 = Window.Open(0, 0, 20, 20, "w1", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkBlue, console).Concurrent();
