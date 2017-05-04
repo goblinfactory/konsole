@@ -10,7 +10,6 @@ namespace Konsole
 {
 
 
-
     public class Window : IConsole
     {
         public bool OverflowBottom => CursorTop >= _height;

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Colors.cs" />
+    <Compile Include="ConcurrentWriter.cs" />
     <Compile Include="Drawing\CellMap.cs" />
     <Compile Include="Drawing\LineCharTypes.cs" />
     <Compile Include="Drawing\Draw.cs" />

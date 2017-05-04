@@ -20,30 +20,62 @@ namespace Konsole.Tests.WindowTests
         }    
     }
 
+    [UseReporter(typeof(DiffReporter))]
+    //[TestFixture,Explicit("thread tests are slow tests, need to run manually and-or-from scheduled build server.")]
     public class SpikeThreadTests
     {
-        [UseReporter(typeof(DiffReporter))]
         [Test]
-        public void WindowsAndMenu()
+        public void WindowsAndSingleBackgroundThread()
         {
-            var console = new MockConsole(40,20);
-            var client = Window.Open(0, 0, 20, 20, "client", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkBlue, console);
-            var server = Window.Open(20, 0, 20, 20, "server", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkYellow, console);
-
+            var console = new MockConsole(80,20);
+            var w1 = Window.Open(0, 0, 20, 20, "w1", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkBlue, console);
+            int max = 80000;
             Task t1 = new Task(() =>
             {
-                for(int i=0; i<200; i++) client.WriteLine(i.ToString());
-            }).StartTask();
-            Task t2 = new Task(() =>
-            {
-                for (int i = 0; i < 200; i++) server.WriteLine(i.ToString());
+                for (int i = 0; i < max; i++) w1.Write(" {0} ", i.ToString());
             }).StartTask();
 
-            Task.WaitAll(new[] {t1, t2});
+
+            t1.Wait();
+            Approvals.Verify(console.BufferWrittenString);
+        }
+
+        [Test]
+        public void WindowsWithFourBackgroundThreads()
+        {
+            int max = 8000;
+            var console = new MockConsole(80, 20);
+            var w1 = Window.Open(0, 0, 20, 20, "w1", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkBlue, console).Concurrent();
+            var w2 = Window.Open(20, 0, 20, 20, "w2", LineThickNess.Single, ConsoleColor.Red, ConsoleColor.DarkYellow, console).Concurrent();
+            var w3 = Window.Open(40, 0, 20, 20, "w3", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkYellow, console).Concurrent();
+            var w4 = Window.Open(60, 0, 20, 20, "w4", LineThickNess.Single, ConsoleColor.Black, ConsoleColor.White, console).Concurrent();
+            Task t1 = new Task(() =>
+            {
+                for (int i = 0; i < max; i++) w1.Write(" {0} ", i.ToString());
+            }).StartTask();
+
+            Task t2 = new Task(() =>
+            {
+                for (int i = 0; i < max; i++) w2.Write(" {0} ", i.ToString());
+            }).StartTask();
+
+            Task t3 = new Task(() =>
+            {
+                for (int i = 0; i < max; i++) w3.Write(" {0} ", i.ToString());
+            }).StartTask();
+
+            Task t4 = new Task(() =>
+            {
+                for (int i = 0; i < max; i++) w4.Write(" {0} ", i.ToString());
+            }).StartTask();
+
+
+            Task.WaitAll(new[] {t1, t2, t3, t4});
 
             Approvals.Verify(console.BufferWrittenString);
 
 
         }
+
     }
 }
