@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpikeThreadTests.cs" />
+    <Compile Include="ConcurrencyTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -69,7 +69,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SpikeThreadTests.WindowsWithFourBackgroundThreads.approved.txt" />
+    <Content Include="ConcurrencyTests.WindowsAndSingleBackgroundThread.approved.txt" />
+    <Content Include="ConcurrencyTests.WindowsWithFourBackgroundThreads.approved.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -26,6 +26,8 @@
 # backlog
 
 ### Backlog 
+- concurrentProgressBar
+- concurrentMenu
 - progress bar to have background color and border width, for simple funky PBs!
 - be able to print ColorStrings (so that they can easily be passed around) 
 - fix the window constructors, second parameter is sometimes height, and sometimes not!
