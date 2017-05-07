@@ -27,11 +27,6 @@ namespace Konsole.Tests.WindowTests
                 "fruit     ",
                 "line2     "
             };
-            Console.WriteLine("---");
-            Console.WriteLine(c.BufferString);
-            Console.WriteLine("---");
-            Console.WriteLine(w.BufferString);
-            Console.WriteLine("---");
             c.Buffer.ShouldBeEquivalentTo(expected);
         }
 

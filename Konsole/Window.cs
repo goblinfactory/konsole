@@ -134,18 +134,24 @@ namespace Konsole
         {
         }
 
-        public static Window OpenInline(IConsole echoConsole, int padLeft, int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)
+        public static IConsole OpenInline(IConsole echoConsole, int padLeft, int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)
         {
-            var w = new Window(padLeft, echoConsole.CursorTop, width, height, foreground, background, true, echoConsole, options);
-            echoConsole.CursorTop += height;
-            return w;
+            lock (_staticLocker)
+            {
+                var w = new Window(padLeft, echoConsole.CursorTop, width, height, foreground, background, true, echoConsole, options);
+                echoConsole.CursorTop += height;
+                return w.Concurrent();
+            }
         }
 
-        public static Window OpenInline(IConsole echoConsole, int height)
+        public static IConsole OpenInline(IConsole echoConsole, int height)
         {
-            var w = new Window(0, echoConsole.CursorTop, echoConsole.WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole);
-            echoConsole.CursorTop += height;
-            return w;
+            lock (_staticLocker)
+            {
+                var w = new Window(0, echoConsole.CursorTop, echoConsole.WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole);
+                echoConsole.CursorTop += height;
+                return w.Concurrent();
+            }
         } 
 
         //Window will clear the parent console area in the overlapping window.
@@ -166,26 +172,34 @@ namespace Konsole
         {
         }
 
-        public static Window Open(int x, int y, int width, int height, string title,
+        private static object _staticLocker = new object();
+
+        /// <summary>
+        /// This is the the only threadsafe way to create a window at the moment.
+        /// </summary>
+        public static IConsole Open(int x, int y, int width, int height, string title,
             LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray,
             ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
         {
-            var echoConsole = console ?? new Writer();
-            var window = new Window(x + 1, y + 1, width - 2, height - 2, foregroundColor, backgroundColor, true,
-                echoConsole);
-            var state = echoConsole.State;
-            try
+            lock (_staticLocker)
             {
-                echoConsole.ForegroundColor = foregroundColor;
-                echoConsole.BackgroundColor = backgroundColor;
-                new Draw(echoConsole).Box(x, y, x + (width - 1), y + (height - 1), title, thickNess);
+                var echoConsole = console ?? new Writer();
+                var window = new Window(x + 1, y + 1, width - 2, height - 2, foregroundColor, backgroundColor, true,
+                    echoConsole);
+                var state = echoConsole.State;
+                try
+                {
+                    echoConsole.ForegroundColor = foregroundColor;
+                    echoConsole.BackgroundColor = backgroundColor;
+                    new Draw(echoConsole).Box(x, y, x + (width - 1), y + (height - 1), title, thickNess);
 
+                }
+                finally
+                {
+                    echoConsole.State = state;
+                }
+                return window.Concurrent();
             }
-            finally
-            {
-                echoConsole.State = state;
-            }
-            return window;
         }
 
         public ProgressBar ProgressBar(int max)

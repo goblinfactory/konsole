@@ -79,10 +79,6 @@ namespace Konsole.Sample
 
         private static void Main(string[] args)
         {
-            var left = Window.Open(30, 10, 20, 10, "client", LineThickNess.Single, ConsoleColor.White,ConsoleColor.DarkGreen);
-            var right = Window.Open(60, 10, 20, 10, "server", LineThickNess.Single, ConsoleColor.White,ConsoleColor.DarkBlue);
-            left.WriteLine("left content");
-            right.WriteLine("right content");
 
             var mo = Menu.WithOutput(28, 25, "Samples", "output",
 

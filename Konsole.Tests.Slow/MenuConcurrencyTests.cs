@@ -21,8 +21,8 @@ namespace Konsole.Tests.Slow
         public void SeperateThreadsForMenuAndTwoWindows()
         {
             var console = new MockConsole();
-            var client = Window.Open(35, 0, 40, 25, "client", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkBlue, console).Concurrent();
-            var server = Window.Open(77, 0, 40, 25, "server", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkYellow, console).Concurrent();
+            var client = Window.Open(35, 0, 40, 25, "client", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkBlue, console);
+            var server = Window.Open(77, 0, 40, 25, "server", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkYellow, console);
             // print two lines before the menu
             console.WriteLine("line 1");
             console.WriteLine("line 2");
