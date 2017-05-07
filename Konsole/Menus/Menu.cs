@@ -60,7 +60,7 @@ namespace Konsole.Menus
 
     public class Model
     {
-        public Window Window { get; }
+        public IConsole Window { get; }
         public string Title { get; }
         public int Current { get; }
         public int Height { get; }
@@ -68,7 +68,7 @@ namespace Konsole.Menus
         public MenuItem[] MenuItems { get; }
         public Theme Theme { get; }
 
-        public Model(Window window, string title, int current, int height, int width, MenuItem[] menuItems, Theme theme)
+        public Model(IConsole window, string title, int current, int height, int width, MenuItem[] menuItems, Theme theme)
         {
             Window = window;
             Title = title;
@@ -90,6 +90,9 @@ namespace Konsole.Menus
 
     public class Menu
     {
+        // locker is static here, because menu makes wrapped calls to Console.XX which is static, even though this class is not!
+        private static object _locker = new object();
+
         private readonly IConsole _menuConsole;
         private readonly IConsole _output;
         private readonly ConsoleKey _quit;
@@ -97,6 +100,7 @@ namespace Konsole.Menus
 
         //private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
         private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
+
 
         private Dictionary<ConsoleKey, int> _keyBindings = new Dictionary<ConsoleKey, int>();
 
@@ -111,6 +115,8 @@ namespace Konsole.Menus
         public Theme Theme { get; set; } = new Theme();
         public string Title { get; set; } = "";
 
+
+
         private int _current = 0;
 
         public int Current
@@ -123,8 +129,6 @@ namespace Konsole.Menus
 
         public int NumMenus { get; }
         public int Height { get; }
-
-        private static object _locker = new object();
 
         public IReadKey Keyboard { get; set; }
 
@@ -143,36 +147,44 @@ namespace Konsole.Menus
 
         public Menu(IConsole menuConsole, IConsole output, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
         {
-            Title = title;
-            Keyboard = Keyboard ?? new KeyReader();
-            _menuConsole = menuConsole;
-            _output = output;
-            _quit = quit;
-            _width = width;
-            NumMenus = menuActions.Length;
-            for (int i = 0; i < menuActions.Length; i++)
+            lock (_locker)
             {
-                var item = menuActions[i];
-                var key = item.Key;
-                if (key.HasValue) _keyBindings.Add(key.Value, i);
-                _menuItems.Add(i, item);
+                Title = title;
+                Keyboard = Keyboard ?? new KeyReader();
+                _menuConsole = menuConsole;
+                _output = output;
+                _quit = quit;
+                _width = width;
+                NumMenus = menuActions.Length;
+                for (int i = 0; i < menuActions.Length; i++)
+                {
+                    var item = menuActions[i];
+                    var key = item.Key;
+                    if (key.HasValue) _keyBindings.Add(key.Value, i);
+                    _menuItems.Add(i, item);
 
+                }
+                if (menuActions == null || menuActions.Length == 0)
+                    throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
+                _height = menuActions.Length + 4;
+                _window = Window
+                    .OpenInline(_menuConsole, 2, _width, _height, Theme.Foreground, Theme.Background, K.Clipping)
+                    .Concurrent();
             }
-            if (menuActions == null || menuActions.Length == 0)
-                throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
-            _height = menuActions.Length + 4;
-            _window = Window.OpenInline(_menuConsole, 2, _width, _height, Theme.Foreground, Theme.Background, K.Clipping);
         }
 
-        private Window _window;
+        private IConsole _window;
 
         public Action<Model> Render = (model) => { _refresh(model); };
 
         public void Refresh()
         {
-            var items = _menuItems.Values.ToArray();
-            var model = new Model(_window, Title, Current, Height, _width, items, Theme);
-            _refresh(model);
+            lock (_locker)
+            {
+                var items = _menuItems.Values.ToArray();
+                var model = new Model(_window, Title, Current, Height, _width, items, Theme);
+                _refresh(model);
+            }
         }
 
         private static void _refresh(Model model)
@@ -180,8 +192,6 @@ namespace Konsole.Menus
             var con = model.Window;
             int cnt = model.MenuItems.Length;
             int left = 2;
-            lock (_locker)
-            {
                 int len = model.Width - 4;
                 con.PrintAtColor(model.Theme.Foreground, 2, 1, model.Title.FixLeft(len), model.Theme.Background);
                 con.PrintAtColor(model.Theme.Foreground, 2, 2, new string('-', len), model.Theme.Background);
@@ -224,7 +234,6 @@ namespace Konsole.Menus
 
                     }
                 }
-            }
         }
 
         private MenuItem this[int i]
@@ -240,7 +249,11 @@ namespace Konsole.Menus
 
         public void Run()
         {
-            ConsoleState state = _menuConsole.State;
+            ConsoleState state;
+            lock (_locker)
+            {
+                state = _menuConsole.State;
+            }
             try
             {
                 _run();
@@ -251,16 +264,23 @@ namespace Konsole.Menus
             }
             finally
             {
-                _menuConsole.State = state;
+                lock (_locker)
+                {
+                    _menuConsole.State = state;
+                }
             }
         }
 
         private void _run()
         {
-            _menuConsole.CursorVisible = false;
-            var state = _menuConsole.State;
+            ConsoleState state;
             ConsoleKey cmd;
 
+            lock (_locker)
+            {
+                _menuConsole.CursorVisible = false;
+                state = _menuConsole.State;
+            }
             Refresh();
 
             while ((cmd = Keyboard.ReadKey().Key) != _quit)

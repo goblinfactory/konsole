@@ -9,7 +9,7 @@ namespace Konsole.Tests.Slow
 {
 
     [UseReporter(typeof(DiffReporter))]
-    public class ConcurrencyTests
+    public class WindowConcurrencyTests
     {
         [Test]
         public void WindowsAndSingleBackgroundThread()
@@ -27,7 +27,6 @@ namespace Konsole.Tests.Slow
         [Test]
         public void WindowsWithFourBackgroundThreads()
         {
-            // run this up to 8000 without the concurrent writer and you'll see what I had to fix.
             int max = 8000;
             var console = new MockConsole(80, 20);
             var w1 = Window.Open(0, 0, 20, 20, "w1", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkBlue, console).Concurrent();

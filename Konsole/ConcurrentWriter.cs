@@ -14,7 +14,7 @@ namespace Konsole
         }
     }
 
-    public class ConcurrentWriter 
+    public class ConcurrentWriter  : IConsole
     {
         public static object _locker = new object();
 
@@ -57,6 +57,81 @@ namespace Konsole
             }
         }
 
+        public ConsoleState State
+        {
+            get
+            {
+                lock (_locker)
+                {
+                    return _window.State;
+                }
+            }
+            set
+            {
+                lock (_locker)
+                {
+                    _window.State = value;
+                }
+            }
+        }
+
+        public int WindowWidth
+        {
+            get
+            {
+                lock (_locker) return _window.WindowWidth;
+            }
+        }
+
+        public int WindowHeight
+        {
+            get
+            {
+                lock (_locker) return _window.WindowHeight;
+            }
+        }
+
+        public int CursorTop
+        {
+            get
+            {
+                lock (_locker) return _window.CursorTop;
+            }
+            set
+            {
+                lock (_locker) _window.CursorTop = value;
+            }
+        }
+
+        public int CursorLeft
+        {
+            get
+            {
+                lock (_locker) return _window.CursorLeft;
+            }
+            set
+            {
+                lock (_locker) _window.CursorLeft = value;
+            }
+        }
+
+        public Colors Colors
+        {
+            get
+            {
+                lock (_locker) return _window.Colors;
+            }
+            set
+            {
+                lock (_locker) _window.Colors = value;
+            }
+        }
+
+        public void DoCommand(IConsole console, Action action)
+        {
+            throw new NotSupportedException("Not supported in a multithreaded scenario.");
+        }
+
         public ConsoleColor ForegroundColor {
             get
             {
@@ -75,6 +150,18 @@ namespace Konsole
             set
             {
                 lock (_locker) _window.BackgroundColor = value;
+            }
+        }
+
+        public bool CursorVisible
+        {
+            get
+            {
+                lock (_locker) return _window.CursorVisible;
+            }
+            set
+            {
+                lock (_locker) _window.CursorVisible = value;
             }
         }
 
@@ -103,6 +190,19 @@ namespace Konsole
 
         }
 
+        public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background)
+        {
+            lock (_locker)
+            {
+                _window.PrintAtColor(foreground,x,y,text,background);
+            }
+        }
+
+        public void ScrollUp()
+        {
+            throw new NotSupportedException("Not supported in a multithreaded scenario.");
+        }
+
         public void Clear()
         {
             lock (_locker)
@@ -112,5 +212,13 @@ namespace Konsole
 
         }
 
+        public void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
+            char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
+        {
+            lock (_locker)
+            {
+                _window.MoveBufferArea(sourceLeft,sourceTop,sourceWidth,sourceHeight,targetLeft,targetTop,sourceChar,sourceForeColor,sourceBackColor);
+            }
+        }
     }
 }

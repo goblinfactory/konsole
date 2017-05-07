@@ -11,6 +11,22 @@ namespace Konsole.Tests
     {
 
         [Test]
+        public void still_work_if_console_is_scrolling()
+        {
+            // i.e. when progress bar position changes because window is scrolling.
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void still_work_if_progressbar_has_scrolled_off_and_is_no_longer_visible()
+        {
+            // this needs some careful though because the console window height and width does not appear to 
+            // return the correct values when run from within CONEMU console window.
+            // need to test with a no frills windows console window.
+            Assert.Inconclusive();
+        }
+
+        [Test]
         public void show_progress_title_and_progress_bar()
         {
             var console = new MockConsole(80,20);

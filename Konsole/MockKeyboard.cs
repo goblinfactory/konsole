@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Konsole
 {
-
+    // test
     public static class ConsoleKeyInfoExtensions
     {
         public static bool SameAs(this ConsoleKey lhs, ConsoleKey? rhs)
@@ -57,6 +57,13 @@ namespace Konsole
 
         }
 
+        public MockKeyboard(int pauseBetweenPresses, IEnumerable<ConsoleKey> readKey)
+        {
+            PauseBetweenKeypresses = pauseBetweenPresses;
+            _keyEnumerator = readKey.GetEnumerator();
+        }
+
+
         public MockKeyboard PressKey(char c, bool shift = false, bool alt = false, bool control = false)
         {
             var keyPress = new ConsoleKeyInfo(c, (ConsoleKey) c, shift, alt, control);
@@ -79,6 +86,12 @@ namespace Konsole
         public ConsoleKeyInfo ReadKey()
         {
             if (PauseBetweenKeypresses != 0) Thread.Sleep(PauseBetweenKeypresses);
+            if (_keyEnumerator != null)
+            {
+                _keyEnumerator.MoveNext();
+                return _keyEnumerator.Current.ToKeypress();
+            }
+            
             if (_keypresses.Count == 0)
             {
                 if (AutoReplyKey == null) throw new InvalidOperationException("MockKeyboard has run out of queued keys to return. Enable auto-reply or queue up more keystrokes.");
@@ -87,6 +100,8 @@ namespace Konsole
             var k = _keypresses.Dequeue();
             return k;
         }
+
+        private IEnumerator<ConsoleKey> _keyEnumerator;
 
         public ConsoleKeyInfo? AutoReplyKey { get; set; } = null;
     }

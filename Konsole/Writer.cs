@@ -177,6 +177,15 @@ namespace Konsole
             Console.Clear();
         }
 
+        public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background = null)
+        {
+            DoCommand(this, () =>
+            {
+                State = new ConsoleState(foreground, background ?? BackgroundColor, y, x, CursorVisible);
+                Write(text);
+            });
+        }
+
 
         public void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
