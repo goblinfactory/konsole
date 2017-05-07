@@ -1,5 +1,5 @@
 
-##ProgressBar example : showing status update for parallel tasks
+## ProgressBar example : showing status update for parallel tasks
 
 This example creates 10 seperate console progress bars, each being updated on a seperate thread. (This code generates the output visible in the animated gif.)
 
