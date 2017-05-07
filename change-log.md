@@ -3,14 +3,19 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [unreleased]
+## [2.1.0] - 2017-05-07
 
 ### Added
 
 - `Window.OpenInline(console, height)` : opens a new window 'inline' full width of the console, 'height' rows tall, and moves the cursor to below the window. See `Window.OpenInlineShould` test.
 - `MockKeyboard` : Mock keyboard for queueing up keystrokes. Includes Autoreply. Use to simulate user input during unit tests.
 - `IReadKeys` : for console input.
-- `Menu` : for rendering menus and capturing user input.
+- `Menu` with `MenuItem`: for rendering menus and capturing user input, see `Konsole.Sample.Program` for examples.
+- Threadsafe windows. Windows opened with `Window.Open` and `Window.OpenInline` are now threadsafe. Specifically you can now reliably create multiple output windows, and have seperate threads e.g. `Task.Run` threads for each window. See `Konsole.Tests`Slow\WindowConcurrencyTests`.
+- new Test project `Konsole.Tests.Slow` for slow running tests. Specifically concurrency tests, that take a few seconds each. 3 to 5 seconds on my dev laptop.
+
+## [unreleased]
+
 
 ## [2.0.2] - 2017-03-20
 
