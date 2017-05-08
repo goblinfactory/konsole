@@ -1,5 +1,13 @@
 # Roadmap
 
+
+## [unreleased]
+
+### Adding
+
+- concurrentProgressBar
+
+
 ## [2.1]
 
 ### fix
@@ -8,7 +16,7 @@
 - fix : allow user to specify exit character, e.g. `q` or `x` in addition to `ConsoleKey.Escape`.
 - allow menu to run code witout having to send it to a 'window', i.e. can send to the default console.
 
-### Adding
+### Added
 
 - new 1 liner `ProgressBar`.
 - Window opened with `Window.Open` and `Window.OpenInline` are now ThreadSafe and each window can be written to seperately from different threads.
@@ -23,7 +31,8 @@
 # backlog
 
 ### Backlog 
-- concurrentProgressBar
+
+- Draw line thickness to None, to draw plain text. Will require the whole merge story to be done. Should be quite straight forward but a little bit lengthy.
 - progress bar to have background color and border width, for simple funky PBs!
 - be able to print ColorStrings (so that they can easily be passed around) 
 - fix the window constructor consistencies, second parameter is sometimes height, and sometimes not!
