@@ -17,11 +17,6 @@ namespace Konsole
         public ProgressBar(int max) : this(max, '#', FORMAT, new Writer()) { }
         public ProgressBar(int max, IConsole console) : this(max, '#', FORMAT, console) { }
 
-        /// <summary>
-        ///  private hook to make this class easier to test in multithreaded scenarios.
-        /// </summary>
-        protected Action OnConstructor = () => { };
-
         public int Y
         {
             get { return _y; }
@@ -118,26 +113,6 @@ namespace Konsole
             Refresh(_current, item);
         }
     }
-
-    public class ConsoleState
-    {
-        public bool CursorVisible { get; set; }
-        public int Top { get; set; }
-        public int Left { get; set; }
-        public ConsoleColor ForegroundColor { get; set; }
-        public ConsoleColor BackgroundColor { get; set; }
-
-        // for now, not including any width or height settings. (don't know if these can be changed? none of our code does so leaving off.)
-        public ConsoleState(ConsoleColor foreground, ConsoleColor background, int top, int left, bool cursorVisible) // NB always X then Y .. need to swap these around
-        {
-            ForegroundColor = foreground;
-            BackgroundColor = background;
-            Top = top;
-            Left = left;
-            CursorVisible = cursorVisible;
-        }
-    }
-
 
 }
 

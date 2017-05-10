@@ -31,7 +31,9 @@
 # backlog
 
 ### Backlog 
-
+- bug , run demo, don't start right, start left, let finish, then start right = error.
+- bug : setting progressbar refresh to (0) throws exception.
+- progressbars to survive window scrolling!
 - Draw line thickness to None, to draw plain text. Will require the whole merge story to be done. Should be quite straight forward but a little bit lengthy.
 - progress bar to have background color and border width, for simple funky PBs!
 - be able to print ColorStrings (so that they can easily be passed around) 

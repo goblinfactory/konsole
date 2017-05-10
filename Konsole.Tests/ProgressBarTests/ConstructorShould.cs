@@ -24,7 +24,7 @@ namespace Konsole.Tests.ProgressBarTests
     public class ConstructorShould
     {
         [Test]
-        public void move_cursor_down_two_lines_to_preserve_space_for_the_progressbar()
+        public void move_cursor_down_to_preserve_space_for_the_progressbar()
         {
             var con = new MockConsole();
             Assert.AreEqual(0, con.CursorTop);

@@ -42,12 +42,15 @@
   <ItemGroup>
     <Compile Include="Colors.cs" />
     <Compile Include="ConcurrentWriter.cs" />
+    <Compile Include="ConsoleState.cs" />
     <Compile Include="Drawing\CellMap.cs" />
     <Compile Include="Drawing\LineCharTypes.cs" />
     <Compile Include="Drawing\Draw.cs" />
     <Compile Include="Drawing\MergeOrOverlap.cs" />
     <Compile Include="Drawing\LineMerger.cs" />
     <Compile Include="Drawing\LineThickNess.cs" />
+    <Compile Include="Internal\IntegerExtensions.cs" />
+    <Compile Include="Internal\StringExtensions.cs" />
     <Compile Include="Forms\ThickBoxStyle.cs" />
     <Compile Include="Internal\CellColorMapper.cs" />
     <Compile Include="Internal\HiliteBuffer.cs" />
@@ -60,6 +63,7 @@
     <Compile Include="Menus\MenuItem.cs" />
     <Compile Include="MockConsole.cs" />
     <Compile Include="MockKeyboard.cs" />
+    <Compile Include="ProgressBarSlim.cs" />
     <Compile Include="Writer.cs" />
     <Compile Include="Forms\BoxWriter.cs" />
     <Compile Include="Forms\FieldReader.cs" />
