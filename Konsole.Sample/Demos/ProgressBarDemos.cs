@@ -35,8 +35,8 @@ namespace Konsole.Sample.Demos
             con.WriteLine("'p' Test Progress bars");
             con.WriteLine("----------------------");
 
-            var pb = new ProgressBar(10);
-            var pb2 = new ProgressBar(30);
+            var pb = new ProgressBar(con, 10);
+            var pb2 = new ProgressBar(con, 30);
             con.Write("loading...");
             for (int i = 0; i < 10; i++)
             {
@@ -51,25 +51,6 @@ namespace Konsole.Sample.Demos
         }
 
 
-        public static void ProgressivelyFasterDemo(int startingPauseMilliseconds = 50, Window window = null)
-        {
-            var pb = window?.ProgressBar(300) ?? new ProgressBar(300);
-            var names = TestData.MakeNames(300);
-            int cnt = names.Count();
-            int i = 1;
-            foreach (var name in names)
-            {
-                pb.Refresh(i++, name);
-                int pause = startingPauseMilliseconds - (1 * (i * (startingPauseMilliseconds - 1) / cnt));
-                if (pause > 0) Thread.Sleep(pause);
-                if (Console.KeyAvailable)
-                {
-                    Console.ReadKey(true);
-                    break;
-                }
-            }
-
-        }
 
 
         public static void ParallelConstructorDemo()
@@ -133,7 +114,7 @@ namespace Konsole.Sample.Demos
             {
                 var files = q.Dequeue(d.cnt).ToArray();
                 if (files.Length == 0) continue;
-                var bar = new ProgressBar(files.Count(), console);
+                var bar = new ProgressBar(console, PbStyle.DoubleLine, files.Count());
                 bars.Add(bar);
                 bar.Refresh(0, d.name);
                 tasks.Add(new Task(() => ProcessFakeFiles(d.name, files, bar)));

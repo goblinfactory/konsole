@@ -3,13 +3,8 @@ using Konsole.Internal;
 
 namespace Konsole
 {
-    public enum PbStyle
-    {
-        SingleLine,
-        DoubeLine
-    }
 
-    public class ProgressBarSlim
+    public class ProgressBarSlim : IProgressBar
     {
         private int _max;
         private readonly char _character;
@@ -19,22 +14,25 @@ namespace Konsole
         private int _current = 0;
         private ConsoleColor _c;
         private static object _locker = new object();
+
         private string _line = "";
         private string _item = "";
-        private PbStyle Style { get; } = PbStyle.SingleLine;
 
         public int TextWidth { get; } = 30;
 
-        public int Y
-        {
-            get { return _y; }
-        }
+        public int Y => _y;
 
-        public string Line
-        {
-            get { return _line; }
-        }
+        [Obsolete("Not used in this 'slim' 1 liner implementation of a progress bar.")]
+        public string Line2 => "";
 
+        /// <summary>
+        /// the resulting rendered text line, e.g. "MyFiles.zip : ( 50%) ########"
+        /// </summary>
+        public string Line1 => _line;
+
+        /// <summary>
+        /// this is the item that the progressbar represents, e.g, "MyFiles.zip"
+        /// </summary>
         public string Item
         {
             get { return _item; }
@@ -45,19 +43,17 @@ namespace Konsole
             }
         }
 
-        public ProgressBarSlim(int max) : this(max, PbStyle.SingleLine, '#', new Writer()) { }
-        public ProgressBarSlim(int max, PbStyle style) : this(max, style, null, '#', new Writer()) { }
-        public ProgressBarSlim(int max, PbStyle style, int textWidth) : this(max, style, textWidth,'#', new Writer()) { }
-        public ProgressBarSlim(int max, PbStyle style, int textWidth, char character) : this(max, style, textWidth, character, new Writer()) { }
+        public ProgressBarSlim(int max)                                  : this(max, '#', new Writer()) { }
+        public ProgressBarSlim(int max, int textWidth)                   : this(max, textWidth,'#', new Writer()) { }
+        public ProgressBarSlim(int max, int textWidth, char character)   : this(max, textWidth, character, new Writer()) { }
+        public ProgressBarSlim(int max, IConsole console)                : this(max, null, '#', console) { }
+        public ProgressBarSlim(int max, int textWidth, IConsole console) : this(max, textWidth, '#', console) { }
 
-        public ProgressBarSlim(int max, IConsole console) : this(max, PbStyle.SingleLine,null, '#', console) { }
-        public ProgressBarSlim(int max, PbStyle style, IConsole console) : this(max,style, null, '#', console) { }
-        public ProgressBarSlim(int max, PbStyle style, int textWidth, IConsole console) : this(max, style, textWidth, '#', console) { }
-        public ProgressBarSlim(int max, PbStyle style, int? textWidth, char character, IConsole console)
+        public ProgressBarSlim(int max, int? textWidth, char character, IConsole console)
         {
-            TextWidth = GetTextWidth(console, textWidth);
             lock (_locker)
             {
+                TextWidth = GetTextWidth(console, textWidth);
                 _console = console;
                 _y = _console.CursorTop;
                 _c = _console.ForegroundColor;
@@ -86,6 +82,12 @@ namespace Konsole
         }
 
         public int Current => _current;
+
+        public void Refresh(int current, string format, params object[] args)
+        {
+            var text = string.Format(format, args);
+            Refresh(current, text);
+        }
 
 
         public void Refresh(int current, string itemText)

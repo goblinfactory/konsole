@@ -51,7 +51,7 @@ namespace Konsole.Tests.Slow
         void RunProgressBars(IConsole console, string service, string prefix)
         {
             var r = new Random(1);
-            var pbs = Enumerable.Range(1, 10).Select(i => new ProgressBar(r.Next(100), console)).ToArray();
+            var pbs = Enumerable.Range(1, 10).Select(i => new ProgressBar(console, PbStyle.DoubleLine, r.Next(100))).ToArray();
             var t = Task.Run(() =>
             {
                 Thread.Sleep(50); // convert to async?

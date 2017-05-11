@@ -202,11 +202,6 @@ namespace Konsole
             }
         }
 
-        public ProgressBar ProgressBar(int max)
-        {
-            return new ProgressBar(max, this);
-        }
-
         public Window(int x, int y, int width, int height, ConsoleColor foreground, ConsoleColor background,
             IConsole echoConsole, params K[] options)
             : this(x, y, width, height, foreground, background, true, echoConsole, options)

@@ -28,7 +28,7 @@ namespace Konsole.Sample
 
         private static void RandomStuff(IConsole con)
         {
-            var pb = new ProgressBar(50, con);
+            var pb = new ProgressBar(con, PbStyle.DoubleLine, 50);
             pb.Refresh(25,"cats");
             Console.ReadKey(true);
             pb.Max = 40;
@@ -61,9 +61,6 @@ namespace Konsole.Sample
                     ProgressBarDemos.ParallelConstructorDemo();
                     break;
 
-                case 'd':
-                    ProgressBarDemos.ProgressivelyFasterDemo();
-                    break;
 
                 case 'p':
                     ProgressBarDemos.SimpleDemo(con);

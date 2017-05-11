@@ -72,6 +72,7 @@
     <Compile Include="MenuTests\RunShould.cs" />
     <Compile Include="MenuTests\ThrowingExitMenuShould.cs" />
     <Compile Include="ProgressBarSlimTests\RefreshShould.cs" />
+    <Compile Include="ProgressBarSlimTests\TextWidthShould.cs" />
     <Compile Include="ProgressBarTests\ConstructorShould.cs" />
     <Compile Include="ProgressBarTests\SettingMaxShould.cs" />
     <Compile Include="WindowTests\DoCommandShould.cs" />

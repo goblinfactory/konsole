@@ -30,8 +30,8 @@ namespace Konsole.Tests
         public void show_progress_title_and_progress_bar()
         {
             var console = new MockConsole(80,20);
-            var pb1 = new ProgressBar(10, console);
-            var pb2 = new ProgressBar(10, console);
+            var pb1 = new ProgressBar(console, PbStyle.DoubleLine, 10);
+            var pb2 = new ProgressBar(console, PbStyle.DoubleLine, 10);
             pb1.Refresh(2,"cats");            
             pb2.Refresh(10,"dogs");
 
@@ -51,7 +51,7 @@ namespace Konsole.Tests
         {
             var console = new MockConsole(40,10);
             console.WriteLine("line 1");
-            var pb = new ProgressBar(10, console);
+            var pb = new ProgressBar(console, PbStyle.DoubleLine, 10);
             pb.Refresh(0, "loading");
             console.WriteLine("line 2");
             pb.Refresh(1, "cats");
@@ -79,7 +79,7 @@ namespace Konsole.Tests
         {
             var console = new MockConsole(40, 10);
             console.Write("Some text"); // this text gets overwritten because progress bar is a full width screen control.
-            var pb = new ProgressBar(10, console);
+            var pb = new ProgressBar(console, PbStyle.DoubleLine, 10);
             console.Write("word 1");
             pb.Refresh(0, "loading");
             console.Write(", word 2");
