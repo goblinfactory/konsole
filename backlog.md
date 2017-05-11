@@ -39,7 +39,6 @@
 - be able to print ColorStrings (so that they can easily be passed around) 
 - fix the window constructor consistencies, second parameter is sometimes height, and sometimes not!
 - Move TestData to seperate nuget `Goblinfactory.TestData`
-- support progressbar with text to left, not below. (for more compact displays when using lots of progress bars.)
 - multiplatform
 - overlapping windows and scrolling.
 - clipping when printing on overlapping windows - this may not be possible without being very slow, or using native window calls. This might also contradict the nature of the 'window' as being a thing that allows you to quickly print to your window, so a sub window is just a shortcut to actually print to that window.

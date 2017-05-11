@@ -28,6 +28,9 @@ namespace Konsole
             get { return _line2; }
         }
 
+        //todo: test for textWidth
+        //todo: test for setting max to 0...avoid divide by zero exception!
+
         internal ProgressBarTwoLine(int max, int? textWidth, char character, IConsole console) 
         {
             lock (_locker)
@@ -76,20 +79,17 @@ namespace Konsole
                 _current = current;
                 try
                 {
-                    float perc = (float) current/(float) _max;
-                    var bar = new String(_character, (int) ((float) (_console.WindowWidth - 30)*perc));
+                    float perc = Max > 0 ? (float) current/(float) _max : 0;
+                    var bar = new string(_character, (int) ((float) (_console.WindowWidth - 30)*perc));
                     var line = string.Format(FORMAT, current, _max, (int) (perc*100));
                     var barWhitespace = _console.WindowWidth - (bar.Length + line.Length  + 1);
                     _console.CursorTop = _y;
-                    _console.CursorLeft = 0; // hard code to full screen. Later if we change this to support a width and offset we can revise this. good enough for now.
+                    _console.CursorLeft = 0;
                     _console.ForegroundColor = _c;
                     _console.Write(line);
                     _console.ForegroundColor = ConsoleColor.Green;
                     _console.Write(bar);
-                    if (barWhitespace>0)
-                        _console.WriteLine(new String(' ',barWhitespace)); // clear the space to the right of the bar in case the bar has been made smaller.
-                    else 
-                        _console.WriteLine("");
+                    _console.WriteLine(barWhitespace > 0 ? new String(' ', barWhitespace) : "");
                     _console.ForegroundColor = _c;
                     _line2 = itemText.PadRight(_console.WindowWidth - 2);
                     _console.WriteLine(_line2);
