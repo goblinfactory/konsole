@@ -362,10 +362,6 @@ namespace Konsole.Menus
             }
         }
 
-
-        private static int menuCount = 1;
-
-
         public static MenuOutput WithOutput(int height, int menuColumnWidth, string menuTitle, string outputTitle, params MenuItem[] menuItems) 
         {
             var console = new Window();

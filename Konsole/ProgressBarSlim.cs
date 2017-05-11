@@ -9,7 +9,6 @@ namespace Konsole
         private int _max;
         private readonly char _character;
         private readonly IConsole _console;
-        private readonly string _format;
         private int _y;
         private int _current = 0;
         private ConsoleColor _c;
