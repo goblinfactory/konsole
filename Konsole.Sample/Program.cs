@@ -92,7 +92,7 @@ namespace Konsole.Sample
 
             var menu = mo.Menu;
             var output = mo.Output;
-            menu.BeforeMenu = () => output.Clear();
+            menu.BeforeMenuItem += (i) => output.Clear();
             menu.Run();
 
         }

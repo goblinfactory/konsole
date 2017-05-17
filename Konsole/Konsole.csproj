@@ -62,6 +62,10 @@
     <Compile Include="Menus\ExitMenu.cs" />
     <Compile Include="Menus\Menu.cs" />
     <Compile Include="Menus\MenuItem.cs" />
+    <Compile Include="Menus\Model.cs" />
+    <Compile Include="Menus\TaskMenu.cs" />
+    <Compile Include="Menus\Theme.cs" />
+    <Compile Include="Menus\WindowTheme.cs" />
     <Compile Include="MockConsole.cs" />
     <Compile Include="MockKeyboard.cs" />
     <Compile Include="ProgressBar.cs" />
