@@ -31,14 +31,6 @@ namespace Konsole.Menus
             _msToWaitToComplete = msToWaitToComplete;
         }
 
-        // # ADH mmm, remind me again, why I need menu IConsole menuConsole??
-        // TODO ... see if I actually need that... if not remove and simplify!!!!!!
-
-        internal TaskMenu(IConsole menuConsole, IConsole output, int msToWaitToComplete, string title, ConsoleKey quit, int width, params MenuItem[] menuActions) : base(menuConsole, output, title, quit, width, menuActions)
-        {
-            _msToWaitToComplete = msToWaitToComplete;
-        }
-
         protected override void RunItem(ConsoleState state, MenuItem item)
         {
             lock (_locker)

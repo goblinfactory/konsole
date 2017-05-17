@@ -27,7 +27,7 @@ namespace Konsole.Tests.Slow
                 ConsoleColor.DarkYellow, console);
             console.WriteLine("one");
             console.WriteLine("two");
-            var menu = new Menu(console, console, "Progress Bars", ConsoleKey.Escape, 30,
+            var menu = new Menu(console, "Progress Bars", ConsoleKey.Escape, 30,
 
                 new MenuItem('1', "AutoResetEvent client", () => RunProgressBars(client, "client", "cats")),
                 new MenuItem('2', "AutoResetEvent server", () => RunProgressBars(server, "server", "dogs"))

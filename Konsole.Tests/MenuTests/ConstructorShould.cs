@@ -46,10 +46,10 @@ namespace Konsole.Tests.MenuTests
             var con = new MockConsole(40,10);
             var output = new MockConsole(20,20);
 
-            var menu = new Menu(con, output, "TITLE", ConsoleKey.Escape, 20,
-                new MenuItem("ONE", c => { c.WriteLine("cats"); }),
-                new MenuItem("TWO", c => { c.WriteLine("dogs"); }),
-                new MenuItem("TWO", c => { c.WriteLine("mice"); }),
+            var menu = new Menu(con, "TITLE", ConsoleKey.Escape, 20,
+                new MenuItem("ONE", ()=> output.WriteLine("cats")),
+                new MenuItem("TWO", () => output.WriteLine("dogs")),
+                new MenuItem("TWO", () => output.WriteLine("mice")),
                 MenuItem.Quit("QUIT")
             );
             menu.Keyboard = new MockKeyboard(ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.Escape);

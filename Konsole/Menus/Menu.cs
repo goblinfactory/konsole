@@ -27,7 +27,6 @@ namespace Konsole.Menus
         private static object _locker = new object();
 
         private readonly IConsole _menuConsole;
-        private readonly IConsole _output;
         private readonly ConsoleKey _quit;
         private readonly int _width;
 
@@ -82,26 +81,19 @@ namespace Konsole.Menus
         public IReadKey Keyboard { get; set; }
 
 
-        public Menu(string title, ConsoleKey quit, int width,params MenuItem[] menuActions)  : this(new Writer(), new Writer(), title, quit, width, menuActions)
+        public Menu(string title, ConsoleKey quit, int width,params MenuItem[] menuActions)  : this(new Writer(), title, quit, width, menuActions)
         {
 
         }
 
 
-        public Menu(IConsole output, string title, ConsoleKey quit, int width,params MenuItem[] menuActions) 
-            :this(new Writer(), output, title,quit, width,menuActions)
-        {
-            
-        }
-
-        public Menu(IConsole menuConsole, IConsole output, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
+        public Menu(IConsole menuConsole, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
         {
             lock (_locker)
             {
                 Title = title;
                 Keyboard = Keyboard ?? new KeyReader();
                 _menuConsole = menuConsole;
-                _output = output;
                 _quit = quit;
                 _width = width;
                 NumMenus = menuActions.Length;
@@ -283,7 +275,6 @@ namespace Konsole.Menus
                 _menuConsole.State = state;
                 BeforeMenuItem(item);
                 item.Action?.Invoke();
-                item.ConsoleAction?.Invoke(_output);
             }
             finally
             {
@@ -312,19 +303,6 @@ namespace Konsole.Menus
                 default:
                     return 0;
             }
-        }
-
-        public static MenuOutput WithOutput(int height, int menuColumnWidth, string menuTitle, string outputTitle, params MenuItem[] menuItems) 
-        {
-            var console = new Window();
-            console.WriteLine("");
-            int menuColumn = menuColumnWidth;
-            int menuWidth = menuColumn - 4;
-            var width = (Console.WindowWidth - menuColumn) - 1;
-            var output = Window.Open(menuColumn, 0, width, height, outputTitle, LineThickNess.Single, ConsoleColor.Gray, ConsoleColor.DarkBlue, console);
-
-            var menu = new Menu(console, output, menuTitle, ConsoleKey.Escape, menuWidth, menuItems);
-            return new MenuOutput(menu,output);
         }
 
     }
