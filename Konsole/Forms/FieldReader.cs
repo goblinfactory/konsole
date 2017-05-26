@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Konsole.Forms;
 
@@ -49,8 +50,8 @@ namespace Konsole.Forms
 
         public static Type NonGenericType(Type t)
         {
-            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
-                ? t.GetGenericArguments()[0] : t;            
+            return (t.GetTypeInfo().IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
+                ? t.GetTypeInfo().GetGenericArguments()[0] : t;            
         }
 
         public static bool IsNumericType(Type type)
@@ -62,7 +63,7 @@ namespace Konsole.Forms
 
         private IEnumerable<Field> readFields()
         {
-            var properties = _type.GetProperties();
+            var properties = _type.GetTypeInfo().GetProperties();
 
             var supportedProps = properties
                 .Where(f => SupportedTypes.Contains(NonGenericType(f.PropertyType)));
@@ -91,7 +92,7 @@ namespace Konsole.Forms
 
         private bool IsNullable(Type t)
         {
-            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof (Nullable<>));
+            return (t.GetTypeInfo().IsGenericType && t.GetGenericTypeDefinition() == typeof (Nullable<>));
         }
 
         private string ToCaption(string caption)

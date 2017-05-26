@@ -432,7 +432,7 @@ namespace Konsole
                 
             else
             {
-                throw new ApplicationException("Should never get here, something gone wrong in the logic, possibly in the constructor checks?");
+                throw new Exception("Should never get here, something gone wrong in the logic, possibly in the constructor checks?");
             }
 
         }
