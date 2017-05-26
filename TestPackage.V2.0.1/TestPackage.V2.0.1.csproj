@@ -19,9 +19,6 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Konsole\Konsole.csproj" />
   </ItemGroup>
 </Project>
