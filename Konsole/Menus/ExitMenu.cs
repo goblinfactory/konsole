@@ -2,5 +2,5 @@
 
 namespace Konsole.Menus
 {
-    public class ExitMenu : ApplicationException {}
+    public class ExitMenu : Exception {}
 }

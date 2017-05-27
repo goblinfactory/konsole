@@ -124,7 +124,6 @@ namespace Konsole.Menus
             get { return _current; }
         }
 
-        private int _top = 0;
         private int _height;
 
         public int NumMenus { get; }
@@ -360,9 +359,6 @@ namespace Konsole.Menus
                     return 0;
             }
         }
-
-
-        private static int menuCount = 1;
 
 
         public static MenuOutput WithOutput(int height, int menuColumnWidth, string menuTitle, string outputTitle, params MenuItem[] menuItems) 

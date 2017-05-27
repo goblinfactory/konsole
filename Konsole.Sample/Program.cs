@@ -4,17 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Konsole.Drawing;
-using Konsole.Forms;
-using Konsole.Internal;
-using Konsole.Menus;
 using Konsole.Sample.Demos;
+using Konsole;
+using Konsole.Menus;
 
 namespace Konsole.Sample
 {
 
 
-    class Program
+    public class Program
     {
         
         // random notes and links
@@ -77,7 +75,7 @@ namespace Konsole.Sample
 
         }
 
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
 
             var mo = Menu.WithOutput(28, 25, "Samples", "output",
