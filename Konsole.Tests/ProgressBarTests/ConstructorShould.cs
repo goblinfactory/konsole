@@ -24,14 +24,14 @@ namespace Konsole.Tests.ProgressBarTests
     public class ConstructorShould
     {
         [Test]
-        public void move_cursor_down_two_lines_to_preserve_space_for_the_progressbar()
+        public void move_cursor_down_to_preserve_space_for_the_progressbar()
         {
             var con = new MockConsole();
             Assert.AreEqual(0, con.CursorTop);
-            var pb1 = new ProgressBar(10,con);
+            var pb1 = new ProgressBar(con, PbStyle.DoubleLine, 10);
             Assert.AreEqual(2, con.CursorTop);
-            var pb2 = new ProgressBar(10,con);
-            Assert.AreEqual(4, con.CursorTop);
+            var pb2 = new ProgressBar(con, PbStyle.SingleLine, 10);
+            Assert.AreEqual(3, con.CursorTop);
         }
 
         //[Test]
@@ -64,7 +64,7 @@ namespace Konsole.Tests.ProgressBarTests
                 tasks[i] = new Task(() =>
                 {
                     int num = i1;
-                    var pb = new ProgressBar(100, console);
+                    var pb = new ProgressBar(console, PbStyle.DoubleLine, 100);
                     Thread.Sleep(10);
                     pb.Refresh(50,$"test {num}");
                     bag.Add(pb);

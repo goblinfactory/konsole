@@ -10,10 +10,10 @@ namespace Konsole.Sample.Demos
 {
     public static class FormDemos
     {
-        public static void Run(IConsole _console)
+        public static void Run(IConsole console)
         {
-            _console.Colors = new Colors(ConsoleColor.White, ConsoleColor.DarkYellow);
-            var form1 = new Form(_console, _console.WindowWidth -1, new ThickBoxStyle());
+            console.Colors = new Colors(ConsoleColor.White, ConsoleColor.DarkYellow);
+            var form1 = new Form(console, console.WindowWidth -1, new ThickBoxStyle());
             
             var person = new Person()
             {
@@ -25,12 +25,12 @@ namespace Konsole.Sample.Demos
             form1.Write(person);
             
             // works with anonymous types
-            _console.Colors = new Colors(ConsoleColor.White, ConsoleColor.DarkBlue);
-            new Form(_console).Write(new { Height = "40px", Width = "200px" }, "Demo Box");
+            console.Colors = new Colors(ConsoleColor.White, ConsoleColor.DarkBlue);
+            new Form(console).Write(new { Height = "40px", Width = "200px" }, "Demo Box");
 
             // change the box style, and width, thickbox
-            _console.Colors = new Colors(ConsoleColor.Yellow, ConsoleColor.DarkRed);
-            new Form(_console, 40, new ThickBoxStyle()).Write(new { AddUser = "true", CloseAccount = "false", OpenAccount = "true" }, "Permissions");
+            console.Colors = new Colors(ConsoleColor.Yellow, ConsoleColor.DarkRed);
+            new Form(console, 40, new ThickBoxStyle()).Write(new { AddUser = "true", CloseAccount = "false", OpenAccount = "true" }, "Permissions");
         }
 
     }

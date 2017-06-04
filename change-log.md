@@ -3,10 +3,30 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.1]
+
+### Fixed
+
+- Accidentally included `Konsole 0.0.2` as a dependancy in the packages. Removed that.
+
+## [3.0.0]
+
+- quite a lot, leaving this blank-ish and will update shortly.
+- More or less, added menus, lots of breaking changes of signatures (cleanups to make easier to understand)
+- Highlight change is a new slimline itemless `ProgressBar` with option to revert to old behavior.
+- New draft `Menu` with option to have menu items that run as background tasks. (useful for writing simple client-server demo projects with client and server each outputting to different windows.) 
+
+### Added
+
+- Menus
+- ProgressBarSlim
+
 ## [2.1.0] - 2017-05-07
 
 ### Added
 
+- `Window.TopHalf()`
+- `Window.BottomHalf()`
 - `Window.OpenInline(console, height)` : opens a new window 'inline' full width of the console, 'height' rows tall, and moves the cursor to below the window. See `Window.OpenInlineShould` test.
 - `MockKeyboard` : Mock keyboard for queueing up keystrokes. Includes Autoreply. Use to simulate user input during unit tests.
 - `IReadKeys` : for console input.

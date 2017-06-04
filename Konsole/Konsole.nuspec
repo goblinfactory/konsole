@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Goblinfactory.Konsole</id>
-    <version>2.0.2</version>
+    <version>3.0.1</version>
     <title>Goblinfactory.Konsole</title>
     <authors>Alan Hemmings</authors>
     <owners>Goblinfactory Ltd</owners>
@@ -11,7 +11,7 @@
     <projectUrl>https://github.com/goblinfactory/konsole/</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/goblinfactory/konsole/master/progress.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Home of the simple cross platform console library consisting of ProgressBar, Window, Form, Draw and MockConsole.</description>
+    <description>ver 3 is the ProgressBar slim and Menu update. Home of the simple cross platform console library consisting of ProgressBar, Window, Form, Draw and MockConsole.</description>
     <summary>
       Home of the simple cross platform console library consisting of ProgressBar, Window, Form, Draw and MockConsole. (C# console progress bar with support for single or multithreaded progress updates) Window is a 100%-ish console compatible window, supporting all normal console writing to a windowed section of the screen, supporting scrolling and clipping of console output.
     </summary>

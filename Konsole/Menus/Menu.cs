@@ -7,78 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Konsole.Drawing;
+using Konsole.Internal;
 
 namespace Konsole.Menus
 {
     // throw at any time to exit the menu.
-
-    public class WindowTheme
-    {
-        public ConsoleColor Background { get; set; } = ConsoleColor.DarkBlue;
-        public ConsoleColor Border { get; set; } = ConsoleColor.DarkBlue;
-        public ConsoleColor Foreground { get; set; } = ConsoleColor.Gray;
-        public bool ShowBorder { get; set; }
-        public LineThickNess BorderThickness { get; set; }
-
-        public static WindowTheme DarkBlue => new WindowTheme
-        {
-            Background = ConsoleColor.DarkBlue,
-            Border = ConsoleColor.Gray,
-            Foreground = ConsoleColor.Gray,
-            ShowBorder = true,
-            BorderThickness = LineThickNess.Single
-        };
-        public static WindowTheme Gray => new WindowTheme
-        {
-            Background = ConsoleColor.Gray,
-            Border = ConsoleColor.Black,
-            Foreground = ConsoleColor.Black,
-            ShowBorder = true,
-            BorderThickness = LineThickNess.Single
-        };
-        public static WindowTheme Black => new WindowTheme
-        {
-            Background = ConsoleColor.Black,
-            Border = ConsoleColor.Gray,
-            Foreground = ConsoleColor.Gray,
-            ShowBorder = true,
-            BorderThickness = LineThickNess.Single
-        };
-
-    }
-
-    public class Theme
-    {
-        public ConsoleColor Background { get; set; } = ConsoleColor.DarkBlue;
-        public ConsoleColor Border { get; set; } = ConsoleColor.DarkBlue;
-        public ConsoleColor Foreground { get; set; } = ConsoleColor.Gray;
-        public ConsoleColor ShortcutKeyHilite { get; set; } = ConsoleColor.White;
-        public ConsoleColor ShortcutKeyHiliteSelected { get; set; } = ConsoleColor.Red;
-        public ConsoleColor SelectedItemBackground { get; set; } = ConsoleColor.Gray;
-        public ConsoleColor SelectedItemForeground { get; set; } = ConsoleColor.DarkBlue;
-    }
-
-    public class Model
-    {
-        public IConsole Window { get; }
-        public string Title { get; }
-        public int Current { get; }
-        public int Height { get; }
-        public int Width { get; }
-        public MenuItem[] MenuItems { get; }
-        public Theme Theme { get; }
-
-        public Model(IConsole window, string title, int current, int height, int width, MenuItem[] menuItems, Theme theme)
-        {
-            Window = window;
-            Title = title;
-            Current = current;
-            Height = height;
-            Width = width;
-            MenuItems = menuItems;
-            Theme = theme;
-        }
-    }
 
     // Requirements 
     // - menu should run inline
@@ -94,7 +27,6 @@ namespace Konsole.Menus
         private static object _locker = new object();
 
         private readonly IConsole _menuConsole;
-        private readonly IConsole _output;
         private readonly ConsoleKey _quit;
         private readonly int _width;
 
@@ -104,14 +36,38 @@ namespace Konsole.Menus
 
         private Dictionary<ConsoleKey, int> _keyBindings = new Dictionary<ConsoleKey, int>();
 
-        // hooks for clearing screen and redrawing menu, if required
-        public Action BeforeMenu = () => { };
-        public Action AfterMenu = () => { };
+        /// <summary>
+        /// called before a menu item is called.
+        /// </summary>
+        public Action<MenuItem> OnBeforeMenuItem = (i) => { };
+
+        /// <summary>
+        /// called after a menu item has completed.
+        /// </summary>
+        public Action<MenuItem> OnAfterMenuItem = (i) => { };
+
+        /// <summary>
+        /// Called after the menu has run, and the user has selected to exit the menu. 
+        /// </summary>
+        public Action OnAfterMenu = () => { };
+
+        /// <summary>
+        /// after the user has opted to exit the menu, but before AfterMenu.
+        /// </summary>
+        protected Action OnBeforeExitMenu = () => { };
+
+        /// <summary>
+        /// Called before the menu starts running, i.e. at the start of .Run(), and before anything is rendered any of the consoles.
+        /// </summary>
+        public Action<Menu> OnBeforeMenu = (m) => { };
+
+
 
         /// <summary>
         /// Enable to display the shortcut key for the menu
         /// </summary>
         public bool EnableShortCut { get; set; } = true;
+
         public Theme Theme { get; set; } = new Theme();
         public string Title { get; set; } = "";
 
@@ -133,26 +89,20 @@ namespace Konsole.Menus
         public IReadKey Keyboard { get; set; }
 
 
-        public Menu(string title, ConsoleKey quit, int width,params MenuItem[] menuActions)  : this(new Writer(), new Writer(), title, quit, width, menuActions)
+        public Menu(string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
+            : this(new Writer(), title, quit, width, menuActions)
         {
 
         }
 
 
-        public Menu(IConsole output, string title, ConsoleKey quit, int width,params MenuItem[] menuActions) 
-            :this(new Writer(), output, title,quit, width,menuActions)
-        {
-            
-        }
-
-        public Menu(IConsole menuConsole, IConsole output, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
+        public Menu(IConsole menuConsole, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
         {
             lock (_locker)
             {
                 Title = title;
                 Keyboard = Keyboard ?? new KeyReader();
                 _menuConsole = menuConsole;
-                _output = output;
                 _quit = quit;
                 _width = width;
                 NumMenus = menuActions.Length;
@@ -167,7 +117,8 @@ namespace Konsole.Menus
                 if (menuActions == null || menuActions.Length == 0)
                     throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
                 _height = menuActions.Length + 4;
-                _window = Window.OpenInline(_menuConsole, 2, _width, _height, Theme.Foreground, Theme.Background, K.Clipping);
+                _window = Window.OpenInline(_menuConsole, 2, _width, _height, Theme.Foreground, Theme.Background,
+                    K.Clipping);
             }
         }
 
@@ -190,48 +141,51 @@ namespace Konsole.Menus
             var con = model.Window;
             int cnt = model.MenuItems.Length;
             int left = 2;
-                int len = model.Width - 4;
-                con.PrintAtColor(model.Theme.Foreground, 2, 1, model.Title.FixLeft(len), model.Theme.Background);
-                con.PrintAtColor(model.Theme.Foreground, 2, 2, new string('-', len), model.Theme.Background);
-                for (int i = 0; i < cnt; i++)
+            int len = model.Width - 4;
+            con.PrintAtColor(model.Theme.Foreground, 2, 1, model.Title.FixLeft(len), model.Theme.Background);
+            con.PrintAtColor(model.Theme.Foreground, 2, 2, new string('-', len), model.Theme.Background);
+            for (int i = 0; i < cnt; i++)
+            {
+                var item = model.MenuItems[i];
+                var text = item.Title.FixLeft(len);
+
+
+                if (i == model.Current)
                 {
-                    var item = model.MenuItems[i];
-                    var text = item.Title.FixLeft(len);
-
-
-                    if (i == model.Current)
+                    con.PrintAtColor(model.Theme.SelectedItemForeground, left, i + 3, text,
+                        model.Theme.SelectedItemBackground);
+                    if (item.Key != null)
                     {
-                        con.PrintAtColor(model.Theme.SelectedItemForeground, left, i + 3, text, model.Theme.SelectedItemBackground);
-                        if (item.Key != null)
+                        var key = item.Key.Value;
+
+                        int sub = text.IndexOfAny(new[] {char.ToLower((char) key), char.ToUpper((char) key)});
+                        if (sub != -1)
                         {
-                            var key = item.Key.Value;
-
-                            int sub = text.IndexOfAny(new[] { char.ToLower((char)key), char.ToUpper((char)key) });
-                            if (sub != -1)
-                            {
-                                string shortcut = text.Substring(sub, 1);
-                                con.PrintAtColor(model.Theme.ShortcutKeyHiliteSelected, left + sub, i + 3, shortcut, model.Theme.SelectedItemBackground);
-                            }
+                            string shortcut = text.Substring(sub, 1);
+                            con.PrintAtColor(model.Theme.ShortcutKeyHiliteSelected, left + sub, i + 3, shortcut,
+                                model.Theme.SelectedItemBackground);
                         }
-
                     }
-                    else
-                    {
-                        con.PrintAtColor(model.Theme.Foreground, left, i + 3, text, model.Theme.Background);
-                        if (item.Key != null)
-                        {
-                            var key = item.Key.Value;
 
-                            int sub = text.IndexOfAny(new[] { char.ToLower((char)key), char.ToUpper((char)key) });
-                            if (sub != -1)
-                            {
-                                string shortcut = text.Substring(sub, 1);
-                                con.PrintAtColor(model.Theme.ShortcutKeyHilite, left + sub, i + 3, shortcut, model.Theme.Background);
-                            }
-                        }
-
-                    }
                 }
+                else
+                {
+                    con.PrintAtColor(model.Theme.Foreground, left, i + 3, text, model.Theme.Background);
+                    if (item.Key != null)
+                    {
+                        var key = item.Key.Value;
+
+                        int sub = text.IndexOfAny(new[] {char.ToLower((char) key), char.ToUpper((char) key)});
+                        if (sub != -1)
+                        {
+                            string shortcut = text.Substring(sub, 1);
+                            con.PrintAtColor(model.Theme.ShortcutKeyHilite, left + sub, i + 3, shortcut,
+                                model.Theme.Background);
+                        }
+                    }
+
+                }
+            }
         }
 
         private MenuItem this[int i]
@@ -245,7 +199,10 @@ namespace Konsole.Menus
             w.PrintAtColor(ConsoleColor.White, 0, 0, $"Error :{e.Message}", ConsoleColor.Red);
         };
 
-        public void Run()
+        // todo: need to document what this method is responsible for doing
+        // so that I don't  mix/split responsibilities or worse duplicate responsibilities between this and the _run
+
+        public virtual void Run()
         {
             ConsoleState state;
             lock (_locker)
@@ -255,6 +212,8 @@ namespace Konsole.Menus
             try
             {
                 _run();
+                OnBeforeExitMenu();
+                OnAfterMenu();
             }
             catch (ExitMenu)
             {
@@ -274,10 +233,13 @@ namespace Konsole.Menus
             ConsoleState state;
             ConsoleKey cmd;
 
+            // #ADH I have a nested locker, parent Run locks as well, is this one needed then? must check...where is the unit test that proves I need this?
+            // i.e. if I remove the locker below, what is guaranteed to break and where is the test to prove that? otherwise I'm just guessing...
             lock (_locker)
             {
                 _menuConsole.CursorVisible = false;
                 state = _menuConsole.State;
+                OnBeforeMenu(this);
             }
             Refresh();
 
@@ -308,6 +270,7 @@ namespace Konsole.Menus
                 RunItem(state, item);
             }
 
+
         }
 
         private void SetSelected(ConsoleKey key)
@@ -323,19 +286,33 @@ namespace Konsole.Menus
             }
         }
 
-        private void RunItem(ConsoleState state, MenuItem item)
+        protected virtual void RunItem(ConsoleState state, MenuItem item)
         {
-            try
+            lock (item.locker)
             {
-                _menuConsole.State = state;
-                BeforeMenu();
-                item.Action?.Invoke();
-                item.ConsoleAction?.Invoke(_output);
-            }
-            finally
-            {
-                AfterMenu();
-                _menuConsole.State = state;
+                try
+                {
+                    if (item.DisableWhenRunning && item.Running == true) return;
+                    item.Running = true;
+                    _menuConsole.State = state;
+                    OnBeforeMenuItem(item);
+                    try
+                    {
+                        item.Action?.Invoke();
+                    }
+                    finally
+                    {
+                        OnAfterMenuItem(item);
+                        // if an exception is thrown we need to reset the menu to not active
+                        // otherwise the menu item will be blocked permanent in active state
+                        item.Running = false;
+                    }
+                    
+                }
+                finally
+                {
+                    _menuConsole.State = state;
+                }
             }
         }
 
@@ -359,23 +336,6 @@ namespace Konsole.Menus
                 default:
                     return 0;
             }
-        }
-
-
-        private static int menuCount = 1;
-
-
-        public static MenuOutput WithOutput(int height, int menuColumnWidth, string menuTitle, string outputTitle, params MenuItem[] menuItems) 
-        {
-            var console = new Window();
-            console.WriteLine("");
-            int menuColumn = menuColumnWidth;
-            int menuWidth = menuColumn - 4;
-            var width = (Console.WindowWidth - menuColumn) - 1;
-            var output = Window.Open(menuColumn, 0, width, height, outputTitle, LineThickNess.Single, ConsoleColor.Gray, ConsoleColor.DarkBlue, console);
-
-            var menu = new Menu(console, output, menuTitle, ConsoleKey.Escape, menuWidth, menuItems);
-            return new MenuOutput(menu,output);
         }
 
     }

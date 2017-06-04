@@ -1,4 +1,5 @@
 using System.Text;
+using Konsole.Internal;
 
 namespace Konsole.Forms
 {

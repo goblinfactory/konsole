@@ -28,7 +28,7 @@ namespace Konsole.Sample
 
         private static void RandomStuff(IConsole con)
         {
-            var pb = new ProgressBar(50, con);
+            var pb = new ProgressBar(con, PbStyle.DoubleLine, 50);
             pb.Refresh(25,"cats");
             Console.ReadKey(true);
             pb.Max = 40;
@@ -61,9 +61,6 @@ namespace Konsole.Sample
                     ProgressBarDemos.ParallelConstructorDemo();
                     break;
 
-                case 'd':
-                    ProgressBarDemos.ProgressivelyFasterDemo();
-                    break;
 
                 case 'p':
                     ProgressBarDemos.SimpleDemo(con);
@@ -79,23 +76,24 @@ namespace Konsole.Sample
 
         private static void Main(string[] args)
         {
+            var con = Window.Open(67, 0, 50, 25, "server", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkYellow);
 
-            var mo = Menu.WithOutput(28, 25, "Samples", "output",
+            var output1 = con;
 
-                new MenuItem('f', "Forms", FormDemos.Run),
-                new MenuItem('b', "Boxes", BoxeDemos.Run),
-                new MenuItem('s', "Scrolling", WindowDemo.Run2),
-                new MenuItem('p', "ProgressBar1", ProgressBarDemos.ParallelDemo),
-                new MenuItem('q', "ProgressBar2", ProgressBarDemos.ParallelDemo),
-                new MenuItem('t', "Test data", TestDataDemo.Run),
-                new MenuItem('c', "clear screen", c => c.Clear()),
-                new MenuItem('r', "RANDOM", RandomStuff)
+            var menu = new Menu("Samples", ConsoleKey.Escape, 30,
+
+                new MenuItem('f', "Forms", ()=> FormDemos.Run(output1)),
+                new MenuItem('b', "Boxes", ()=> BoxeDemos.Run(output1)),
+                new MenuItem('s', "Scrolling", ()=> WindowDemo.Run2(con)),
+                new MenuItem('p', "ProgressBar1", ()=> ProgressBarDemos.ParallelDemo(con)),
+                new MenuItem('q', "ProgressBar2", () => ProgressBarDemos.ParallelDemo(con)),
+                new MenuItem('t', "Test data", () => TestDataDemo.Run(con)),
+                new MenuItem('c', "clear screen", () => con.Clear()),
+                new MenuItem('r', "RANDOM", () => RandomStuff(con))
 
             );
 
-            var menu = mo.Menu;
-            var output = mo.Output;
-            menu.BeforeMenu = () => output.Clear();
+            menu.OnBeforeMenuItem += (i) => con.Clear();
             menu.Run();
 
         }

@@ -177,6 +177,17 @@ namespace Konsole
             Console.Clear();
         }
 
+        public IConsole BottomHalf(ConsoleColor foreground, ConsoleColor background)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IConsole TopHalf(ConsoleColor foreground, ConsoleColor background)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background = null)
         {
             DoCommand(this, () =>

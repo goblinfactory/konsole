@@ -13,7 +13,7 @@ namespace Konsole.Tests.ProgressBarTests
         public void update_the_display_using_the_new_max_when_number_decreases()
         {
             var console = new MockConsole(80, 20);
-            var pb = new ProgressBar(20, console);
+            var pb = new ProgressBar(console, PbStyle.DoubleLine, 20);
             pb.Refresh(2, "cats");
             var expected1 = new[]
 {
@@ -38,7 +38,7 @@ namespace Konsole.Tests.ProgressBarTests
         public void update_the_display_using_the_new_max_when_number_increases()
         {
             var console = new MockConsole(80, 20);
-            var pb = new ProgressBar(10, console);
+            var pb = new ProgressBar(console, PbStyle.DoubleLine, 10);
             pb.Refresh(2, "cats");
             var expected1 = new[]
             {

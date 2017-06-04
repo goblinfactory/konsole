@@ -20,7 +20,7 @@ namespace Konsole.Tests.MenuTests
             var con = new MockConsole(15, 7);
             var output = new MockConsole();
             
-            var m = new Menu(con, output, "MENU", ConsoleKey.Escape, 10,
+            var m = new Menu(con, "MENU", ConsoleKey.Escape, 10,
                 new MenuItem('a', "item 1", () => { }),
                 new MenuItem('b', "item 2", () => { }),
                 new MenuItem('c', "item 3", () => { })
@@ -49,9 +49,8 @@ namespace Konsole.Tests.MenuTests
         public void render_the_menu_with_correct_theme_colours()
         {
             var con = new MockConsole(15, 7);
-            var output = new MockConsole();
 
-            var m = new Menu(con, output, "MENU", ConsoleKey.Escape, 10,
+            var m = new Menu(con, "MENU", ConsoleKey.Escape, 10,
                 new MenuItem('a', "item a", () => { }),
                 new MenuItem('b', "item b", () => { }),
                 new MenuItem('q', "item c", () => { })

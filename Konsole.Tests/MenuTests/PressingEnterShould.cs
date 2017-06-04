@@ -15,6 +15,7 @@ namespace Konsole.Tests.MenuTests
         {
             var c = new MockConsole(10,4);
             //var m = new Menu(c,)
+            Assert.Inconclusive();
         }
 
 
