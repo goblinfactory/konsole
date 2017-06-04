@@ -78,7 +78,6 @@ namespace Konsole.Sample
         {
             var con = Window.Open(67, 0, 50, 25, "server", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkYellow);
 
-
             var output1 = con;
 
             var menu = new Menu("Samples", ConsoleKey.Escape, 30,
@@ -94,7 +93,7 @@ namespace Konsole.Sample
 
             );
 
-            menu.BeforeMenuItem += (i) => con.Clear();
+            menu.OnBeforeMenuItem += (i) => con.Clear();
             menu.Run();
 
         }

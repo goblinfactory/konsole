@@ -18,28 +18,62 @@ namespace Konsole.Menus
     public class TaskMenu : Menu
     {
         private readonly int _msToWaitToComplete;
-        private List<Task> _tasks = new List<Task>();
+        private readonly List<Task> _tasks = new List<Task>();
         private readonly object _locker = new object();
+        public Action OnTimeoutWaiting = () => { };
+        /// <summary>
+        /// called before the menu waits for all background tasks to complete, regardless of whether any were started.
+        /// </summary>
+        public Action OnStopping = () => { };
 
-        public TaskMenu(int msToWaitToComplete, string title, ConsoleKey quit, int width, params MenuItem[] menuActions) : base(title, quit, width, menuActions)
+        /// <summary>
+        /// Called after all background tasks have completed, regardless of whether any were started.
+        /// </summary>
+        public Action OnStopped = () => { };
+
+        public TaskMenu(int msToWaitToComplete, string title, ConsoleKey quit, int width, params MenuItem[] menuActions) 
+            : this(new Writer(), msToWaitToComplete, title, quit, width, menuActions)
+                {
+            
+                }
+
+        public TaskMenu(IConsole output, int msToWaitToComplete, string title, ConsoleKey quit, int width, params MenuItem[] menuActions) 
+            : base(output, title, quit, width, menuActions)
         {
             _msToWaitToComplete = msToWaitToComplete;
+            OnBeforeExitMenu += WaitForAllMenusToComplete;
         }
 
-        internal TaskMenu(IConsole output, int msToWaitToComplete, string title, ConsoleKey quit, int width, params MenuItem[] menuActions) : base(output, title, quit, width, menuActions)
+
+        internal void WaitForAllMenusToComplete()
         {
-            _msToWaitToComplete = msToWaitToComplete;
+            OnStopping();
+            bool allStopped;
+            lock (_locker)
+            {
+                allStopped = _tasks != null && Task.WaitAll(_tasks.ToArray(), _msToWaitToComplete);
+            }
+            //todo fix the timeout check
+            //if (!allStopped) OnTimeoutWaiting();
+            if (allStopped) OnStopped();
         }
+
+        //todo: add in task cancellation tokens automatically generated and passed to the menu items! 
 
         protected override void RunItem(ConsoleState state, MenuItem item)
         {
+            var task = Task.Run(() => base.RunItem(state, item));
+
             lock (_locker)
             {
-                var task = Task.Run(() => base.RunItem(state, item));
                 _tasks.Add(task);
             }
         }
 
-
+        public override void Run()
+        {
+            base.Run();
+            WaitForAllMenusToComplete();
+        }
     }
 }

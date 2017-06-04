@@ -68,8 +68,10 @@
     <Compile Include="FormTests\PaddingShould.cs" />
     <Compile Include="MenuTests\ConstructorShould.cs" />
     <Compile Include="MenuTests\PressingEnterShould.cs" />
+    <Compile Include="MenuTests\PressingExitKeyShould.cs" />
     <Compile Include="MenuTests\PressingMenuKeyShould.cs" />
     <Compile Include="MenuTests\RunShould.cs" />
+    <Compile Include="MenuTests\SelectingAMenuItemShould.cs" />
     <Compile Include="MenuTests\ThrowingExitMenuShould.cs" />
     <Compile Include="ProgressBarSlimTests\RefreshShould.cs" />
     <Compile Include="ProgressBarSlimTests\TextWidthShould.cs" />

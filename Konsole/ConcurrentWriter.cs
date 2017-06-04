@@ -200,7 +200,10 @@ namespace Konsole
 
         public void ScrollUp()
         {
-            throw new NotSupportedException("Not supported in a multithreaded scenario.");
+            lock (_locker)
+            {
+                _window.ScrollUp();
+            }
         }
 
         public void Clear()
@@ -211,6 +214,18 @@ namespace Konsole
             }
 
         }
+
+        public IConsole TopHalf(ConsoleColor foreground = ConsoleColor.Cyan, ConsoleColor background = ConsoleColor.Black)
+        {
+            return _window.TopHalf(foreground,background);
+        }
+
+        public IConsole BottomHalf(ConsoleColor foreground = ConsoleColor.Green, ConsoleColor background = ConsoleColor.Black)
+        {
+            return _window.BottomHalf(foreground, background);
+        }
+
+
 
         public void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)

@@ -144,6 +144,28 @@ namespace Konsole
             }
         }
 
+
+
+        public IConsole TopHalf(ConsoleColor foreground = ConsoleColor.Cyan, ConsoleColor background = ConsoleColor.Black)
+        {
+            lock (_staticLocker)
+            {
+                int height = WindowHeight/2;
+                var w = new Window(0, 0, WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, this);
+                return w.Concurrent();
+            }
+        }
+
+        public IConsole BottomHalf(ConsoleColor foreground = ConsoleColor.Green, ConsoleColor background = ConsoleColor.Black)
+        {
+            lock (_staticLocker)
+            {
+                int height = WindowHeight - (WindowHeight/2);        
+                var w = new Window(0, height, WindowWidth, height, foreground, background, true, this);
+                return w.Concurrent();
+            }
+        }
+
         public static IConsole OpenInline(IConsole echoConsole, int height)
         {
             lock (_staticLocker)

@@ -31,6 +31,13 @@
 # backlog
 
 ### Backlog 
+
+- update change-log for new beta realeas.
+- update readme and tutorials
+- support simple menus without defining shortcut keys.
+- fix bug in menu, not running menus with non numeric shortcuts.
+- write unit test for running menus with shortcuts.
+- fully async console library. Write console app using async all the way!
 - bug , run demo, don't start right, start left, let finish, then start right = error.
 - bug : setting progressbar refresh to (0) throws exception.
 - progressbars to survive window scrolling!
@@ -47,3 +54,5 @@
 - Add title to box drawing and window open.
 - Auto-documentation. (full api documentation)
 - Investigate if possible to print using native windows and Mac, Linux API's and switch out depending on platform detection, fallback to slower rendering.
+- remote windows, for running console service apps, with remote console input and-or output, to combine with docker support so I can quickly and easily remote run some code, and have a semi decent local UI (with menus etc) for my admin and server monitoring.
+- 

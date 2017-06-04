@@ -25,9 +25,7 @@ namespace Konsole
         public ProgressBar(IConsole console, PbStyle style, int max, int textWidth)                   : this(max, textWidth, '#', style, console) { }
         public ProgressBar(IConsole console, PbStyle style, int max, int textWidth, char character)   : this(max, textWidth, character, style, console) { }
 
-        // todo ; duplicate all the constructors above, and include IConsole
-
-        // in this constructor IConsole is right at the end so that it does not clash with the other signatures
+        // in the private constructor IConsole is right at the end so that it does not clash with the other signatures
         private ProgressBar(int max, int? textWidth, char character, PbStyle style, IConsole console)
         {
             switch (style)
