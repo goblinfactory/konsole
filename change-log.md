@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [3.0.0]
 
 - quite a lot, leaving this blank-ish and will update shortly.
+- highlight changes
+    - threadsafe progressbars and windows, with tests for thread-safe-ness.
+    - new class `ConcurrentWriter` to handle thread sychnonisation. 
 - More or less, added menus, lots of breaking changes of signatures (cleanups to make easier to understand)
 - Highlight change is a new slimline itemless `ProgressBar` with option to revert to old behavior.
 - New draft `Menu` with option to have menu items that run as background tasks. (useful for writing simple client-server demo projects with client and server each outputting to different windows.) 

@@ -5,33 +5,15 @@
 
 ### Adding
 
-- concurrentProgressBar
-
-
-## [2.1]
-
-### fix
+### to fix
 
 - menu will crash if you give it two menuItems with the same shortcut key. (work it out, not rocket science!)
 - fix : allow user to specify exit character, e.g. `q` or `x` in addition to `ConsoleKey.Escape`.
 - allow menu to run code witout having to send it to a 'window', i.e. can send to the default console.
 
-### Added
-
-- new 1 liner `ProgressBar`.
-- Window opened with `Window.Open` and `Window.OpenInline` are now ThreadSafe and each window can be written to seperately from different threads.
-
-
-### breaking changes
-
-- refactor ProgressBar Constructors : move IConsole to front and make sure all parameters are in order.
-- ProgressBar to switch to 1 liner
-- support extended style from `v2` by passing in `PbStyle.Simple`, `PbStyle.Extended` options.
-
-# backlog
-
 ### Backlog 
 
+- update all the sample code for the main website, to use the new slimline (itemless) progressbar as well as demo for using doubleLine.
 - update change-log for new beta realeas.
 - update readme and tutorials
 - support simple menus without defining shortcut keys.

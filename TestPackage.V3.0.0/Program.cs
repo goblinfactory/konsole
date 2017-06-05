@@ -22,10 +22,10 @@ namespace TestPackage.V2._0._2
 
             // ============================================================
             var pb2 = new ProgressBar(PbStyle.DoubleLine,50);
-            pb.Refresh(25,"cats");
+            pb2.Refresh(25,"cats");
             Console.WriteLine("press any key to update refresh");
             Console.ReadKey(true);
-            pb.Max = 60;
+            pb2.Max = 100;
             Console.WriteLine("progress updated, press enter to quit");
             Console.ReadLine();
 
