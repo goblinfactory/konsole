@@ -6,13 +6,19 @@
 ### Adding
 
 ### to fix
-
+- decide if we really must reset (redraw) the screen when we create new windows, i.e. perhaps only do that when we change the color in the new window? 
 - menu will crash if you give it two menuItems with the same shortcut key. (work it out, not rocket science!)
 - fix : allow user to specify exit character, e.g. `q` or `x` in addition to `ConsoleKey.Escape`.
 - allow menu to run code witout having to send it to a 'window', i.e. can send to the default console.
 
-### Backlog 
-
+### Backlog
+- remove IConsole from DoCommand. Not needed, as you always have an instance you are working on.
+- detect screen resolution so that we can use the whole console by default.
+- detect screen resizing, so we can have sticky boxes if needed.
+- update constructor signatures so that when creating instance of class you can easily tell what property values are. (I was unable to tell and kept making mistakes myself, doh!) e.g. ` var x = new Window(1,2,10,20,...)` is `10` the width or height?
+- dont allow overlapping sibling windows, and child windows must fit fully inside their parent windows.
+- support border.None on Window so that I can remove access to the constructors to force all windows to be concurrent.
+- detect screen resize and redraw any windows.
 - update all the sample code for the main website, to use the new slimline (itemless) progressbar as well as demo for using doubleLine.
 - update change-log for new beta realeas.
 - update readme and tutorials

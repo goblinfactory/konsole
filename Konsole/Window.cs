@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Konsole.Drawing;
 using Konsole.Internal;
+using Konsole.Menus;
 
 namespace Konsole
 {
@@ -124,7 +125,7 @@ namespace Konsole
         }
 
         public Window(IConsole echoConsole, int width, int height)
-            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole)
+            : this(0, 0, width, height, echoConsole.BackgroundColor, echoConsole.ForegroundColor, true, echoConsole)
         {
         }
 
@@ -140,28 +141,6 @@ namespace Konsole
             {
                 var w = new Window(padLeft, echoConsole.CursorTop, width, height, foreground, background, true, echoConsole, options);
                 echoConsole.CursorTop += height;
-                return w.Concurrent();
-            }
-        }
-
-
-
-        public IConsole TopHalf(ConsoleColor foreground = ConsoleColor.Cyan, ConsoleColor background = ConsoleColor.Black)
-        {
-            lock (_staticLocker)
-            {
-                int height = WindowHeight/2;
-                var w = new Window(0, 0, WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, this);
-                return w.Concurrent();
-            }
-        }
-
-        public IConsole BottomHalf(ConsoleColor foreground = ConsoleColor.Green, ConsoleColor background = ConsoleColor.Black)
-        {
-            lock (_staticLocker)
-            {
-                int height = WindowHeight - (WindowHeight/2);        
-                var w = new Window(0, height, WindowWidth, height, foreground, background, true, this);
                 return w.Concurrent();
             }
         }
@@ -194,7 +173,7 @@ namespace Konsole
         {
         }
 
-        private static object _staticLocker = new object();
+        internal static object _staticLocker = new object();
 
         /// <summary>
         /// This is the the only threadsafe way to create a window at the moment.
@@ -237,7 +216,18 @@ namespace Konsole
 
         }
 
-        protected Window(int x, int y, int? width, int? height, ConsoleColor foreground, ConsoleColor background,
+        // this internal method here for spiking and testing during development, not for production. 
+        // specifically it's here so that I can set 'internalsvisibleto' in the TestPackage projects during spiking
+        // when developing code that I don't want to prototype in a unit test. where creating a console app rather
+        // than a unit test allows for more rapid prototyping and debugging.
+        internal static IConsole _CreateWindow(int x, int y, int? width, int? height, ConsoleColor foreground,
+            ConsoleColor background,
+            bool echo = true, IConsole echoConsole = null, params K[] options)
+        {
+            return new Window(x,y, width,height, foreground,background, echo, echoConsole, options);    
+        }
+
+        protected internal Window(int x, int y, int? width, int? height, ConsoleColor foreground, ConsoleColor background,
             bool echo = true, IConsole echoConsole = null, params K[] options)
         {
             _x = x;
@@ -279,6 +269,7 @@ namespace Konsole
 
         private void SetOptions(K[] options)
         {
+            if (options == null || options.Length == 0) return;
             if (options.Contains(K.Transparent)) _transparent = true;
             if (options.Contains(K.Clipping) && options.Contains(K.Scrolling))
                 throw new ArgumentOutOfRangeException(nameof(options),

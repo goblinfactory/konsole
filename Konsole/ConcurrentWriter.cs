@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Konsole.Drawing;
+using Konsole.Forms;
+using Konsole.Menus;
 
 namespace Konsole
 {
@@ -214,18 +217,6 @@ namespace Konsole
             }
 
         }
-
-        public IConsole TopHalf(ConsoleColor foreground = ConsoleColor.Cyan, ConsoleColor background = ConsoleColor.Black)
-        {
-            return _window.TopHalf(foreground,background);
-        }
-
-        public IConsole BottomHalf(ConsoleColor foreground = ConsoleColor.Green, ConsoleColor background = ConsoleColor.Black)
-        {
-            return _window.BottomHalf(foreground, background);
-        }
-
-
 
         public void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)

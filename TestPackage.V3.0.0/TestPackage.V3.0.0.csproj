@@ -7,8 +7,8 @@
     <ProjectGuid>{F2598931-102B-40A2-84F1-A0979F1328E6}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestPackage.V2._0._2</RootNamespace>
-    <AssemblyName>TestPackage.V2.0.2</AssemblyName>
+    <RootNamespace>TestPackage.V3._0._3</RootNamespace>
+    <AssemblyName>TestPackage.V3.0.0</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

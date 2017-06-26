@@ -32,7 +32,7 @@ namespace Konsole.Menus
         public Action OnStopped = () => { };
 
         public TaskMenu(int msToWaitToComplete, string title, ConsoleKey quit, int width, params MenuItem[] menuActions) 
-            : this(new Writer(), msToWaitToComplete, title, quit, width, menuActions)
+            : this(new ConcurrentWriter(new Writer()), msToWaitToComplete, title, quit, width, menuActions)
                 {
             
                 }

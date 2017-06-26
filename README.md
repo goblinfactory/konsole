@@ -18,7 +18,24 @@ home of the simple no-dependancy console libary consisting of:
     using Konsole;
            
             var pb = new ProgressBar(50);
-            pb.Refresh(0, "connecting to server to download 50 files sychronously.");
+            pb.Refresh(0, "connecting to server to download 5 files sychronously.");
+            Console.ReadLine();
+
+            pb.Refresh(25, "downloading file number 25");
+            Console.ReadLine();
+            pb.Refresh(50, "finished.");
+```
+
+![sample output](progressbar.gif)
+[sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
+
+
+## ProgressBar usage - DoubleLine
+```csharp
+    using Konsole;
+           
+            var pb = new ProgressBar(PbStyle.DoubleLine, 50);
+            pb.Refresh(0, "connecting to server to download 5 files asychronously.");
             Console.ReadLine();
 
             pb.Refresh(25, "downloading file number 25");

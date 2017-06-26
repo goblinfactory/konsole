@@ -1,4 +1,6 @@
 using System;
+using Konsole.Drawing;
+using Konsole.Menus;
 
 namespace Konsole
 {
@@ -177,16 +179,35 @@ namespace Konsole
             Console.Clear();
         }
 
-        public IConsole BottomHalf(ConsoleColor foreground, ConsoleColor background)
+        public IConsole BottomHalf(string title = "bottom", WindowTheme border = null, WindowTheme window = null)
         {
             throw new NotImplementedException();
         }
 
-        public IConsole TopHalf(ConsoleColor foreground, ConsoleColor background)
+        public IConsole TopHalf(WindowTheme theme = null)
         {
             throw new NotImplementedException();
         }
 
+        public IConsole BottomHalf(WindowTheme theme = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IConsole LeftHalf(WindowTheme theme = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IConsole RightHalf(WindowTheme theme = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IConsole TopHalf(string title = "top", WindowTheme border = null, WindowTheme window = null)
+        {
+            throw new NotImplementedException();
+        }
 
         public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background = null)
         {

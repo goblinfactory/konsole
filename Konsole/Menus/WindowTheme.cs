@@ -11,6 +11,17 @@ namespace Konsole.Menus
         public bool ShowBorder { get; set; }
         public LineThickNess BorderThickness { get; set; }
 
+        public static WindowTheme Inherit(IConsole console, bool showBorder = true)
+        {
+            return new WindowTheme()
+            {
+                Background = console.BackgroundColor,
+                Foreground = console.ForegroundColor,
+                ShowBorder = showBorder,
+                BorderThickness = LineThickNess.Single
+            };
+        }
+
         public static WindowTheme DarkBlue => new WindowTheme
         {
             Background = ConsoleColor.DarkBlue,

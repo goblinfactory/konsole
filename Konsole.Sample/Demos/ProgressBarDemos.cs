@@ -122,8 +122,6 @@ namespace Konsole.Sample.Demos
 
             foreach (var t in tasks) t.Start();
             Task.WaitAll(tasks.ToArray());
-            Console.WriteLine("done.");
-            Console.ReadLine();
         }
 
         public static void Parallel2Demo()

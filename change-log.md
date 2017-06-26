@@ -3,6 +3,16 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+##[ 4.0.1]
+
+### Added
+- small, but important breaking change to `IConsole` to support inside windows to inherit their parent style, and easily be overridden.
+  - `IConsole TopHalf(string title = "top", WindowTheme border = null, WindowTheme window = null);`
+  - `IConsole BottomHalf(string title = "bottom", WindowTheme border = null, WindowTheme window  = null);`
+
+### Fixed
+-  Various aspects of `Window` colors when creating windows in windows not correct.
+
 ## [3.0.1]
 
 ### Fixed
