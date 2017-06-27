@@ -249,7 +249,7 @@ namespace Konsole
         {
             //int echoHeight = echoConsole?.WindowHeight ?? 80;
             //int maxHeight = (echoHeight - y);
-            return height ?? (echoConsole?.WindowHeight ?? 80);
+            return height ?? (echoConsole?.WindowHeight ?? Console.WindowHeight);
             //return (height ?? 0) > maxHeight ? maxHeight : height;
         }
 
@@ -257,7 +257,7 @@ namespace Konsole
         {
             // if echo is false, then this is a mock console and the width is never capped
 
-            int echoWidth = echoConsole?.WindowWidth ?? 120;
+            int echoWidth = echoConsole?.WindowWidth ?? (echo ? Console.WindowWidth : 120);
             int maxWidth = (echoWidth - x);
             int w = width ?? (echoConsole?.WindowWidth ?? 120);
             if (echo && w > maxWidth) w = maxWidth;

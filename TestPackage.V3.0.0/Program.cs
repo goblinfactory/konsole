@@ -19,16 +19,21 @@ namespace TestPackage.V3._0._3
         {
 
 
-            var c = new Window(100, 30);
-            var mw = c.SplitLeft();
-            //var aw = c.RightHalf("app window", WindowTheme.Inherit(c, false));
+            var c = new Window();
+            var menu = c.SplitLeft("menu", ConsoleColor.White);
             var aw = c.SplitRight();
-            var clientConsole1 = aw.SplitTop("client", ConsoleColor.Red);
-            var serverConsole = aw.SplitBottom("server", ConsoleColor.Blue);
+            var client = aw.SplitTop("client", ConsoleColor.White);
+            var server = aw.SplitBottom("server", ConsoleColor.White);
 
-            //Q: Why can't I see right half and right half's top and bottom?
-
-
+            menu.WriteLine("option 1");
+            menu.WriteLine("option 2");
+            menu.WriteLine("option 3");
+                
+            client.WriteLine("waiting for server");
+            server.WriteLine("starting server");
+            client.WriteLine("sending");
+            server.WriteLine("recieved, replying");
+            client.WriteLine("got it!");
             Console.ReadKey(true);
             return;
 

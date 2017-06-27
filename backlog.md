@@ -1,6 +1,5 @@
 # Roadmap
 
-
 ## [unreleased]
 
 ### Adding
@@ -12,6 +11,9 @@
 - allow menu to run code witout having to send it to a 'window', i.e. can send to the default console.
 
 ### Backlog
+- be able to use Konsole's ProgressBar and window from Powershell https://stackoverflow.com/questions/41549987/powershell-progress-bar-when-scrolling
+  - write demo showing scrollable content in a sub window
+  - might need to update Konsole to be able to take console redirection? piped content?
 - remove IConsole from DoCommand. Not needed, as you always have an instance you are working on.
 - detect screen resolution so that we can use the whole console by default.
 - detect screen resizing, so we can have sticky boxes if needed.
