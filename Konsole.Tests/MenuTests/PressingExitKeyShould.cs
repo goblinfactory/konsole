@@ -20,22 +20,22 @@ namespace Konsole.Tests.MenuTests
             [TestCase('q')]
             [TestCase('Q')]
             [TestCase(ConsoleKey.Escape)]
-        public void exit_the_menu(object key)
+        public void exit_the_menu(object expected)
         {
             var con = new MockConsole(15, 7);
             var seq = new List<char>();
 
             Menu m = null;
-            if (key is ConsoleKey)
+            if (expected is ConsoleKey)
             {
-                m = new Menu(con, "MENU", (ConsoleKey) key, 10,
+                m = new Menu(con, "MENU", (ConsoleKey) expected, 10,
                     new MenuItem('a', "item 1", () => { })
                 );
-                m.Keyboard = new MockKeyboard('Q');
+                m.Keyboard = new MockKeyboard((ConsoleKey)expected);
             }
             else
             {
-                ConsoleKey c = (ConsoleKey) ((char) key);
+                ConsoleKey c = (ConsoleKey) ((char) expected);
                 m = new Menu(con, "MENU",c, 10,
                     new MenuItem('a', "item 1", () => { })
                 );
@@ -44,6 +44,8 @@ namespace Konsole.Tests.MenuTests
 
             m.Run();
         }
+
+
 
     }
 }

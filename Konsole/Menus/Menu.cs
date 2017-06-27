@@ -243,7 +243,8 @@ namespace Konsole.Menus
             }
             Refresh();
 
-            while ((cmd = Keyboard.ReadKey().Key) != _quit)
+            //while ((cmd = Keyboard.ReadKey().Key) != _quit)
+            while (!IsMatching(cmd = Keyboard.ReadKey().Key,_quit))
             {
                 int move = isMoveMenuKey(cmd);
                 if (move != 0)
@@ -270,6 +271,14 @@ namespace Konsole.Menus
                 RunItem(state, item);
             }
 
+
+        }
+
+        private bool IsMatching(ConsoleKey key1, ConsoleKey key2)
+        {
+            if (key1 == key2) return true;
+            // check if the only difference is the case?
+            return char.ToLower((char) key1) == char.ToLower((char) key2);
 
         }
 
