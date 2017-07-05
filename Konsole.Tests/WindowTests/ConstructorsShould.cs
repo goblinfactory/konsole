@@ -10,8 +10,30 @@ namespace Konsole.Tests.WindowTests
 {
     class ConstructorsShould
     {
-        //todo .. some manual experiments
-        // try to break it... using 'random' then  update tests appropriately.
+
+        [Test]
+        /// <summary>
+        /// An "INLINE" (non floating window) is a window that does not have a top and left property set
+        /// and will be created at the current cursor y + 1, and left set to 0
+        /// and the cursor should be moved to below the newly created window
+        /// </summary>
+        public void WhenCreatingInlineWindows_cursor_should_be_moved_to_below_the_newly_created_window()
+        {
+            IConsole _window;
+            IConsole _inline;
+
+            _window = new MockConsole(20,6);
+            _window.WriteLine("line1");
+            _window.Write("1234");
+            Assert.AreEqual(1, _window.CursorTop);
+            Assert.AreEqual(4, _window.CursorLeft);
+            // create an inline window by only specifying a width and a height.
+            _inline = new Window(_window,5,2);
+            Assert.AreEqual(3, _window.CursorTop);
+            Assert.AreEqual(0, _window.CursorLeft);
+            _window.WriteLine("foo");
+        }
+
 
         [Test]
         public void should_clip_child_window_to_not_exceed_parent_boundaries()

@@ -88,7 +88,7 @@ namespace Konsole
 
 
         public Window(int width, int height, params K[] options)
-            : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, null, options)
+            : this(null, null, width, height, ConsoleColor.White, ConsoleColor.Black, true, null, options)
         {
         }
 
@@ -125,7 +125,7 @@ namespace Konsole
         }
 
         public Window(IConsole echoConsole, int width, int height)
-            : this(0, 0, width, height, echoConsole.BackgroundColor, echoConsole.ForegroundColor, true, echoConsole)
+            : this(null, null, width, height, echoConsole.BackgroundColor, echoConsole.ForegroundColor, true, echoConsole)
         {
         }
 
@@ -216,33 +216,38 @@ namespace Konsole
 
         }
 
-        // this internal method here for spiking and testing during development, not for production. 
-        // specifically it's here so that I can set 'internalsvisibleto' in the TestPackage projects during spiking
-        // when developing code that I don't want to prototype in a unit test. where creating a console app rather
-        // than a unit test allows for more rapid prototyping and debugging.
-        internal static IConsole _CreateWindow(int x, int y, int? width, int? height, ConsoleColor foreground,
+        internal static IConsole _CreateWindow(int? x, int? y, int? width, int? height, ConsoleColor foreground,
             ConsoleColor background,
             bool echo = true, IConsole echoConsole = null, params K[] options)
         {
-            return new Window(x,y, width,height, foreground,background, echo, echoConsole, options);    
+            return new Window(x, y, width, height, foreground, background, echo, echoConsole, options).Concurrent();
         }
 
-        protected internal Window(int x, int y, int? width, int? height, ConsoleColor foreground, ConsoleColor background,
+        protected internal Window(int? x, int? y, int? width, int? height, ConsoleColor foreground, ConsoleColor background,
             bool echo = true, IConsole echoConsole = null, params K[] options)
         {
-            _x = x;
-            _y = y;
-            _echo = echo;
-            _echoConsole = echoConsole;
-            // move set width to external static method
-            if (_echo && _echoConsole == null) _echoConsole = new Writer();
-            _width = GetStartWidth(echo, width, x, echoConsole);
-            _height = GetStartHeight(echo, height, y, echoConsole);
-            _startForeground = foreground;
-            _startBackground = background;
+            lock (_staticLocker)
+            {
+                _echo = echo;
+                _echoConsole = echoConsole;
+                if (_echo && _echoConsole == null) _echoConsole = new Writer();
+                _y = y ?? _echoConsole?.CursorTop ?? Console.CursorTop + height ?? 0;
+                _x = x ?? 0;
 
-            SetOptions(options);
-            init();
+                _width = GetStartWidth(echo, width, _x, echoConsole);
+                _height = GetStartHeight(echo, height, _y, echoConsole);
+                _startForeground = foreground;
+                _startBackground = background;
+
+                SetOptions(options);
+                init();
+                // if we're creating an inline window
+                if (_echoConsole != null && x == null && y == null)
+                {
+                    _echoConsole.CursorTop += _height;
+                    _echoConsole.CursorLeft = 0;
+                }
+            }
         }
 
         private static int GetStartHeight(bool echo, int? height, int y, IConsole echoConsole)

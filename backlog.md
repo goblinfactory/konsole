@@ -11,6 +11,10 @@
 - allow menu to run code witout having to send it to a 'window', i.e. can send to the default console.
 
 ### Backlog
+- constructor should not allow creating windows that overlap the bottom of a visible window.
+- when opening a window that is clearly inline, e.g. with only height and width, move the cursor to below the window,
+   - so that any normal console output appears below the window and we can safely multithread...sweet!
+   - perfect for working with powershell ;)
 - be able to use Konsole's ProgressBar and window from Powershell https://stackoverflow.com/questions/41549987/powershell-progress-bar-when-scrolling
   - write demo showing scrollable content in a sub window
   - might need to update Konsole to be able to take console redirection? piped content?

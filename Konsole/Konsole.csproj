@@ -59,6 +59,7 @@
     <Compile Include="K.cs" />
     <Compile Include="IReadKey.cs" />
     <Compile Include="KeyReader.cs" />
+    <Compile Include="Layouts\WindowLayoutExtensions.cs" />
     <Compile Include="Menus\ExitMenu.cs" />
     <Compile Include="Menus\Menu.cs" />
     <Compile Include="Menus\MenuItem.cs" />

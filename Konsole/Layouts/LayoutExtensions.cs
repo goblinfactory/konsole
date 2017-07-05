@@ -134,7 +134,7 @@ namespace Konsole.Layouts
         }
 
 
-        private static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
+        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
         {
             lock (Window._staticLocker)
             {
@@ -156,7 +156,7 @@ namespace Konsole.Layouts
         }
 
 
-        private static IConsole _TopBot(IConsole c, string title, bool bottom, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
+        internal static IConsole _TopBot(IConsole c, string title, bool bottom, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
         {
             lock (Window._staticLocker)
             {

@@ -17,9 +17,7 @@ namespace TestPackage.V3._0._3
 
         static void Main(string[] args)
         {
-
-
-            var c = new Window();
+            var c = new Window(Console.WindowWidth, 20);
             var menu = c.SplitLeft("menu", ConsoleColor.White);
             var aw = c.SplitRight();
             var client = aw.SplitTop("client", ConsoleColor.White);
@@ -34,6 +32,8 @@ namespace TestPackage.V3._0._3
             client.WriteLine("sending");
             server.WriteLine("recieved, replying");
             client.WriteLine("got it!");
+            Console.ReadKey(true);
+            Console.WriteLine("finished");
             Console.ReadKey(true);
             return;
 

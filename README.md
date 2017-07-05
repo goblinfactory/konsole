@@ -84,6 +84,8 @@ home of the simple no-dependancy console libary consisting of:
 
 ![window simple demo](docs/window-demo.png)
 
+- detailed window documentation : Todo link to window tests
+
 ## Form usage
 
   - quickly and neatly render an object and it's properties in a window or to the console.
