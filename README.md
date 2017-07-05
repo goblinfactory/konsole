@@ -25,7 +25,7 @@ home of the simple no-dependancy console libary consisting of:
             Console.ReadLine();
             pb.Refresh(50, "finished.");
 ```
-
+(image below is incorrect, it is from the double line below, will be updating shortly.)
 ![sample output](progressbar.gif)
 [sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
 
