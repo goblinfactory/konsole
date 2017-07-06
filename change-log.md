@@ -3,6 +3,17 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [unreleased]
+
+### Breaking change
+
+- `IWriteLine` renamed to `IWrite`
+- `IReadKey` renamed to `IRead`
+
+### Added
+
+- `KeyWaitFor({c})`  use in simple loops e.g. `while(c.KeyWaitFor('q'))` default is case insensitive. Also will read the key and dispose of it, and not echo to screen.
+
 ##[ 4.0.1]
 
 ### Added

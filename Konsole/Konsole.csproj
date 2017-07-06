@@ -57,8 +57,8 @@
     <Compile Include="Internal\Cell.cs" />
     <Compile Include="IProgressBar.cs" />
     <Compile Include="K.cs" />
-    <Compile Include="IReadKey.cs" />
-    <Compile Include="KeyReader.cs" />
+    <Compile Include="IRead.cs" />
+    <Compile Include="Reader.cs" />
     <Compile Include="Layouts\WindowLayoutExtensions.cs" />
     <Compile Include="Menus\ExitMenu.cs" />
     <Compile Include="Menus\Menu.cs" />
@@ -81,7 +81,7 @@
     <Compile Include="Forms\IBoxWriter.cs" />
     <Compile Include="Forms\ThinBoxStyle.cs" />
     <Compile Include="IConsole.cs" />
-    <Compile Include="IWriteLine.cs" />
+    <Compile Include="IWrite.cs" />
     <Compile Include="Internal\Row.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="ProgressBarTwoLine.cs" />

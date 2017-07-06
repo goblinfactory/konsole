@@ -4,13 +4,15 @@ using Konsole.Menus;
 
 namespace Konsole
 {
-    // see if I can get rid of all usages of this class
-    // require all usages to go through Console
-    // will dramatically simplify a new user learning about what 
-    // this library does!
-
     public class Writer : IConsole
     {
+        private Reader _reader;
+
+        public Writer()
+        {
+            _reader = new Reader();
+        }
+
         public void WriteLine(string format, params object[] args)
         {
             Console.WriteLine(format, args);
@@ -225,5 +227,14 @@ namespace Konsole
             Console.MoveBufferArea(sourceLeft, sourceTop, sourceWidth, sourceHeight, targetLeft, targetTop, sourceChar, sourceForeColor, sourceBackColor);
         }
 
+        public ConsoleKeyInfo ReadKey(bool intercept = false)
+        {
+            return _reader.ReadKey(intercept);
+        }
+
+        public void KeyWait(params ConsoleKey[] c)
+        {
+            _reader.KeyWait(c);
+        }
     }
 }

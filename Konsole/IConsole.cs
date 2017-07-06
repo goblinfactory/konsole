@@ -5,7 +5,7 @@ using Konsole.Menus;
 
 namespace Konsole
 {
-    public interface IConsole : IWriteLine
+    public interface IConsole : IWrite, IRead
     {
         ConsoleState State { get; set; }
         int WindowWidth { get; }

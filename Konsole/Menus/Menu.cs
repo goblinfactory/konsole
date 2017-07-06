@@ -86,7 +86,7 @@ namespace Konsole.Menus
         public int NumMenus { get; }
         public int Height { get; }
 
-        public IReadKey Keyboard { get; set; }
+        public IRead Keyboard { get; set; }
 
 
         public Menu(string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
@@ -101,7 +101,7 @@ namespace Konsole.Menus
             lock (_locker)
             {
                 Title = title;
-                Keyboard = Keyboard ?? new KeyReader();
+                Keyboard = Keyboard ?? new Reader();
                 _menuConsole = menuConsole;
                 _quit = quit;
                 _width = width;

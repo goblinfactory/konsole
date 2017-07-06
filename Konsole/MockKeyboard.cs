@@ -31,7 +31,7 @@ namespace Konsole
         }
     }
 
-    public class MockKeyboard : IReadKey
+    public class MockKeyboard : IRead
     {
         private readonly Queue<ConsoleKeyInfo> _keypresses = new Queue<ConsoleKeyInfo>();
 
@@ -104,5 +104,28 @@ namespace Konsole
         private IEnumerator<ConsoleKey> _keyEnumerator;
 
         public ConsoleKeyInfo? AutoReplyKey { get; set; } = null;
+
+        /// <summary>
+        /// This call is not strictly compatible with normal Console behavior. If intercept is set to false, will not echo the key to the console.
+        /// </summary>
+        public ConsoleKeyInfo ReadKey(bool intercept = false)
+        {
+            return ReadKey();
+        }
+
+        public void KeyWait(params ConsoleKey[] c)
+        {
+            if (c.Length == 0)
+            {
+                ReadKey();
+                return;
+            }
+            ConsoleKey? key = null;
+
+            while (!c.Any(k => k == key))
+            {
+                key = Console.ReadKey(true).Key;
+            }
+        }
     }
 }
