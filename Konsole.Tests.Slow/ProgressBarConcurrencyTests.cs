@@ -35,7 +35,7 @@ namespace Konsole.Tests.Slow
             );
             // need a unit test for the menu before fixing it.
 
-            var kb = new MockKeyboard(0, GetKeys());
+            var kb = new MockKeyboard(0, GetKeyInfos());
             ;
 
             menu.Keyboard = kb;
@@ -66,7 +66,10 @@ namespace Konsole.Tests.Slow
             _tasks.Add(t);
         }
 
-
+        static IEnumerable<ConsoleKeyInfo> GetKeyInfos()
+        {
+            return GetKeys().Select(k => k.ToKeypress());
+        }
         static IEnumerable<ConsoleKey> GetKeys()
         {
             yield return ConsoleKey.DownArrow;

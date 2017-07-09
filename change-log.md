@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Breaking change
 
 - `IWriteLine` renamed to `IWrite`
-- `IReadKey` renamed to `IRead`
+- `IReadKey` renamed to `IKeyboard`
+- renamed `Reader` to `Keyboard`
 
 ### Added
 

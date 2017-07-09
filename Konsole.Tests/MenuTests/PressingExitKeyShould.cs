@@ -11,40 +11,47 @@ namespace Konsole.Tests.MenuTests
 {
     public class PressingExitKeyShould
     {
-
-        // do I need to test a number of conditions ... must X ... AND .. Y ... AND ..Z
-        // in which case, put setup in constructor and tests in methods.
-
-            // need to add in tests for special keys e.g. escape!!
-
-            [TestCase('q')]
-            [TestCase('Q')]
-            [TestCase(ConsoleKey.Escape)]
-        public void exit_the_menu(object expected)
+        [Test]
+        public void WhenSpecialKeyIsConfiguredAsExitKey_should_exit_the_menu()
         {
             var con = new MockConsole(15, 7);
             var seq = new List<char>();
 
-            Menu m = null;
-            if (expected is ConsoleKey)
-            {
-                m = new Menu(con, "MENU", (ConsoleKey) expected, 10,
-                    new MenuItem('a', "item 1", () => { })
-                );
-                m.Keyboard = new MockKeyboard((ConsoleKey)expected);
-            }
-            else
-            {
-                ConsoleKey c = (ConsoleKey) ((char) expected);
-                m = new Menu(con, "MENU",c, 10,
-                    new MenuItem('a', "item 1", () => { })
-                );
-                m.Keyboard = new MockKeyboard('Q');
-            }
+            var m = new Menu(con, "MENU", ConsoleKey.Escape, 10,
+                new MenuItem('a', "item 1", () => { seq.Add('a'); })
+            );
 
+            m.Keyboard = new MockKeyboard(ConsoleKey.Escape);
             m.Run();
         }
 
+        [Test]
+        public void WhenShortcutKeyIsConfiguredAsExitKey_should_exit_the_menu()
+        {
+            var con = new MockConsole(15, 7);
+            var seq = new List<char>();
+
+            var m = new Menu(con, "MENU", ConsoleKey.Escape, 10,
+                MenuItem.Quit('x',"Exit")
+            );
+
+            m.Keyboard = new MockKeyboard('x');
+            m.Run();
+        }
+
+
+        [Test]
+        public void WhenEmptyMenuItemIsConfiguredAsExitKey_should_exit_the_menu()
+        {
+            var con = new MockConsole(15, 7);
+
+            var m = new Menu(con, "MENU", ConsoleKey.F10, 10,
+                MenuItem.Quit("Quit")
+            );
+
+            m.Keyboard = new MockKeyboard(ConsoleKey.Enter);
+            m.Run();
+        }
 
 
     }

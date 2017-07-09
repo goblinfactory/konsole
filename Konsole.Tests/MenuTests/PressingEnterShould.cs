@@ -25,5 +25,10 @@ namespace Konsole.Tests.MenuTests
             Assert.Inconclusive();
         }
 
+        [Test]
+        public void WhenNoActionSetForMenuItem_menu_item_should_act_as_an_exit_option()
+        {
+            Assert.Inconclusive();
+        }
     }
 }

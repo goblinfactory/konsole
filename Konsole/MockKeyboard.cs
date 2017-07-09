@@ -9,29 +9,8 @@ using System.Threading.Tasks;
 namespace Konsole
 {
     // test
-    public static class ConsoleKeyInfoExtensions
-    {
-        public static bool SameAs(this ConsoleKey lhs, ConsoleKey? rhs)
-        {
-            if (rhs == null) return false;
-            char lkey = (char) lhs;
-            char rkey = (char) rhs;
-            return char.ToUpper(lkey) == char.ToUpper(rkey);
-        }
 
-
-        public static ConsoleKeyInfo ToKeypress(this char key)
-        {
-            return new ConsoleKeyInfo(key, (ConsoleKey)key, false, false, false);
-        }
-
-        public static ConsoleKeyInfo ToKeypress(this ConsoleKey key)
-        {
-            return new ConsoleKeyInfo((char)key, key, false, false, false);
-        }
-    }
-
-    public class MockKeyboard : IRead
+    public class MockKeyboard : IKeyboard
     {
         private readonly Queue<ConsoleKeyInfo> _keypresses = new Queue<ConsoleKeyInfo>();
 
@@ -57,7 +36,7 @@ namespace Konsole
 
         }
 
-        public MockKeyboard(int pauseBetweenPresses, IEnumerable<ConsoleKey> readKey)
+        public MockKeyboard(int pauseBetweenPresses, IEnumerable<ConsoleKeyInfo> readKey)
         {
             PauseBetweenKeypresses = pauseBetweenPresses;
             _keyEnumerator = readKey.GetEnumerator();
@@ -67,6 +46,7 @@ namespace Konsole
         public MockKeyboard PressKey(char c, bool shift = false, bool alt = false, bool control = false)
         {
             var keyPress = new ConsoleKeyInfo(c, (ConsoleKey) c, shift, alt, control);
+            _onCharPress(c);
             _keypresses.Enqueue(keyPress);
             return this;
         }
@@ -89,7 +69,7 @@ namespace Konsole
             if (_keyEnumerator != null)
             {
                 _keyEnumerator.MoveNext();
-                return _keyEnumerator.Current.ToKeypress();
+                return _keyEnumerator.Current;
             }
             
             if (_keypresses.Count == 0)
@@ -101,31 +81,63 @@ namespace Konsole
             return k;
         }
 
-        private IEnumerator<ConsoleKey> _keyEnumerator;
+        private IEnumerator<ConsoleKeyInfo> _keyEnumerator;
 
         public ConsoleKeyInfo? AutoReplyKey { get; set; } = null;
 
         /// <summary>
         /// This call is not strictly compatible with normal Console behavior. If intercept is set to false, will not echo the key to the console.
         /// </summary>
-        public ConsoleKeyInfo ReadKey(bool intercept = false)
+        public ConsoleKeyInfo ReadKey(bool intercept)
         {
             return ReadKey();
         }
 
-        public void KeyWait(params ConsoleKey[] c)
+        private void WaitForKeys(ConsoleKeyInfo[] c)
         {
             if (c.Length == 0)
             {
                 ReadKey();
                 return;
             }
-            ConsoleKey? key = null;
+            ConsoleKeyInfo? key = null;
 
             while (!c.Any(k => k == key))
             {
-                key = Console.ReadKey(true).Key;
+                key = ReadKey(true);
             }
         }
+
+        public void WaitForKeyPress(Case @case, params char[] chars)
+        {
+            ConsoleKeyInfo[] keys;
+
+            keys = (@case == Case.Sensitive)
+                ? chars.Select(c => c.ToKeypress()).ToArray()
+                : chars.Select(c => char.ToUpper(c).ToKeypress()).Union(chars.Select(c => char.ToLower(c).ToKeypress())
+            ).ToArray();
+
+            WaitForKeys(keys);
+        }
+
+        public void WaitForKeyPress(params char[] chars)
+        {
+            var keys = chars.Select(c => c.ToKeypress()).ToArray();
+            WaitForKeys(keys);
+        }
+
+        public void CharPressed(Action<char> action, params char[] chars)
+        {
+            _onCharPress += cp =>
+            {
+                if (chars.Any(c => c == cp))
+                {
+                    action(cp);
+                }
+            };
+        }
+
+        private Action<char> _onCharPress = (c) => { };
+
     }
 }

@@ -6,12 +6,6 @@ namespace Konsole
 {
     public class Writer : IConsole
     {
-        private Reader _reader;
-
-        public Writer()
-        {
-            _reader = new Reader();
-        }
 
         public void WriteLine(string format, params object[] args)
         {
@@ -227,14 +221,5 @@ namespace Konsole
             Console.MoveBufferArea(sourceLeft, sourceTop, sourceWidth, sourceHeight, targetLeft, targetTop, sourceChar, sourceForeColor, sourceBackColor);
         }
 
-        public ConsoleKeyInfo ReadKey(bool intercept = false)
-        {
-            return _reader.ReadKey(intercept);
-        }
-
-        public void KeyWait(params ConsoleKey[] c)
-        {
-            _reader.KeyWait(c);
-        }
     }
 }

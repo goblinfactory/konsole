@@ -670,14 +670,5 @@ namespace Konsole
             });
         }
 
-        public ConsoleKeyInfo ReadKey(bool intercept = false)
-        {
-            return _echoConsole.ReadKey(intercept);
-        }
-
-        public void KeyWait(params ConsoleKey[] c)
-        {
-            _echoConsole.KeyWait(c);
-        }
     }
 }

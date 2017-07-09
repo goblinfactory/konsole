@@ -27,14 +27,16 @@ namespace Konsole.Menus
         private static object _locker = new object();
 
         private readonly IConsole _menuConsole;
-        private readonly ConsoleKey _quit;
+
+        public ConsoleKeyInfo QuitKey { get; }
+
         private readonly int _width;
 
         //private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
         private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
 
 
-        private Dictionary<ConsoleKey, int> _keyBindings = new Dictionary<ConsoleKey, int>();
+        private Dictionary<ConsoleKeyInfo, int> _keyBindings = new Dictionary<ConsoleKeyInfo, int>();
 
         /// <summary>
         /// called before a menu item is called.
@@ -85,8 +87,9 @@ namespace Konsole.Menus
 
         public int NumMenus { get; }
         public int Height { get; }
+        public bool CaseSensitive { get; }
 
-        public IRead Keyboard { get; set; }
+        public IKeyboard Keyboard { get; set; }
 
 
         public Menu(string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
@@ -96,14 +99,18 @@ namespace Konsole.Menus
         }
 
 
+        /// <summary>
+        /// if we have any menu items with menu keys that differ only by case, then this is a case sensitive menu, otherwise the menu items will be case insensitive.
+        /// </summary>
         public Menu(IConsole menuConsole, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
         {
             lock (_locker)
             {
+                CaseSensitive = CaseForMenuItems(menuActions) == Case.Sensitive;
                 Title = title;
-                Keyboard = Keyboard ?? new Reader();
+                Keyboard = Keyboard ?? new Keyboard();
                 _menuConsole = menuConsole;
-                _quit = quit;
+                QuitKey = quit.ToKeypress();
                 _width = width;
                 NumMenus = menuActions.Length;
                 for (int i = 0; i < menuActions.Length; i++)
@@ -120,6 +127,30 @@ namespace Konsole.Menus
                 _window = Window.OpenInline(_menuConsole, 2, _width, _height, Theme.Foreground, Theme.Background,
                     K.Clipping);
             }
+        }
+
+        private char SwitchCase(char c)
+        {
+            var up = char.ToUpper(c);
+            return (up == c) ? char.ToLower(c) : up;
+        }
+
+        private Case CaseForMenuItems(MenuItem[] menuActions)
+        {
+            // if there are menu items that only only differ by case, then the menu is case sensitive, otherwise it's case insensitive.
+            var menuKeys = menuActions.Where(m => m.Key != null).Select(m => m.Key.Value).ToArray();
+            // A + B = not sensitive
+            // A + B + a = sensitive
+            // foreach key, if there are any other keys with the same letter just with a different case then it's case sensitive
+
+            foreach (var key in menuKeys)
+            {
+                var rest = menuKeys.Except(new[] {key});
+                var flipped = SwitchCase(key.KeyChar);
+                // if there are any other keys that match this one with the case switched
+                if (rest.Any( k => k == new ConsoleKeyInfo(flipped,k.Key,k.Shift(),k.Alt(),k.Control()))) return Case.Sensitive;
+            }
+            return Case.Insensitive;
         }
 
         private IConsole _window;
@@ -158,7 +189,7 @@ namespace Konsole.Menus
                     {
                         var key = item.Key.Value;
 
-                        int sub = text.IndexOfAny(new[] {char.ToLower((char) key), char.ToUpper((char) key)});
+                        int sub = text.IndexOfAny(new[] {char.ToLower(key.KeyChar), char.ToUpper(key.KeyChar)});
                         if (sub != -1)
                         {
                             string shortcut = text.Substring(sub, 1);
@@ -175,7 +206,7 @@ namespace Konsole.Menus
                     {
                         var key = item.Key.Value;
 
-                        int sub = text.IndexOfAny(new[] {char.ToLower((char) key), char.ToUpper((char) key)});
+                        int sub = text.IndexOfAny(new[] {char.ToLower(key.KeyChar), char.ToUpper(key.KeyChar)});
                         if (sub != -1)
                         {
                             string shortcut = text.Substring(sub, 1);
@@ -199,8 +230,6 @@ namespace Konsole.Menus
             w.PrintAtColor(ConsoleColor.White, 0, 0, $"Error :{e.Message}", ConsoleColor.Red);
         };
 
-        // todo: need to document what this method is responsible for doing
-        // so that I don't  mix/split responsibilities or worse duplicate responsibilities between this and the _run
 
         public virtual void Run()
         {
@@ -212,15 +241,15 @@ namespace Konsole.Menus
             try
             {
                 _run();
-                OnBeforeExitMenu();
-                OnAfterMenu();
             }
             catch (ExitMenu)
             {
-
             }
             finally
             {
+                OnBeforeExitMenu();
+                OnAfterMenu();
+
                 lock (_locker)
                 {
                     _menuConsole.State = state;
@@ -231,10 +260,8 @@ namespace Konsole.Menus
         private void _run()
         {
             ConsoleState state;
-            ConsoleKey cmd;
+            ConsoleKeyInfo cmd;
 
-            // #ADH I have a nested locker, parent Run locks as well, is this one needed then? must check...where is the unit test that proves I need this?
-            // i.e. if I remove the locker below, what is guaranteed to break and where is the test to prove that? otherwise I'm just guessing...
             lock (_locker)
             {
                 _menuConsole.CursorVisible = false;
@@ -243,8 +270,7 @@ namespace Konsole.Menus
             }
             Refresh();
 
-            //while ((cmd = Keyboard.ReadKey().Key) != _quit)
-            while (!IsMatching(cmd = Keyboard.ReadKey().Key,_quit))
+            while (!IsMatching(cmd = Keyboard.ReadKey(), QuitKey))
             {
                 int move = isMoveMenuKey(cmd);
                 if (move != 0)
@@ -254,10 +280,11 @@ namespace Konsole.Menus
                     continue;
                 }
 
-                if (cmd == ConsoleKey.Enter)
+                if (cmd.Key == ConsoleKey.Enter)
                 {
                     var currentItem = _menuItems[Current];
-                    if (currentItem?.Key == _quit) throw new ExitMenu();
+                    if (!currentItem.Enabled) continue;
+                    if(currentItem.Action == null || IsQuit(currentItem.Key)) throw new ExitMenu();
                     RunItem(state, currentItem);
                     continue;
                 }
@@ -268,29 +295,56 @@ namespace Konsole.Menus
                 // setting a menu item to null is equivalent to exit.
                 if (item == null) return;
                 SetSelected(cmd);
-                RunItem(state, item);
+
+                // bypass running the menu item by setting it to disabled.
+                if (item.Enabled)
+                {
+                    if(item.Action == null) throw new ExitMenu();
+                    RunItem(state, item);
+                }
             }
 
 
         }
 
-        private bool IsMatching(ConsoleKey key1, ConsoleKey key2)
+        private bool IsQuit(ConsoleKeyInfo? key)
         {
-            if (key1 == key2) return true;
-            // check if the only difference is the case?
-            return char.ToLower((char) key1) == char.ToLower((char) key2);
-
+            if (key == null) return false;
+            if (!CaseSensitive) return key.Value == QuitKey;
+            return key.Value == QuitKey && key.Value.KeyChar == QuitKey.KeyChar;
         }
 
-        private void SetSelected(ConsoleKey key)
+        private bool IsMatching(ConsoleKeyInfo key1, ConsoleKeyInfo key2)
+        {
+            if (CaseSensitive) return key1 == key2;
+            // for case insensitive match, just compare KeyInfo
+            return key1.Key == key2.Key;
+        }
+
+        private void SetSelected(ConsoleKeyInfo key)
         {
             for (int i = 0; i < _menuItems.Count; i++)
             {
-                if (key.SameAs(_menuItems[i].Key))
+                if (_menuItems[i].Key == null) return;
+                var k = _menuItems[i].Key.Value;
+
+                if (CaseSensitive)
                 {
-                    _current = i;
-                    Refresh();
-                    return;
+                    if (key.Key == k.Key && k.KeyChar == key.KeyChar)
+                    {
+                        _current = i;
+                        Refresh();
+                        return;
+                    }
+                }
+                else // not case sensitive
+                {
+                    if (key == k) 
+                    {
+                        _current = i;
+                        Refresh();
+                        return;
+                    }
                 }
             }
         }
@@ -333,9 +387,9 @@ namespace Konsole.Menus
         }
 
 
-        private int isMoveMenuKey(ConsoleKey cmd)
+        private int isMoveMenuKey(ConsoleKeyInfo cmd)
         {
-            switch (cmd)
+            switch (cmd.Key)
             {
                 case ConsoleKey.RightArrow: return 1;
                 case ConsoleKey.LeftArrow: return -1;

@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Case.cs" />
     <Compile Include="Colors.cs" />
     <Compile Include="ConcurrentWriter.cs" />
+    <Compile Include="ConsoleKeyExtensions.cs" />
+    <Compile Include="ConsoleKeyInfoExtensions.cs" />
     <Compile Include="ConsoleState.cs" />
     <Compile Include="Drawing\CellMap.cs" />
     <Compile Include="Drawing\LineCharTypes.cs" />
@@ -57,8 +60,8 @@
     <Compile Include="Internal\Cell.cs" />
     <Compile Include="IProgressBar.cs" />
     <Compile Include="K.cs" />
-    <Compile Include="IRead.cs" />
-    <Compile Include="Reader.cs" />
+    <Compile Include="IKeyboard.cs" />
+    <Compile Include="Keyboard.cs" />
     <Compile Include="Layouts\WindowLayoutExtensions.cs" />
     <Compile Include="Menus\ExitMenu.cs" />
     <Compile Include="Menus\Menu.cs" />

@@ -40,7 +40,7 @@ namespace Konsole.Tests.Slow
             // line below should print after (below) the menu.
             console.WriteLine("line 3");
             // console should continue working and cursor should be set to below the menu.
-            var kb = new MockKeyboard(0, GetKeys()); ;
+            var kb = new MockKeyboard(0, GetKeyInfos()); ;
 
             menu.Keyboard = kb;
             menu.Run();
@@ -59,6 +59,11 @@ namespace Konsole.Tests.Slow
             _tasks.Add(t);
         }
 
+
+        IEnumerable<ConsoleKeyInfo> GetKeyInfos()
+        {
+            return GetKeys().Select(k => k.ToKeypress());
+        }
 
         IEnumerable<ConsoleKey> GetKeys()
         {

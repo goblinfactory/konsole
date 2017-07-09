@@ -11,6 +11,8 @@
 - allow menu to run code witout having to send it to a 'window', i.e. can send to the default console.
 
 ### Backlog
+- be able to use a Keyboard to wait for upper or lowercase items.
+  - will be great for networking tests when 'r' and 'R' could possibly do complimentary or reverse actions.
 - constructor should not allow creating windows that overlap the bottom of a visible window.
 - when opening a window that is clearly inline, e.g. with only height and width, move the cursor to below the window,
    - so that any normal console output appears below the window and we can safely multithread...sweet!

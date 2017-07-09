@@ -227,18 +227,5 @@ namespace Konsole
             }
         }
 
-        public ConsoleKeyInfo ReadKey(bool intercept = false)
-        {
-            lock (_locker)
-            {
-                return _window.ReadKey(intercept);
-            }
-            
-        }
-
-        public void KeyWait(params ConsoleKey[] c)
-        {
-            _window.KeyWait(c);
-        }
     }
 }
