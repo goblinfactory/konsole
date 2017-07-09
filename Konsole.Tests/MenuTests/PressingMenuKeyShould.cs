@@ -92,13 +92,6 @@ namespace Konsole.Tests.MenuTests
         }
 
         [Test]
-        public void menu_with_menu_items_that_do_not_differ_by_case_will_be_case_insensitive()
-        {
-            Assert.Inconclusive();
-        }
-
-
-        [Test]
         [TestCase(true, true, false)]
         [TestCase(true, false, true)]
         [TestCase(false, true, true)]

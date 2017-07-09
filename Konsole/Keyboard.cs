@@ -125,32 +125,20 @@ namespace Konsole
             return false;
         }
 
-
-        public void CharPressed(Action<char> key, params char[] chars)
+        // NB Needs unit test.
+        public void CharPressed(Action<char> action, params char[] chars)
         {
             if (_keyboard != null)
             {
-                _charPressed += cp =>
-                {
-                    char[] localChars = chars;
-                    if (localChars.Any(c => c == cp))
-                    {
-                        _charPressed(cp);
-                    }
-                };
+                _keyboard.CharPressed(action, chars);
             }
             else
             {
-                _charPressed += cp =>
+                _charPressed += (c) =>
                 {
-                    char[] localChars = chars;
-                    if (localChars.Any(c => c == cp))
-                    {
-                        _charPressed(cp);
-                    }
+                    if (chars.Any(cc => c == cc)) action(c);
                 };
             }
-            ;
         }
 
         Action<char> _charPressed = (c) => { };

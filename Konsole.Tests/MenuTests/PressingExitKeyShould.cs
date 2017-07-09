@@ -29,7 +29,6 @@ namespace Konsole.Tests.MenuTests
         public void WhenShortcutKeyIsConfiguredAsExitKey_should_exit_the_menu()
         {
             var con = new MockConsole(15, 7);
-            var seq = new List<char>();
 
             var m = new Menu(con, "MENU", ConsoleKey.Escape, 10,
                 MenuItem.Quit('x',"Exit")
