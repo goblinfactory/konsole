@@ -78,6 +78,7 @@ namespace Konsole
                 return AutoReplyKey.Value;
             }
             var k = _keypresses.Dequeue();
+            _onCharPress(k.KeyChar);
             return k;
         }
 
@@ -126,7 +127,13 @@ namespace Konsole
             WaitForKeys(keys);
         }
 
-        public void CharPressed(Action<char> action, params char[] chars)
+
+        public void OnCharPressed(char c, Action<char> action)
+        {
+            OnCharPressed(new [] {c}, action);
+        }
+
+        public void OnCharPressed(char[] chars, Action<char> action)
         {
             _onCharPress += cp =>
             {

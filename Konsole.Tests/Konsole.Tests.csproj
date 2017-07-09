@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormTests\PaddingShould.cs" />
+    <Compile Include="KeyboardTests\OnCharPressedTests.cs" />
     <Compile Include="KeyboardTests\KeyWait_ForSpecialKeysTests.cs" />
     <Compile Include="MenuTests\ConstructorShould.cs" />
     <Compile Include="MenuTests\PressingEnterShould.cs" />
