@@ -5,6 +5,9 @@
 ### Adding
 
 ### to fix
+- fix or investigate - bug in ZeroMQ samples; scrolling? write/write/writeLine appeared to only scroll the last write on the last line, huh!
+  - ` w = new Window(...); for(int i = 0;i<50) { w.Write("PART 1"); w.WriteLine("PART 2")}`
+  - when code above executes, only PART2 get's scrolled in the window! DOH! 
 - decide if we really must reset (redraw) the screen when we create new windows, i.e. perhaps only do that when we change the color in the new window? 
 - menu will crash if you give it two menuItems with the same shortcut key. (work it out, not rocket science!)
 - fix : allow user to specify exit character, e.g. `q` or `x` in addition to `ConsoleKey.Escape`.

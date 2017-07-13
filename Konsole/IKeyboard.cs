@@ -24,6 +24,12 @@ namespace Konsole
         /// </summary>
         void WaitForKeyPress(params char[] chars);
 
+        //TODO : consider if I need to provide a mechanism for OnCharPressed events to run async ?
+
+        /// <summary>
+        /// Registers a handler.
+        /// </summary>
+        /// <remarks>Do not register a handler that actually does the work, unless you know that your handler is real short and quick and does not block; rather register a handler that pushes a message onto a queue. The reason for this is that the multicast delegate actually calls each registered handler in series and any hanlder that blocks, blocks all other registered handlers.</remarks>
         void OnCharPressed(char[] chars, Action<char> key);
 
         void OnCharPressed(char c, Action<char> key);

@@ -132,7 +132,10 @@ namespace Konsole
 
         public void DoCommand(IConsole console, Action action)
         {
-            throw new NotSupportedException("Not supported in a multithreaded scenario.");
+            lock (_locker)
+            {
+                _window.DoCommand(console, action);
+            }
         }
 
         public ConsoleColor ForegroundColor {
@@ -145,6 +148,7 @@ namespace Konsole
                 lock (_locker) _window.ForegroundColor = value;
             }
         }
+
         public ConsoleColor BackgroundColor {
             get
             {

@@ -15,11 +15,76 @@ namespace TestPackage.V3._0._3
     class Program
     {
 
+        private static void GreenAction(IConsole con, char c)
+        {
+            con.WriteLine("pressed " + c);
+        }
+
+        private static void YellowAction(IConsole con, char c)
+        {
+            con.WriteLine("pressed " + c);
+        }
+
+
+
         static void Main(string[] args)
         {
-            var c = new Window(Console.WindowWidth, 20);
-            var menu = c.SplitLeft("menu", ConsoleColor.White);
-            var aw = c.SplitRight();
+            var con = new Window(Console.WindowWidth, 20);
+
+            var green = con.SplitLeft("left");
+            green.ForegroundColor = ConsoleColor.Green;
+            
+            var yellow = con.SplitRight("right");
+            yellow.ForegroundColor = ConsoleColor.Yellow;
+
+            for (int i = 0; i < 30; i++)
+            {
+                green.Write("PART ONE - ");
+                green.WriteLine(" - PART TWO");
+            }
+                
+            Console.ReadLine();
+            return;
+            var k = new Keyboard();
+            bool stop = false;
+            var t1 = Task.Run(() =>
+            {
+                k.OnCharPressed('1', c => GreenAction(green, c));
+                k.OnCharPressed('2', c =>
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        green.Write(".");
+                        Thread.Sleep(500);
+                    }
+                    green.WriteLine("pressed " + c);
+                });
+                while(!stop) Thread.Sleep(10);
+            });
+
+            var t2 = Task.Run(() =>
+            {
+                k.OnCharPressed('2', c =>
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        yellow.Write(".");
+                        Thread.Sleep(500);
+                    }
+
+                    YellowAction(yellow, c);
+                });
+                k.OnCharPressed('3', c => yellow.WriteLine("pressed " + c));
+                while (!stop) Thread.Sleep(10);
+            });
+
+            k.WaitForKeyPress('q');
+            stop = true;
+            Task.WaitAll(t1, t2);
+
+
+            var menu = con.SplitLeft("menu", ConsoleColor.White);
+            var aw = con.SplitRight();
             var client = aw.SplitTop("client", ConsoleColor.White);
             var server = aw.SplitBottom("server", ConsoleColor.White);
 

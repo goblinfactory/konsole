@@ -34,5 +34,24 @@ namespace Konsole.Tests.KeyboardTests
             Assert.AreEqual("cc", new string(seq.ToArray()));
         }
 
+
+        [Test]
+        public void mutliple_registered_clients_should_all_recieve_events()
+        {
+            var k = new MockKeyboard('c', 'B', 'c', 'a', 'd', 'o', 'g', 't', 'q');
+
+            var seq1 = new List<char>();
+            var seq2 = new List<char>();
+
+            var keyboard = new Keyboard(k);
+
+            keyboard.OnCharPressed(new[] {'c','a','t' }, c => seq1.Add(c));
+            keyboard.OnCharPressed(new[] { 'd', 'o', 'g' }, c => seq2.Add(c));
+
+            keyboard.WaitForKeyPress('q');
+            Assert.AreEqual("ccat", new string(seq1.ToArray()));
+            Assert.AreEqual("dog", new string(seq2.ToArray()));
+        }
+
     }
 }
