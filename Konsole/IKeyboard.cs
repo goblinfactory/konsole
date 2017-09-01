@@ -24,8 +24,6 @@ namespace Konsole
         /// </summary>
         void WaitForKeyPress(params char[] chars);
 
-        //TODO : consider if I need to provide a mechanism for OnCharPressed events to run async ?
-
         /// <summary>
         /// Registers a handler.
         /// </summary>
