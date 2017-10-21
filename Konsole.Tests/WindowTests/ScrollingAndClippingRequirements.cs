@@ -59,6 +59,69 @@ namespace Konsole.Tests.WindowTests
 
         public class WhenScrollingEnabled
         {
+
+            [Test]
+            public void Write_then_WriteLine_without_overflowing_width_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
+            {
+                var c = new MockConsole(6, 4);
+                var w = new Window(c, 6, 4, K.Scrolling);
+                Assert.True(w.Scrolling);
+                w.Write("111");
+                w.WriteLine("11"); // five 1's
+                w.Write("222");
+                w.WriteLine("22");
+                w.Write("333");
+                w.WriteLine("33");
+                w.Write("444");
+                w.WriteLine("44");
+                w.Write("555");
+                w.WriteLine("55");
+                w.Write("666");
+                w.WriteLine("66");
+                var expected = new[]
+                {
+                    "33333 ",
+                    "44444 ",
+                    "55555 ",
+                    "66666 "
+                };
+                Console.WriteLine("---");
+                Console.WriteLine(c.BufferWrittenString);
+                Console.WriteLine("---");
+                c.Buffer.ShouldBeEquivalentTo(expected);
+            }
+
+            [Test]
+            public void Write_then_WriteLine_and_overflowing_width_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
+            {
+                var c = new MockConsole(6, 4);
+                var w = new Window(c, 6, 4, K.Scrolling);
+                Assert.True(w.Scrolling);
+                w.Write("111");
+                w.WriteLine("1111"); 
+                w.Write("222");
+                w.WriteLine("2222");
+                w.Write("333");
+                w.WriteLine("3333");
+                w.Write("444");
+                w.WriteLine("4444");
+                w.Write("555");
+                w.WriteLine("5555");
+                w.Write("666");
+                w.WriteLine("6666");
+                var expected = new[]
+                {
+                    "555555",
+                    "5     ",
+                    "666666",
+                    "6     "
+                };
+                Console.WriteLine("---");
+                Console.WriteLine(c.BufferWrittenString);
+                Console.WriteLine("---");
+                c.Buffer.ShouldBeEquivalentTo(expected);
+            }
+
             [Test]
             public void WriteLine_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
             {
