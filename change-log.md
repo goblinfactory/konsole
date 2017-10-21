@@ -5,33 +5,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
-### Breaking change
 
-- `IWriteLine` renamed to `IWrite`
-- `IReadKey` renamed to `IKeyboard`
-- renamed `Reader` to `Keyboard`
-
-### Added
-
-- `KeyWaitFor({c})`  use in simple loops e.g. `while(c.KeyWaitFor('q'))` default is case insensitive. Also will read the key and dispose of it, and not echo to screen.
-
-##[ 4.0.1]
-
-### Added
-- small, but important breaking change to `IConsole` to support inside windows to inherit their parent style, and easily be overridden.
-  - `IConsole TopHalf(string title = "top", WindowTheme border = null, WindowTheme window = null);`
-  - `IConsole BottomHalf(string title = "bottom", WindowTheme border = null, WindowTheme window  = null);`
-
-### Fixed
--  Various aspects of `Window` colors when creating windows in windows not correct.
-
-## [3.0.1]
+##[ 3.1.0]
 
 ### Fixed
 
-- Accidentally included `Konsole 0.0.2` as a dependancy in the packages. Removed that.
+- [Fixed serious bug write and write-line when scrolling results in first Write's text being lost #12](https://github.com/goblinfactory/konsole/issues/12)
+- Accidentally included `Konsole 0.0.2` as a dependancy in the [3.0.1] packages. Removed that.
 
-## [3.0.0]
+## [3.0.0] & [3.0.1]
 
 - quite a lot, leaving this blank-ish and will update shortly.
 - highlight changes
