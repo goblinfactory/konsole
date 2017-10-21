@@ -29,7 +29,7 @@ namespace Konsole.Tests.WindowTests
                 var right = c.SplitRight("right");
                 left.WriteLine("one");
                 left.WriteLine("two");
-                left.WriteLine("three");
+                left.Write("three");
 
                 right.WriteLine("four");
                 right.WriteLine("five");
@@ -139,19 +139,21 @@ namespace Konsole.Tests.WindowTests
                 left.WriteLine("two");
                 left.WriteLine("three");
                 left.WriteLine("four");
-                left.WriteLine("five");
+                // used write here so that last line does not add aditional scroll
+                left.Write("five");
 
                 right.WriteLine("foo");
                 right.WriteLine("cats");
                 right.WriteLine("dogs");
+                // last line is already scrolling ie at the bottom of the screen so this adds an additional scroll
                 right.WriteLine("dots");
                 Console.WriteLine(c.BufferString);
                 var expectedParent = new[]
                 {
                     "┌─ left ─┐┌─ right ┐",
-                    "│three   ││cats    │",
-                    "│four    ││dogs    │",
-                    "│five    ││dots    │",
+                    "│three   ││dogs    │",
+                    "│four    ││dots    │",
+                    "│five    ││        │",
                     "└────────┘└────────┘"
             };
 
@@ -177,7 +179,7 @@ namespace Konsole.Tests.WindowTests
                 var bottom = c.SplitBottom("bot");
                 top.WriteLine("one");
                 top.WriteLine("two");
-                top.WriteLine("three");
+                top.Write("three");
 
 
                 bottom.WriteLine("four");
@@ -247,7 +249,7 @@ namespace Konsole.Tests.WindowTests
                 top.WriteLine("two");
                 top.WriteLine("three");
                 top.WriteLine("four");
-                top.WriteLine("five");
+                top.Write("five");
 
                 bottom.WriteLine("cats");
                 bottom.WriteLine("dogs");

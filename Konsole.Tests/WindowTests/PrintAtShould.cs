@@ -15,7 +15,7 @@ namespace Konsole.Tests.WindowTests
             var c = new MockConsole(6,4);
             var w = new Window(1,1, 4, 2,c);
             w.WriteLine("....");
-            w.WriteLine("....");
+            w.Write("....");
             w.PrintAt(0,0,"X");
             w.PrintAt(1,1,"Y");
             var expected = new[]

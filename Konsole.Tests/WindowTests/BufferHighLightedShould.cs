@@ -29,7 +29,9 @@ namespace Konsole.Tests.WindowTests
             console.BackgroundColor = normal;
             console.WriteLine(" 3");
             console.WriteLine("menu item 4");
-            console.WriteLine("menu item 5");
+            
+            // This last call is a write and not a writeLine to avoid window scrolling
+            console.Write("menu item 5"); 
 
             var expected = new[]
             {

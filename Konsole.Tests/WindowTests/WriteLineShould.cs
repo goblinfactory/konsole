@@ -16,10 +16,10 @@ namespace Konsole.Tests.WindowTests
             c.WriteLine("------");
             c.WriteLine("------");
             c.WriteLine("------");
-            c.WriteLine("------");
+            c.Write("------");
             var w = new Window(1, 1, 4, 2, c, K.Transparent);
             w.WriteLine("X");
-            w.WriteLine("Y");
+            w.Write("Y");
             var expected = new[]
             {
                 "------",
@@ -53,7 +53,7 @@ namespace Konsole.Tests.WindowTests
             w.ForegroundColor = ConsoleColor.Yellow;
             w.BackgroundColor = ConsoleColor.Black;
             w.WriteLine("Y");
-            w.WriteLine("Z");
+            w.Write("Z");
 
             var expectedAfter = new[]
             {

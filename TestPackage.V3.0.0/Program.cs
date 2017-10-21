@@ -41,6 +41,7 @@ namespace TestPackage.V3._0._3
                 green.Write("PART ONE - ");
                 green.WriteLine(" - PART TWO");
             }
+            green.Write("last line!");
                 
             Console.ReadLine();
             return;

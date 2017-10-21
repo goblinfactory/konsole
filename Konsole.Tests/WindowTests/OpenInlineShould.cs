@@ -18,8 +18,8 @@ namespace Konsole.Tests.WindowTests
             var w = Window.OpenInline(c, 2);
             w.WriteLine("cats");
             w.WriteLine("dogs");
-            w.WriteLine("fruit");
-            c.WriteLine("line2");
+            w.Write("fruit");
+            c.Write("line2");
             var expected = new[]
             {
                 "line1     ",

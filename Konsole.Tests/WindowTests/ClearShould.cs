@@ -54,7 +54,7 @@ namespace Konsole.Tests.WindowTests
             var con = new MockConsole(10,4);
             var w1 = new Window(con, 7, 2);
             w1.WriteLine("one");
-            w1.WriteLine("two");
+            w1.Write("two");
             Assert.AreEqual(new[] { "one", "two" }, w1.BufferWrittenTrimmed);
             Assert.AreEqual(new[] { "one", "two" }, con.BufferWrittenTrimmed);
             w1.Clear();
@@ -81,13 +81,13 @@ namespace Konsole.Tests.WindowTests
                 con.WriteLine("one");
                 con.WriteLine("two");
                 con.WriteLine("three");
-                con.WriteLine("four");
+                con.Write("four");
                 con.Clear();
             }
             con.WriteLine("five");
             con.WriteLine("six");
             con.WriteLine("seven");
-            con.WriteLine("eight");
+            con.Write("eight");
             var expected = new[]
             {
                 "five",
@@ -108,7 +108,7 @@ namespace Konsole.Tests.WindowTests
             Assert.AreEqual(0,con.CursorTop);
             con.WriteLine("one       ");
             con.WriteLine("two       ");
-            Assert.AreEqual(2, con.CursorTop);
+            Assert.AreEqual(1, con.CursorTop);
             con.Clear();
             Assert.AreEqual(0, con.CursorTop);
         }

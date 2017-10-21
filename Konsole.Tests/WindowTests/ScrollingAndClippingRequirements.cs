@@ -4,9 +4,6 @@ using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
 {
-    /// <summary>
-    /// I'm using the convention of "RequirementXYZ" when a requirement relates to the class itself and not to a single method, where MethodXShould is the naming convention.
-    /// </summary>
     class ScrollingAndClippingRequirements
     {
         public class WhenClippingEnabled
@@ -17,7 +14,6 @@ namespace Konsole.Tests.WindowTests
                 // need to test PrintAt, Write, WriteLine
                 var c = new MockConsole(6, 4);
                 var w = new Window(c, 6, 4, K.Clipping);
-                Assert.True(w.Clipping);
                 w.WriteLine("one");
                 w.WriteLine("two");
                 w.WriteLine("three");
@@ -25,11 +21,11 @@ namespace Konsole.Tests.WindowTests
                 w.WriteLine("five");
                 var expected = new[]
                 {
-            "one   ",
-            "two   ",
-            "three ",
-            "four  "
-            };
+                    "one   ",
+                    "two   ",
+                    "three ",
+                    "four  "
+                };
                 w.Buffer.ShouldBeEquivalentTo(expected);
             }
 
@@ -59,35 +55,100 @@ namespace Konsole.Tests.WindowTests
 
         public class WhenScrollingEnabled
         {
+            [Test]
+            public void WriteLine_when_on_bottom_line_SHOULD_Scroll_screen_up_1_line_for_each_line_that_overflows()
+            {
+                var c = new MockConsole(6, 2);
+                var w = new Window(c, 6, 2, K.Scrolling);
+                w.WriteLine("cat");
+                w.WriteLine("dog");
+                var expected = new[]
+                {
+                    "dog   ",
+                    "      "
+                };
+                c.Buffer.ShouldBeEquivalentTo(expected);
+            }
 
             [Test]
             public void Write_then_WriteLine_without_overflowing_width_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
             {
-                var c = new MockConsole(6, 4);
-                var w = new Window(c, 6, 4, K.Scrolling);
-                Assert.True(w.Scrolling);
-                w.Write("111");
-                w.WriteLine("11"); // five 1's
-                w.Write("222");
-                w.WriteLine("22");
-                w.Write("333");
-                w.WriteLine("33");
-                w.Write("444");
-                w.WriteLine("44");
-                w.Write("555");
-                w.WriteLine("55");
-                w.Write("666");
-                w.WriteLine("66");
+                var c = new MockConsole(6, 2);
+                var w = new Window(c, 6, 2, K.Scrolling);
+                w.WriteLine("cat");
+                w.WriteLine("dog");
+                w.Write("mouse");
                 var expected = new[]
                 {
-                    "33333 ",
-                    "44444 ",
-                    "55555 ",
-                    "66666 "
+                    "dog   ",
+                    "mouse "
                 };
-                Console.WriteLine("---");
-                Console.WriteLine(c.BufferWrittenString);
-                Console.WriteLine("---");
+                c.Buffer.ShouldBeEquivalentTo(expected);
+            }
+
+            [Test]
+            public void And_on_last_line_and_overflowing_width_Write_SHOULD_cause_a_scroll()
+            {
+                var c = new MockConsole(6, 2);
+                var w = new Window(c, 6, 2, K.Scrolling);
+                w.CursorLeft = 0;
+                w.CursorTop = 1;
+                w.Write("abcdefg");
+                var expected = new[]
+                {
+                    "abcdef",
+                    "g     "
+                };
+                c.Buffer.ShouldBeEquivalentTo(expected);
+            }
+
+            [Test]
+            public void And_on_last_line_and_overflowing_width_Write_and_WriteLine_SHOULD_cause_a_scroll()
+            {
+                var c = new MockConsole(6, 3);
+                var w = new Window(c, 6, 3, K.Scrolling);
+                w.CursorLeft = 0;
+                w.CursorTop = 1;
+                w.Write("abcd");
+                w.WriteLine("efg");
+                var expected = new[]
+                {
+                    "abcdef",
+                    "g     ",
+                    "      "
+                };
+                c.Buffer.ShouldBeEquivalentTo(expected);
+            }
+
+            [Test]
+            public void And_on_last_line_and_not_overflowing_width_Write_SHOULD_not_cause_a_scroll()
+            {
+                var c = new MockConsole(6, 2);
+                var w = new Window(c, 6, 2, K.Scrolling);
+                w.CursorLeft = 0;
+                w.CursorTop = 1;
+                w.Write("abcdef");
+                var expected = new[]
+                {
+                    "      ",
+                    "abcdef"
+                };
+                c.Buffer.ShouldBeEquivalentTo(expected);
+            }
+
+            [Test]
+            public void And_on_last_line_Write_SHOULD_not_cause_a_scroll()
+            {
+                var c = new MockConsole(6, 2);
+                var w = new Window(c, 6, 2, K.Scrolling);
+                w.CursorLeft = 0;
+                w.CursorTop = 1;
+                w.Write("abc");
+                var expected = new[]
+                {
+                    "      ",
+                    "abc   "
+                };
                 c.Buffer.ShouldBeEquivalentTo(expected);
             }
 
@@ -98,27 +159,21 @@ namespace Konsole.Tests.WindowTests
                 var w = new Window(c, 6, 4, K.Scrolling);
                 Assert.True(w.Scrolling);
                 w.Write("111");
-                w.WriteLine("1111"); 
+                w.WriteLine("aaaa"); 
                 w.Write("222");
-                w.WriteLine("2222");
+                w.WriteLine("bbbb");
                 w.Write("333");
-                w.WriteLine("3333");
+                w.WriteLine("cccc");
                 w.Write("444");
-                w.WriteLine("4444");
-                w.Write("555");
-                w.WriteLine("5555");
-                w.Write("666");
-                w.WriteLine("6666");
+                w.WriteLine("dddd");
+
                 var expected = new[]
                 {
-                    "555555",
-                    "5     ",
-                    "666666",
-                    "6     "
+                    "c     ",
+                    "444ddd",
+                    "d     ",
+                    "      "
                 };
-                Console.WriteLine("---");
-                Console.WriteLine(c.BufferWrittenString);
-                Console.WriteLine("---");
                 c.Buffer.ShouldBeEquivalentTo(expected);
             }
 
@@ -135,18 +190,11 @@ namespace Konsole.Tests.WindowTests
                 w.WriteLine("five");
                 var expected = new[]
                 {
-            "two   ",
-            "three ",
-            "four  ",
-            "five  "
-            };
-
-                Console.WriteLine("---");
-                Console.WriteLine(c.BufferWrittenString);
-                Console.WriteLine("---");
-                //w.Buffer.ShouldBeEquivalentTo(expected);
-
-                // this test is faulty because we're assering on the Window and not the MockConsole
+                    "three ",
+                    "four  ",
+                    "five  ",
+                    "      "
+                };
                 c.Buffer.ShouldBeEquivalentTo(expected);
             }
 
@@ -169,10 +217,6 @@ namespace Konsole.Tests.WindowTests
                     "445555",
                     "5555  ",
                 };
-
-                Console.WriteLine("------");
-                Console.WriteLine(c.BufferWrittenString);
-                Console.WriteLine("------");
                 c.Buffer.ShouldBeEquivalentTo(expected);
             }
 

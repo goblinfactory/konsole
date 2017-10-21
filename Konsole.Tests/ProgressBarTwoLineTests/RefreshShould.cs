@@ -16,13 +16,14 @@ namespace Konsole.Tests.ProgressBarTwoLineTests
         
         public void at_xx_pc_the_progress_bar_should_fill_the_balance_of_the_console_width_pro_ratio(int seq, int i, string line1, string line2)
         {
-            var console = new MockConsole(40,2);
+            var console = new MockConsole(40,3);
             var pb = new ProgressBar(console, PbStyle.DoubleLine, 100, 10);
             pb.Refresh(i,"1234567890");
             var expected = new string[]
             {
                 line1,
-                line2
+                line2,
+                "                                        "
             };
             Console.WriteLine(console.BufferWrittenString);
             CollectionAssert.AreEqual(expected,console.Buffer);

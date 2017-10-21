@@ -46,7 +46,10 @@ namespace Konsole.Tests.WindowTests
             {
                 var con = new MockConsole(10, 2);
                 con.WriteLine("one");
-                con.WriteLine("two");
+
+                // This is a write and not a writeLine to avoid window scrolling
+                con.Write("two");
+
                 Assert.AreEqual(new[] { "one       ", "two       " }, con.Buffer);
             }
 

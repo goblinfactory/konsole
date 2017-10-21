@@ -404,10 +404,26 @@ namespace Konsole
 
         public void WriteLine(string format, params object[] args)
         {
-            if (!_clipping && OverflowBottom)
+            if (_clipping && OverflowBottom)
+            {
+                return;
+            }
+
+            if (OverflowBottom)
+            {
                 ScrollUp();
-            Write(format,args);
-            Cursor = new XY(0, Cursor.Y+1);
+                Write(format, args);
+                Cursor = new XY(0, Cursor.Y + 1);
+                return;
+            }
+
+            Write(format, args);
+            Cursor = new XY(0, Cursor.Y + 1);
+            if (OverflowBottom  && !_clipping)
+            {
+                ScrollUp();
+            }
+                
         }
 
         public void Write(ConsoleColor color, string format, params object[] args)

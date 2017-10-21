@@ -16,7 +16,7 @@ namespace Konsole.Tests.WindowTests
             c.WriteLine("------");
             c.WriteLine("------");
             c.WriteLine("------");
-            c.WriteLine("------");
+            c.Write("------");
             var w = new Window(1, 1, 4, 2, c, K.Transparent);
             w.Write("X");
             w.Write(" Y");
