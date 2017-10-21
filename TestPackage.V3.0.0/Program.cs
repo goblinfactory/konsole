@@ -31,12 +31,11 @@ namespace TestPackage.V3._0._3
         {
             var con = new Window(Console.WindowWidth, 20);
 
-            var green = con.SplitLeft("left");
-            green.ForegroundColor = ConsoleColor.Green;
+            var green = con.SplitLeft("left", ConsoleColor.Green);
             
-            var yellow = con.SplitRight("right");
-            yellow.ForegroundColor = ConsoleColor.Yellow;
+            var yellow = con.SplitRight("right", ConsoleColor.Yellow);
 
+            // shows the writeline bug! When Konsole starts scrolling, first WRITE is ignored! Don't know if this is a WRITE or WRITELINE bug? Need to include test on both methods.
             for (int i = 0; i < 30; i++)
             {
                 green.Write("PART ONE - ");
