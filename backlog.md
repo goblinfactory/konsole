@@ -5,15 +5,25 @@
 ### Adding
 
 ### to fix
-- fix or investigate - bug in ZeroMQ samples; scrolling? write/write/writeLine appeared to only scroll the last write on the last line, huh!
-  - ` w = new Window(...); for(int i = 0;i<50) { w.Write("PART 1"); w.WriteLine("PART 2")}`
-  - when code above executes, only PART2 get's scrolled in the window! DOH! 
+- menu appears to be printing something to the console below the menu. run the sample app, and press and hold arrow key, and see black ' ' characters suddenly appear and start overwriting the main green demo screen area.
+- window ...on a window, seems to not work! (scrolling areas dont match)
+- detect screen width, so that we can make sure when printing off edge of screen this doesnt cause a problem.
+  - `System.ArgumentOutOfRangeException: 'The value must be greater than or equal to zero and less than the console's buffer size in that dimension.
+Parameter name: left
+Actual value was 117.'`
+- wire up ?? hook into the screen resize to support redrawing on resize? (see what can be done so that resize doesnt kill a window'd console application or script)
+- find out why resizing a console window when printing beyond end causes such a mess?
+- menu refresh does not draw the menu border
 - decide if we really must reset (redraw) the screen when we create new windows, i.e. perhaps only do that when we change the color in the new window? 
 - menu will crash if you give it two menuItems with the same shortcut key. (work it out, not rocket science!)
 - fix : allow user to specify exit character, e.g. `q` or `x` in addition to `ConsoleKey.Escape`.
 - allow menu to run code witout having to send it to a 'window', i.e. can send to the default console.
 
 ### Backlog
+- add ability to clear the screen with a background color. So that I can quickly change the console green window for the sample demos. The progressbars (slim and two line) will look more profesional with a different background colour, typically black.
+- investigate a custom console as a mobile application? automatically converting to Ionic-ish or something similar. i.e. take the console application and make it convertible into
+  an exe, wpf mobile app, website etc.
+- automatic API documentation using this script (https://gist.github.com/formix/515d3d11ee7c1c252f92) and this msbuild task. 
 - be able to use a Keyboard to wait for upper or lowercase items.
   - will be great for networking tests when 'r' and 'R' could possibly do complimentary or reverse actions.
 - constructor should not allow creating windows that overlap the bottom of a visible window.

@@ -173,7 +173,6 @@ All the test for this library have been written using `MockConsole.` For a fully
         }
 ```
 
-
 ## Building the solution
 
  ### using visual studio

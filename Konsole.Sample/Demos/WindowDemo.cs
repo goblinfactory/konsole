@@ -28,7 +28,7 @@ namespace Konsole.Sample.Demos
             var con = console;
             con.WriteLine("starting client server demo");
             var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con);
-            var server = new Window(25, 4, 25, 20, con);
+            var server = new Window(22, 4, 20, 20, con);
             client.WriteLine("CLIENT");
             client.WriteLine("------");
             server.WriteLine("SERVER");
@@ -37,18 +37,15 @@ namespace Konsole.Sample.Demos
             server.WriteLine(ConsoleColor.DarkYellow, "--> PUT some long text to show wrapping");
             server.WriteLine(ConsoleColor.Red, "<-- 404|Not Found|some long text to show wrapping|");
             client.WriteLine(ConsoleColor.Red, "--> 404|Not Found|some long text to show wrapping|");
-            
-            // line below will cause some faulty (offset) scrolling.
-            //for(int i = 0; i<30; i++) client.WriteLine(i.ToString());
 
             con.WriteLine("starting names demo");
-            // let's open a window with a box around it by using Window.Open
-            var names = Window.Open(78, 4, 40, 10, "names");
-            TestData.MakeNames(40).OrderByDescending(n => n).ToList().ForEach(n => names.WriteLine(n));
+
+            var names = Window.Open(55, 12, 40, 10, "names");
+            TestData.MakeNames(300).OrderByDescending(n => n).ToList().ForEach(n => names.WriteLine(n));
 
             con.WriteLine("starting numbers demo");
-            var numbers = Window.Open(78, 15, 40, 10, "numbers", LineThickNess.Double,ConsoleColor.White,ConsoleColor.Blue);
-            Enumerable.Range(1,200).ToList().ForEach(i => numbers.WriteLine(i.ToString()));
+            var numbers = Window.Open(35, 19, 20, 10, "numbers", LineThickNess.Double,ConsoleColor.White,ConsoleColor.Blue);
+            Enumerable.Range(1,200).ToList().ForEach(i=> numbers.WriteLine(i.ToString()));
 
         }
 

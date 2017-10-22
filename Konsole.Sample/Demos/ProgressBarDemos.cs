@@ -60,7 +60,6 @@ namespace Konsole.Sample.Demos
 
             var dirCnt = 15;
             var filesPerDir = 100;
-            var fileCnt = dirCnt * filesPerDir;
             var r = new Random();
             var q = new ConcurrentQueue<string>();
             foreach (var name in TestData.MakeNames(2000)) q.Enqueue(name);
@@ -91,11 +90,13 @@ namespace Konsole.Sample.Demos
         }
 
 
-        public static void ParallelDemo(IConsole console)
+        public static void ProgressBarTwoLineDemo(IConsole console)
         {
+            console.ForegroundColor = ConsoleColor.Black;
             console.WriteLine("ready press enter.");
             Console.ReadLine();
-
+            console.WriteLine("processing");
+            console.ForegroundColor = ConsoleColor.White;
             var dirCnt = 10;
             var filesPerDir = 100;
             var fileCnt = dirCnt * filesPerDir;
@@ -122,39 +123,39 @@ namespace Konsole.Sample.Demos
 
             foreach (var t in tasks) t.Start();
             Task.WaitAll(tasks.ToArray());
+            console.ForegroundColor = ConsoleColor.Black;
+            console.WriteLine("done.");
         }
 
-        public static void Parallel2Demo()
+        public static void ProgressBarDemo(IConsole con)
         {
-            // demo; take the first 10 directories that have files from solution root and then pretends to process (list) them.
-            // processing of each directory happens on a different thread, to simulate multiple background tasks, 
-            // e.g. file downloading.
-            // ==============================================================================================================
-            var dirs = Directory.GetDirectories(@"..\..\..\..").Where(d => Directory.GetFiles(d).Any()).Take(7);
+            var r = new Random();
+            var dirs = TestData.MakeObjectNames(r.Next(20) + 3);
 
             var tasks = new List<Task>();
             var bars = new List<ProgressBar>();
             foreach (var d in dirs)
             {
                 var dir = new DirectoryInfo(d);
-                var files = dir.GetFiles().Take(50).Select(f => f.FullName).ToArray();
+                var files = TestData.MakeFileNames(r.Next(100) + 10);
                 if (files.Length == 0) continue;
-                var bar = new ProgressBar(files.Count());
+                var bar = new ProgressBar(con, files.Count());
                 bars.Add(bar);
                 bar.Refresh(0, d);
                 tasks.Add(new Task(() => ProcessRealFiles(d, files, bar)));
             }
-            Console.WriteLine("ready press enter.");
+            con.ForegroundColor = ConsoleColor.Black;
+            con.WriteLine("ready press enter.");
             Console.ReadLine();
+            con.WriteLine("processing");
 
             foreach (var t in tasks) t.Start();
             Task.WaitAll(tasks.ToArray());
-            Console.WriteLine("done.");
+            con.WriteLine("done.");
         }
 
         public static void ProcessFakeFiles(string directory, string[] files, ProgressBar bar)
         {
-            var cnt = files.Count();
             foreach (var file in files)
             {
                 bar.Next(file);
@@ -169,7 +170,7 @@ namespace Konsole.Sample.Demos
             foreach (var file in files)
             {
                 bar.Next(new FileInfo(file).Name);
-                Thread.Sleep(150);
+                Thread.Sleep(50);
             }
         }
 

@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Konsole.Drawing;
-using Konsole.Forms;
-using Konsole.Internal;
 using Konsole.Menus;
 using Konsole.Sample.Demos;
 
@@ -28,29 +20,48 @@ namespace Konsole.Sample
 
         private static void Main(string[] args)
         {
-            var con = Window.Open(67, 0, 50, 25, "server", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkYellow);
+            var con = new Window(28, 1, 70, 30, ConsoleColor.Yellow, ConsoleColor.DarkGreen, K.Clipping);
 
-            var output1 = con;
+            PrintNumberedBox(con);
+            Console.WriteLine();
+            var menu = new Menu("Samples", ConsoleKey.X, 25,
 
-            var menu = new Menu("Samples", ConsoleKey.Escape, 30,
-
-                new MenuItem('f', "Forms", ()=> FormDemos.Run(output1)),
-                new MenuItem('b', "Boxes", ()=> BoxeDemos.Run(output1)),
-                new MenuItem('s', "Scrolling", ()=> WindowDemo.Run2(con)),
-                new MenuItem('p', "ProgressBar 1 line demo", ()=> ProgressBarDemos.ParallelDemo(con)),
-                new MenuItem('q', "ProgressBar 2 line demo", () => ProgressBarDemos.ParallelDemo(con)),
+                new MenuItem('f', "Forms", () => FormDemos.Run(con)),
+                new MenuItem('b', "Boxes", () => BoxeDemos.Run(con)),
+                new MenuItem('s', "Scrolling", () => WindowDemo.Run2(con)),
+                new MenuItem('p', "ProgressBarSlim", () => ProgressBarDemos.ProgressBarDemo(con)),
+                new MenuItem('q', "ProgressBarTwoLine", () => ProgressBarDemos.ProgressBarTwoLineDemo(con)),
                 new MenuItem('t', "Test data", () => TestDataDemo.Run(con)),
                 new MenuItem('c', "clear screen", () => con.Clear()),
-                new MenuItem('r', "RANDOM", () => RandomStuff(con))
+                //new MenuItem('r', "RANDOM", () => RandomStuff(con)),
+                new MenuItem('x', "Exit", () => { })
 
             );
+            
+            menu.OnBeforeMenuItem += (i) => { con.Clear();  };
 
-            menu.OnBeforeMenuItem += (i) => con.Clear();
+            PrintNumberedBox(con);
+
+            Console.WriteLine("\nPress 'X' to exit the demo.");
+
             menu.Run();
-
         }
 
-
+        private static void PrintNumberedBox(IConsole c)
+        {
+            c.ForegroundColor = ConsoleColor.Green;
+            // print a numbered box so that I can see where the menu is being printed
+            for (int y = 0; y < 30; y += 5)
+            {
+                c.PrintAt(0,y, y.ToString());
+                c.PrintAt(10,y, "10");
+                c.PrintAt(20,y, "20");
+                c.PrintAt(30,y, "30");
+                c.PrintAt(40,y, "40");
+                c.PrintAt(50,y, "50");
+                c.PrintAt(60,y, "60");
+            }
+        }
 
     }
 }

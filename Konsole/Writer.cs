@@ -161,6 +161,7 @@ namespace Konsole
         }
         public void PrintAt(int x, int y, char c)
         {
+            if (x >= Console.WindowWidth || x>=Console.BufferWidth) return;
             Console.SetCursorPosition(x, y);
             Console.Write(c);
         }

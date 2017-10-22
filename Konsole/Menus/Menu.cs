@@ -86,7 +86,7 @@ namespace Konsole.Menus
         private int _height;
 
         public int NumMenus { get; }
-        public int Height { get; }
+        public int Height => _height;
         public bool CaseSensitive { get; }
 
         public IKeyboard Keyboard { get; set; }
@@ -170,11 +170,11 @@ namespace Konsole.Menus
         private static void _refresh(Model model)
         {
             var con = model.Window;
+            // redraw the bounding box (menu border) nb, check what the default is...x then y? or y then x?
             int cnt = model.MenuItems.Length;
             int left = 2;
             int len = model.Width - 4;
-            con.PrintAtColor(model.Theme.Foreground, 2, 1, model.Title.FixLeft(len), model.Theme.Background);
-            con.PrintAtColor(model.Theme.Foreground, 2, 2, new string('-', len), model.Theme.Background);
+            PrintTitleAndBorder(model, con, len);
             for (int i = 0; i < cnt; i++)
             {
                 var item = model.MenuItems[i];
@@ -217,6 +217,14 @@ namespace Konsole.Menus
 
                 }
             }
+        }
+
+        private static void PrintTitleAndBorder(Model model, IConsole con, int len)
+        {
+            con.PrintAtColor(model.Theme.Foreground, 0, 0, " ".FixLeft(len + 4), model.Theme.Background);
+            con.PrintAtColor(model.Theme.Foreground, 2, 1, model.Title.FixLeft(len), model.Theme.Background);
+            con.PrintAtColor(model.Theme.Foreground, 2, 2, new string('-', len), model.Theme.Background);
+            con.PrintAtColor(model.Theme.Foreground, 0, model.Height + 1, " ".FixLeft(len + 4), model.Theme.Background);
         }
 
         private MenuItem this[int i]
