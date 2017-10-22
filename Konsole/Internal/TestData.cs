@@ -57,7 +57,11 @@ namespace Konsole.Internal
         /// </summary>
         public static string[] MakeFileNames(int howMany = 4200, params string[] extensions)
         {
-            if (extensions.Length == 0) return new string[] {};
+
+            if (extensions.Length == 0)
+            {
+                extensions = new[] {".jpeg", ".txt", ".foo"};
+            }
             var len = extensions.Length;
             var r = new Random();
             Func<int,string> ext2 = i => extensions[r.Next(len)];

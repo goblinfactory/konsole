@@ -176,9 +176,9 @@ namespace Konsole
         internal static object _staticLocker = new object();
 
         /// <summary>
-        /// This is the the only threadsafe way to create a window at the moment.
-        /// </summary>
-        public static IConsole Open(int x, int y, int width, int height, string title,
+            /// This is the the only threadsafe way to create a window at the moment.
+            /// </summary>
+            public static IConsole Open(int x, int y, int width, int height, string title,
             LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray,
             ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
         {
