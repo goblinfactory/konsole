@@ -32,6 +32,9 @@ namespace Konsole.Sample.Demos
     {
         public static void SimpleDemo(IConsole con)
         {
+            con.BackgroundColor = ConsoleColor.Black;
+            con.Clear();
+            con.ForegroundColor = ConsoleColor.Magenta;
             con.WriteLine("'p' Test Progress bars");
             con.WriteLine("----------------------");
 
@@ -129,6 +132,9 @@ namespace Konsole.Sample.Demos
 
         public static void ProgressBarDemo(IConsole con)
         {
+            con.Clear(ConsoleColor.Black);
+            con.WriteLine("Press enter to start");
+            con.ForegroundColor = ConsoleColor.White;
             var r = new Random();
             var dirs = TestData.MakeObjectNames(r.Next(20) + 3);
 
@@ -144,14 +150,11 @@ namespace Konsole.Sample.Demos
                 bar.Refresh(0, d);
                 tasks.Add(new Task(() => ProcessRealFiles(d, files, bar)));
             }
-            con.ForegroundColor = ConsoleColor.Black;
-            con.WriteLine("ready press enter.");
             Console.ReadLine();
-            con.WriteLine("processing");
-
             foreach (var t in tasks) t.Start();
             Task.WaitAll(tasks.ToArray());
-            con.WriteLine("done.");
+            con.ForegroundColor = ConsoleColor.Yellow;
+            con.WriteLine("finished.");
         }
 
         public static void ProcessFakeFiles(string directory, string[] files, ProgressBar bar)
