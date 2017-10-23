@@ -176,6 +176,11 @@ namespace Konsole
             Console.Clear();
         }
 
+        public void Clear(ConsoleColor? background)
+        {
+            Console.Clear();
+        }
+
         public IConsole BottomHalf(string title = "bottom", WindowTheme border = null, WindowTheme window = null)
         {
             throw new NotImplementedException();

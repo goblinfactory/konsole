@@ -24,12 +24,12 @@ namespace Konsole.Sample
 
             PrintNumberedBox(con);
             Console.WriteLine();
-            var menu = new Menu("Samples", ConsoleKey.X, 25,
+            var menu = new Menu("Konsole Samples", ConsoleKey.X, 25,
 
                 new MenuItem('f', "Forms", () => FormDemos.Run(con)),
                 new MenuItem('b', "Boxes", () => BoxeDemos.Run(con)),
                 new MenuItem('s', "Scrolling", () => WindowDemo.Run2(con)),
-                new MenuItem('p', "ProgressBarSlim", () => ProgressBarDemos.ProgressBarDemo(con)),
+                new MenuItem('p', "ProgressBar", () => ProgressBarDemos.ProgressBarDemo(con)),
                 new MenuItem('q', "ProgressBarTwoLine", () => ProgressBarDemos.ProgressBarTwoLineDemo(con)),
                 new MenuItem('t', "Test data", () => TestDataDemo.Run(con)),
                 new MenuItem('c', "clear screen", () => con.Clear()),

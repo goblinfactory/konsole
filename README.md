@@ -17,16 +17,40 @@ home of the simple no-dependancy console libary consisting of:
 ```csharp
     using Konsole;
            
-            var pb = new ProgressBar(50);
-            pb.Refresh(0, "connecting to server to download 5 files sychronously.");
-            Console.ReadLine();
+    Console.WriteLine("ready press enter.");
+    Console.ReadLine();
 
-            pb.Refresh(25, "downloading file number 25");
-            Console.ReadLine();
-            pb.Refresh(50, "finished.");
+    var dirCnt = 15;
+    var filesPerDir = 100;
+    var r = new Random();
+    var q = new ConcurrentQueue<string>();
+    foreach (var name in TestData.MakeNames(2000)) q.Enqueue(name);
+    var dirs = TestData.MakeObjectNames(dirCnt).Select(dir => new
+    {
+        name = dir,
+        cnt = r.Next(filesPerDir)
+    });
+
+    var tasks = new List<Task>();
+    var bars = new ConcurrentBag<ProgressBar>();
+    foreach (var d in dirs)
+    {
+        var files = q.Dequeue(d.cnt).ToArray();
+        if (files.Length == 0) continue;
+        tasks.Add(new Task(() =>
+        {
+            var bar = new ProgressBar(files.Count());
+            bars.Add(bar);
+            bar.Refresh(0, d.name);
+            ProcessFakeFiles(d.name, files, bar);
+        }));
+    }
+
+    foreach (var t in tasks) t.Start();
+    Task.WaitAll(tasks.ToArray());
+    Console.WriteLine("done.");
 ```
-(image below is incorrect, it is from the double line below, will be updating shortly.)
-![sample output](progressbar.gif)
+![sample output](docs\progress-bar.gif)
 [sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
 
 

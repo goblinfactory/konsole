@@ -292,10 +292,10 @@ namespace Konsole
             }
         }
 
-        private void init()
+        private void init(ConsoleColor? background = null)
         {
-            ForegroundColor = _startForeground;
-            BackgroundColor = _startBackground;
+            ForegroundColor =  _startForeground;
+            BackgroundColor = background ?? _startBackground;
             _lastLineWrittenTo = -1;
             _lines.Clear();
             for (int i = 0; i < _height; i++)
@@ -449,7 +449,12 @@ namespace Konsole
 
         public void Clear()
         {
-            init();
+            Clear(null);
+        }
+
+        public void Clear(ConsoleColor? background)
+        {
+            init(background);
         }
 
         public virtual void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,

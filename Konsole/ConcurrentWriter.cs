@@ -215,9 +215,14 @@ namespace Konsole
 
         public void Clear()
         {
+            Clear(null);
+        }
+
+        public void Clear(ConsoleColor? backgroundColor)
+        {
             lock (_locker)
             {
-                _window.Clear();
+                _window.Clear(backgroundColor);
             }
 
         }

@@ -23,6 +23,7 @@ namespace Konsole
         void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background);
         void ScrollUp();
         void Clear();
+        void Clear(ConsoleColor? backgroundColor);
 
         void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft,
             int targetTop, char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor);
