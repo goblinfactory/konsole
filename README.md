@@ -50,11 +50,9 @@ home of the simple no-dependancy console libary consisting of:
     Task.WaitAll(tasks.ToArray());
     Console.WriteLine("done.");
 ```
-![sample output](docs\progress-bar.gif)
-[sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
+![sample output](progressbar2.gif)
 
-
-## ProgressBar usage - DoubleLine
+## ProgressBar usage - syntax
 ```csharp
     using Konsole;
            
