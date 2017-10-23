@@ -52,7 +52,7 @@ home of the simple no-dependancy console libary consisting of:
 ```
 ![sample output](progressbar2.gif)
 
-## ProgressBar usage - syntax
+## ProgressBar usage - simple syntax
 ```csharp
     using Konsole;
            
@@ -65,8 +65,9 @@ home of the simple no-dependancy console libary consisting of:
             pb.Refresh(50, "finished.");
 ```
 
+## ProgressBarTwoLine (alternative style)
+
 ![sample output](progressbar.gif)
-[sample parallel ProgressBar code that produced the output above](readme-sample-parallel.md)
 
 ## Window usage
 
