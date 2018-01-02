@@ -19,7 +19,7 @@ namespace Konsole
             _keyboard = k;
         }
 
-        public ConsoleKeyInfo ReadKey(bool intercept = false)
+        public ConsoleKeyInfo ReadKey(bool intercept = true)
         {
             if (_keyboard != null) return _keyboard.ReadKey(intercept);
             return Console.ReadKey(intercept);
