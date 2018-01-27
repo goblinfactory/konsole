@@ -10,20 +10,32 @@ namespace Konsole.Sample.Demos
 {
     public class SplitDemo
     {
-        public static void Run(IConsole con)
+        public static void DemoSplitLeftRight(IConsole con)
         {
             con.ForegroundColor = ConsoleColor.White;
-            var c = con.SplitLeft();
-            var s = con.SplitRight();
-            var s1 = s.SplitTop("server top");
-            var s2 = s.SplitBottom("server bottom");
-            var names = TestData.MakeNames(5);
+            var left = con.SplitLeft("left");
+            var right = con.SplitRight("right");
+            var names = TestData.MakeNames(10);
             foreach (var name in names)
             {
-                s1.WriteLine(ConsoleColor.Blue, name);
-                s2.WriteLine(ConsoleColor.Yellow, name);
-            }
-        
+                left.WriteLine(ConsoleColor.Blue, name);
+                right.WriteLine(ConsoleColor.Yellow, name);
+            }        
         }
+
+        public static void DemoSplitTopBottom(IConsole con)
+        {
+            con.ForegroundColor = ConsoleColor.White;
+            var top = con.SplitTop("server top");
+            var bottom = con.SplitBottom("server bottom");
+            var names = TestData.MakeNames(10);
+            foreach (var name in names)
+            {
+                top.WriteLine(ConsoleColor.Blue, name);
+                bottom.WriteLine(ConsoleColor.Yellow, name);
+            }
+
+        }
+
     }
 }

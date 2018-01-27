@@ -16,13 +16,14 @@ namespace Konsole.Sample
             Console.WriteLine();
             var menu = new Menu("Konsole Samples", ConsoleKey.X, 25,
 
-                new MenuItem('f', "Forms", () => FormDemos.Run(con)),
-                new MenuItem('b', "Boxes", () => BoxeDemos.Run(con)),
-                new MenuItem('s', "Scrolling", () => WindowDemo.Run2(con)),
-                new MenuItem('p', "ProgressBar", () => ProgressBarDemos.ProgressBarDemo(con)),
-                new MenuItem('q', "ProgressBarTwoLine", () => ProgressBarDemos.ProgressBarTwoLineDemo(con)),
-                new MenuItem('t', "Test data", () => TestDataDemo.Run(con)),
-                new MenuItem('l', "SplitLeft, SplitRight", () =>  SplitDemo.Run(con)),
+                new MenuItem('1', "Forms", () => FormDemos.Run(con)),
+                new MenuItem('2', "Boxes", () => BoxeDemos.Run(con)),
+                new MenuItem('3', "Scrolling", () => WindowDemo.Run2(con)),
+                new MenuItem('4', "ProgressBar", () => ProgressBarDemos.ProgressBarDemo(con)),
+                new MenuItem('5', "ProgressBarTwoLine", () => ProgressBarDemos.ProgressBarTwoLineDemo(con)),
+                new MenuItem('6', "Test data", () => TestDataDemo.Run(con)),
+                new MenuItem('7', "SplitLeft, SplitRight", () =>  SplitDemo.DemoSplitLeftRight(con)),
+                new MenuItem('8', "SplitTop, SplitBottom", () =>  SplitDemo.DemoSplitTopBottom(con)),
                 new MenuItem('c', "clear screen", () => con.Clear()),
                 new MenuItem('x', "Exit", () => { })
 

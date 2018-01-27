@@ -5,6 +5,9 @@
 ### Adding
 
 ### to fix
+----
+- if using SplitLeft and SplitRight on an existing window that's not the whole screen, then the scrolling scrolls the incorrect portion of the screen.
+---- 
 - menu appears to be printing something to the console below the menu. run the sample app, and press and hold arrow key, and see black ' ' characters suddenly appear and start overwriting the main green demo screen area.
 - window ...on a window, seems to not work! (scrolling areas dont match)
 - detect screen width, so that we can make sure when printing off edge of screen this doesnt cause a problem.
