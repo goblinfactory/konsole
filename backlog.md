@@ -7,6 +7,14 @@
 ### to fix
 ----
 - if using SplitLeft and SplitRight on an existing window that's not the whole screen, then the scrolling scrolls the incorrect portion of the screen.
+  - mitigation : if you are splitting from a simple (default) window object, then splitting and scrolling works perfectly. For example;
+  
+```
+var w = new Window();
+var left = w.SplitLeft();
+var right = w.SplitRight();
+// these will both scroll perfectly correctly.
+```  
 ---- 
 - menu appears to be printing something to the console below the menu. run the sample app, and press and hold arrow key, and see black ' ' characters suddenly appear and start overwriting the main green demo screen area.
 - window ...on a window, seems to not work! (scrolling areas dont match)
