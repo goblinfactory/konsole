@@ -23,8 +23,6 @@ namespace Konsole.Sample.Demos
                 cnt++;
                 yield return item;
             }
-
-            
         }
     }
 
@@ -52,9 +50,6 @@ namespace Konsole.Sample.Demos
             pb.Refresh(10, "All cats loaded.");
             con.WriteLine(" Done!");
         }
-
-
-
 
         public static void ParallelConstructorDemo()
         {

@@ -32,7 +32,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.2.*")]
-
-// this here so that we can do some simple testing of some of the internals while spiking new fixes.
-[assembly: InternalsVisibleTo("TestPackage.V3.0.0")]
+[assembly: AssemblyVersion("3.1.0.*")]

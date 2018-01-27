@@ -8,16 +8,6 @@ namespace Konsole.Sample
 
     class Program
     {
-        
-        private static void RandomStuff(IConsole con)
-        {
-            var pb = new ProgressBar(con, PbStyle.DoubleLine, 50);
-            pb.Refresh(25,"cats");
-            Console.ReadKey(true);
-            pb.Max = 40;
-            Console.ReadKey(true);
-        }
-
         private static void Main(string[] args)
         {
             var con = new Window(28, 1, 70, 30, ConsoleColor.Yellow, ConsoleColor.DarkGreen, K.Clipping);
@@ -32,8 +22,8 @@ namespace Konsole.Sample
                 new MenuItem('p', "ProgressBar", () => ProgressBarDemos.ProgressBarDemo(con)),
                 new MenuItem('q', "ProgressBarTwoLine", () => ProgressBarDemos.ProgressBarTwoLineDemo(con)),
                 new MenuItem('t', "Test data", () => TestDataDemo.Run(con)),
+                new MenuItem('l', "SplitLeft, SplitRight", () =>  SplitDemo.Run(con)),
                 new MenuItem('c', "clear screen", () => con.Clear()),
-                //new MenuItem('r', "RANDOM", () => RandomStuff(con)),
                 new MenuItem('x', "Exit", () => { })
 
             );
