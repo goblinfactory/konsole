@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
+## [3.2.1]
+
+- had a problem uploading package to nuget, so created a new release to see if I can get past it with a fresh upload. (previous upload was hanging at 17 hours, doh!)
+
 ## [3.2.0]
 
 ### Fixed
