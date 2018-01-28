@@ -18,7 +18,6 @@ namespace Konsole.Tests.MenuTests
         public void render_the_menu_with_default_item_selected_and_with_correct_colours()
         {
             var con = new MockConsole(15, 7);
-            var output = new MockConsole();
             
             var m = new Menu(con, "MENU", ConsoleKey.Escape, 10,
                 new MenuItem('a', "item 1", () => { }),
