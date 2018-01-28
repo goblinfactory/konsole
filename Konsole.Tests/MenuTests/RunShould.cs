@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ApprovalTests;
 using ApprovalTests.Reporters;
 using FluentAssertions;
 using Konsole.Menus;
@@ -40,7 +35,7 @@ namespace Konsole.Tests.MenuTests
 
             Console.WriteLine(con.BufferString);
             con.Buffer.ShouldBeEquivalentTo(expected);
-            Approvals.VerifyAll(con.BufferWithColor,"menu");
+            con.BufferWithColor.Verify();
         }
 
 
