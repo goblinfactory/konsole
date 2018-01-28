@@ -1,14 +1,53 @@
 ﻿using System;
 using FluentAssertions;
+using Konsole.Layouts;
 using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
 {
     class ScrollingAndClippingRequirements
     {
-        public void when_nesting_windows_printing_that_causes_scrolling_SHOULD_scroll_the_nested_portion_of_the_screen_only()
+        // Nesting SplitWindows is call Split on a window already created by calling split.
+        // for example w1 = new Window(); w2 = w1.SplitLeft(); w3 = w2.SplitRight();
+        // in the example above, w3 is a nested SplitWindow and w1 and w2 are not.
+
+        [Test]
+        public void when_nesting_split_windows_printing_that_causes_scrolling_SHOULD_scroll_the_nested_portion_of_the_screen_only()
         {
-            Assert.Inconclusive("Not yet implemented");
+            var c = new MockConsole(20,10);
+            var left = c.SplitLeft("left");
+            var right = c.SplitRight("right");
+            var nestedTop = left.SplitTop("ntop");
+            var nestedBottom = left.SplitBottom("nbot");
+            void Writelines(IConsole con)
+            {
+                con.WriteLine("one");
+                con.WriteLine("two");
+                con.WriteLine("three");
+                con.WriteLine("four");
+                con.WriteLine("five");
+                con.Write("six");
+            }
+
+            Writelines(right);
+            Writelines(nestedTop);
+            Writelines(nestedBottom);
+
+            var expected = new[]
+            {
+                "┌─ left ─┐┌─ right ┐",
+                "│┌ ntop ┐││one     │",
+                "││five  │││two     │",
+                "││six   │││three   │",
+                "│└──────┘││four    │",
+                "│┌ nbot ┐││five    │",
+                "││five  │││six     │",
+                "││six   │││        │",
+                "│└──────┘││        │",
+                "└────────┘└────────┘"
+            };
+            Console.WriteLine(c.BufferString);
+            c.Buffer.ShouldBeEquivalentTo(expected);
         }
 
         [Test]
