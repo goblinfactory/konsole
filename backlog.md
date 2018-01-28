@@ -31,7 +31,6 @@ Actual value was 117.'`
 - allow menu to run code witout having to send it to a 'window', i.e. can send to the default console.
 
 ### Backlog
-- `IWrite()` does not have an overload that just takes an object or string? So you can't do `var w = new Window(); w.WriteLine("hello!")!` How could I have missed this? doh!!
 - add ability to clear the screen with a background color. So that I can quickly change the console green window for the sample demos. The progressbars (slim and two line) will look more profesional with a different background colour, typically black.
 - investigate a custom console as a mobile application? automatically converting to Ionic-ish or something similar. i.e. take the console application and make it convertible into
   an exe, wpf mobile app, website etc.

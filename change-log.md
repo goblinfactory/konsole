@@ -5,8 +5,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
+#[3.1.1]
 
-##[ 3.1.0]
+- add super important missing IWrite overload.
+- `IWrite()` did not have an overload that just takes a single parameter. Can't believe I missed this.
+- Added `WriteLine(object param)` and `Write(object param)`
+
+##[3.1.0]
 
 ### Fixed
 
