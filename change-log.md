@@ -5,6 +5,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
+## [3.3.0]
+
+### Fixed
+
+- #18 : Nested floating windows dont scroll properly.
+
+### Added
+
+- New attributes, `AbsoluteX` and `AbsoluteY` to `IConsole` so that you can know the absolute position of a window, in addition to it's relative position to it's parent.
+- Added nested window demo code to the sample project.
+
 ## [3.2.1]
 
 - had a problem uploading package to nuget, so created a new release to see if I can get past it with a fresh upload. (previous upload was hanging at 17 hours, doh!)
