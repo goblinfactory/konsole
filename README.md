@@ -12,18 +12,22 @@ home of the simple no-dependancy console libary consisting of:
 
 ![install-package Goblinfactory.Konsole](install-package.png)
 
-## ProgressBar
-
+## ProgressBar usage - simple syntax
 ```csharp
-    
-    var pb = new ProgressBar("game assets");
-    while(...) { 
-        ... 
-        pb.Refresh(i,$"downloading asset {i}")
-        ... // your code can continue to also write stuff to console
-    }
+    using Konsole;
+           
+            var pb = new ProgressBar(PbStyle.DoubleLine, 50);
+            pb.Refresh(0, "connecting to server to download 5 files asychronously.");
+            Console.ReadLine();
 
+            pb.Refresh(25, "downloading file number 25");
+            Console.ReadLine();
+            pb.Refresh(50, "finished.");
 ```
+
+## ProgressBarTwoLine (alternative style)
+
+![sample output](progressbar.gif)
 
 ## ProgressBar worked parallel example
 ```csharp
@@ -63,23 +67,6 @@ home of the simple no-dependancy console libary consisting of:
     Console.WriteLine("done.");
 ```
 ![sample output](progressbar2.gif)
-
-## ProgressBar usage - simple syntax
-```csharp
-    using Konsole;
-           
-            var pb = new ProgressBar(PbStyle.DoubleLine, 50);
-            pb.Refresh(0, "connecting to server to download 5 files asychronously.");
-            Console.ReadLine();
-
-            pb.Refresh(25, "downloading file number 25");
-            Console.ReadLine();
-            pb.Refresh(50, "finished.");
-```
-
-## ProgressBarTwoLine (alternative style)
-
-![sample output](progressbar.gif)
 
 ## Window usage
 
