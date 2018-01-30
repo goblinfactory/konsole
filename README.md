@@ -12,8 +12,20 @@ home of the simple no-dependancy console libary consisting of:
 
 ![install-package Goblinfactory.Konsole](install-package.png)
 
+## ProgressBar
 
-## ProgressBar usage
+```csharp
+    
+    var pb = new ProgressBar("game assets");
+    while(...) { 
+        ... 
+        pb.Refresh(i,$"downloading asset {i}")
+        ... // your code can continue to also write stuff to console
+    }
+
+```
+
+## ProgressBar worked parallel example
 ```csharp
     using Konsole;
            
