@@ -15,6 +15,11 @@ namespace Konsole
     {
         public bool OverflowBottom => CursorTop >= _height;
 
+        // these two fields made mutable to avoid overcomplicating the constructor overloads.
+        // perhaps there's a simpler way to do this?
+        private int _absoluteX;
+        private int _absoluteY;
+
         private readonly int _x;
         private readonly int _y;
         private readonly int _width;
@@ -216,11 +221,16 @@ namespace Konsole
 
         }
 
-        internal static IConsole _CreateWindow(int? x, int? y, int? width, int? height, ConsoleColor foreground,
+        internal static IConsole _CreateFloatingWindow(int? x, int? y, int? width, int? height, ConsoleColor foreground,
             ConsoleColor background,
             bool echo = true, IConsole echoConsole = null, params K[] options)
         {
-            return new Window(x, y, width, height, foreground, background, echo, echoConsole, options).Concurrent();
+            lock (_staticLocker)
+            {
+                var w = new Window(x, y, width, height, foreground, background, echo, echoConsole, options);
+                w.SetWindowOffset(x ?? 0, y ?? 0);
+                return w.Concurrent();
+            }
         }
 
         protected internal Window(int? x, int? y, int? width, int? height, ConsoleColor foreground, ConsoleColor background,
@@ -233,7 +243,8 @@ namespace Konsole
                 if (_echo && _echoConsole == null) _echoConsole = new Writer();
                 _y = y ?? _echoConsole?.CursorTop ?? Console.CursorTop + height ?? 0;
                 _x = x ?? 0;
-
+                _absoluteX = echoConsole?.AbsoluteX ?? 0 + _x;
+                _absoluteY = echoConsole?.AbsoluteX ?? 0 + _y;
                 _width = GetStartWidth(echo, width, _x, echoConsole);
                 _height = GetStartHeight(echo, height, _y, echoConsole);
                 _startForeground = foreground;
@@ -462,7 +473,7 @@ namespace Konsole
         {
             if (!_echo) return;
             if (_echoConsole!=null)
-                _echoConsole.MoveBufferArea(sourceLeft,sourceTop,sourceWidth,sourceHeight,targetLeft,targetTop,sourceChar,sourceForeColor,sourceBackColor);
+                _echoConsole.MoveBufferArea(sourceLeft  + AbsoluteX,sourceTop + AbsoluteY,sourceWidth,sourceHeight,targetLeft + AbsoluteX, targetTop + AbsoluteY, sourceChar, sourceForeColor, sourceBackColor);
                 
             else
             {
@@ -563,11 +574,15 @@ namespace Konsole
             }
         }
 
-
-        public int WindowWidth
+        internal void SetWindowOffset(int x, int y)
         {
-            get { return _width; }
+            _absoluteX = x;
+            _absoluteY = y;
         }
+
+        public int AbsoluteY => _absoluteY;
+        public int AbsoluteX => _absoluteX;
+        public int WindowWidth => _width;
 
         public ConsoleColor BackgroundColor { get; set; }
 
@@ -638,9 +653,6 @@ namespace Konsole
             }
 
         }
-
-
-
 
         public void PrintAt(int x, int y, char c)
         {

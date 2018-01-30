@@ -78,6 +78,9 @@ namespace Konsole
             }
         }
 
+        public int AbsoluteX => _window.AbsoluteX;
+        public int AbsoluteY => _window.AbsoluteY;
+
         public int WindowWidth
         {
             get

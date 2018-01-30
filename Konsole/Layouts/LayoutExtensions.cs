@@ -8,6 +8,7 @@ using Konsole.Menus;
 
 namespace Konsole.Layouts
 {
+    // TODO: convert to a partial class of Window so that the namespace does not need to be referenced?
     public static class LayoutExtensions
     {
         // TOPS
@@ -149,9 +150,9 @@ namespace Konsole.Layouts
                     {
                         new Draw(c).Box(offset, 0, w - 1 + offset, h - 1, title, thickness);
                     });
-                    return Window._CreateWindow(1 + offset, 1, w - 2, h - 2, foreground, c.BackgroundColor, true, c, null);
+                    return Window._CreateFloatingWindow(1 + offset, 1, w - 2, h - 2, foreground, c.BackgroundColor, true, c, null);
                 }
-                return Window._CreateWindow(offset, 0, w, h, foreground, c.BackgroundColor, true, c, null);
+                return Window._CreateFloatingWindow(offset, 0, w, h, foreground, c.BackgroundColor, true, c, null);
             }
         }
 
@@ -171,9 +172,9 @@ namespace Konsole.Layouts
                     {
                         new Draw(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness);
                     });
-                    return Window._CreateWindow(1, 1 + offset, w - 2, h - 2, foreground, c.BackgroundColor, true, c, null);
+                    return Window._CreateFloatingWindow(1, 1 + offset, w - 2, h - 2, foreground, c.BackgroundColor, true, c, null);
                 }
-                return Window._CreateWindow(0, 0 + offset, w, h, foreground, c.BackgroundColor, true, c, null);
+                return Window._CreateFloatingWindow(0, 0 + offset, w, h, foreground, c.BackgroundColor, true, c, null);
             }
         }
 

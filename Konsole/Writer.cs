@@ -59,6 +59,9 @@ namespace Konsole
             }
         }
 
+        public int AbsoluteX => 0;
+        public int AbsoluteY => 0;
+
         public int WindowWidth => Console.WindowWidth;
         public int WindowHeight => Console.WindowHeight;
 

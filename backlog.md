@@ -5,6 +5,8 @@
 ### Adding
 
 ### to fix
+
+- printing special characters e.g. linefeed "\n" does not work.
 ----
 - if using SplitLeft and SplitRight on an existing window that's not the whole screen, then the scrolling scrolls the incorrect portion of the screen.
   - mitigation : if you are splitting from a simple (default) window object, then splitting and scrolling works perfectly. For example;

@@ -1,4 +1,5 @@
 ﻿using System;
+using Konsole.Layouts;
 using Konsole.Menus;
 using Konsole.Sample.Demos;
 
@@ -8,6 +9,32 @@ namespace Konsole.Sample
 
     class Program
     {
+        private static void TestNestedWindows(IConsole w)
+        {
+            var left = w.SplitLeft("left", ConsoleColor.Black);
+            var right = w.SplitRight("right", ConsoleColor.Black);
+            var nestedTop = left.SplitTop("importing", ConsoleColor.White);
+            var nestedBottom = left.SplitBottom("exporting", ConsoleColor.DarkRed);
+            void Writelines(IConsole con)
+            {
+                for (int i = 1; i < 11; i++)
+                {
+                    con.WriteLine($"Batch number :{i}");
+                    con.WriteLine($"----------------");
+                    con.WriteLine("one");
+                    con.WriteLine("two");
+                    con.WriteLine("three");
+                    con.WriteLine("four");
+                    con.WriteLine("-----------------");
+                }
+            }
+
+            for(int i = 0; i<100; i++) right.WriteLine(i.ToString());
+
+            Writelines(nestedTop);
+            Writelines(nestedBottom);
+        }
+
         private static void Main(string[] args)
         {
             var con = new Window(28, 1, 70, 30, ConsoleColor.Yellow, ConsoleColor.DarkGreen, K.Clipping);
@@ -24,6 +51,7 @@ namespace Konsole.Sample
                 new MenuItem('6', "Test data", () => TestDataDemo.Run(con)),
                 new MenuItem('7', "SplitLeft, SplitRight", () =>  SplitDemo.DemoSplitLeftRight(con)),
                 new MenuItem('8', "SplitTop, SplitBottom", () =>  SplitDemo.DemoSplitTopBottom(con)),
+                new MenuItem('9', "Nested window-scroll", () => TestNestedWindows(con)),
                 new MenuItem('c', "clear screen", () => con.Clear()),
                 new MenuItem('x', "Exit", () => { })
 

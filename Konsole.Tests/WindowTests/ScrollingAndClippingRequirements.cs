@@ -1,22 +1,26 @@
 ﻿using System;
+using ApprovalTests;
+using ApprovalTests.Reporters;
 using FluentAssertions;
 using Konsole.Layouts;
 using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
 {
+    [UseReporter(typeof(DiffReporter))]
     class ScrollingAndClippingRequirements
     {
-        // Nesting SplitWindows is call Split on a window already created by calling split.
+        // Nesting SplitWindows is when you call w.SplitLeft() or w.SplitRight() on a window already created by calling split.
         // for example w1 = new Window(); w2 = w1.SplitLeft(); w3 = w2.SplitRight();
-        // in the example above, w3 is a nested SplitWindow and w1 and w2 are not.
+        // in the example above, w3 is a nested SplitWindow and w1. w2 is not a nested split window.
 
         [Test]
         public void when_nesting_split_windows_printing_that_causes_scrolling_SHOULD_scroll_the_nested_portion_of_the_screen_only()
         {
-            var c = new MockConsole(20,12);
-            var left = c.SplitLeft("left");
-            var right = c.SplitRight("right");
+            var w = new MockConsole(20,12);
+
+            var left = w.SplitLeft("left");
+            var right = w.SplitRight("right");
             var nestedTop = left.SplitTop("ntop");
             var nestedBottom = left.SplitBottom("nbot");
             void Writelines(IConsole con)
@@ -26,9 +30,10 @@ namespace Konsole.Tests.WindowTests
                 con.WriteLine("three");
                 con.Write("four");
             }
-            Writelines(right);
+
             Writelines(nestedTop);
             Writelines(nestedBottom);
+            Writelines(right);
 
             var expected = new[]
             {
@@ -46,28 +51,8 @@ namespace Konsole.Tests.WindowTests
                 "└────────┘└────────┘"
             };
 
-            Console.WriteLine(c.BufferString);
-
-            // c.Buffer.ShouldBeEquivalentTo(expected);
-            // details - debugging the error
-            // -----------------------------
-            // when running the test above we expect only two calls to MoveBuffer area
-
-            // expected
-            // Console.MoveBufferArea( 2, 3, 6, 2, 2, 2 )
-            // Console.MoveBufferArea( 2, 8, 6, 2, 2, 2 )
-
-            //Actual
-            // Console.MoveBufferArea( 1, 2, 6, 2, 1, 1 )
-            // Console.MoveBufferArea( 1, 7, 6, 2, 1, 6 )
-
-            //Console.MoveBufferArea
-            // sourceLeft:1, 
-            // sourceTop:1,
-            // sourceWidth:1, 
-            // sourceHeight:1, 
-            // targetLeft:1, 
-            // targetTop:1
+            Console.WriteLine(w.BufferString);
+            w.Buffer.ShouldBeEquivalentTo(expected);
         }
 
         [Test]
