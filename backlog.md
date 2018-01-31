@@ -1,22 +1,53 @@
 # Roadmap
 
+These are just ideas. The true roadmap is driven by solving problems I encouter as I use Konsole to help me write my own console test, benchmarking, study and micro services projects.
+
+### Daft plan for ver [6.1]
+
+- Touch support for mobile and tablet
+- Use Konsole constructs as a way to build really (REALLY) simple cross platform applications with very few lines of code.  (TBD) Needs an example.
+- e.g. what if I could take this 10 line powershell script, and turn it into a simple application I could run via my mobile?
+
+### Daft plan for ver [6.0]
+
+- Replacable console window.
+  - Launch a console app without needing a console window. 
+    - So that this can be used as a quick and dirty replacement when prototyping some functionality. For example, can use feature switching to turn a feature to be tested on, and the console window can be a temporary replacement for capturing or displaying a menu without having to make expensive WPF changes, so that the real feature under test, can be prototyped and tested quickly, and later baked into the controlling WPF application.
+  - be able to "launch" a console app, from a script to achieve a task.
+- Standard interface for console replacement allowing for
+  - multiple platforms automatically built using build script file referencing? (.net standard or PCL bait and switch)? TBD
+  - automatically support the appropriate platform
+  - Mac, Nix, Windows, Mobile, Tablet, (web) Html Browsers
+- pluggable graph library for viewing realtime graph updates inside the console window, without leaving "text" mode.
+  - e.g. run a script to start process x,y,z and then monitor the results in realtime, requests per second, response time 99th percentile, total users etc.
+
+### Draft plan for ver [5.0]
+
+- Manually scrollable windows. 
+  - Press tab to switch between `active' window.
+  - switching `window` will highlight active window border.
+  - configurable scroll and up down keys, default to arrow keys and page up and down.
+- Masked input : to replace readline.
+- Form input
+  - array of inputs with X,Y positions
+  - automatic keyboard support to navigate between active input
+  - configurable submit key, default = enter
+
+### Plan for ver [4.0]
+
+- move namespace for Layouts into root, or convert to partial classes so that these extensions are immediately accessible without having to find them with resharper or know about the namespace beforehand.
+- Migrate to C# 7
+- full async support
+- simpler libraries, e.g. `Konsole`, `Konsole.ProgressBar`, `Konsole.Windows`, `Konsole.TestData` : so that users can only import the components that are required.  Also, so that `ProgressBar` can be released as a .net standard comoponent without the rest?
+- rename package to 'Konsole'? If I can get this package name in Nuget.
+- Investigate if `.Net Standard` support makes sense. If not, explain or prove why, in case this ever changes.
+
 ## [unreleased]
 
 ### Adding
 
 ### to fix
 
-- printing special characters e.g. linefeed "\n" does not work.
-----
-- if using SplitLeft and SplitRight on an existing window that's not the whole screen, then the scrolling scrolls the incorrect portion of the screen.
-  - mitigation : if you are splitting from a simple (default) window object, then splitting and scrolling works perfectly. For example;
-  
-```
-var w = new Window();
-var left = w.SplitLeft();
-var right = w.SplitRight();
-// these will both scroll perfectly correctly.
-```  
 ---- 
 - menu appears to be printing something to the console below the menu. run the sample app, and press and hold arrow key, and see black ' ' characters suddenly appear and start overwriting the main green demo screen area.
 - window ...on a window, seems to not work! (scrolling areas dont match)
