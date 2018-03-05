@@ -50,6 +50,9 @@ These are just ideas. The true roadmap is driven by solving problems I encouter 
 ### to fix
 
 ---- 
+
+(5.3.18) some of these have been fixed and are in the latest release. I need to review the bug list and remove those that have been fixed or no longer apply.
+
 - menu appears to be printing something to the console below the menu. run the sample app, and press and hold arrow key, and see black ' ' characters suddenly appear and start overwriting the main green demo screen area.
 - window ...on a window, seems to not work! (scrolling areas dont match)
 - detect screen width, so that we can make sure when printing off edge of screen this doesnt cause a problem.
