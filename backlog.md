@@ -35,6 +35,7 @@ These are just ideas. The true roadmap is driven by solving problems I encouter 
 
 ### Plan for ver [4.0]
 
+- capture StdIn, StdOut, StdError, so that I can capture output from libraries that write to the console, e.g. `BenchMarkRunner.Run<SUT>()`
 - move namespace for Layouts into root, or convert to partial classes so that these extensions are immediately accessible without having to find them with resharper or know about the namespace beforehand.
 - Migrate to C# 7
 - full async support
