@@ -2,6 +2,9 @@
 
 These are just ideas. The true roadmap is driven by solving problems I encouter as I use Konsole to help me write my own console test, benchmarking, study and micro services projects.
 
+### Unsorted backlog
+- move Konsole.Layouts to main namespace so that SplitLeft and SplitRight are automatically available on windows.
+
 ### Daft plan for ver [6.1]
 
 - Touch support for mobile and tablet
@@ -21,7 +24,7 @@ These are just ideas. The true roadmap is driven by solving problems I encouter 
 - pluggable graph library for viewing realtime graph updates inside the console window, without leaving "text" mode.
   - e.g. run a script to start process x,y,z and then monitor the results in realtime, requests per second, response time 99th percentile, total users etc.
 
-### Draft plan for ver [5.0]
+### Daft plan for ver [5.0]
 
 - Manually scrollable windows. 
   - Press tab to switch between `active' window.
