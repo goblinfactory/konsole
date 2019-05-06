@@ -3,6 +3,8 @@
 These are just ideas. The true roadmap is driven by solving problems I encouter as I use Konsole to help me write my own console test, benchmarking, study and micro services projects.
 
 ### Unsorted backlog
+
+- GetCursorVisible is not support on Mac (mono?) platform. Check for platform and ignore setting cursor visible. This is not critical and should not bomb an application on mac.
 - move Konsole.Layouts to main namespace so that SplitLeft and SplitRight are automatically available on windows.
 
 ### Daft plan for ver [6.1]
