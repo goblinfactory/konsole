@@ -4,6 +4,7 @@ These are just ideas. The true roadmap is driven by solving problems I encouter 
 
 ### Unsorted backlog
 
+- make it all cloud based? take a look at support xterm? https://github.com/xtermjs
 - support Mac via ncursors. (provide a multiplatform support in the build to dynamically link in ncursors on Mac via .NET)
 - GetCursorVisible is not support on Mac (mono?) platform. Check for platform and ignore setting cursor visible. This is not critical and should not bomb an application on mac.
 - move Konsole.Layouts to main namespace so that SplitLeft and SplitRight are automatically available on windows.
