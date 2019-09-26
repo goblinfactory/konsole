@@ -103,9 +103,9 @@ namespace Konsole
                     float perc = (float) _current/(float) _max;
                     int barWidth = _console.WindowWidth - (TextWidth+8);
                     var bar = _current > 0
-                        ? new string(_character, (int) ((float) (barWidth)*perc)).PadRight(barWidth)
+                        ? new string(_character, Convert.ToInt32(barWidth*perc)).PadRight(barWidth)
                         : new string(' ', barWidth);
-                    var text = string.Format("{0} ({1,-3}%) ", clippedText, (int) (perc*100));
+                    var text = string.Format("{0} ({1,-3}%) ", clippedText, Convert.ToInt32(perc*100));
                     _console.CursorTop = _y;
                     _console.CursorLeft = 0; 
                     _console.ForegroundColor = _c;
