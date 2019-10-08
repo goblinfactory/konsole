@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
+## [3.4.0]
+
+### Fixed
+
+- #26 : fix bug where ProgressBar and ProgressBarSlim would report incorrect percentage (out by 1%) for some values.
+
 ## [3.3.0]
 
 ### Fixed
