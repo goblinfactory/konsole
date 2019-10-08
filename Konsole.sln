@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage.V3.2.1", "Konso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage.V2.0.0", "Konsole.NugetPackage.Tests\TestPackage.V2.0.0\TestPackage.V2.0.0.csproj", "{56524031-028B-41D9-8FA7-3F7FE1DDD03D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage.V3.4.0", "Konsole.NugetPackage.Tests\TestPackage.V3.4.0\TestPackage.V3.4.0.csproj", "{E545CABC-D736-4E97-82AD-93B533542587}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,10 @@ Global
 		{56524031-028B-41D9-8FA7-3F7FE1DDD03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56524031-028B-41D9-8FA7-3F7FE1DDD03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56524031-028B-41D9-8FA7-3F7FE1DDD03D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E545CABC-D736-4E97-82AD-93B533542587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E545CABC-D736-4E97-82AD-93B533542587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E545CABC-D736-4E97-82AD-93B533542587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E545CABC-D736-4E97-82AD-93B533542587}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{183A1F8D-0F01-4A82-94A3-1D8C5BD6D7CF} = {7577C893-0462-4355-8948-C4788B9FB3FB}
 		{6FB92196-784E-41E6-ABF9-4EAD633EC090} = {7577C893-0462-4355-8948-C4788B9FB3FB}
 		{56524031-028B-41D9-8FA7-3F7FE1DDD03D} = {7577C893-0462-4355-8948-C4788B9FB3FB}
+		{E545CABC-D736-4E97-82AD-93B533542587} = {7577C893-0462-4355-8948-C4788B9FB3FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6F756B7F-9719-4C0C-A0EF-74FCB81FAA9D}

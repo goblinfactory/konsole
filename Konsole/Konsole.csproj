@@ -1,114 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{90808A57-0462-4D92-94F8-DA95B7931895}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Konsole</RootNamespace>
-    <AssemblyName>Konsole</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <Title>Goblinfactory.Konsole</Title>
+    <TargetFramework>net45</TargetFramework>
+    <AssemblyName>Goblinfactory.Konsole</AssemblyName>
+    <RootNamespace>Goblinfactory.Konsole</RootNamespace>
+    <Version>3.4.0</Version>
+    <Owners>Goblinfactory Ltd</Owners>
+    <Company>Goblinfactory Ltd</Company>
+    <Authors>Alan Hemmings</Authors>
+    <Description>Simple cross platform console library consisting of ProgressBar, Window, Form, Draw and MockConsole.</Description>
+    
+    <!--
+    
+    <Summary><Title>
+    BOTH OF THESE FIELDS ARE DEPRECATED (ignore the error message in nuget website) no longer used : see nuget issue #2937.
+    https://github.com/dotnet/project-system/issues/2937
+    
+    -->
+    
+    <Copyright>Copyright Goblinfactory Ltd, 2017, all rights reserved.</Copyright>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageTags>konsole progress progressbar window form iconsole&lt;</PackageTags>
+    <PackageReleaseNotes>fix bug where ProgressBar and ProgressBarSlim would report incorrect percentage (out by 1%) for some values.</PackageReleaseNotes>
+    <PackageIcon>progress.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/goblinfactory/konsole/</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <None Include="progress.png" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Case.cs" />
-    <Compile Include="Colors.cs" />
-    <Compile Include="ConcurrentWriter.cs" />
-    <Compile Include="ConsoleKeyExtensions.cs" />
-    <Compile Include="ConsoleKeyInfoExtensions.cs" />
-    <Compile Include="ConsoleState.cs" />
-    <Compile Include="Drawing\CellMap.cs" />
-    <Compile Include="Drawing\LineCharTypes.cs" />
-    <Compile Include="Drawing\Draw.cs" />
-    <Compile Include="Drawing\MergeOrOverlap.cs" />
-    <Compile Include="Drawing\LineMerger.cs" />
-    <Compile Include="Drawing\LineThickNess.cs" />
-    <Compile Include="Internal\IntegerExtensions.cs" />
-    <Compile Include="Internal\StringExtensions.cs" />
-    <Compile Include="Forms\ThickBoxStyle.cs" />
-    <Compile Include="Internal\CellColorMapper.cs" />
-    <Compile Include="Internal\HiliteBuffer.cs" />
-    <Compile Include="Internal\Cell.cs" />
-    <Compile Include="IProgressBar.cs" />
-    <Compile Include="K.cs" />
-    <Compile Include="IKeyboard.cs" />
-    <Compile Include="Keyboard.cs" />
-    <Compile Include="Layouts\WindowLayoutExtensions.cs" />
-    <Compile Include="Menus\ExitMenu.cs" />
-    <Compile Include="Menus\Menu.cs" />
-    <Compile Include="Menus\MenuItem.cs" />
-    <Compile Include="Menus\Model.cs" />
-    <Compile Include="Menus\TaskMenu.cs" />
-    <Compile Include="Menus\TaskMenuItem.cs" />
-    <Compile Include="Menus\Theme.cs" />
-    <Compile Include="Menus\WindowTheme.cs" />
-    <Compile Include="MockConsole.cs" />
-    <Compile Include="MockKeyboard.cs" />
-    <Compile Include="ProgressBar.cs" />
-    <Compile Include="ProgressBarSlim.cs" />
-    <Compile Include="Layouts\LayoutExtensions.cs" />
-    <Compile Include="Writer.cs" />
-    <Compile Include="Forms\BoxWriter.cs" />
-    <Compile Include="Forms\FieldReader.cs" />
-    <Compile Include="Forms\Form.cs" />
-    <Compile Include="Forms\IBoxStyle.cs" />
-    <Compile Include="Forms\IBoxWriter.cs" />
-    <Compile Include="Forms\ThinBoxStyle.cs" />
-    <Compile Include="IConsole.cs" />
-    <Compile Include="IWrite.cs" />
-    <Compile Include="Internal\Row.cs" />
-    <Compile Include="Window.cs" />
-    <Compile Include="ProgressBarTwoLine.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Internal\TestData.cs" />
-    <Compile Include="XY.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Konsole.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\Internal\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
