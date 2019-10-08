@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using ApprovalTests;
 using ApprovalTests.Reporters;
 using FluentAssertions;
 using Konsole.Menus;
@@ -34,8 +36,8 @@ namespace Konsole.Tests.MenuTests
             };
 
             Console.WriteLine(con.BufferString);
-            con.Buffer.ShouldBeEquivalentTo(expected);
-            con.BufferWithColor.Verify();
+            con.Buffer.Should().BeEquivalentTo(expected);
+            Approvals.VerifyAll(con.BufferWithColor.AsEnumerable(),"label");
         }
 
 
@@ -67,7 +69,7 @@ namespace Konsole.Tests.MenuTests
             };
             
             foreach(var line in con.BufferWithColor) Console.WriteLine(line);
-            con.BufferWithColor.ShouldBeEquivalentTo(expected);
+            con.BufferWithColor.Should().BeEquivalentTo(expected);
         }
 
     }

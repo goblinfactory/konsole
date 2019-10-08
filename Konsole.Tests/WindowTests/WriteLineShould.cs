@@ -28,7 +28,7 @@ namespace Konsole.Tests.WindowTests
                 "------"
             };
             Console.WriteLine(c.BufferWrittenString);
-            c.Buffer.ShouldBeEquivalentTo(expected);
+            c.Buffer.Should().BeEquivalentTo(expected);
         }
 
 
@@ -91,7 +91,7 @@ namespace Konsole.Tests.WindowTests
             var console = new Window(parent);
 
             console.WriteLine("This");
-            state.ShouldBeEquivalentTo(parent.State);
+            state.Should().BeEquivalentTo(parent.State);
         }
 
     }

@@ -54,7 +54,7 @@ namespace Konsole.Tests.MenuTests
             );
             menu.Keyboard = new MockKeyboard(ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.Escape);
             menu.Run();
-            output.BufferWrittenTrimmed.ShouldBeEquivalentTo(new []
+            output.BufferWrittenTrimmed.Should().BeEquivalentTo(new []
                 {
                  "dogs",
                  "mice"   

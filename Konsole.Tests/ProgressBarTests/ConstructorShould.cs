@@ -79,7 +79,7 @@ namespace Konsole.Tests.ProgressBarTests
             var expected = Enumerable.Range(0, numThreads).Select(i => i*2).ToArray();
             Console.WriteLine(sw.ElapsedMilliseconds);
             Console.WriteLine(console.BufferWrittenString);
-            ypositions.ShouldBeEquivalentTo(expected);
+            ypositions.Should().BeEquivalentTo(expected);
             
 
         }

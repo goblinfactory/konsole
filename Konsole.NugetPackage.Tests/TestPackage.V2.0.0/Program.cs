@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Konsole;
 using Konsole.Drawing;
 using Konsole.Internal;
 
-namespace TestPackage.V2
+namespace TestPackage.V2._0._1
 {
     class Program
     {
@@ -37,6 +34,7 @@ namespace TestPackage.V2
             Enumerable.Range(1, 200).ToList().ForEach(i => numbers.WriteLine(i.ToString()));
 
             Console.ReadLine();
+
         }
     }
 }

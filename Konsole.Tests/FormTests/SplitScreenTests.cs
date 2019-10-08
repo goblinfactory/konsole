@@ -1,4 +1,5 @@
-﻿using ApprovalTests.Reporters;
+﻿using ApprovalTests;
+using ApprovalTests.Reporters;
 using NUnit.Framework;
 
 namespace Konsole.Tests.FormTests

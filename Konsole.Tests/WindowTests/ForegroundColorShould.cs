@@ -17,7 +17,7 @@ namespace Konsole.Tests.WindowTests
             var state = c.State;
             var w = new Window(c);
             w.ForegroundColor = ConsoleColor.DarkGray;
-            state.ShouldBeEquivalentTo(c.State);
+            state.Should().BeEquivalentTo(c.State);
         }
 
 

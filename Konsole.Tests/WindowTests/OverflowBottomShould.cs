@@ -31,7 +31,7 @@ namespace Konsole.Tests.WindowTests
                 "three ",
                 "four  "
                 };
-            c.Buffer.ShouldBeEquivalentTo(expected1);
+            c.Buffer.Should().BeEquivalentTo(expected1);
 
             // now this next print should overflow the bottom
 
@@ -46,7 +46,7 @@ namespace Konsole.Tests.WindowTests
                 "three ",
                 "four56"
                 };
-            c.Buffer.ShouldBeEquivalentTo(expected2);
+            c.Buffer.Should().BeEquivalentTo(expected2);
         }
 
     }

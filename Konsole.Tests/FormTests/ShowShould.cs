@@ -36,7 +36,7 @@ namespace Konsole.Tests.FormTests
                 "line2"
             };
 
-            console.BufferWrittenTrimmed.ShouldBeEquivalentTo(expected);
+            console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
         }
 
 
@@ -114,7 +114,7 @@ namespace Konsole.Tests.FormTests
                 " │ Float Epsilon     : 1.401298E-45                   │",
                 " └────────────────────────────────────────────────────┘"
             };
-            console.BufferWrittenTrimmed.ShouldBeEquivalentTo(expected);
+            console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
         }
 
 

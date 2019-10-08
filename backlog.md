@@ -2,6 +2,12 @@
 
 These are just ideas. The true roadmap is driven by solving problems I encouter as I use Konsole to help me write my own console test, benchmarking, study and micro services projects.
 
+## October 2019
+
+- convert Konsole.Core to dotnet standard, and compile a different Konsole for each platform, that uses the correct wrapper for each platform.
+- Konsole.Mac, Konsole.Windows, Konsole.Headless, Konsole.WebAssembly ?
+
+
 ### Unsorted backlog
 
 - make it all cloud based? take a look at support xterm? https://github.com/xtermjs

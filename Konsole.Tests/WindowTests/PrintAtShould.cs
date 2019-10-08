@@ -26,7 +26,7 @@ namespace Konsole.Tests.WindowTests
                 "      "
             };
             Console.WriteLine(c.BufferWrittenString);
-            c.Buffer.ShouldBeEquivalentTo(expected);
+            c.Buffer.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace Konsole.Tests.WindowTests
                 " wk wk wk"
             };
 
-            Precondition.Check( ()=> expectedBefore.ShouldBeEquivalentTo(console.BufferWithColor));
+            Precondition.Check( ()=> expectedBefore.Should().BeEquivalentTo(console.BufferWithColor));
 
             var w = new Window(console, K.Transparent);
             w.ForegroundColor = ConsoleColor.DarkGreen;
@@ -161,7 +161,7 @@ namespace Konsole.Tests.WindowTests
             w.ForegroundColor = ConsoleColor.DarkGreen;
             w.BackgroundColor = ConsoleColor.DarkCyan;
             w.PrintAt(2, 2, "Y");
-            console.State.ShouldBeEquivalentTo(state);
+            console.State.Should().BeEquivalentTo(state);
         }
 
 

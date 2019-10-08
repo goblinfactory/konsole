@@ -27,7 +27,7 @@ namespace Konsole.Tests.WindowTests
                 "fruit     ",
                 "line2     "
             };
-            c.Buffer.ShouldBeEquivalentTo(expected);
+            c.Buffer.Should().BeEquivalentTo(expected);
         }
 
 

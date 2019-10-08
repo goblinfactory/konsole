@@ -28,7 +28,7 @@ namespace Konsole.Tests.WindowTests
                 "║three   ║",
                 "╚════════╝"
             };
-            c.BufferWritten.ShouldBeEquivalentTo(expected);
+            c.BufferWritten.Should().BeEquivalentTo(expected);
         }
 
 
@@ -50,7 +50,7 @@ namespace Konsole.Tests.WindowTests
                 "╚════════╝"
             };
 
-            c.BufferWritten.ShouldBeEquivalentTo(expected);
+            c.BufferWritten.Should().BeEquivalentTo(expected);
         }
     }
 }

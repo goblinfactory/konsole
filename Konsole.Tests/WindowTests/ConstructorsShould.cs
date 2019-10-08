@@ -64,13 +64,13 @@ namespace Konsole.Tests.WindowTests
             var state = c.State;
 
             var w1 = new Window(c);
-            state.ShouldBeEquivalentTo(c.State);
+            state.Should().BeEquivalentTo(c.State);
 
             var w2 = new Window(c, 0, 0);
-            state.ShouldBeEquivalentTo(c.State);
+            state.Should().BeEquivalentTo(c.State);
 
             var w3 = new Window(0,0,10,10,c);
-            state.ShouldBeEquivalentTo(c.State);
+            state.Should().BeEquivalentTo(c.State);
         }
 
         [Test]
@@ -83,10 +83,10 @@ namespace Konsole.Tests.WindowTests
             //w1.WindowHeight()
 
             //var w2 = new Window(0, 0, c);
-            //state.ShouldBeEquivalentTo(c.State);
+            //state.Should().BeEquivalentTo(c.State);
 
             //var w3 = new Window(0, 0, 10, 10, true, c);
-            //state.ShouldBeEquivalentTo(c.State);
+            //state.Should().BeEquivalentTo(c.State);
         }
 
         [Test]

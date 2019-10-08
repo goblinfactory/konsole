@@ -1,4 +1,5 @@
 ﻿using ApprovalTests;
+
 using Konsole.Forms;
 using Konsole.Tests.TestClasses;
 
@@ -33,6 +34,7 @@ namespace Konsole.Tests.FormTests
 
             System.Console.WriteLine("then the form should be rendered");
             // ---------------------------------------------------
+            
             Approvals.Verify(console.BufferWrittenString);
             System.Console.WriteLine(console.BufferWrittenString);
 

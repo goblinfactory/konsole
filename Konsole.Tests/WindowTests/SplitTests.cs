@@ -68,7 +68,7 @@ namespace Konsole.Tests.WindowTests
                 {
                 _19Cols, _20Cols, _21Cols
             };
-                c.Buffer.ShouldBeEquivalentTo(expecteds[test - 1]);
+                c.Buffer.Should().BeEquivalentTo(expecteds[test - 1]);
             }
 
 
@@ -123,7 +123,7 @@ namespace Konsole.Tests.WindowTests
                 {
                 _19Cols, _20Cols, _21Cols
             };
-                c.Buffer.ShouldBeEquivalentTo(expecteds[test - 1]);
+                c.Buffer.Should().BeEquivalentTo(expecteds[test - 1]);
             }
 
 
@@ -157,7 +157,7 @@ namespace Konsole.Tests.WindowTests
                     "└────────┘└────────┘"
             };
 
-                c.Buffer.ShouldBeEquivalentTo(expectedParent);
+                c.Buffer.Should().BeEquivalentTo(expectedParent);
             }
 
 
@@ -236,7 +236,7 @@ namespace Konsole.Tests.WindowTests
                 {
                 _10Rows, _11Rows, _12Rows
             };
-                c.Buffer.ShouldBeEquivalentTo(expecteds[test - 1]);
+                c.Buffer.Should().BeEquivalentTo(expecteds[test - 1]);
             }
 
             [Test]
@@ -268,7 +268,7 @@ namespace Konsole.Tests.WindowTests
                     "│dots    │",
                     "└────────┘",
                 };
-                c.Buffer.ShouldBeEquivalentTo(expectedParent);
+                c.Buffer.Should().BeEquivalentTo(expectedParent);
             }
         }
     }

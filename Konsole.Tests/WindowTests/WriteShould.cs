@@ -28,7 +28,7 @@ namespace Konsole.Tests.WindowTests
                 "------"
             };
             Console.WriteLine(c.BufferWrittenString);
-            c.Buffer.ShouldBeEquivalentTo(expected);
+            c.Buffer.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -81,13 +81,13 @@ namespace Konsole.Tests.WindowTests
             var state = parent.State;
 
             var console = new Window(parent);
-            state.ShouldBeEquivalentTo(parent.State);
+            state.Should().BeEquivalentTo(parent.State);
 
             console.Write("This is");
-            state.ShouldBeEquivalentTo(parent.State);
+            state.Should().BeEquivalentTo(parent.State);
 
             console.Write(" a test line");
-            state.ShouldBeEquivalentTo(parent.State);
+            state.Should().BeEquivalentTo(parent.State);
         }
 
 
