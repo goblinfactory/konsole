@@ -100,10 +100,10 @@ namespace Konsole
                 _current = current.Max(Max);
                 try
                 {
-                    float perc = (float) _current/(float) _max;
+                    decimal perc = (decimal) _current/(decimal) _max;
                     int barWidth = _console.WindowWidth - (TextWidth+8);
                     var bar = _current > 0
-                        ? new string(_character, (int) ((float) (barWidth)*perc)).PadRight(barWidth)
+                        ? new string(_character, (int) ((decimal) (barWidth)*perc)).PadRight(barWidth)
                         : new string(' ', barWidth);
                     var text = string.Format("{0} ({1,-3}%) ", clippedText, (int) (perc*100));
                     _console.CursorTop = _y;

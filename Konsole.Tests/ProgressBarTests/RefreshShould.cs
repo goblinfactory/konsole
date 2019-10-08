@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using ApprovalTests;
 using ApprovalTests.Maintenance;
 using ApprovalTests.Reporters;
 using NUnit.Framework;
 
-namespace Konsole.Tests
+namespace Konsole.Tests.ProgressBarTests
 {
     public class RefreshShould
     {
@@ -24,6 +25,19 @@ namespace Konsole.Tests
             // return the correct values when run from within CONEMU console window.
             // need to test with a no frills windows console window.
             Assert.Inconclusive();
+        }
+
+        [UseReporter(typeof(DiffReporter))]
+        [Test]
+        public void percentage_should_be_shown_correctly()
+        {
+            var console = new MockConsole(80, 60);
+            for(int i = 1; i<21; i++)
+            {
+                var pb1 = new ProgressBar(console, PbStyle.DoubleLine, 20);
+                pb1.Refresh(i, "cats");
+            }
+            Approvals.VerifyAll(console.BufferWritten, "");
         }
 
         [Test]

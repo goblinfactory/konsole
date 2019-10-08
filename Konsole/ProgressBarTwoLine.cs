@@ -79,8 +79,8 @@ namespace Konsole
                 _current = current;
                 try
                 {
-                    float perc = Max > 0 ? (float) current/(float) _max : 0;
-                    var bar = new string(_character, (int) ((float) (_console.WindowWidth - 30)*perc));
+                    decimal perc = Max > 0 ? (decimal) current/(decimal) _max : 0;
+                    var bar = new string(_character, (int) (((decimal) (_console.WindowWidth - 30))*perc));
                     var line = string.Format(FORMAT, current, _max, (int) (perc*100));
                     var barWhitespace = _console.WindowWidth - (bar.Length + line.Length  + 1);
                     _console.CursorTop = _y;

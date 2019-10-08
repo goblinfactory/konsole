@@ -3,12 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApprovalTests;
+using ApprovalTests.Reporters;
 using NUnit.Framework;
 
 namespace Konsole.Tests.ProgressBarSlimTests
 {
     public class RefreshShould
     {
+        [UseReporter(typeof(DiffReporter))]
+        [Test]
+        public void show_percentage_correctly()
+        {
+            var console = new MockConsole(80, 60);
+            for (int i = 1; i < 21; i++)
+            {
+                var pb1 = new ProgressBarSlim(20, console);
+                pb1.Refresh(i, "cats");
+            }
+            Approvals.VerifyAll(console.BufferWritten, "");
+        }
+
+
         ////Item {0,-5} of {1,-5}. ({2,-3}%) 
         [Test]
         [TestCase(100,0,   "1234567890 (0  %)          ", "                           ")]
