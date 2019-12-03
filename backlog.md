@@ -3,6 +3,11 @@
 ## BUSY NOW vers 3.4.1
 
 - fix issue #28 : fix crash after resize
+rough Proof of concept without tests
+
+## BUSY NOW vers 3.4.2
+
+- try to find some way to do resizing tests? mmm, that's quite challenging.
 
 ## BUSY NEXT 3.5
 
@@ -14,7 +19,10 @@
 
 ## BUSY NEXT 3.7
 
-- investigate if I can make some means of redrawing the screen onResize like winforms.
+- investigate if I can make some means of redrawing the screen onResize like winforms. 
+- update : brief investigation and this looks like something that would require DLL imports for windows.
+    - so possibly something like a community extension. i.e. you install Konsole, and if you want Redraw, like you have in Windows.Forms, you install Resizer, which also gives you 
+      ability to lock console resize. (needs some thought.)
 
 
 Below items are just ideas. The true roadmap is driven by solving problems I encouter as I use Konsole to help me write my own console test, benchmarking, study and micro services projects.

@@ -1,4 +1,6 @@
 using System;
+using Goblinfactory.Konsole;
+using Goblinfactory.Konsole.Internal;
 using Konsole.Drawing;
 using Konsole.Menus;
 
@@ -55,7 +57,7 @@ namespace Konsole
                 Console.ForegroundColor = value.ForegroundColor;
                 Console.BackgroundColor = value.BackgroundColor;
                 Console.CursorTop = value.Top;
-                Console.CursorLeft = value.Left;
+                Console.CursorLeft = value.Left.CheckWidth();
             }
         }
 
@@ -68,7 +70,7 @@ namespace Konsole
         public int CursorLeft
         {
             get { return Console.CursorLeft; }
-            set { Console.CursorLeft = value;  }
+            set { Console.CursorLeft = value.CheckWidth(); }
         }
 
 
@@ -96,7 +98,7 @@ namespace Konsole
 
             set
             {
-                Console.CursorLeft = value.X;
+                Console.CursorLeft = value.X.CheckWidth();
                 Console.CursorTop = value.Y;
             }
         }
@@ -110,7 +112,7 @@ namespace Konsole
         public int X
         {
             get { return Console.CursorLeft; } 
-            set { Console.CursorLeft= value; }
+            set { Console.CursorLeft= value.CheckWidth(); }
         }
 
         /// <summary>
@@ -139,7 +141,7 @@ namespace Konsole
             get { return Console.ForegroundColor; } 
             set { Console.ForegroundColor = value; }
         }
-
+            
         public ConsoleColor BackgroundColor {
             get { return Console.BackgroundColor; }
             set { Console.BackgroundColor = value; }
@@ -153,19 +155,19 @@ namespace Konsole
 
         public void PrintAt(int x, int y, string format, params object[] args)
         {
-            Console.SetCursorPosition(x, y);
+            SetCursorPosition(x.CheckWidth(), y);
             Console.WriteLine(format, args);            
         }
 
         public void PrintAt(int x, int y, string text)
         {
-            Console.SetCursorPosition(x, y);
+            SetCursorPosition(x.CheckWidth(), y);
             Console.WriteLine(text);            
         }
         public void PrintAt(int x, int y, char c)
         {
             if (x >= Console.WindowWidth || x>=Console.BufferWidth) return;
-            Console.SetCursorPosition(x, y);
+            SetCursorPosition(x.CheckWidth(), y);
             Console.Write(c);
         }
 
@@ -230,5 +232,13 @@ namespace Konsole
             Console.MoveBufferArea(sourceLeft, sourceTop, sourceWidth, sourceHeight, targetLeft, targetTop, sourceChar, sourceForeColor, sourceBackColor);
         }
 
+        private void SetCursorPosition(int x, int y)
+        {
+            try
+            {
+                Console.SetCursorPosition(x.CheckWidth(), y);
+            }
+            catch (ArgumentOutOfRangeException) { }
+        }
     }
 }

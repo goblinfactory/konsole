@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using System.Linq;
 using System.Runtime.InteropServices;
+using Goblinfactory.Konsole;
+using Goblinfactory.Konsole.Internal;
 using Konsole.Drawing;
 using Konsole.Internal;
 using Konsole.Menus;
@@ -687,7 +689,7 @@ namespace Konsole
         {
             // since this is a window, that's offset of x,y on parent, do the offset now
             console.CursorTop = _cursor.Y + _y;
-            console.CursorLeft = _cursor.X + _x;
+            console.CursorLeft = (_cursor.X + _x).CheckWidth();
         }
 
         public void Fill(ConsoleColor color, int sx, int sy, int width, int height)
