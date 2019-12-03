@@ -1,18 +1,18 @@
 # Roadmap
 
-## BUSY NOW vers 3.5
+## BUSY NOW vers 3.4.1
 
 - fix issue #28 : fix crash after resize
 
-## BUSY NEXT 3.6
+## BUSY NEXT 3.5
 
 - add Konsole Layouts to main Konsole so that it's baked in
 
-## BUSY NEXT 3.7
+## BUSY NEXT 3.6
 
 - fluent DSL for creating application screens, see the sample code from crash.
 
-## BUSY NEXT 3.8
+## BUSY NEXT 3.7
 
 - investigate if I can make some means of redrawing the screen onResize like winforms.
 
