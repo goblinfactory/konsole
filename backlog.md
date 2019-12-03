@@ -1,6 +1,22 @@
 # Roadmap
 
-These are just ideas. The true roadmap is driven by solving problems I encouter as I use Konsole to help me write my own console test, benchmarking, study and micro services projects.
+## BUSY NOW vers 3.5
+
+- fix issue #28 : fix crash after resize
+
+## BUSY NEXT 3.6
+
+- add Konsole Layouts to main Konsole so that it's baked in
+
+## BUSY NEXT 3.7
+
+
+## BUSY NEXT 3.8
+
+- investigate if I can make some means of redrawing the screen onResize like winforms.
+
+
+Below items are just ideas. The true roadmap is driven by solving problems I encouter as I use Konsole to help me write my own console test, benchmarking, study and micro services projects.
 
 ## October 2019
 

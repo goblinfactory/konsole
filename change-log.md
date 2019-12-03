@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
+## [3.5.0](BUSY WITH THIS SEE BACKLOG)
+
+- #28 : fix crash after resize
+
 ## [3.4.0]
 
 ### Fixed
