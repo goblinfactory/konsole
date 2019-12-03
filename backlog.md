@@ -10,6 +10,7 @@
 
 ## BUSY NEXT 3.7
 
+- fluent DSL for creating application screens, see the sample code from crash.
 
 ## BUSY NEXT 3.8
 
