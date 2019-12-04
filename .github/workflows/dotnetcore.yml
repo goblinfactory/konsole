@@ -17,5 +17,6 @@ jobs:
       run: | 
           dotnet restore 
           dotnet build --configuration Release
+      working-directory: ../
     - name: Test with dotnet
       run: dotnet test
