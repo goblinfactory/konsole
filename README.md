@@ -144,7 +144,7 @@ You can create advanced window layouts using `SplitRows` and `SplitColumns` pass
             Console.ReadLine();
 ```
 
-Produces the following window
+Produces the following window. Each of the console(s) that you have a reference to can be written to like any normal console, and will scroll and clip correctly. You can create progress bar instances inside these windows like any console.
 
 <img src='./docs/window-example.PNG' width='600' />
 
