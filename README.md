@@ -108,6 +108,58 @@ home of the simple no-dependancy console libary consisting of:
 
 - detailed window documentation : Todo link to window tests
 
+## Advanced windows
+
+You can create advanced window layouts using `SplitRows` and `SplitColumns` passing in a collection of Splits. Pass in a size of `0` to indicate that `row` or `column` window must contain the remainder of the window space. See examples below:
+
+```csharp
+            var c = new Window();
+            var consoles = c.SplitRows(
+                    new Split(4, "heading", LineThickNess.Single),
+                    new Split(0),
+                    new Split(4, "status", LineThickNess.Single)
+            ); ; ;
+
+            var headline = consoles[0];
+            var status = consoles[2];
+
+            var contents = consoles[1].SplitColumns(
+                    new Split(20),
+                    new Split(0, "content") { Foreground = ConsoleColor.White, Background = ConsoleColor.Cyan },
+                    new Split(20)
+            );
+            var menu = contents[0];
+            var content = contents[1];
+            var sidebar = contents[2];
+
+            headline.Write("my headline");
+            content.WriteLine("content goes here");
+
+            menu.WriteLine("Options A");
+            menu.WriteLine("Options B");
+
+            sidebar.WriteLine("20% off all items between 11am and midnight tomorrow!");
+
+            status.Write("System offline!");
+            Console.ReadLine();
+```
+
+Produces the following window
+
+<img src='docs/window-example.png' width='600' />
+
+Configure the properties of each section of a window with the `Split` class.
+
+```csharp
+new Split(size) 
+{
+    title,
+    lineThickNess, 
+    foregroundColor,
+    backgroundColor
+};
+```
+
 ## Form usage
 
   - quickly and neatly render an object and it's properties in a window or to the console.
@@ -227,8 +279,8 @@ Below is a comparison of how someone might test an Invoice class using a traditi
             // ============
             IConsole console = new Substitute.For<IConsole>();
             var invoice = new Invoice(console);
-            invoice.AddLine(2, "Semi Skimmed Milk", "2 pints", "£",1.00);
-            invoice.AddLine(3, "Warburtons Crumpets", "6 pack", "£",0.89);
+            invoice.AddLine(2, "Semi Skimmed Milk", "2 pints", "ï¿½",1.00);
+            invoice.AddLine(3, "Warburtons Crumpets", "6 pack", "ï¿½",0.89);
             invoice.Print();
                 
             // not really practical to test printed output using a mock console
@@ -243,7 +295,7 @@ Below is a comparison of how someone might test an Invoice class using a traditi
             console.Received().Write(" Semi Skimmed Milk");
             console.Received().Write(", ");
             console.Received().Write("{0} pints", 2);
-            console.Received().Write("£ {0.00,-10}", 2.0m);
+            console.Received().Write("ï¿½ {0.00,-10}", 2.0m);
             .
             .
             . // and so on and so on ...for probably around another 12 or 13 lines.
@@ -265,10 +317,10 @@ using a Test Double like `Konsole.MockConsole` the test above becomes
                 var expected = @"
                  ACME WHoleSale Foody 
                  -------------------- 
-                 qty 2 Semi Skimmed Milk   , 2 pints     £ 2.00
-                 qty 3 Warburtons Crumpets , 6 pack      £ 5.34
+                 qty 2 Semi Skimmed Milk   , 2 pints     ï¿½ 2.00
+                 qty 3 Warburtons Crumpets , 6 pack      ï¿½ 5.34
                  --------------
-                 total   £ 7.34 
+                 total   ï¿½ 7.34 
                  --------------
             
                 * some random message on the footer
@@ -276,8 +328,8 @@ using a Test Double like `Konsole.MockConsole` the test above becomes
         
                 var console = new MockConsole();
                 var invoice = new Invoice(console);
-                invoice.AddLine(2, "Semi Skimmed Milk", "2 pints", "£",1.00);
-                invoice.AddLine(3, "Warburtons Crumpets", "6 pack", "£",0.89);
+                invoice.AddLine(2, "Semi Skimmed Milk", "2 pints", "ï¿½",1.00);
+                invoice.AddLine(3, "Warburtons Crumpets", "6 pack", "ï¿½",0.89);
                 invoice.Print();
                 Assert.AreEqual(console.BufferString,expected);
                 });
