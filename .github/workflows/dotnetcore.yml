@@ -13,9 +13,24 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 2.2.108
-    - name: dotnet restore 
-      run: dotnet restore 
-    - name: dotnet build --configuration Release
+
+    - name: Test Powershell1
+      run: |
+        $name = "Alan"
+        $dir = (Get-Location).path
+        Write-Host "Hello $world"
+        Write-host "Current directory :$dir"
+
+    - name: Test Powershell2
+      run: |
+        Write-Host "Lets see if posh vars remain between run steps? dir=$dir"
+
+    - name: restore
+      run: | 
+        dotnet restore 
+
+    - name: build
       run: dotnet build --configuration Release
-    - name: dotnet test
+
+    - name: test
       run: dotnet test
