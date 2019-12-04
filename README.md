@@ -146,7 +146,7 @@ You can create advanced window layouts using `SplitRows` and `SplitColumns` pass
 
 Produces the following window
 
-<img src='docs/window-example.png' width='600' />
+<img src='docs/window-example.PNG' width='600' />
 
 Configure the properties of each section of a window with the `Split` class.
 
