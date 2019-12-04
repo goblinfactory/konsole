@@ -14,23 +14,8 @@ jobs:
       with:
         dotnet-version: 3.1.100
 
-    - name: Test Powershell1
+    - name: restore build test
       run: |
-        $name = "Alan"
-        $dir = (Get-Location).path
-        Write-Host "Hello $world"
-        Write-host "Current directory :$dir"
-        get-childitem | % { write-host $_.name }
-    - name: Test Powershell2
-      run: |
-        Write-Host "Lets see if posh vars remain between run steps? dir=$dir"
-
-    - name: restore
-      run: | 
-        dotnet restore 
-
-    - name: build
-      run: dotnet build --configuration Release
-
-    - name: test
-      run: dotnet test
+        dotnet restore
+        dotnet build
+        dotnet test
