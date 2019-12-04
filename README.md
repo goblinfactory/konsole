@@ -249,15 +249,23 @@ All the test for this library have been written using `MockConsole.` For a fully
 
 ## Building the solution
 
- ### using visual studio
+
+### using visual studio
 
  1. `git clone https://github.com/goblinfactory/konsole.git`
- 2. double click sln file.
- 3. right click Konsole.Tests, select run all tests. (if you have resharper)
- 
- ### or via command line
+ 2. run the following commands from the root folder;
 
- TBD.
+### requirements
+
+Any version of .net core. Update `global.json` to the version of .net core you have installed and run the command below in order.
+
+ > dotnet restore
+
+ > dotnet build
+ 
+ > dotnet test
+ 
+
 
 ## ChangeLog
 
