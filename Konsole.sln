@@ -29,18 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konsole.Tests", "Konsole.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konsole.Tests.Slow", "Konsole.Tests.Slow\Konsole.Tests.Slow.csproj", "{3A960654-81F6-465B-8A06-EB0A9BC36A6B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Konsole.PackageTests", "Konsole.PackageTests", "{7577C893-0462-4355-8948-C4788B9FB3FB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage.V2.0.1", "Konsole.NugetPackage.Tests\TestPackage.V2.0.1\TestPackage.V2.0.1.csproj", "{4953B093-5CA7-49FD-B9B0-A15A65D637DF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage.V2.0.2", "Konsole.NugetPackage.Tests\TestPackage.V2.0.2\TestPackage.V2.0.2.csproj", "{183A1F8D-0F01-4A82-94A3-1D8C5BD6D7CF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage.V3.2.1", "Konsole.NugetPackage.Tests\TestPackage.V3.2.1\TestPackage.V3.2.1.csproj", "{6FB92196-784E-41E6-ABF9-4EAD633EC090}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage.V2.0.0", "Konsole.NugetPackage.Tests\TestPackage.V2.0.0\TestPackage.V2.0.0.csproj", "{56524031-028B-41D9-8FA7-3F7FE1DDD03D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestPackage.V3.4.0", "Konsole.NugetPackage.Tests\TestPackage.V3.4.0\TestPackage.V3.4.0.csproj", "{E545CABC-D736-4E97-82AD-93B533542587}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{3E36C627-2622-49ED-B160-C7AF64EA4108}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\dotnetcore.yml = .github\workflows\dotnetcore.yml
@@ -68,36 +56,11 @@ Global
 		{3A960654-81F6-465B-8A06-EB0A9BC36A6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A960654-81F6-465B-8A06-EB0A9BC36A6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A960654-81F6-465B-8A06-EB0A9BC36A6B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4953B093-5CA7-49FD-B9B0-A15A65D637DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4953B093-5CA7-49FD-B9B0-A15A65D637DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4953B093-5CA7-49FD-B9B0-A15A65D637DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4953B093-5CA7-49FD-B9B0-A15A65D637DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{183A1F8D-0F01-4A82-94A3-1D8C5BD6D7CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{183A1F8D-0F01-4A82-94A3-1D8C5BD6D7CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{183A1F8D-0F01-4A82-94A3-1D8C5BD6D7CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{183A1F8D-0F01-4A82-94A3-1D8C5BD6D7CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FB92196-784E-41E6-ABF9-4EAD633EC090}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FB92196-784E-41E6-ABF9-4EAD633EC090}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FB92196-784E-41E6-ABF9-4EAD633EC090}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FB92196-784E-41E6-ABF9-4EAD633EC090}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56524031-028B-41D9-8FA7-3F7FE1DDD03D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56524031-028B-41D9-8FA7-3F7FE1DDD03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56524031-028B-41D9-8FA7-3F7FE1DDD03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56524031-028B-41D9-8FA7-3F7FE1DDD03D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E545CABC-D736-4E97-82AD-93B533542587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E545CABC-D736-4E97-82AD-93B533542587}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E545CABC-D736-4E97-82AD-93B533542587}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E545CABC-D736-4E97-82AD-93B533542587}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4953B093-5CA7-49FD-B9B0-A15A65D637DF} = {7577C893-0462-4355-8948-C4788B9FB3FB}
-		{183A1F8D-0F01-4A82-94A3-1D8C5BD6D7CF} = {7577C893-0462-4355-8948-C4788B9FB3FB}
-		{6FB92196-784E-41E6-ABF9-4EAD633EC090} = {7577C893-0462-4355-8948-C4788B9FB3FB}
-		{56524031-028B-41D9-8FA7-3F7FE1DDD03D} = {7577C893-0462-4355-8948-C4788B9FB3FB}
-		{E545CABC-D736-4E97-82AD-93B533542587} = {7577C893-0462-4355-8948-C4788B9FB3FB}
 		{3E36C627-2622-49ED-B160-C7AF64EA4108} = {8B874640-F9AD-4E61-9D70-2E7A3A3AF3E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
