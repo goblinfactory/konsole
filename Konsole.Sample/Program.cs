@@ -1,4 +1,5 @@
 ﻿using System;
+using Goblinfactory.Konsole.Platform;
 using Konsole;
 using Konsole.Drawing;
 using Konsole.Menus;
@@ -39,7 +40,7 @@ namespace Konsole.Sample
         private static void QuickTest1()
         {
             Console.CursorVisible = false;
-            var c = new Window();
+            var c = new Window().LockConsoleResizing();
             var consoles = c.SplitRows(
                     new Split(4, "headline", LineThickNess.Single, ConsoleColor.Yellow),
                     new Split(0, "content", LineThickNess.Single),
@@ -59,7 +60,7 @@ namespace Konsole.Sample
         private static void QuickTest2()
         {
             Console.CursorVisible = false;
-            var c = new Window();
+            var c = new Window().LockConsoleResizing();
             var consoles = c.SplitRows(
                     new Split(4, "heading", LineThickNess.Single),
                     new Split(0),
@@ -67,7 +68,7 @@ namespace Konsole.Sample
             ); ; ;
 
             var headline = consoles[0];
-            var status = consoles[2];
+            var status = consoles[2];   
 
             var contents = consoles[1].SplitColumns(
                     new Split(20),

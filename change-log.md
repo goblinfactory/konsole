@@ -3,6 +3,10 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.1]
+
+- #33 : add "Disable screen resizing".Available as new method `.LockConsoleResizing()` on `Window`.
+
 ## [4.0.1]
 
 - upgrade devops builds to use new Github pipelines, convert to new .net core project format and use dotnet test? possibly include this as key 4.0 update.

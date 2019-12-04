@@ -4,7 +4,7 @@
     <TargetFramework>net45</TargetFramework>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>4.0.1</Version>
+    <Version>4.1</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -21,10 +21,8 @@
     <Copyright>Copyright Goblinfactory Ltd, 2017, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole progress progressbar window form iconsole&lt;</PackageTags>
-    <PackageReleaseNotes>- upgrade devops builds to use new Github pipelines, convert to new .net core project format and use dotnet test? possibly include this as key 4.0 update.
-- Added SplitRows with wildcard support for creating any shape UI, using rows and columns.
-- Move Konsole Layouts and Konsole Forms to main Konsole namespace, so that it's available out of the box and more discoverable, so that users can use SplitLeft, SplitRight, SplitTop, SplitBottom.
-- Moved drawing into main Konsole Namespace.</PackageReleaseNotes>
+    <PackageReleaseNotes>#33 : add "Disable screen resizing".Available as new method `.LockConsoleResizing()` on `Window`.
+</PackageReleaseNotes>
     <PackageIcon>progress.png</PackageIcon>
     <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>

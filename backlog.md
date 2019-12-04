@@ -1,12 +1,14 @@
 # Roadmap
 
-## BUSY NOW 4.0
+## BUSY NOW 4.0.1
 
 ## Busy NOW (NEXT)
 
-- fix bug when drawing window 3 lines tall.
-- update documentation with sample split screens
-- add support for Split returning Tuples for more elegant usages.
+- #31 : fix bug when drawing window 3 lines tall.
+- speed, speed, speed! direct draw to UX via whatever means after detecting platform. 
+- #22 : investigate input and output redirection and using Konsole as part of a build pipeline for handling parallel build console output.
+- investigate simplifying the console window creation using similar properties dto, so that I can configure borders lines with backgrounds.
+- when setting a background color, as well as including Border line thickness, then the border line should share the window background colour. * I think this may only be a problem with splitleft, and splitright.
 - investigate sponsorship options, see
   - github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., [user1, user2]
   - patreon: # Replace with a single Patreon username
