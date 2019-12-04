@@ -19,3 +19,4 @@ jobs:
         dotnet restore
         dotnet build
         dotnet test konsole.tests
+        dotnet test konsole.tests.slow
