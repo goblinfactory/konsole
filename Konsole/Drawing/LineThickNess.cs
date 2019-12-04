@@ -1,4 +1,4 @@
-namespace Konsole.Drawing
+namespace Konsole
 {
     public enum LineThickNess
     {

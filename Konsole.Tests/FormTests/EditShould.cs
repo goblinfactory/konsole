@@ -1,13 +1,13 @@
 ﻿using ApprovalTests;
-
 using Konsole.Forms;
 using Konsole.Tests.TestClasses;
+using NUnit.Framework;
 
 namespace Konsole.Tests.FormTests
 {
     public class EditShould
     {
-        // not yet implemented
+        //NOT YET IMPLEMENTED, FUTURE FUNCTIONALITY
         public void when_opening_first_field_should_be_highlighted()
         {
             System.Console.WriteLine("given a console form for a person");

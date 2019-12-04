@@ -36,7 +36,6 @@ namespace Konsole.Tests.Slow
             // need a unit test for the menu before fixing it.
 
             var kb = new MockKeyboard(0, GetKeyInfos());
-            ;
 
             menu.Keyboard = kb;
             menu.Run();

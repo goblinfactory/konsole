@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Konsole.Forms;
 
 namespace Konsole.Forms
 {
-    public class FieldReader 
+    public class FieldReader
     {
         private readonly object _object;
         private readonly Type _type;
@@ -20,19 +19,19 @@ namespace Konsole.Forms
         private static readonly Type[] NumericTypes = {
             typeof(byte),
             typeof(int),
-            typeof(Int16),
-            typeof(Int32),
-            typeof(Int64),
-            typeof(UInt16),
-            typeof(UInt32),
-            typeof(UInt64),
+            typeof(short),
+            typeof(int),
+            typeof(long),
+            typeof(ushort),
+            typeof(uint),
+            typeof(ulong),
             typeof(decimal),
             typeof(float),
-            typeof(Int32), 
-            typeof(Int64)
+            typeof(int),
+            typeof(long)
         };
 
-        private static readonly Type[] SupportedTypes = new []
+        private static readonly Type[] SupportedTypes = new[]
         {
             typeof (string),
             typeof (bool),
@@ -42,15 +41,15 @@ namespace Konsole.Forms
         public FieldList ReadFieldList()
         {
             var fields = readFields();
-            int width = (fields.Any()) ? fields.Max(f => f.Caption.Length) : 10;
+            int width = fields.Any() ? fields.Max(f => f.Caption.Length) : 10;
             var fieldlist = new FieldList(fields.ToArray(), width);
             return fieldlist;
         }
 
         public static Type NonGenericType(Type t)
         {
-            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
-                ? t.GetGenericArguments()[0] : t;            
+            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>)
+                ? t.GetGenericArguments()[0] : t;
         }
 
         public static bool IsNumericType(Type type)
@@ -66,13 +65,13 @@ namespace Konsole.Forms
 
             var supportedProps = properties
                 .Where(f => SupportedTypes.Contains(NonGenericType(f.PropertyType)));
-            
+
             var fields = supportedProps
                 .Select(f => new Field(
-                    ParseFieldType(f.PropertyType), 
-                    f.Name, 
-                    ToCaption(f.Name), 
-                    IsNullable(f.PropertyType), 
+                    ParseFieldType(f.PropertyType),
+                    f.Name,
+                    ToCaption(f.Name),
+                    IsNullable(f.PropertyType),
                     f.GetValue(_object)
                 ));
             return fields;
@@ -91,7 +90,7 @@ namespace Konsole.Forms
 
         private bool IsNullable(Type t)
         {
-            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof (Nullable<>));
+            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         private string ToCaption(string caption)
@@ -101,55 +100,14 @@ namespace Konsole.Forms
             foreach (var c in caption)
             {
                 // if previous was lower and next is upper, add space and next, otherwise add char
-                if ((char.IsLower(prev) && char.IsUpper(c)) || (char.IsUpper(prev) && char.IsUpper(c)))
+                if (char.IsLower(prev) && char.IsUpper(c) || char.IsUpper(prev) && char.IsUpper(c))
                 {
-                    sb.Append(' '); 
+                    sb.Append(' ');
                 }
                 sb.Append(c);
                 prev = c;
             }
             return sb.ToString();
-        }
-    }
-
-    public enum FieldType
-    {
-        String,
-        Numeric,
-        NullableNumber,
-        Boolean,
-        Date,
-        Object,
-        Unsupported
-    }
-
-    public class Field
-    {
-        public FieldType FieldType { get; private set; }
-        public bool Nullable { get; private set; }
-        public string Name { get; private set; }
-        public object Value { get; private set; }
-        public string Caption { get; private set; }
-        public Field(FieldType type, string name, string caption, bool nullable, object value)
-        {
-            Name = name;
-            Caption = caption;
-            Value = value;
-            FieldType = type;
-            Nullable = nullable;
-        }
-    }
-
-
-    public class FieldList
-    {
-        public Field[] Fields { get; private set; }
-        public int CaptionWidth { get; private set; }
-
-        public FieldList(Field[] fields, int captionWidth)
-        {
-            Fields = fields;
-            CaptionWidth = captionWidth;
         }
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Konsole.Menus
 {
-
-
     public class MenuItem
     {
         internal object locker = new object();

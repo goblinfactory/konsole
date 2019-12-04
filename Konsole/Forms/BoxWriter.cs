@@ -27,11 +27,11 @@ namespace Konsole.Forms
         {
             var sb = new StringBuilder();
             // left line, 1 + title+ 1, right right
-            int linelen = (((_insideWidth ) - title.Length)/2) - 1;
-            var leftline = string.Format("{0}{1}",_lines.TL, new string(_lines.T,linelen));
+            int linelen = (_insideWidth - title.Length) / 2 - 1;
+            var leftline = string.Format("{0}{1}", _lines.TL, new string(_lines.T, linelen));
             var rightline = string.Format("{0}{1}", new string(_lines.T, linelen), _lines.TR);
-            string spacer = new string(' ', _insideWidth - (leftline.Length + title.Length + rightline.Length))+" ";
-            var topline = string.Format("{0}{1} {2}{3}{4}",  _padding, leftline, title, spacer, rightline);
+            string spacer = new string(' ', _insideWidth - (leftline.Length + title.Length + rightline.Length)) + " ";
+            var topline = string.Format("{0}{1} {2}{3}{4}", _padding, leftline, title, spacer, rightline);
             return topline;
         }
 
@@ -40,7 +40,7 @@ namespace Konsole.Forms
             get
             {
                 return string.Format("{0}{1}{2}{3}", _padding, _lines.BL, new string(_lines.T, _insideWidth), _lines.BR);
-            }            
+            }
         }
 
         public string Line
@@ -54,7 +54,7 @@ namespace Konsole.Forms
         public string Write(string text)
         {
             // if text overflows, add in ellispses
-            string writeText = (text.Length > _insideWidth)
+            string writeText = text.Length > _insideWidth
                 ? text.Substring(0, _insideWidth - 3) + "..."
                 : text.FixLeft(_insideWidth);
             return string.Format("{0}{1}{2}{3}", _padding, _lines.L, writeText, _lines.R);

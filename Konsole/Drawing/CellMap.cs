@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Konsole.Drawing
+namespace Konsole
 {
     internal class CellMap
     {
@@ -33,18 +33,18 @@ namespace Konsole.Drawing
         {
             get
             {
-                return new [] { Left, Centre, Right };
-            }   
+                return new[] { Left, Centre, Right };
+            }
         }
 
         public char[] Vertical
         {
-            get { return new[] {Top, Centre, Bottom}; }
+            get { return new[] { Top, Centre, Bottom }; }
         }
 
         public char[] Chars
         {
-            get {  return new [] { Centre, Top, Right, Bottom, Left};}
+            get { return new[] { Centre, Top, Right, Bottom, Left }; }
         }
     }
 }

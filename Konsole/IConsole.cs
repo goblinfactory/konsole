@@ -1,7 +1,4 @@
 using System;
-using Konsole.Drawing;
-using Konsole.Internal;
-using Konsole.Menus;
 
 namespace Konsole
 {

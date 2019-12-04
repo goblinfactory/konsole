@@ -2,17 +2,21 @@
 
 ## BUSY NOW 4.0
 
-- Add SplitRows with wildcard support for creating any shape UI, using rows and columns.
-- Move Konsole Layouts to main Konsole namespace, so that it's available out of the box and more discoverable, so that users can use SplitLeft, SplitRight, SplitTop, SplitBottom.
+- migrate all tests from nunit to xunit so that I can more easily run using dotnet test.
+  - see : https://dev.to/hatsrumandcode/net-core-2-why-xunit-and-not-nunit-or-mstest--aei
+- upgrade devops builds to use new Github pipelines, convert to new .net core project format and use dotnet test? possibly include this as key 4.0 update.
+- Added SplitRows with wildcard support for creating any shape UI, using rows and columns.
+- Move Konsole Layouts and Konsole Forms to main Konsole namespace, so that it's available out of the box and more discoverable, so that users can use SplitLeft, SplitRight, SplitTop, SplitBottom.
 - Moved drawing into main Konsole Namespace.
+- update documentation with sample split screens
+- add support for Split returning Tuples for more elegant usages.
+
 
 ## BUSY NOW vers 4.0.1
 
 - try to find some way to do resizing tests? mmm, that's quite challenging. 
 
-## BUSY NEXT 4.0.2
 
-- upgrade devops builds to use new Github pipelines, convert to new .net core project format and use dotnet test? possibly include this as key 4.0 update.
 
 ## BUSY NEXT 4.1
 
