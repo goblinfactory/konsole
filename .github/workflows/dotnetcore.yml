@@ -20,7 +20,7 @@ jobs:
         $dir = (Get-Location).path
         Write-Host "Hello $world"
         Write-host "Current directory :$dir"
-
+        get-childitem | % { write-host $_.name }
     - name: Test Powershell2
       run: |
         Write-Host "Lets see if posh vars remain between run steps? dir=$dir"
