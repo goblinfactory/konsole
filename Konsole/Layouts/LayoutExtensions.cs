@@ -172,7 +172,7 @@ namespace Konsole
                 return Window._CreateFloatingWindow(0, 0 + offset, w, h, foreground, c.BackgroundColor, true, c, null);
             }
         }
-        internal static IConsole _RowSlice(IConsole c, string title, int rowStart, int size, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
+        internal static IConsole _RowSlice(IConsole c, string title, int rowStart, int size, bool showBorder, LineThickNess? thickness, ConsoleColor foreground, ConsoleColor background)
         {
             lock (Window._staticLocker)
             {
@@ -187,12 +187,30 @@ namespace Konsole
                     {
                         new Draw(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness);
                     });
-                    return Window._CreateFloatingWindow(1, 1 + offset, w - 2, h - 2, foreground, c.BackgroundColor, true, c, null);
+                    return Window._CreateFloatingWindow(1, 1 + offset, w - 2, h - 2, foreground, background, true, c, null);
                 }
-                return Window._CreateFloatingWindow(0, 0 + offset, w, h, foreground, c.BackgroundColor, true, c, null);
+                return Window._CreateFloatingWindow(0, 0 + offset, w, h, foreground, background, true, c, null);
             }
         }
+        internal static IConsole _ColumnSlice(IConsole c, string title, int colStart, int width, bool showBorder, LineThickNess? thickness, ConsoleColor foreground, ConsoleColor background)
+        {
+            lock (Window._staticLocker)
+            {
+                if (showBorder && thickness == null) throw new ArgumentOutOfRangeException(nameof(showBorder), "cannot be false while thickness is none.");
+                int height = c.WindowHeight;
+                int offset = colStart;
 
+                if (showBorder)
+                {
+                    c.DoCommand(c, () =>
+                    {
+                        new Draw(c).Box(offset, 0, offset + width - 1, height - 1, title, thickness);
+                    });
+                    return Window._CreateFloatingWindow(offset + 1, 1, offset + width - 2, height - 2, foreground, background, true, c, null);
+                }
+                return Window._CreateFloatingWindow(offset + 0 , 0, offset + width, height, foreground, background, true, c, null);
+            }
+        }
     }
 
 }

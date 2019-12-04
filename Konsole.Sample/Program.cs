@@ -30,13 +30,13 @@ namespace Konsole.Sample
                 }
             }
 
-            for(int i = 0; i<100; i++) right.WriteLine(i.ToString());
+            for (int i = 0; i < 100; i++) right.WriteLine(i.ToString());
 
             Writelines(nestedTop);
             Writelines(nestedBottom);
         }
 
-        private static void QuickTest()
+        private static void QuickTest1()
         {
             Console.CursorVisible = false;
             var c = new Window();
@@ -56,9 +56,43 @@ namespace Konsole.Sample
             Console.ReadLine();
         }
 
+        private static void QuickTest2()
+        {
+            Console.CursorVisible = false;
+            var c = new Window();
+            var consoles = c.SplitRows(
+                    new Split(3, "heading", LineThickNess.Single),
+                    new Split(0),
+                    new Split(3, "status", LineThickNess.Single)
+            ); ; ;
+
+            var headline = consoles[0];
+            var status = consoles[2];
+
+            var contents = consoles[1].SplitColumns(
+                    new Split(20),
+                    new Split(0, "content") { Foreground = ConsoleColor.White, Background = ConsoleColor.Cyan },
+                    new Split(20)
+            );
+            var menu = contents[0];
+            var content = contents[1];
+            var sidebar = contents[2];
+
+            headline.Write("my headline");
+            content.WriteLine("content goes here");
+
+            menu.WriteLine("Options A");
+            menu.WriteLine("Options B");
+
+            sidebar.WriteLine("20% off all items between 11am and midnight tomorrow!");
+
+            status.Write("System offline!");
+            Console.ReadLine();
+        }
+
         private static void Main(string[] args)
         {
-            QuickTest();
+            QuickTest2();
         }
         
         private static void Mainzz(string[] args)

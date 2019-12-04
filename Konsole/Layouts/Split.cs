@@ -46,5 +46,6 @@ namespace Konsole
         public string Title { get; set; } = null;
         public LineThickNess? Thickness { get; set; } = null;
         public ConsoleColor? Foreground { get; set; } = null;
+        public ConsoleColor? Background { get; set; } = null;
     }
 }

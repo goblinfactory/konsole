@@ -2,13 +2,9 @@
 
 ## BUSY NOW 4.0
 
-- upgrade devops builds to use new Github pipelines, convert to new .net core project format and use dotnet test? possibly include this as key 4.0 update.
-
 ## Busy NOW (NEXT)
 
-- Added SplitRows with wildcard support for creating any shape UI, using rows and columns.
-- Move Konsole Layouts and Konsole Forms to main Konsole namespace, so that it's available out of the box and more discoverable, so that users can use SplitLeft, SplitRight, SplitTop, SplitBottom.
-- Moved drawing into main Konsole Namespace.
+- fix bug when drawing window 3 lines tall.
 - update documentation with sample split screens
 - add support for Split returning Tuples for more elegant usages.
 - investigate sponsorship options, see

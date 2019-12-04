@@ -3,7 +3,12 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [unreleased]
+## [unreleased][4.0.1]
+
+- upgrade devops builds to use new Github pipelines, convert to new .net core project format and use dotnet test? possibly include this as key 4.0 update.
+- Added SplitRows with wildcard support for creating any shape UI, using rows and columns.
+- Move Konsole Layouts and Konsole Forms to main Konsole namespace, so that it's available out of the box and more discoverable, so that users can use SplitLeft, SplitRight, SplitTop, SplitBottom.
+- Moved drawing into main Konsole Namespace.
 
 ## [3.4.1]
 
