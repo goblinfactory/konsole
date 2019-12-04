@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [unreleased][4.0.1]
+## [4.0.1]
 
 - upgrade devops builds to use new Github pipelines, convert to new .net core project format and use dotnet test? possibly include this as key 4.0 update.
 - Added SplitRows with wildcard support for creating any shape UI, using rows and columns.

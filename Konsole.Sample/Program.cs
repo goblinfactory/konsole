@@ -61,9 +61,9 @@ namespace Konsole.Sample
             Console.CursorVisible = false;
             var c = new Window();
             var consoles = c.SplitRows(
-                    new Split(3, "heading", LineThickNess.Single),
+                    new Split(4, "heading", LineThickNess.Single),
                     new Split(0),
-                    new Split(3, "status", LineThickNess.Single)
+                    new Split(4, "status", LineThickNess.Single)
             ); ; ;
 
             var headline = consoles[0];
