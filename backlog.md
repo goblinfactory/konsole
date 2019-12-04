@@ -1,23 +1,20 @@
 # Roadmap
 
-## BUSY NOW vers 3.4.1
+## BUSY NOW 4.0
 
-- fix issue #28 : fix crash after resize
-rough Proof of concept without tests
+- Add SplitRows with wildcard support for creating any shape UI, using rows and columns.
+- Move Konsole Layouts to main Konsole namespace, so that it's available out of the box and more discoverable, so that users can use SplitLeft, SplitRight, SplitTop, SplitBottom.
+- Moved drawing into main Konsole Namespace.
 
-## BUSY NOW vers 3.4.2
+## BUSY NOW vers 4.0.1
 
-- try to find some way to do resizing tests? mmm, that's quite challenging.
+- try to find some way to do resizing tests? mmm, that's quite challenging. 
 
-## BUSY NEXT 3.5
+## BUSY NEXT 4.0.2
 
-- add Konsole Layouts to main Konsole so that it's baked in
+- upgrade devops builds to use new Github pipelines, convert to new .net core project format and use dotnet test? possibly include this as key 4.0 update.
 
-## BUSY NEXT 3.6
-
-- fluent DSL for creating application screens, see the sample code from crash.
-
-## BUSY NEXT 3.7
+## BUSY NEXT 4.1
 
 - investigate if I can make some means of redrawing the screen onResize like winforms. 
 - update : brief investigation and this looks like something that would require DLL imports for windows.
@@ -25,9 +22,10 @@ rough Proof of concept without tests
       ability to lock console resize. (needs some thought.)
 
 
-Below items are just ideas. The true roadmap is driven by solving problems I encouter as I use Konsole to help me write my own console test, benchmarking, study and micro services projects.
 
 ## October 2019
+
+Below items are just ideas. The true roadmap is driven by solving problems I encouter as I use Konsole to help me write my own console test, benchmarking, study and micro services projects.
 
 - convert Konsole.Core to dotnet standard, and compile a different Konsole for each platform, that uses the correct wrapper for each platform.
 - Konsole.Mac, Konsole.Windows, Konsole.Headless, Konsole.WebAssembly ?

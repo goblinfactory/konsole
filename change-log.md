@@ -5,9 +5,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [unreleased]
 
-## [3.5.0](BUSY WITH THIS SEE BACKLOG)
+## [3.4.1]
 
-- #28 : fix crash after resize
+- #28 : fix crash after resize (rough Proof of concept without tests, manual testing only due to complications of testing window resizing, and want to get a patch out quickly)
 
 ## [3.4.0]
 

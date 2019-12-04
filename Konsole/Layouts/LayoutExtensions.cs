@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Konsole.Drawing;
-using Konsole.Menus;
 
-namespace Konsole.Layouts
+namespace Konsole
 {
     // TODO: convert to a partial class of Window so that the namespace does not need to be referenced?
     public static class LayoutExtensions
@@ -32,7 +27,7 @@ namespace Konsole.Layouts
             return _TopBot(c, title, false, true, LineThickNess.Single, foreground);
         }
 
-        public static IConsole SplitTop(this IConsole c, string title, LineThickNess thickness) 
+        public static IConsole SplitTop(this IConsole c, string title, LineThickNess thickness)
         {
             return _TopBot(c, title, false, true, thickness, c.ForegroundColor);
         }
@@ -126,7 +121,7 @@ namespace Konsole.Layouts
 
         public static IConsole SplitRight(this IConsole c, string title, LineThickNess thickness)
         {
-            return _LeftRight(c,title, true, true, thickness, c.ForegroundColor);
+            return _LeftRight(c, title, true, true, thickness, c.ForegroundColor);
         }
 
         public static IConsole SplitRight(this IConsole c, string title, LineThickNess thickness, ConsoleColor foreground)
@@ -139,7 +134,7 @@ namespace Konsole.Layouts
         {
             lock (Window._staticLocker)
             {
-                if(showBorder && thickness == null) throw new ArgumentOutOfRangeException(nameof(showBorder),"cannot be false while thickness is none.");
+                if (showBorder && thickness == null) throw new ArgumentOutOfRangeException(nameof(showBorder), "cannot be false while thickness is none.");
                 int h = c.WindowHeight;
                 int w = c.WindowWidth / 2 + (right ? c.WindowWidth % 2 : 0);
                 int offset = right ? c.WindowWidth - w : 0;
@@ -165,6 +160,26 @@ namespace Konsole.Layouts
                 int h = (c.WindowHeight / 2) + (bottom ? 0 : c.WindowHeight % 2);
                 int w = c.WindowWidth;
                 int offset = bottom ? c.WindowHeight - h : 0;
+
+                if (showBorder)
+                {
+                    c.DoCommand(c, () =>
+                    {
+                        new Draw(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness);
+                    });
+                    return Window._CreateFloatingWindow(1, 1 + offset, w - 2, h - 2, foreground, c.BackgroundColor, true, c, null);
+                }
+                return Window._CreateFloatingWindow(0, 0 + offset, w, h, foreground, c.BackgroundColor, true, c, null);
+            }
+        }
+        internal static IConsole _RowSlice(IConsole c, string title, int rowStart, int size, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
+        {
+            lock (Window._staticLocker)
+            {
+                if (showBorder && thickness == null) throw new ArgumentOutOfRangeException(nameof(showBorder), "cannot be false while thickness is none.");
+                int h = size;
+                int w = c.WindowWidth;
+                int offset = rowStart;
 
                 if (showBorder)
                 {

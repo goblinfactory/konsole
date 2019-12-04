@@ -120,6 +120,7 @@
     <Compile Include="WindowTests\OpenShould.cs" />
     <Compile Include="WindowTests\OverflowBottomShould.cs" />
     <Compile Include="WindowTests\PrintAtShould.cs" />
+    <Compile Include="WindowTests\SplitRowsTests.cs" />
     <Compile Include="WindowTests\SplitTests.cs" />
     <Compile Include="WindowTests\WriteLineShould.cs" />
     <Compile Include="WindowTests\WriteShould.cs" />

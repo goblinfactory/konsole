@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
-using Konsole.Drawing;
 using Konsole.Internal;
-using Konsole.Layouts;
-using Konsole.Menus;
 
 namespace Konsole.Sample.Demos
 {

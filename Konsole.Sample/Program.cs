@@ -1,5 +1,6 @@
 ﻿using System;
-using Konsole.Layouts;
+using Konsole;
+using Konsole.Drawing;
 using Konsole.Menus;
 using Konsole.Sample.Demos;
 
@@ -35,7 +36,32 @@ namespace Konsole.Sample
             Writelines(nestedBottom);
         }
 
+        private static void QuickTest()
+        {
+            Console.CursorVisible = false;
+            var c = new Window();
+            var consoles = c.SplitRows(
+                    new Split(4, "headline", LineThickNess.Single, ConsoleColor.Yellow),
+                    new Split(0, "content", LineThickNess.Single),
+                    new Split(4, "status", LineThickNess.Single, ConsoleColor.Red)
+            );
+
+            var headline = consoles[0];
+            var content = consoles[1];
+            var status = consoles[2];
+
+            headline.Write("my headline");
+            content.WriteLine("content goes here");
+            status.Write("System offline!");
+            Console.ReadLine();
+        }
+
         private static void Main(string[] args)
+        {
+            QuickTest();
+        }
+        
+        private static void Mainzz(string[] args)
         {
             var con = new Window(28, 1, 70, 30, ConsoleColor.Yellow, ConsoleColor.DarkGreen, K.Clipping);
 
