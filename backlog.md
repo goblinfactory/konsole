@@ -2,15 +2,26 @@
 
 ## BUSY NOW 4.0
 
-- migrate all tests from nunit to xunit so that I can more easily run using dotnet test.
-  - see : https://dev.to/hatsrumandcode/net-core-2-why-xunit-and-not-nunit-or-mstest--aei
 - upgrade devops builds to use new Github pipelines, convert to new .net core project format and use dotnet test? possibly include this as key 4.0 update.
+
+## Busy NOW (NEXT)
+
 - Added SplitRows with wildcard support for creating any shape UI, using rows and columns.
 - Move Konsole Layouts and Konsole Forms to main Konsole namespace, so that it's available out of the box and more discoverable, so that users can use SplitLeft, SplitRight, SplitTop, SplitBottom.
 - Moved drawing into main Konsole Namespace.
 - update documentation with sample split screens
 - add support for Split returning Tuples for more elegant usages.
-
+- investigate sponsorship options, see
+  - github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., [user1, user2]
+  - patreon: # Replace with a single Patreon username
+  - open_collective: # Replace with a single Open Collective username
+  - ko_fi: # Replace with a single Ko-fi username
+  - tidelift: # Replace with a single Tidelift platform-name/package-name e.g., npm/babel
+  - community_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry
+  - liberapay: # Replace with a single Liberapay username
+  - issuehunt: # Replace with a single IssueHunt username
+  - otechie: # Replace with a single Otechie username
+  - custom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']
 
 ## BUSY NOW vers 4.0.1
 
