@@ -5,6 +5,25 @@
 ## Busy NOW (NEXT)
 
 - #31 : fix bug when drawing window 3 lines tall.
+
+- some references to investigate, and ideas
+  - fast io stack question  : https://stackoverflow.com/questions/2754518/how-can-i-write-fast-colored-output-to-console
+  - low level io, msdn docs : https://docs.microsoft.com/en-us/windows/console/low-level-console-output-functions
+  - need to detect platform : https://mariusschulz.com/blog/detecting-the-operating-system-in-net-core
+  - fast strings            : https://www.stevejgordon.co.uk/creating-strings-with-no-allocation-overhead-using-string-create-csharp
+  - http://cgp.wikidot.com/consle-screen-buffer
+- other console libraries to look at their source code?
+  - console itself?
+  - https://github.com/Athari/CsConsoleFormat to render an alternative Console emulator?
+  
+
+  with faster console rendering I can start to consider more avanced controls
+  - http://elw00d.github.io/consoleframework/examples.html
+
+  
+
+## BUSY NEXT
+
 - speed, speed, speed! direct draw to UX via whatever means after detecting platform. 
 - #22 : investigate input and output redirection and using Konsole as part of a build pipeline for handling parallel build console output.
 - investigate simplifying the console window creation using similar properties dto, so that I can configure borders lines with backgrounds.
@@ -34,7 +53,7 @@
     - so possibly something like a community extension. i.e. you install Konsole, and if you want Redraw, like you have in Windows.Forms, you install Resizer, which also gives you 
       ability to lock console resize. (needs some thought.)
 
-
+- mouse support, draggable windows?
 
 ## October 2019
 
@@ -45,6 +64,13 @@ Below items are just ideas. The true roadmap is driven by solving problems I enc
 
 
 ### Unsorted backlog
+
+- dialog with restore background.
+- escape to exit, with pop up dialog
+- text renderer for approvals to open a left and right comparison, what you supposed to get, what you actually got.
+- mouse support?
+- restore window backgrounds?
+- draggable windows?
 
 - make it all cloud based? take a look at support xterm? https://github.com/xtermjs
 - support Mac via ncursors. (provide a multiplatform support in the build to dynamically link in ncursors on Mac via .NET)
