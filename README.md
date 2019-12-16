@@ -1,5 +1,8 @@
 # Konsole library
 
+[![Join the chat at https://gitter.im/goblinfactory-konsole/community](https://badges.gitter.im/goblinfactory-konsole/community.svg)](https://gitter.im/goblinfactory-konsole/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+
 home of the simple no-dependancy console libary consisting of:
 
 ### ProgressBar , Window  , Form , Menu , Draw & MockConsole
