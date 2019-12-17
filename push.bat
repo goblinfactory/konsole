@@ -1,1 +1,0 @@
-powershell .\push-nuget.ps1

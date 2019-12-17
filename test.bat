@@ -1,1 +1,0 @@
-dotnet test konsole.tests
