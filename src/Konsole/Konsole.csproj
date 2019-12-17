@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Title>Goblinfactory.Konsole</Title>
+    <AssemblyName>Goblinfactory.Konsole</AssemblyName>
+    <RootNamespace>Goblinfactory.Konsole</RootNamespace>
+    <Version>5.0.0-alpha08</Version>
+    <Owners>Goblinfactory Ltd</Owners>
+    <Company>Goblinfactory Ltd</Company>
+    <Authors>Alan Hemmings</Authors>
+    <Description>Simple cross platform console library consisting of ProgressBar, Window, Form, Draw and MockConsole.</Description>
+    <Copyright>Copyright Goblinfactory Ltd, 2017, all rights reserved.</Copyright>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageTags>konsole progress progressbar window form iconsole&lt;</PackageTags>
+    <PackageReleaseNotes>.NET Standard 2.0   release of Konsole, with an optional .NET Framework highspeedwriter compatible with .NET Core, .NET Standard and .NET Framework on windows. The .NET Standard core is cross platform as long as you dont do anything that needs scrolling windows.</PackageReleaseNotes>
+    <PackageIcon>progress.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/goblinfactory/konsole/</RepositoryUrl>
+    <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="progress.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include="..\LICENSE.txt">
+    <Pack>True</Pack>
+    <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
