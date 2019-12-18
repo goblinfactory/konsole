@@ -24,7 +24,7 @@ namespace TestPackage
             var left = window.SplitLeft();
             var leftConsoles = left.SplitRows(
                 new Split(0),
-                new Split(10, "status"),
+                new Split(9, "status"),
                 new Split(10)
                 );
 
@@ -35,7 +35,7 @@ namespace TestPackage
 
             var stocksCon = leftConsoles[0];            
             var menuCon = leftConsoles[2];
-            var namesCon = window.SplitRight("numbers B");
+            var namesCon = window.SplitRight("account audit log");
 
             var r = new Random();
             int speed = 200;
@@ -55,10 +55,10 @@ namespace TestPackage
                             // this is super quick because writer 
                             // simply writes to a buffer and no actual
                             // slow IO has happened yet
-                            for(int x = 0;x < 100; x++)
+                            for(int x = 0; x < 100; x++)
                             {
                                 var color = (ConsoleColor)(r.Next(100) % 16);
-                                namesCon.Write(color, $" {names[i++ % names.Length]} ");
+                                namesCon.Write(color, $" {names[i++ % names.Length]}");
                             }
                             // now lets flush this massive block of updates
                             writer.Flush();
@@ -67,22 +67,11 @@ namespace TestPackage
                     else
                     {
                         var color = (ConsoleColor)(r.Next(100) % 16);
-                        namesCon.Write(color, $" {names[i % names.Length]} ");
+                        namesCon.Write(color, $" {names[i++ % names.Length]}");
                         if (finished) break;
                         Thread.Sleep(r.Next(speed));
                         writer.Flush();
                     }
-                }
-            });
-
-
-            // a window with more slower printing numbers
-            var t2 = Task.Run(() => {
-                while(!finished)
-                {
-                    namesCon.Write(Green, $"({i++}) ");
-                    Thread.Sleep(speed * 10);
-                    writer.Flush();
                 }
             });
 
@@ -114,11 +103,11 @@ namespace TestPackage
                         con = NYSECon;
                         stock = stocksNYSE[r.Next(stocksNYSE.Length)];
                     }
-                    con.Write(White, $"{stock,-10}");
+                    con.Write(White, $"   {stock,-10}");
                     con.WriteLine(changeColor, $"{newPrice:0.00}");
                     con.WriteLine(changeColor, $"  ({sign}{newPrice}, {perc}%)");
                     con.WriteLine("");
-                    Thread.Sleep(r.Next(5000));
+                    Thread.Sleep(r.Next(2000));
                 }
             });
 
@@ -162,7 +151,7 @@ namespace TestPackage
             // menu will block until user presses the exit key.
 
             finished = true;
-            Task.WaitAll(t1, t2, t3);
+            Task.WaitAll(t1, t3);
 
             window.Clear();
             window.WriteLine("thank you for flying Konsole air.");
