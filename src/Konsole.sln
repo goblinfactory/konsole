@@ -32,7 +32,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Samples", "Konsole.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Platform.Windows.Tests", "Konsole.Platform.Windows.Tests\Konsole.Platform.Windows.Tests.csproj", "{1984F0F8-A070-4511-96C2-3D698C185B98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konsole.Tests.Slow", "Konsole.Tests.Slow\Konsole.Tests.Slow.csproj", "{88673DE4-7501-4B72-9EDA-047E4C58BF9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Tests.Slow", "Konsole.Tests.Slow\Konsole.Tests.Slow.csproj", "{88673DE4-7501-4B72-9EDA-047E4C58BF9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage", "TestPackage\TestPackage.csproj", "{B0DDCF86-9755-4EAD-98FC-D22719F5D218}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{88673DE4-7501-4B72-9EDA-047E4C58BF9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88673DE4-7501-4B72-9EDA-047E4C58BF9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88673DE4-7501-4B72-9EDA-047E4C58BF9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0DDCF86-9755-4EAD-98FC-D22719F5D218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0DDCF86-9755-4EAD-98FC-D22719F5D218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0DDCF86-9755-4EAD-98FC-D22719F5D218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0DDCF86-9755-4EAD-98FC-D22719F5D218}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

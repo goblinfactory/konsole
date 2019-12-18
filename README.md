@@ -1,4 +1,4 @@
-# Konsole V5
+# Konsole ver 5
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Join the chat at https://gitter.im/goblinfactory-konsole/community](https://badges.gitter.im/goblinfactory-konsole/community.svg)](https://gitter.im/goblinfactory-konsole/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -112,29 +112,11 @@ home of the simple no-dependancy console libary consisting of:
 
 ![window simple demo](docs/window-demo.png)
 
-# LockConsoleResizing
-
-  When using `Konsole` `windows` we strongly recommend you `LockConsoleResizing()` to prevent the console from re-formatting the text in the console as you resize, without which you may see scenes similar to the following maddness below.
-
-  You only need to call `LockConsoleResizing` once.
-
-<img src='./docs/resized.png' width='600'>
-
-To fix, simply call `LockConsoleResizing()` after you create a window. Or call in explicitly.
-
-```csharp
-
-// fluently when creating a window
-// returns the window reference.
-var c = new Window().LockConsoleResizing();
-
-// if you need to call it explicitly
-new PlatformStuff().LockResizing();
-```
-
 # Advanced windows with `SplitRows` and `SplitColumns`
 
-You can create advanced window layouts using `SplitRows` and `SplitColumns` passing in a collection of Splits. Pass in a size of `0` to indicate that `row` or `column` window must contain the remainder of the window space. See examples below:
+You can create advanced window layouts using `SplitRows` and `SplitColumns` passing in a collection of Splits. Pass in a size of `0` to indicate that `row` or `column` window must contain the remainder of the window space. 
+
+
 
 ```csharp
             var c = new Window().LockConsoleResizing();
@@ -188,32 +170,6 @@ new Split(size)
 
 TBD : describe how Konsole workes side by side with existing code or apps that share the console.
 
-# HighSpeedWriter
-
-TBD
-
-# Writing text games using Konsole
-
-TBD
-
-**here are some fun things I'm working on using Konsole**
-
-- text pacman
-- text tower defence
-- text defenders
-- text video (take a movie and view in a text window at 30 frames per second)
-
-# More serious uses for Konsole
-
-Open source projects already using Konsole
-
-- 10 alternatives to Akka.net
-- Please add your project to this list. (drop me a tweet or email)
-
-Samples I am busy with 
-
-- remote Konsole. Run a console app on a remote linux container and view the output in a console window in a browser on any platform.
-
 # Forms
 
   - quickly and neatly render an object and it's properties in a window or to the console.
@@ -257,6 +213,239 @@ On the backlog; add additional field types, complex objects, and editing.
             new Form(40, new ThickBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
 ```
 ![sample output](docs/Form-Permissions.png)
+
+
+
+# `Goblinfactory.Konsole.Windows`
+
+## HighSpeedWriter 
+
+If you want to write a console game, or serious console application that you've tested and it's too slow using normal Konsole writing, and you are OK with the app only running on windows, then you can use `HighSpeedWriter`, which is available as an additional nuget package `Goblinfactory.Konsole.Windows` to write to the console window via windows `Kernal32` for really high speed. This package has a dependancy on `Goblinfactory.Konsole` so you can simply install this package to get all the features. (nuget will automatically install the dependant package as well for you.)
+
+If you are only going to be updating small portions of the screen, then it is less CPU intensive to simply use `PrintAt` without a highspeed writer. 
+
+The other trade off is you need to keep calling `.Flush()` on your writer to refresh the screen. For a game you could dedicate a timer thread to refresh on `tick` and allow you to control the refresh rate, and cpu usage. Higher refresh rates will use more cpu.
+
+```dos
+Install package `goblinfactory.konsole.windows`
+```
+
+`HighSpeedWriter` can write to a 120 x 60 console window at over 30 frames per second with minimal CPU overhead.
+
+TBD - INSERT GIF SHOWING DEMO OF HIGH SPEED OUTPUT
+
+## Getting started with `HighSpeedWriter`
+
+You use `Konsole` in the same way as described in the docs further above, except that all output is buffered, and you need to call `Flush()` on the writer when you want to update the screen. 
+
+If you have multiple threads writing to the Console, then instead of calling flush all the time, another option is to create a background thread that will `tick` over and refresh the screen x times a second. (depending on what framerate you require).
+
+# End to end sample - `HighSpeedWriter`
+
+below is code that should give you a clue as to how I'm using HighSpeedWriter for myself. This sample code produces the following screen and output.
+
+![sample demo using HighSpeedWriter](docs/crazy-fast-screen.PNG)
+
+![sample demo using HighSpeedWriter](docs/crazy-fast-demo.gif)
+
+**Below is the source code that produced these screenshots** It is also available in the code in the project [../src/TestPackage](../src/TestPackage)
+
+```csharp
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Konsole;
+using Konsole.Internal;
+using static System.ConsoleColor;
+
+namespace TestPackage
+{
+    class Program
+    {
+        static bool finished = false;
+        static bool crazyFast = false;
+        static Func<bool> rand = () => new Random().Next(100) > 49;
+        static void Main(string[] args)
+        {
+
+
+            using var writer = new HighSpeedWriter();
+            var window = new Window(writer);
+
+            window.CursorVisible = false;
+            
+            var left = window.SplitLeft();
+            var leftConsoles = left.SplitRows(
+                new Split(0),
+                new Split(10, "status"),
+                new Split(10)
+                );
+
+            var status = leftConsoles[1];           
+            status.BackgroundColor = Yellow;
+            status.ForegroundColor = Red;
+            status.Clear();
+
+            var stocksCon = leftConsoles[0];            
+            var menuCon = leftConsoles[2];
+            var namesCon = window.SplitRight("numbers B");
+
+            var r = new Random();
+            int speed = 200;
+            int i = 0;
+
+            // print random names in random colors 
+            // and demonstrate scrolling and wrapping at high speed
+            var t1 = Task.Run(() => {
+                var names = TestData.MakeNames(500);
+                while (!finished)
+                {
+                    if (crazyFast)
+                    {
+                        while (crazyFast && !finished)
+                        {
+                            // fill a screen full before flushing
+                            // this is super quick because writer 
+                            // simply writes to a buffer and no actual
+                            // slow IO has happened yet
+                            for(int x = 0;x < 100; x++)
+                            {
+                                var color = (ConsoleColor)(r.Next(100) % 16);
+                                namesCon.Write(color, $" {names[i++ % names.Length]} ");
+                            }
+                            // now lets flush this massive block of updates
+                            writer.Flush();
+                        }
+                    }
+                    else
+                    {
+                        var color = (ConsoleColor)(r.Next(100) % 16);
+                        namesCon.Write(color, $" {names[i % names.Length]} ");
+                        if (finished) break;
+                        Thread.Sleep(r.Next(speed));
+                        writer.Flush();
+                    }
+                }
+            });
+
+
+            // a window with more slower printing numbers
+            var t2 = Task.Run(() => {
+                while(!finished)
+                {
+                    namesCon.Write(Green, $"({i++}) ");
+                    Thread.Sleep(speed * 10);
+                    writer.Flush();
+                }
+            });
+
+            var t3 = Task.Run(() =>
+            {
+                // stock ticker simulation
+                var stocksNYSE = new[] { "BRK.A", "MSFT", "AMZN", "BTG.L", "AAPL", "LWRF.L", "GBLN1", "GBLN2" };
+                var stocksFTSE = new[] { "SDR", "WPP", "ABF", "BP", "AVV", "AAL", "KGF", "MNDI", "NG","RM", "NXT","PSON" };
+                var FTSE100Con = stocksCon.SplitLeft("FTSE 100");
+                var NYSECon = stocksCon.SplitRight("NYSE");
+
+                while (!finished)
+                {
+                    decimal move = (decimal)r.Next(100) / 10;
+                    decimal newPrice = (50 + r.Next(100) + move);
+                    decimal perc = ((decimal)r.Next(2000) / 100);
+                    var increase = rand() ? true : false;
+                    var sign = increase ? '+' : '-';
+                    var changeColor = perc < 10 ? Cyan : increase ? Green : Red;
+                    IConsole con;
+                    string stock;
+                    if (rand())
+                    {
+                        con = FTSE100Con;
+                        stock = stocksFTSE[r.Next(stocksFTSE.Length)];
+                    }
+                    else
+                    {
+                        con = NYSECon;
+                        stock = stocksNYSE[r.Next(stocksNYSE.Length)];
+                    }
+                    con.Write(White, $"{stock,-10}");
+                    con.WriteLine(changeColor, $"{newPrice:0.00}");
+                    con.WriteLine(changeColor, $"  ({sign}{newPrice}, {perc}%)");
+                    con.WriteLine("");
+                    Thread.Sleep(r.Next(5000));
+                }
+            });
+
+
+            // create a menu inside the menu console window
+            // the menu will write updates to the status console window
+
+            var menu = new Menu(menuCon, "Progress Bars", ConsoleKey.Escape, 30,
+                new MenuItem('s', "slow", () =>
+                {
+                    speed = 200;
+                    status.Write(White, $" : {DateTime.Now.ToString("HH:mm:ss - ")}");
+                    status.WriteLine(Green, $" SLOW ");
+                    crazyFast = false;
+                }),
+                new MenuItem('f', "fast", () =>
+                {
+                    speed = 10;
+                    status.Write(White, $" : {DateTime.Now.ToString("HH:mm:ss - ")}");
+                    status.WriteLine(White, $" FAST ");
+                    crazyFast = false;
+                }),
+                new MenuItem('c', "crazy fast", () =>
+                {
+                    speed = 1;
+                    crazyFast = true;
+                    status.Write(White, $" : {DateTime.Now.ToString("HH:mm:SS - ")}");
+                    status.WriteLine(Red, $" CRAZY FAST ");
+                })
+
+            );
+
+            status.WriteLine("press up and down to select a menu item, and enter or highlighted letter to select. Press escape to quit.");
+
+            // menu writes to the console automatically,
+            // but because we're using a buffered screen writer
+            // we need to flush the UI after any menu action.
+            menu.OnAfterMenuItem = _ => writer.Flush();
+
+            menu.Run();
+            // menu will block until user presses the exit key.
+
+            finished = true;
+            Task.WaitAll(t1, t2, t3);
+
+            window.Clear();
+            window.WriteLine("thank you for flying Konsole air.");
+            writer.Flush();
+        }
+    }
+}
+
+
+```
+
+# Why did I write Konsole?
+
+Q: What do I (Alan Hemmings) use my own package for, and why do I put so much effort in?
+
+A: I use it to allow me to write simple test projects, or "reference architecture" projects when evaulating various libraries, (for example, `Akka.net`, `memstate` or `eventstor` ) It allows me to write simple console apps that are easy to understand and render in a visually simple way, especially when there are multiple threads, actors or servers that I need to visual represent without getting sidetracked building a WPF or windforms or web application. 
+
+I'm now also using it for more serious applications. I'm using `Konsole` in `Gunner` a `.NET` testing library similar to `Gattling` that I need to put code under stress when evaulating different enterprise messaging libraries.
+
+# Open source projects already using Konsole
+
+- 10 alternatives to Akka.net : (A console based reference architecture using Konsole to simplify the demo / reference code)
+- Please add your project to this list. (drop me a tweet or email)
+
+Samples I am busy with 
+
+- remote Konsole. Run a console app on a remote linux container and view the output in a console window in a browser on any platform.
+
+
 
 # Debugging problems with Konsole, random items
 

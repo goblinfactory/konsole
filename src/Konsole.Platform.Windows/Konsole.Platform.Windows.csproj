@@ -18,6 +18,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/goblinfactory/konsole/</RepositoryUrl>
+    <PackageId>Goblinfactory.Konsole.Windows</PackageId>
   </PropertyGroup>
   <ItemGroup>
     <None Include="progress.png" Pack="true" Visible="false" PackagePath="" />

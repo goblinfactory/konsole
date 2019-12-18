@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Goblinfactory.Konsole" Version="5.0.0-alpha09" />
+    <PackageReference Include="Goblinfactory.Konsole.Windows" Version="5.0.0-alpha08" />
+  </ItemGroup>
+
+</Project>
