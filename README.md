@@ -248,7 +248,7 @@ below is code that should give you a clue as to how I'm using HighSpeedWriter fo
 
 ![sample demo using HighSpeedWriter](docs/crazy-fast-demo.gif)
 
-**Below is the source code that produced these screenshots** It is also available in the code in the project [src/TestPackage](src/TestPackage)
+**Below is the source code that produced these screenshots** It is also available in the code in the single file demo project [src/TestPackage/Program.cs](src/TestPackage/Program.cs)
 
 ```csharp
 
