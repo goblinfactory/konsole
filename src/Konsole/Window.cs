@@ -84,9 +84,15 @@ namespace Konsole
             }
         }
 
-        // to avoid constructor hell, and really hard errors, try to ensure that there is really only 1 constructor and all other constructors defer to that constructor. Do not get constructor A --> calls B --> calls C
-
-        public Window() : this(0, 0, (int?) null, (int?) null, ConsoleColor.White, ConsoleColor.Black, true, null)
+        public Window() : this(
+            0, 
+            0, 
+            OS.isWindows ? Console.WindowWidth : (int?) null, 
+            OS.isWindows ? Console.WindowHeight : (int?) null, 
+            ConsoleColor.White, 
+            ConsoleColor.Black, 
+            true, null
+            )
         {
         }
 
@@ -272,6 +278,7 @@ namespace Konsole
 
         private static int GetStartWidth(bool echo, int? width, int x, IConsole echoConsole)
         {
+            if (width != null) return width.Value;
             // if echo is false, then this is a mock console and the width is never capped
 
             // should_clip_child_window_to_not_exceed_parent_boundaries

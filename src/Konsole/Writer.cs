@@ -181,7 +181,7 @@ namespace Konsole
         // class written in response to issue #28 https://github.com/goblinfactory/konsole/issues/28 (Crash after window resize)
         private static int CheckWidth(int x)
         {
-            return x.Min(Console.WindowWidth - 1, Console.BufferWidth - 1);
+            return x.Min(Console.WindowWidth, Console.BufferWidth);
         }
 
 
