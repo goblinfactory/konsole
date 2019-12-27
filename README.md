@@ -166,6 +166,32 @@ new Split(size)
 };
 ```
 
+# Using the tests as Documentation
+
+Because the unit tests are run on an Azure build server that does not have access a open console fileHandle most of the tests use `MockConsole`. 
+Whenever you see sample code, eg the test below from [src/Konsole.Tests/WindowTests/SplitColumnsShould.cs](src/Konsole.Tests/WindowTests/SplitColumnsShould.cs) 
+
+```csharp
+    var con = new MockConsole(30, 4);
+    var window = new Window(con);
+    var consoles = window.SplitColumns(
+            new Split(8, "col1", LineThickNess.Single),
+            new Split(10, "col2", LineThickNess.Single),
+            new Split(12, "col3", LineThickNess.Single)
+```
+
+In order to use the code yourself in a project, simply leave out the MockConsole, and start with a `new Window()` as below. 
+The rest of the unit test code will work the same in production as in testing.
+
+```csharp
+    var window = new Window();
+    var consoles = window.SplitColumns(
+            new Split(8, "col1", LineThickNess.Single),
+            new Split(10, "col2", LineThickNess.Single),
+            new Split(12, "col3", LineThickNess.Single)
+            ... rest of code
+```
+
 # Side by side writing 
 
 TBD : describe how Konsole workes side by side with existing code or apps that share the console.

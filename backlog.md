@@ -35,6 +35,7 @@
 
 ## BUSY NEXT
 
+- there's no single method to create new window at 100% wide and high with a title? doh! seems so obvious. e.g. `var win = new Window("My stuff", LineThickNess.Double)`
 - add override to write, writeline, printat that takes colors, so you can set background color at the same time.
 - disable mouse click from stopping the UI from rendering! even though it does? doesn't actually halt the background tasks? either way, this is awful!
 - investigate - write test for when writing a single char in the last position of a window, does not scroll? possibly?
@@ -42,6 +43,7 @@
 - add input features and cursor, when using HighSpeedWriter.
 - #22 : investigate input and output redirection and using Konsole as part of a build pipeline for handling parallel build console output.
 - investigate simplifying the console window creation using similar properties dto, so that I can configure borders lines with backgrounds.
+- SplitLeftAndRight with option to merge lines or seperate (use CSS table terminology) so that you save 1 column and row each time. more practical and compact complex designs.
 - when setting a background color, as well as including Border line thickness, then the border line should share the window background colour. * I think this may only be a problem with splitleft, and splitright.
 - investigate sponsorship options, see
   - github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., [user1, user2]
@@ -54,6 +56,7 @@
   - issuehunt: # Replace with a single IssueHunt username
   - otechie: # Replace with a single Otechie username
   - custom: # Replace with up to 4 custom sponsorship URLs e.g., ['link1', 'link2']
+ - SplitTop and SplitBOttom should be SplitHorizontal() and Vertical returning top and bottom, and left and right respectively. (consider if this is worth doing)
 
 ## BUSY NOW vers 4.0.1
 
@@ -207,4 +210,11 @@ Actual value was 117.'`
 - Auto-documentation. (full api documentation)
 - Investigate if possible to print using native windows and Mac, Linux API's and switch out depending on platform detection, fallback to slower rendering.
 - remote windows, for running console service apps, with remote console input and-or output, to combine with docker support so I can quickly and easily remote run some code, and have a semi decent local UI (with menus etc) for my admin and server monitoring.
-- 
+
+# useful notes
+
+## beyond compare
+
+file excludes 
+
+> -packages\;-obj\;-bin\;-.git\;-.vs\
