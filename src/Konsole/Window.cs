@@ -188,6 +188,16 @@ namespace Konsole
 
         internal static object _staticLocker = new object();
 
+        public static IConsole Open()
+        {
+            return new Window();
+        }
+
+        public static IConsole Open(IConsole parent)
+        {
+            return new Window(parent);
+        }
+
         /// <summary>
         /// This is the the only threadsafe way to create a window at the moment.
         /// </summary>

@@ -1,5 +1,9 @@
 # Roadmap
 
+## Busy now
+
+- better examples for documentation.
+
 ## Busy next 5.x.x
 
 - provide means of COnsole.Input
@@ -31,7 +35,6 @@
   - TBD                     : https://blog.tedd.no/2015/08/02/better-text-console-for-c/
   - Windows Console Game    : http://cecilsunkure.blogspot.com/2011/11/windows-console-game-writing-to-console.html
   - launching more consoles : https://neowin.net/forum/topic/904788-c-adding-a-console-window-in-a-windows-app/
- 
 
 ## BUSY NEXT
 

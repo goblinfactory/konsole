@@ -83,7 +83,7 @@ home of the simple no-dependancy console libary consisting of:
   - full color support
 
 ```csharp
-            var con = new Window(200,50).LockConsoleResizing();
+            var con = new Window(200,50);
             con.WriteLine("starting client server demo");
             var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con);
             var server = new Window(25, 4, 20, 20, con);

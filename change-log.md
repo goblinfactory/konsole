@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.0.0-alpha-08]
+## [5.0.0]
 
 - full .NET core release! (Konsole is a .NET standard 2.0 package) and (Konsole.Platform.Windows is a .NET framework 4.6.1 package)
 - package is built and tested on both Ubuntu and Windows on Github using github actions for devops. (see dotnetcore.yml)
