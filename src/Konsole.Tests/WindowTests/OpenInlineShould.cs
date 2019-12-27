@@ -30,6 +30,27 @@ namespace Konsole.Tests.WindowTests
             c.Buffer.Should().BeEquivalentTo(expected);
         }
 
+        [Test]
+        public void clip_the_height_to_fit_within_parent()
+        {
+            Assert.Inconclusive("Not yet implemented");
+            //var c = new MockConsole(10, 10);
+            //c.CursorLeft = 5;
+            //c.CursorTop = 5;
+            //var w = Window.OpenInline(c, 10);
+            //w.WindowHeight.Should().Be(5);
+        }
 
+        [Test]
+        public void use_the_full_screen_width_if_no_width_provided_and_move_cursor_of_host_to_below_inline_window_and_reset_x_position_to_left()
+        {
+            var c = new MockConsole(12, 10);
+            c.CursorLeft = 5;
+            c.CursorTop = 5;
+            var w = Window.OpenInline(c, 2);
+            w.WindowWidth.Should().Be(12);
+            c.CursorTop.Should().Be(8);
+            c.CursorLeft.Should().Be(0);
+        }
     }
 }

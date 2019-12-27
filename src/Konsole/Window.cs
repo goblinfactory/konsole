@@ -153,9 +153,16 @@ namespace Konsole
         {
             lock (_staticLocker)
             {
-                var w = new Window(0, echoConsole.CursorTop, echoConsole.WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole);
+                if(echoConsole.CursorLeft>0)
+                {
+                    var win1 = new Window(0, echoConsole.CursorTop + 1, echoConsole.WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole);
+                    echoConsole.CursorTop += height + 1;
+                    echoConsole.CursorLeft = 0;
+                    return win1.Concurrent();
+                }
+                var win2 = new Window(0, echoConsole.CursorTop, echoConsole.WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole);
                 echoConsole.CursorTop += height;
-                return w.Concurrent();
+                return win2.Concurrent();
             }
         } 
 
