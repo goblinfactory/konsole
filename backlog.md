@@ -35,7 +35,9 @@
 
 ## BUSY NEXT
 
+- add more tests.
 - there's no single method to create new window at 100% wide and high with a title? doh! seems so obvious. e.g. `var win = new Window("My stuff", LineThickNess.Double)`
+- consolidate all the ways to create a window so that there's only 1 way. new Window.
 - add override to write, writeline, printat that takes colors, so you can set background color at the same time.
 - disable mouse click from stopping the UI from rendering! even though it does? doesn't actually halt the background tasks? either way, this is awful!
 - investigate - write test for when writing a single char in the last position of a window, does not scroll? possibly?

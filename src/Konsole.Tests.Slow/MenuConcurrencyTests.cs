@@ -21,7 +21,7 @@ namespace Konsole.Tests.Slow
             console.WriteLine("line 1");
             console.WriteLine("line 2");
             // create and run a menu inline, at the current cursor position
-            var menu = new Menu(console, "ZeroMQ samples", ConsoleKey.Escape, 30,
+            var menu = new Menu(console, "Test samples", ConsoleKey.Escape, 30,
                 new MenuItem('1', "cats", () => RunMenuItem(client, "client", "cats")),
                 new MenuItem('2', "dogs", () => RunMenuItem(server, "server", "dogs")),
                 new MenuItem('3', "item 1", () => {}),
@@ -46,7 +46,7 @@ namespace Konsole.Tests.Slow
                 "line 1                             ┌─────────────── client ───────────────┐  ┌─────────────── server ───────────────┐   ",  
                 "line 2                             │cats 7978                             │  │dogs 7978                             │   ",  
                 "                                   │cats 7979                             │  │dogs 7979                             │   ",  
-                "    ZeroMQ samples                 │cats 7980                             │  │dogs 7980                             │   ",  
+                "    Test samples                   │cats 7980                             │  │dogs 7980                             │   ",  
                 "    --------------------------     │cats 7981                             │  │dogs 7981                             │   ",  
                 "    cats                           │cats 7982                             │  │dogs 7982                             │   ",  
                 "    dogs                           │cats 7983                             │  │dogs 7983                             │   ",  
