@@ -130,5 +130,18 @@ namespace Konsole.Tests.WindowTests
             c.CursorLeft.Should().Be(0);
             c.CursorTop.Should().Be(0);
         }
+
+        //[Test]
+        //public void offset_the_new_window()
+        //{
+        //    Assert.Inconclusive("Not yet implemented");
+        //    // Not implemented yet
+        //    // currently the only window that get's offset (called after the constructor returns instance) is a floating window.
+        //    // via _CreateFloatingWindow which calls w.SetWindowOffset(x ?? 0, y ?? 0);
+        //    var c = new MockConsole(20, 20);
+        //    var w = new Window(c, 10, 8, 6, 4);
+        //    w.AbsoluteX.Should().Be(10);
+        //    w.AbsoluteY.Should().Be(8);
+        //}
     }
 }
