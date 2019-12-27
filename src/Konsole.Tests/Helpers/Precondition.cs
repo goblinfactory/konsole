@@ -22,7 +22,16 @@ namespace Konsole.Tests.Helpers
                 Console.WriteLine("TEST INCONCLUSIVE");
                 Console.WriteLine("-----------------");
                 Console.WriteLine(message + " " + ex);
-                Assert.Inconclusive(message + " " + ex.Message);
+
+                if(System.Diagnostics.Debugger.IsAttached)
+                {
+                    Assert.Fail(message + " " + ex.Message);}
+                else
+                {
+                    Assert.Inconclusive(message + " " + ex.Message);
+                }
+                
+                
             }
         }
     }
