@@ -18,13 +18,13 @@ namespace Konsole.Tests.WindowTests
             IConsole _window;
             IConsole _inline;
 
-            _window = new MockConsole(20,6);
+            _window = new MockConsole(20, 6);
             _window.WriteLine("line1");
             _window.Write("1234");
             Assert.AreEqual(1, _window.CursorTop);
             Assert.AreEqual(4, _window.CursorLeft);
             // create an inline window by only specifying a width and a height.
-            _inline = new Window(_window,5,2);
+            _inline = new Window(_window, 5, 2);
             Assert.AreEqual(3, _window.CursorTop);
             Assert.AreEqual(0, _window.CursorLeft);
             _window.WriteLine("foo");
@@ -34,7 +34,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void should_clip_child_window_to_not_exceed_parent_boundaries()
         {
-            var c = new MockConsole(20,10);
+            var c = new MockConsole(20, 10);
             var w2 = new Window(c, 10, 5, 20, 10, ConsoleColor.Red, ConsoleColor.White);
             Assert.AreEqual(10, w2.WindowWidth);
             //Assert.AreEqual(5, w2.WindowHeight);
@@ -65,7 +65,7 @@ namespace Konsole.Tests.WindowTests
             var w2 = new Window(c, 0, 0);
             state.Should().BeEquivalentTo(c.State);
 
-            var w3 = new Window(0,0,10,10,c);
+            var w3 = new Window(0, 0, 10, 10, c);
             state.Should().BeEquivalentTo(c.State);
         }
 
@@ -143,5 +143,21 @@ namespace Konsole.Tests.WindowTests
         //    w.AbsoluteX.Should().Be(10);
         //    w.AbsoluteY.Should().Be(8);
         //}
+
+        [TestCase(0, 0, 10, 10)]
+        [TestCase(5, 5, 10, 10)]
+        [TestCase(0, 5, 10, 10)]
+        [TestCase(5, 0, 10, 10)]
+        public void when_no_values_set_should_use_parent_whole_screen_defaults_and_set_x_y_to_0_0(int parentCurrentX, int parentCurrentY, int expectedWidth, int expectedHeight)
+        { 
+            var con = new MockConsole(10, 10);
+            con.CursorLeft = parentCurrentX;
+            con.CursorTop = parentCurrentY;
+            var win = new Window(con);
+            win.WindowWidth.Should().Be(expectedWidth);
+            win.WindowHeight.Should().Be(expectedHeight);
+            win.CursorLeft.Should().Be(0);
+            win.CursorTop.Should().Be(0);
+        }
     }
 }
