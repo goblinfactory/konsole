@@ -52,5 +52,20 @@ namespace Konsole.Tests.WindowTests
             c.CursorTop.Should().Be(8);
             c.CursorLeft.Should().Be(0);
         }
+
+        [Test]
+        [TestCase(0, 0, 4, 4)]
+        [TestCase(0, 0, 7, 7)] // balance is 3
+        [TestCase(0, 0, 15, 10)] 
+        [TestCase(5, 2, 15, 8)] // clip the height to 8 (balance)
+        public void use_balance_of_parent_height_as_defaults(int parentCurrentX, int parentCurrentY, int heightRows, int expectedHeight)
+        {
+            var c = new MockConsole(10, 10);
+            c.CursorLeft = parentCurrentX;
+            c.CursorTop = parentCurrentY;
+            var w = Window.OpenInline(c, heightRows);
+            w.WindowWidth.Should().Be(10);
+            w.WindowHeight.Should().Be(expectedHeight);
+        }
     }
 }

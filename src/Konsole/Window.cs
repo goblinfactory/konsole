@@ -143,27 +143,23 @@ namespace Konsole
         {
             lock (_staticLocker)
             {
-                var w = new Window(padLeft, echoConsole.CursorTop, width, height, foreground, background, true, echoConsole, options);
+                if (echoConsole.CursorLeft > 0)
+                {
+                    var win1 = new Window(padLeft, echoConsole.CursorTop + 1, width, height, foreground, background, true, echoConsole, options);
+                    echoConsole.CursorTop += height + 1;
+                    echoConsole.CursorLeft = 0;
+                    return win1.Concurrent();
+                }
+                var win2 = new Window(padLeft, echoConsole.CursorTop, width, height, foreground, background, true, echoConsole, options);
                 echoConsole.CursorTop += height;
-                return w.Concurrent();
+                return win2.Concurrent();
             }
         }
 
         public static IConsole OpenInline(IConsole echoConsole, int height)
         {
-            lock (_staticLocker)
-            {
-                if(echoConsole.CursorLeft>0)
-                {
-                    var win1 = new Window(0, echoConsole.CursorTop + 1, echoConsole.WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole);
-                    echoConsole.CursorTop += height + 1;
-                    echoConsole.CursorLeft = 0;
-                    return win1.Concurrent();
-                }
-                var win2 = new Window(0, echoConsole.CursorTop, echoConsole.WindowWidth, height, ConsoleColor.White, ConsoleColor.Black, true, echoConsole);
-                echoConsole.CursorTop += height;
-                return win2.Concurrent();
-            }
+            var balance = echoConsole.WindowHeight - echoConsole.CursorTop;
+            return OpenInline(echoConsole, 0, echoConsole.WindowWidth, IntegerExtensions.Min(height, balance) , echoConsole.ForegroundColor, echoConsole.BackgroundColor);
         } 
 
         //Window will clear the parent console area in the overlapping window.
