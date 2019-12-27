@@ -35,7 +35,10 @@
 
 ## BUSY NEXT
 
+- improve clipping see `clip_child_window_to_not_exceed_parent_boundaries` and `clip_child_window_to_not_exceed_parent_boundaries_test2`
 - add more tests.
+- IWindow interface to include "Open" to open a child window at XY with width and height. 
+
 - there's no single method to create new window at 100% wide and high with a title? doh! seems so obvious. e.g. `var win = new Window("My stuff", LineThickNess.Double)`
 - consolidate all the ways to create a window so that there's only 1 way. new Window.
 - add override to write, writeline, printat that takes colors, so you can set background color at the same time.
