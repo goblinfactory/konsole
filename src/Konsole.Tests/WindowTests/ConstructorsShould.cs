@@ -112,5 +112,23 @@ namespace Konsole.Tests.WindowTests
             Assert.True(w.Scrolling);
             Assert.False(w.Clipping);
         }
+
+        [Test]
+        public void set_correct_height_and_width()
+        {
+            var c = new MockConsole(20, 20);
+            var w = new Window(c, 10, 8, 6, 4);
+            w.WindowWidth.Should().Be(6);
+            w.WindowHeight.Should().Be(4);
+        }
+
+        [Test]
+        public void not_change_host_cursor_position()
+        {
+            var c = new MockConsole(20, 20);
+            var w = new Window(c, 10, 8, 6, 4);
+            c.CursorLeft.Should().Be(0);
+            c.CursorTop.Should().Be(0);
+        }
     }
 }
