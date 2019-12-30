@@ -112,6 +112,107 @@ home of the simple no-dependancy console libary consisting of:
 
 ![window simple demo](docs/window-demo.png)
 
+# SplitLeft, SplitRight
+
+Split a window into two equal halves, returning either the left or right half.
+
+```csharp
+    var w = new Window();
+
+    // split left
+    var left = w.SplitLeft("left");
+
+    // split right
+    var right = w.SplitRight("right");
+
+    left.WriteLine("one");
+    left.WriteLine("two");
+    left.Write("three");
+
+    right.WriteLine("four");
+    right.WriteLine("five");
+    right.Write("six");
+```
+
+gives you
+
+```
+    ┌ left ─┐┌─ right ┐
+    │one    ││four    │
+    │two    ││five    │
+    │three  ││six     │
+    └───────┘└────────┘
+```
+
+# SplitTop, SplitBottom
+
+```csharp
+    var w = new Window();
+    var top = w.SplitTop("top");
+    var bottom = w.SplitBottom("bot");
+
+    top.WriteLine("one");
+    top.WriteLine("two");
+    top.Write("three");
+
+    bottom.WriteLine("four");
+    bottom.WriteLine("five");
+    bottom.Write("six");
+
+```
+
+gives you
+
+```
+    ┌── top ─┐
+    │one     │
+    │two     │
+    │three   │
+    └────────┘
+    ┌── bot ─┐
+    │four    │
+    │five    │
+    │six     │
+    └────────┘
+```
+
+# Nested Windows - combining `SplitTop, SplitBottom` with `SplitLeft, SplitRight`
+
+```csharp
+    var win = new Window(30,10);
+
+    var left = win.SplitLeft("left");
+    var right = win.SplitRight("right");
+    
+    var top = left.SplitTop("top");
+    var bottom = left.SplitBottom("bot");
+    
+    top.WriteLine("one");
+    top.WriteLine("two");
+    top.Write("three");
+
+    bottom.WriteLine("four");
+    bottom.WriteLine("five");
+    bottom.Write("six");
+```
+
+Gives you the window shown below.
+
+Note that `top` and `bottom` windows are only 2 lines high and therefore printing three lines has cause the windows to scroll the top item off the window.
+
+```
+┌─── left ────┐┌─── right ───┐
+│┌─── top ───┐││             │
+││two        │││             │
+││three      │││             │
+│└───────────┘││             │
+│┌─── bot ───┐││             │
+││five       │││             │
+││six        │││             │
+│└───────────┘││             │
+└─────────────┘└─────────────┘
+```
+
 # Advanced windows with `SplitRows` and `SplitColumns`
 
 You can create advanced window layouts using `SplitRows` and `SplitColumns` passing in a collection of Splits. Pass in a size of `0` to indicate that `row` or `column` window must contain the remainder of the window space. 
@@ -119,7 +220,7 @@ You can create advanced window layouts using `SplitRows` and `SplitColumns` pass
 
 
 ```csharp
-            var c = new Window().LockConsoleResizing();
+            var c = new Window();
             var consoles = c.SplitRows(
                     new Split(4, "heading", LineThickNess.Single),
                     new Split(0),
@@ -166,36 +267,6 @@ new Split(size)
 };
 ```
 
-# Using the tests as Documentation
-
-Because the unit tests are run on an Azure build server that does not have access a open console fileHandle most of the tests use `MockConsole`. 
-Whenever you see sample code, eg the test below from [src/Konsole.Tests/WindowTests/SplitColumnsShould.cs](src/Konsole.Tests/WindowTests/SplitColumnsShould.cs) 
-
-```csharp
-    var con = new MockConsole(30, 4);
-    var window = new Window(con);
-    var consoles = window.SplitColumns(
-            new Split(8, "col1", LineThickNess.Single),
-            new Split(10, "col2", LineThickNess.Single),
-            new Split(12, "col3", LineThickNess.Single)
-```
-
-In order to use the code yourself in a project, simply leave out the MockConsole, and start with a `new Window()` as below. 
-The rest of the unit test code will work the same in production as in testing.
-
-```csharp
-    var window = new Window();
-    var consoles = window.SplitColumns(
-            new Split(8, "col1", LineThickNess.Single),
-            new Split(10, "col2", LineThickNess.Single),
-            new Split(12, "col3", LineThickNess.Single)
-            ... rest of code
-```
-
-# Side by side writing 
-
-TBD : describe how Konsole workes side by side with existing code or apps that share the console.
-
 # Forms
 
   - quickly and neatly render an object and it's properties in a window or to the console.
@@ -239,8 +310,6 @@ On the backlog; add additional field types, complex objects, and editing.
             new Form(40, new ThickBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
 ```
 ![sample output](docs/Form-Permissions.png)
-
-
 
 # `Goblinfactory.Konsole.Windows`
 
@@ -453,6 +522,36 @@ namespace TestPackage
 
 
 ```
+
+# Using the tests as Documentation
+
+Because the unit tests are run on an Azure build server that does not have access a open console fileHandle most of the tests use `MockConsole`. 
+Whenever you see sample code, eg the test below from [src/Konsole.Tests/WindowTests/SplitColumnsShould.cs](src/Konsole.Tests/WindowTests/SplitColumnsShould.cs) 
+
+```csharp
+    var con = new MockConsole(30, 4);
+    var window = new Window(con);
+    var consoles = window.SplitColumns(
+            new Split(8, "col1", LineThickNess.Single),
+            new Split(10, "col2", LineThickNess.Single),
+            new Split(12, "col3", LineThickNess.Single)
+```
+
+In order to use the code yourself in a project, simply leave out the MockConsole, and start with a `new Window()` as below. 
+The rest of the unit test code will work the same in production as in testing.
+
+```csharp
+    var window = new Window();
+    var consoles = window.SplitColumns(
+            new Split(8, "col1", LineThickNess.Single),
+            new Split(10, "col2", LineThickNess.Single),
+            new Split(12, "col3", LineThickNess.Single)
+            ... rest of code
+```
+
+# Side by side writing 
+
+TBD : describe how Konsole workes side by side with existing code or apps that share the console.
 
 # Why did I write Konsole?
 
