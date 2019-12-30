@@ -7,7 +7,6 @@ namespace Konsole
 {
     public class Draw
     {
-
         private readonly IConsole _console;
         private readonly MergeOrOverlap _mergeOrOverlap;
         private LineMerger _lineMerger;
@@ -29,9 +28,9 @@ namespace Konsole
         public static IBoxStyle ThickBox = new ThickBoxStyle();
         public static IBoxStyle ThinBox = new ThinBoxStyle();
 
-        public Draw Box(int sx, int sy, int ex, int ey, LineThickNess thickness = LineThickNess.Single)
+        public Draw Box(int sx, int sy, int ex, int ey, LineThickNess? thickness = null)
         {
-            Box(sx, sy, ex, ey, "", thickness);
+            Box(sx, sy, ex, ey, "", thickness ?? Thickness);
             return this;
         }
 

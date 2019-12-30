@@ -2,11 +2,21 @@
 
 ## Busy now
 
+- add new feature SplitLeftRight
+- improve overlapping of boxes to correctly overlap when box edge overlapping.
+- .Box to use Draw() default thickness.
+
+
+
+## Busy next 5.x.x (unsorted)
+- fix bug `overlapping_boxes_double_single` (see test)
+- overlap box does not work. everything is merged. 
+- box should use default lineThickness of Draw. See tests `OverlappingBoxesTests`. 
+- update build script to update docs to use real tests and fail test if test sample not exist.
 - better examples for documentation.
-
-## Busy next 5.x.x
-
+- Add new borderSetting, to use the background char for the border so that we can get a bit of padding around a floating window with no border.
 - provide means of COnsole.Input
+- allow new floating windows to intelligently merge their borders with any existing windows.
 - #31 : fix bug when drawing window 3 lines tall.
 - See if this is needed? Window.DoCommand needs a static locker, write test that proves this and make sure we don't break anything else.
 - See if this is still valid? write tests ...PrintAt resets the current cursor position. PrintAt is meant to be a safe way to print without impacting existing printing.
@@ -93,6 +103,8 @@ Below items are just ideas. The true roadmap is driven by solving problems I enc
 
 ### Unsorted backlog
 
+- plugin for Approvals to allow you to approve tests inline using roslyn code analysis, and add in 'recieved' and 'approved' and fire up beyond compare comparer. to get best of both worlds.
+  (allow Approvals to detect what the expected field name is so that we can replace it with the output from Beyond compare.)
 - write a small decent full fledged samples.
 - automatically write documentation, add comments to flesh out documentation.
 - proper home website for the library?

@@ -81,13 +81,5 @@ namespace Konsole.Tests.Lines
 
             console.Buffer.Should().BeEquivalentTo(expected);
         }
-
-        [Test]
-        public void should_render_title()
-        {
-            // test different sizes of title from 0 through to overflow size.
-            // test different size boxes, from 0 through to large.
-            Assert.Inconclusive("new requirement");
-        }
     }
 }

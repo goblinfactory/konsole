@@ -1,7 +1,47 @@
-# Change Log
+﻿# Change Log
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
-and this project adheres to [Semantic Versioning](http://semver.org/).
+and this project 
+
+## [6.0.0]
+
+- Moved Draw classes to root Konsole namespace so that the only using required by library users is `Konsole` The following classes were moved to root
+ - `Draw`
+ - `LineThickNess`
+ - `MergeOrOverlap`
+- Renamed `LineThickNess.Double` to `DoubleLine` enum values so that you can use new `static using Konsole.LineThickness`. (double is a reserved word).
+
+## [5.1.0]
+
+### Added
+
+- `myWindow.SplitLeftRight` : Split the current window left and right and return a tuple. Default to use a single middle line, instead of the older double.
+
+ insert screenshot
+
+### fixed (busy)
+
+- when rendering a window 3 lines tall the second row line char is incorrect.
+    ┌──── headline ────┐       ┌──── headline ────┐
+    ─ content here     ─  =>   │ content here     |
+    └──────────────────┘       └──────────────────┘
+
+### added
+
+- better windows and frames. Support for splitLeftRight and SplitTopBottom to return tuple as well as split using a single line between the windows, to 
+  create much tighter layouts.
+  
+  instead of
+
+    [insert screenshot from tests]
+
+  will generate
+
+    [insert screenshot from tests]
+
+## [5.0.1]
+
+- more tests and small stabilisations.
 
 ## [5.0.0]
 

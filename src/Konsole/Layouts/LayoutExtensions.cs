@@ -1,5 +1,5 @@
 ﻿using System;
-using Konsole.Drawing;
+using static Konsole.BorderCollapse;
 
 namespace Konsole
 {
@@ -129,8 +129,7 @@ namespace Konsole
             return _LeftRight(c, title, true, true, thickness, foreground);
         }
 
-
-        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
+        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor? foreground, ConsoleColor? background = null)
         {
             lock (Window._staticLocker)
             {
@@ -145,9 +144,9 @@ namespace Konsole
                     {
                         new Draw(c).Box(offset, 0, w - 1 + offset, h - 1, title, thickness);
                     });
-                    return Window._CreateFloatingWindow(1 + offset, 1, w - 2, h - 2, foreground, c.BackgroundColor, true, c, null);
+                    return Window._CreateFloatingWindow(1 + offset, 1, w - 2, h - 2, foreground ?? c.ForegroundColor, background ?? c.BackgroundColor, true, c, null);
                 }
-                return Window._CreateFloatingWindow(offset, 0, w, h, foreground, c.BackgroundColor, true, c, null);
+                return Window._CreateFloatingWindow(offset, 0, w, h, foreground ?? c.ForegroundColor, background ?? c.BackgroundColor, true, c, null);
             }
         }
 
