@@ -9,7 +9,7 @@
 
 
 ## Busy next 5.x.x (unsorted)
-
+- add snippets using Simon Cropp's snippets markdown builder!
 - fix bug `overlapping_boxes_double_single` (see test)
 - overlap box does not work. everything is merged. 
 - box should use default lineThickness of Draw. See tests `OverlappingBoxesTests`. 
