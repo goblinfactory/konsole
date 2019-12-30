@@ -53,21 +53,21 @@ namespace Konsole
             lock (Window._staticLocker)
             {
                 int h = c.WindowHeight;
-                int leftWidth = (c.WindowWidth - 3) / 2;
-                int rightWidth = c.WindowWidth - (3 + leftWidth);
-
-                int offset = leftWidth + 3;
+                int w = c.WindowWidth - 3;
+                int leftWidth = w / 2;
+                int rightWidth = (w - leftWidth);
 
                 c.DoCommand(c, () =>
                 {
-                    //todo need unit test for merging two boxes :D
+                    //todo need unit test for merging two boxes :D for now, lets print them twice so we get true overlap to start with
                     new Draw(c)
-                    .Box(0, 0, leftWidth + 2, h - 1, leftTitle, thickness)
-                    .Box(offset, 0, offset + rightWidth + 1, h - 1, rightTitle, thickness);
+                    .Box(0, 0, leftWidth + 1, h - 1, leftTitle, thickness);
+                    new Draw(c)
+                    .Box(leftWidth + 1, 0,  rightWidth + leftWidth + 2, h - 1, rightTitle, thickness);
                 });
 
                 var leftWin = Window._CreateFloatingWindow(1, 1, leftWidth, h - 2, foreground, background, true, c, null);
-                var rightWin = Window._CreateFloatingWindow(offset + 1, 1, rightWidth, h - 2, foreground, background, true, c, null);
+                var rightWin = Window._CreateFloatingWindow(leftWidth + 2, 1, rightWidth, h - 2, foreground, background, true, c, null);
                 return (leftWin, rightWin);
             }
         }

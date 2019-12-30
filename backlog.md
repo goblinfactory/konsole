@@ -9,6 +9,7 @@
 
 
 ## Busy next 5.x.x (unsorted)
+
 - fix bug `overlapping_boxes_double_single` (see test)
 - overlap box does not work. everything is merged. 
 - box should use default lineThickness of Draw. See tests `OverlappingBoxesTests`. 
@@ -46,8 +47,9 @@
   - Windows Console Game    : http://cecilsunkure.blogspot.com/2011/11/windows-console-game-writing-to-console.html
   - launching more consoles : https://neowin.net/forum/topic/904788-c-adding-a-console-window-in-a-windows-app/
 
-## BUSY NEXT
+## UNSORTED NEXT
 
+- website with Full API documentation automatically generated from source code.
 - improve clipping see `clip_child_window_to_not_exceed_parent_boundaries` and `clip_child_window_to_not_exceed_parent_boundaries_test2`
 - add more tests.
 - IWindow interface to include "Open" to open a child window at XY with width and height. 
