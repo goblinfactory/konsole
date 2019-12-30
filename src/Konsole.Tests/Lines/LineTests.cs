@@ -11,10 +11,24 @@ namespace Konsole.Tests.Lines
         [Test]
         public void draw_box_should_draw_box()
         {
-            var console = new MockConsole(120, 20);
+            var console = new MockConsole(45, 10);
             // draw box 40 wide, and 6 high
             new Draw(console).Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
-            Approvals.Verify(console.BufferWrittenString);
+
+            var expected = new[]
+            {
+                "                                             ",
+                "                                             ",
+                "  ┌───────────── my test box ─────────────┐  ",
+                "  │                                       │  ",
+                "  │                                       │  ",
+                "  │                                       │  ",
+                "  │                                       │  ",
+                "  │                                       │  ",
+                "  └───────────────────────────────────────┘  ",
+                "                                             "
+            };
+            console.Buffer.Should().BeEquivalentTo(expected);
         }
 
         [Test]
