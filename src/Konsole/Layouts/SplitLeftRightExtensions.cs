@@ -64,6 +64,9 @@ namespace Konsole
                     .Box(0, 0, leftWidth + 1, h - 1, leftTitle, thickness);
                     new Draw(c)
                     .Box(leftWidth + 1, 0,  rightWidth + leftWidth + 2, h - 1, rightTitle, thickness);
+                    // print the corners
+                    c.PrintAt(leftWidth + 1, 0, '┬');
+                    c.PrintAt(leftWidth + 1, h - 1, '┴');
                 });
 
                 var leftWin = Window._CreateFloatingWindow(1, 1, leftWidth, h - 2, foreground, background, true, c, null);

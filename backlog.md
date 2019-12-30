@@ -9,6 +9,8 @@
 
 
 ## Busy next 5.x.x (unsorted)
+
+- improve speed of drawing splitleft and right. currently duplicating the middle line which could be slow on large screen areas.
 - add snippets using Simon Cropp's snippets markdown builder!
 - fix bug `overlapping_boxes_double_single` (see test)
 - overlap box does not work. everything is merged. 
