@@ -112,25 +112,79 @@ home of the simple no-dependancy console libary consisting of:
 
 ![window simple demo](docs/window-demo.png)
 
-## `Window.PrintAt()`
+## `window.PrintAt()`
 
 tbd
 
-## `Window.Write()`
+## `window.PrintAtColor(foregroundColor, x, y, text, backgroundColor ?)`
 
-tbd
+```csharp
+ var window = new Window();
+ ...
+ window.PrintAtColor(Red, 20, 20, "WARNING!");
+```
 
-## `Window.WriteLine()`
+Print the text, optionally wrapping and causing any scrolling in the current window, at cursor position X,Y in foreground and background color without impacting the current window's cursor position or colours. This method is only threadsafe if you have created a window by using .ToConcurrent() after creating a new Window(), or the window was created using Window.Open(...) which returns a threadsafe window.
 
-tbd
+**Maintaining seperate colors and cursor positions for windows so that other threads do not change the color or printing while another thread is writing to the console is a really big deal and is what makes Konsole a safe library to use when testing multi-threaded libraries.**
 
-# Opening Floating Windows
+## `window.Write(string format, params object[] args)`
+## `window.Write(stringConsoleColor color, format, params object[] args)`
 
-tbd
+Write the text to the window in the {color} color, withouting resetting the window's current foreground colour.  Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll. The current cursor remains at the last printed position.
 
-# Opening Inline Windows
+## `window.WriteLine(string format, params object[] args)`
+## `window.WriteLine(ConsoleColor color, string format, params object[] args)`
 
-tbd
+Write the text to the window in the {color} color, withouting resetting the window's current foreground colour.  Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll. Moves the cursor to the next line after printing and `CursorLeft` is reset to 0.
+
+## `Window.Open()`
+
+*Open a window taking up the whole screen.*
+
+```csharp
+    var numbers = Window.Open();
+```
+this is equivalent to 
+```
+    var numbers = new Window();
+```
+
+## `Window.Open(sx, sy, ex, ey, title)`
+
+```csharp
+    var numbers = Window.Open(50, 15, 40, 10, "numbers");
+```
+
+## `Window.Open(sx, sy, ex, ey, title, LineThickNess, ForegroundColor, BackgroundColor)`
+
+```csharp
+    var numbers = Window.Open(50, 15, 40, 10, "numbers", 
+        LineThickNess.Double,
+        ConsoleColor.White,
+        ConsoleColor.Blue
+    );
+```
+gives you the blue window in the same code further up. (there is a known bug atmo, this constructor does not currently print the title. Will be fixed in upcoming version 6.x) As a workaround for now, If you need a title, use any of the Splits, `SplitTop`, and `SplitBottom`, or `SplitLeft`, and `SplitRight`. Or use `PrintAt` to print the title on top of the border. 
+
+## Opening Inline Windows `new Window(height, width)` or `new Window(height)`
+
+```
+var fruit = new Window(3, 20);
+or
+var fruit = new Window(3);
+```
+
+Create a new window inline starting on the next line, at current `CursorTop + 1, using the specified width or the whole screen width if none is provided. Default color of White on Black. If you need to override the defaults then use the static constructor. `Window.OpenInline`
+
+## `Window.OpenInline(echoConsole, padLeft, width, height, foregroundColor, backgroundColor)`
+
+Create a new window inline starting on the next line, at current `CursorTop + 1`, using the specified `width` with `foreground` and `background` color. 
+
+```csharp
+   var fruit = Window.OpenInline(2, 50, 3, White, Blue);
+```
+
 
 # SplitLeft, SplitRight
 
@@ -314,6 +368,7 @@ gives you
  │                                       │ 
  └───────────────────────────────────────┘ 
 ```
+adding `.Line(2,5, )
 
 ## boxes can overlap
 
