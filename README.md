@@ -112,9 +112,29 @@ home of the simple no-dependancy console libary consisting of:
 
 ![window simple demo](docs/window-demo.png)
 
+## `Window.PrintAt()`
+
+tbd
+
+## `Window.Write()`
+
+tbd
+
+## `Window.WriteLine()`
+
+tbd
+
+# Opening Floating Windows
+
+tbd
+
+# Opening Inline Windows
+
+tbd
+
 # SplitLeft, SplitRight
 
-Split a window into two equal halves, returning either the left or right half.
+Split an `IConsole` window into two equal halves, returning either the left or right half.
 
 ```csharp
     var w = new Window();
@@ -265,6 +285,116 @@ new Split(size)
     foregroundColor,
     backgroundColor
 };
+```
+
+# Draw
+
+Draw lines and boxes single or double line width on the console window and intelligently merge lines that are drawn.
+
+Start by creating a `Draw` instance, that needs an `IConsole`. for example
+
+```
+var window = new Window();
+var draw = new Draw(window);
+```
+
+## `.Box(startX, startY, endX, endYT, title)`
+
+Once you have a `Draw` instance you can draw lines or boxes.
+```csharp
+draw.Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
+```
+gives you
+```
+ ┌───────────── my test box ─────────────┐  
+ │                                       │ 
+ │                                       │ 
+ │                                       │ 
+ │                                       │ 
+ │                                       │ 
+ └───────────────────────────────────────┘ 
+```
+
+## boxes can overlap
+
+Boxes can overlap and line chars are intelligently merged. This allows for creating very sophisticated designs.
+
+The sample below uses `MockConsole` which is also part of the `Konsole` library.
+
+```csharp
+            var console = new MockConsole(12, 10);
+            var line = new Draw(console, LineThickNess.Single, Merge);
+            line.Box(0, 0, 8, 6, LineThickNess.Single);
+            line.Box(3, 3, 11, 9, LineThickNess.Double);
+
+            var expected = new[]
+            {
+               "┌───────┐   ",
+               "│       │   ",
+               "│       │   ",
+               "│  ╔════╪══╗",
+               "│  ║    │  ║",
+               "│  ║    │  ║",
+               "└──╫────┘  ║",
+               "   ║       ║",
+               "   ║       ║",
+               "   ╚═══════╝"
+            };
+            console.Buffer.Should().BeEquivalentTo(expected);
+```
+
+
+## .Line(startX, StartY, endX, endY, LineThickNess)
+
+```csharp
+
+var window = new Window();
+
+
+int height = 18;
+int sy = 2;
+int sx = 2;
+int width = 60;
+int ex = sx + width;
+int ey = sy + height;
+int col1 = 20;
+
+  var draw = new Draw(console, LineThickNess.Double);
+            draw
+                .Box(sx, sy, ex, ey, "my test box")
+                .Line(sx, sy + 2, ex, sy + 2)
+                .Line(sx + col1, sy, sx + col1, sy + 2, LineThickNess.Single)
+                .Line(sx + 35, ey - 4, ex - 5, ey - 4, LineThickNess.Double)
+                .Line(sx + 35, ey - 2, ex - 5, ey - 2, LineThickNess.Double)
+                .Line(sx + 35, ey - 4, sx + 35, ey - 2, LineThickNess.Single) 
+                .Line(ex - 5, ey - 4, ex - 5, ey - 2, LineThickNess.Single); 
+
+window.PrintAt(sx + 2, sy + 1, "DEMO INVOICE");                
+```
+
+gives you. (there is a small bug when switching from single to double line at a corner, as seen in the sample below, this will be fixed in upcoming version 6.)
+
+```
+╔═══════════════════╤═══ my test box ═══════════════════════╗
+║ DEMO INVOICE      │                                       ║
+╠═══════════════════╧═══════════════════════════════════════╣
+║                                                           ║
+║                                                           ║
+║                                                           ║
+║                                                           ║
+║                                                           ║
+║                                                           ║
+║                                                           ║
+║                                                           ║
+║                                                           ║
+║                                                           ║
+║                                                           ║
+║                                  ╤═══════════════════╤    ║
+║                                  │                   │    ║
+║                                  ╧═══════════════════╧    ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+
 ```
 
 # Forms
@@ -724,10 +854,6 @@ using a Test Double like `Konsole.MockConsole` the test above becomes
 
 
 ``` 
-
-# Draw
-
-TBD
 
 ## Cross platform notes
 ProgressBar has been manually tested with Mono on Mac in version 1.0. I don't currently have any automated testing in place for OSX (mono) and Linux. That's all on the backlog.
