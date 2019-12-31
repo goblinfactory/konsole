@@ -96,7 +96,9 @@ namespace Konsole
         {
         }
 
-
+        /// <summary>
+        /// Create a new window inline starting on the next line, at current `CursorTop + 1, using the specified width or the whole screen width if none is provided. Default color of White on Black.
+        /// </summary>
         public Window(int width, int height, params K[] options)
             : this(null, null, width, height, ConsoleColor.White, ConsoleColor.Black, true, null, options)
         {
@@ -145,6 +147,9 @@ namespace Konsole
         {
         }
 
+        /// <summary>
+        /// Create a new window inline starting on the next line, at current `CursorTop + 1, using the specified width with foreground and background color. 
+        /// </summary>
         public static IConsole OpenInline(IConsole echoConsole, int padLeft, int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)
         {
             lock (_staticLocker)
@@ -415,7 +420,9 @@ namespace Konsole
             }
         }
 
-
+        /// <summary>
+        /// Write the text to the window in the {color} color, withouting resetting the window's current foreground colour. Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll.
+        /// </summary>
         public void WriteLine(ConsoleColor color, string format, params object[] args)
         {
             var foreground = ForegroundColor;
@@ -641,6 +648,9 @@ namespace Konsole
 
         }
 
+        /// <summary>
+        /// Print the text, optionally wrapping and causing any scrolling in the current window, at cursor position X,Y in foreground and background color without impacting the current window's cursor position or colours. This method is only threadsafe if you have created a window by using .ToConcurrent() after creating a new Window(), or the window was created using Window.Open(...) which returns a threadsafe window.
+        /// </summary>
         public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background = null)
         {
             DoCommand(_echoConsole, () =>
