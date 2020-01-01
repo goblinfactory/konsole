@@ -7,7 +7,7 @@ namespace Konsole
 {
     public class Window : IConsole
     {
-     
+
         public string GetVersion()
         {
             return GetType().Assembly.GetName().Version.ToString();
@@ -84,13 +84,33 @@ namespace Konsole
             }
         }
 
+        ///<summary>
+        ///Override (replace) this func if you want to use `new Window()` in a unit test and you're not using a mockConsole (as the host) 
+        /// in your unit test that will provide the height and width. I had to add this because when running tests on non build 
+        /// server where the build agent does not give you an open console handle, and accessing console.width and height throws invalid handle exception
+        /// so needs to be overridden.
+        ///</summary>
+        ///<returns>
+        /// the height and width of the operating system. For OSX windows we actually return height - 1 to avoid writing to the bottom line
+        /// in a console window that will cause the window to scroll, regardless of printing (for now, this is a hack but works well and allows us to 
+        /// safely draw boxes around the rest of the "whole" window.
+        ///</returns>
+        public static Func<(int width, int height)> GetHostWidthHeight = () =>
+        {
+            if (OS.IsOSX())
+            {
+                return (Console.WindowWidth, Console.WindowHeight - 1);
+            }
+            return (Console.WindowWidth, Console.WindowHeight);
+        };
+
         public Window() : this(
-            0, 
-            0, 
-            OS.isWindows ? Console.WindowWidth : (int?) null, 
-            OS.isWindows ? Console.WindowHeight : (int?) null, 
-            ConsoleColor.White, 
-            ConsoleColor.Black, 
+            0,
+            0,
+            GetHostWidthHeight().width,
+            GetHostWidthHeight().height,
+            ConsoleColor.White,
+            ConsoleColor.Black,
             true, null
             )
         {
@@ -170,13 +190,13 @@ namespace Konsole
         public static IConsole OpenInline(IConsole echoConsole, int height)
         {
             var balance = echoConsole.WindowHeight - echoConsole.CursorTop;
-            return OpenInline(echoConsole, 0, echoConsole.WindowWidth, IntegerExtensions.Min(height, balance) , echoConsole.ForegroundColor, echoConsole.BackgroundColor);
-        } 
+            return OpenInline(echoConsole, 0, echoConsole.WindowWidth, IntegerExtensions.Min(height, balance), echoConsole.ForegroundColor, echoConsole.BackgroundColor);
+        }
 
         //Window will clear the parent console area in the overlapping window.
         // this constructor is safe to have params after IConsole because it's the only constructor that starts with IConsole, all other constructors have other strongly typed first parameter. (i.e. avoid parameter confusion)
         public Window(IConsole echoConsole, params K[] options)
-            : this(0, 0, (int?) (null), (int?) null, ConsoleColor.White, ConsoleColor.Black, true, echoConsole, options)
+            : this(0, 0, (int?)(null), (int?)null, ConsoleColor.White, ConsoleColor.Black, true, echoConsole, options)
         {
         }
 
@@ -327,7 +347,7 @@ namespace Konsole
 
         private void init(ConsoleColor? background = null)
         {
-            ForegroundColor =  _startForeground;
+            ForegroundColor = _startForeground;
             BackgroundColor = background ?? _startBackground;
             _lastLineWrittenTo = -1;
             _lines.Clear();
@@ -416,7 +436,7 @@ namespace Konsole
             get
             {
                 return
-                    _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString().TrimEnd(new[] {' '})).ToArray();
+                    _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString().TrimEnd(new[] { ' ' })).ToArray();
             }
         }
 
@@ -454,11 +474,11 @@ namespace Konsole
 
             Write(format, args);
             Cursor = new XY(0, Cursor.Y + 1);
-            if (OverflowBottom  && !_clipping)
+            if (OverflowBottom && !_clipping)
             {
                 ScrollDown();
             }
-                
+
         }
 
         public void Write(ConsoleColor color, string format, params object[] args)
@@ -496,9 +516,9 @@ namespace Konsole
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
         {
             if (!_echo) return;
-            if (_echoConsole!=null)
-                _echoConsole.MoveBufferArea(sourceLeft  + AbsoluteX,sourceTop + AbsoluteY,sourceWidth,sourceHeight,targetLeft + AbsoluteX, targetTop + AbsoluteY, sourceChar, sourceForeColor, sourceBackColor);
-                
+            if (_echoConsole != null)
+                _echoConsole.MoveBufferArea(sourceLeft + AbsoluteX, sourceTop + AbsoluteY, sourceWidth, sourceHeight, targetLeft + AbsoluteX, targetTop + AbsoluteY, sourceChar, sourceForeColor, sourceBackColor);
+
             else
             {
                 throw new Exception("Should never get here, something gone wrong in the logic, possibly in the constructor checks?");
@@ -515,12 +535,12 @@ namespace Konsole
         //NB!Need to test if this is cross platform ?
         public void ScrollDown()
         {
-            for (int i = 0; i < (_height-1); i++)
+            for (int i = 0; i < (_height - 1); i++)
             {
-                _lines[i] = _lines[i+1];
+                _lines[i] = _lines[i + 1];
             }
-            _lines[_height-1] = new Row(_width, ' ', ForegroundColor, BackgroundColor);
-            Cursor = new XY(0, _height-1);
+            _lines[_height - 1] = new Row(_width, ' ', ForegroundColor, BackgroundColor);
+            Cursor = new XY(0, _height - 1);
             if (_echoConsole != null)
             {
                 _echoConsole.MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
@@ -556,7 +576,7 @@ namespace Konsole
                     {
                         Cursor = new XY(0, Cursor.Y + 1);
                         if (_clipping && OverflowBottom) break;
-                        if(OverflowBottom)
+                        if (OverflowBottom)
                             ScrollDown();
                     }
                     text = overflow;
@@ -617,7 +637,7 @@ namespace Konsole
             get { return _echoConsole?.CursorVisible ?? _noEchoCursorVisible; }
             set
             {
-                if(_echoConsole==null)
+                if (_echoConsole == null)
                     _noEchoCursorVisible = value;
                 else
                     _echoConsole.CursorVisible = value;
@@ -628,14 +648,14 @@ namespace Konsole
 
         public ConsoleColor ForegroundColor { get; set; }
 
-        
+
         /// <summary>
         /// prints text at x and y location, without affecting the current window or parent state
         /// </summary>
         public void PrintAt(int x, int y, string format, params object[] args)
         {
             var text = string.Format(format, args);
-            PrintAt(x,y,text);
+            PrintAt(x, y, text);
         }
 
         public void PrintAt(int x, int y, string text)
@@ -683,7 +703,7 @@ namespace Konsole
 
         public void PrintAt(int x, int y, char c)
         {
-            Cursor = new XY(x,y);
+            Cursor = new XY(x, y);
             Write(c.ToString());
         }
 
@@ -691,7 +711,7 @@ namespace Konsole
         /// <summary>
         /// Run command and preserve the state, i.e. restore the console state after running command.
         /// </summary>
-        public  void DoCommand(IConsole console, Action action)
+        public void DoCommand(IConsole console, Action action)
         {
             //TODO write test that proves we need to lock right here!
             //lock(_staticLocker)
@@ -703,7 +723,7 @@ namespace Konsole
             var state = console.State;
             try
             {
-                GotoEchoCursor(console);                
+                GotoEchoCursor(console);
                 action();
             }
             finally
