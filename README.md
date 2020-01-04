@@ -189,7 +189,7 @@ Create a new window inline starting on the next line, at current `CursorTop + 1`
 ```
 
 
-# SplitLeft, SplitRight
+# `SplitLeft()`, `SplitRight()`
 
 Split an `IConsole` window into two equal halves, returning either the left or right half.
 
@@ -219,6 +219,31 @@ gives you
     │two    ││five    │
     │three  ││six     │
     └───────┘└────────┘
+```
+
+# `SplitLeftRight()`
+
+- `myWindow.SplitLeftRight()` : Split the current window left and right and return a tuple. Default to use a single middle line, instead of the older double.
+
+```csharp
+    void Fill(IConsole con) => { 
+        con.WriteLine("one");
+        con.WriteLine("two");
+        con.WriteLine("three");
+        con.WriteLine("four");
+    }
+    (var left, var right) = win.SplitLeftRight("left", "right");
+    
+    Fill(left);
+    Fill(right);
+    
+    // gives you   ...
+
+    ┌ left ─┬─ right ┐
+    │two    │two     │
+    │three  │three   │
+    │four   │four    │
+    └───────┴────────┘    
 ```
 
 # SplitTop, SplitBottom

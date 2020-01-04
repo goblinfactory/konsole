@@ -11,33 +11,52 @@ and this project
  - `MergeOrOverlap`
 - Renamed `LineThickNess.Double` to `DoubleLine` enum values so that you can use new `static using Konsole.LineThickness`. (double is a reserved word).
 
-## [5.1.0]
-
-### Added
-
-- `myWindow.SplitLeftRight` : Split the current window left and right and return a tuple. Default to use a single middle line, instead of the older double.
-
- insert screenshot
+## [5.1.1] BUSY
 
 ### fixed (busy)
 
 - when rendering a window 3 lines tall the second row line char is incorrect.
+
+```
     ┌──── headline ────┐       ┌──── headline ────┐
     ─ content here     ─  =>   │ content here     |
     └──────────────────┘       └──────────────────┘
+```
+
+## [5.1.0]
+
+### fixed
+
+- `stackoverflow` bug when calling SplitColumns.
 
 ### added
 
-- better windows and frames. Support for splitLeftRight and SplitTopBottom to return tuple as well as split using a single line between the windows, to 
-  create much tighter layouts.
+- `myWindow.SplitLeftRight()` : Split the current window left and right and return a tuple. Default to use a single middle line, instead of the older double.
+
+```csharp
+    void Fill(IConsole con) => { 
+        con.WriteLine("one");
+        con.WriteLine("two");
+        con.WriteLine("three");
+        con.WriteLine("four");
+    }
+    (var left, var right) = win.SplitLeftRight("left", "right");
+    
+    Fill(left);
+    Fill(right);
+    
+    // gives you   ...
+
+    ┌ left ─┬─ right ┐
+    │two    │two     │
+    │three  │three   │
+    │four   │four    │
+    └───────┴────────┘    
+```
+
+* `myWindow.SplitTopBottom()`
   
-  instead of
-
-    [insert screenshot from tests]
-
-  will generate
-
-    [insert screenshot from tests]
+- same as SplitLeftRight, but for Top and Bottom.  
 
 ## [5.0.1]
 
