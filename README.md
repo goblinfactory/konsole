@@ -4,7 +4,10 @@
 
 # Konsole library
 
-home of the simple no-dependancy console libary consisting of:
+Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's like the following in very few lines of code.
+
+![sample demo using HighSpeedWriter](docs/crazy-fast-screen.PNG)
+
 
 ### ProgressBar , Window  , Form , Menu , Draw & MockConsole
 
@@ -523,8 +526,6 @@ If you have multiple threads writing to the Console, then instead of calling flu
 # End to end sample - `HighSpeedWriter`
 
 below is code that should give you a clue as to how I'm using HighSpeedWriter for myself. This sample code produces the following screen and output.
-
-![sample demo using HighSpeedWriter](docs/crazy-fast-screen.PNG)
 
 ![sample demo using HighSpeedWriter](docs/crazy-fast-demo.gif)
 
