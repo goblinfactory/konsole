@@ -1,6 +1,9 @@
 ﻿using Konsole.Internal;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using static System.ConsoleColor;
 
 namespace Konsole.Sample
@@ -9,52 +12,64 @@ namespace Konsole.Sample
     {
         static void Main(string[] args)
         {
-            var w = new Window();
-            var cols = w.SplitColumns(
-                new Split(10, "nav"), new Split(0, "content")
-            );
-            var menu = cols[0];
-            var contents = cols[1];
-            menu.WriteLine("hello from mneu");
-            contents.WriteLine(Red, "i am red (contents window)");
-            Console.ReadLine();
-            return;
+            Console.WriteLine("build task 1");
+            Console.WriteLine("build task 2");
+            Console.WriteLine("build task 3");
 
-            var con = new Window();
-            con.WriteLine("starting client server demo");
-            var client = new Window(1, 4, 20, 20, Gray, DarkBlue, con);
-            var server = new Window(25, 4, 20, 20, con);
-            client.WriteLine("CLIENT");
-            client.WriteLine("------");
-            server.WriteLine("SERVER");
-            server.WriteLine("------");
-            client.WriteLine("<-- PUT some long text to show wrapping");
-            server.WriteLine(DarkYellow, "--> PUT some long text to show wrapping");
-            server.WriteLine(Red, "<-- 404|Not Found|some long text to show wrapping|");
-            client.WriteLine(Red, "--> 404|Not Found|some long text to show wrapping|");
+            Console.CursorVisible = false;
+            var window = new Window(40, 7);
+            var console = new ConcurrentWriter();
+            var processing = window.SplitTop("processing");
+            var status = window.SplitBottom("status");
+            var compressProgress = new ProgressBar(processing, 100);
+            var encryptProgress = new ProgressBar(processing, 100);
 
-            con.WriteLine("starting names demo");
+            var tasks = new List<Task>();
 
-            // let's open a window with a box around it
-            var names = Window.Open(50, 4, 40, 10, "names");
+            tasks.Add(DoStuff("Compress", compressProgress, status, 20));
+            tasks.Add(DoStuff("Encrypt", encryptProgress, status, 40));
 
-            TestData.MakeNames(40).OrderByDescending(n => n).ToList()
-                 .ForEach(n => names.WriteLine(n));
-
-            con.WriteLine("starting numbers demo");
-
-            var numbers = Window.Open(50, 15, 40, 10, "numbers",LineThickNess.Double, White, Blue);
-            
-            Enumerable.Range(1, 200).ToList()
-                 .ForEach(i => numbers.WriteLine(i.ToString())); // shows scrolling
-
-            Console.ReadLine();
-
-            using (var writer = new HighSpeedWriter())
+            // simulate a build task writing to Console output
+            for (int i = 4; i <= 10; i++)
             {
-                var window = new Window(writer);
-                Diagnostics.SelfTest.Test(window, () => writer.Flush());
+                Thread.Sleep(1000);
+                console.WriteLine($"I am build task output number {i}");
             }
+
+            Task.WaitAll(tasks.ToArray());
+
+            // this is safe, because there's only 1 thread here
+            // so it doesn't matter if this uses IConsole or not.
+            Console.CursorTop = console.CursorTop + 1;
+            Console.CursorVisible = true;
+            Console.WriteLine("------------");
+            Console.WriteLine("All finished");
+            Console.WriteLine("------------");
+        }
+
+        private static int _files = 0;
+        private static int _bytes = 0;
+        static void UpdateStatus(IConsole status, int bytes)
+        {
+            var files = Interlocked.Increment(ref _files);
+            var kb = (Interlocked.Add(ref _bytes, bytes) / 1000);
+            status.PrintAtColor(Black, 16, 0, $" {bytes} Kb  ", Red);
+            status.PrintAtColor(Black, 0, 0, $" {files++} files ", White);
+        }
+
+        static Task DoStuff(string prefix, ProgressBar progress, IConsole status, int speed)
+        {
+            var testFiles = TestData.MakeObjectNames(100);
+            var checkStuff = Task.Run(() => {
+                int files = 1;
+                for (int i = 1; i <= 100; i++)
+                {
+                    Thread.Sleep(speed + new Random().Next(100));
+                    progress.Refresh(i, $"{prefix} : {testFiles[i % 100]}");
+                    UpdateStatus(status, new Random().Next(1000));
+                }
+            });
+            return checkStuff;
         }
     }
 }

@@ -22,6 +22,17 @@ namespace Konsole
             _window = window;
         }
 
+        /// <summary>
+        /// returns a thread safe concurrent writer that writes to the current console as if it were the actual Console. Keeps the existing operating system CursorTop position. Use this class in conjunction with inline windows for maximum simplicity.
+        /// </summary>
+        /// <remarks>
+        /// Previously the concurrentwriter required a window instance and would only write concurrently to a new Window. That still exists but you can now create a `ConcurrentWriter` without needing to first create a window. This allows for thread safe writing to the console without needing a window. See the new section in the readme under `Threading` for more information and for examples.
+        /// </remarks>
+        public ConcurrentWriter()
+        {
+            _window = new Writer();
+        }
+
         public void WriteLine(ConsoleColor color, string format, params object[] args)
         {
             lock (_locker)

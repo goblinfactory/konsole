@@ -3,13 +3,11 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project 
 
-## [6.0.0]
+## [5.3.0]
 
-- Moved Draw classes to root Konsole namespace so that the only using required by library users is `Konsole` The following classes were moved to root
- - `Draw`
- - `LineThickNess`
- - `MergeOrOverlap`
-- Renamed `LineThickNess.Double` to `DoubleLine` enum values so that you can use new `static using Konsole.LineThickness`. (double is a reserved word).
+### Added
+
+- `new ConcurrentWriter()` now returns a thread safe concurrent writer that continues writing to the current console as if it were the console. Previously the concurrentwriter required a window instance. That still exists but you can now create a `ConcurrentWriter` without needing to first create a window. This allows for thread safe writing to the console without needing a window. See the new section in the readme under `Threading` for more information and for examples.
 
 ## [5.2.0]
 

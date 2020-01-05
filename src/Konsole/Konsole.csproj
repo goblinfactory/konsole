@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>5.2.0</Version>
+    <Version>5.3.0</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -13,22 +13,9 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole progress progressbar window form iconsole&lt;</PackageTags>
-    <PackageReleaseNotes>### fixed (busy)
+    <PackageReleaseNotes>### Added
 
-- when rendering a window 3 lines tall the second row line char is incorrect.
-
-```
-    ┌──── headline ────┐       ┌──── headline ────┐
-    ─ content here     ─  =&gt;   │ content here     |
-    └──────────────────┘       └──────────────────┘
-```
-
-### added
-
-* `myWindow.SplitTopBottom()`
-  
-- : Split the current window Top and bottom and return a tuple. Default to use a single middle line, instead of the older double. (Was missing from previous release)
-</PackageReleaseNotes>
+- `new ConcurrentWriter()` now returns a thread safe concurrent writer that continues writing to the current console as if it were the console. Previously the concurrentwriter required a window instance. That still exists but you can now create a `ConcurrentWriter` without needing to first create a window. This allows for thread safe writing to the console without needing a window. See the new section in the readme under `Threading` for more information and for examples.</PackageReleaseNotes>
     <PackageIcon>progress.png</PackageIcon>
     <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
