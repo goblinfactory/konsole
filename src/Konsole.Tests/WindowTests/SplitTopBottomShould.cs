@@ -1,264 +1,236 @@
-﻿//using System;
-//using FluentAssertions;
-//using NUnit.Framework;
+﻿using System;
+using FluentAssertions;
+using NUnit.Framework;
 
-//namespace Konsole.Tests.WindowTests
-//{
-//    public class SplitLeftRightShould
-//    {
+namespace Konsole.Tests.WindowTests
+{
+    public class SplitTopBottomShould
+    {
+        static void Fill(IConsole con)
+        {
+            con.WriteLine("one");
+            con.WriteLine("two");
+            con.WriteLine("three");
+            con.WriteLine("four");
+            con.Write("five");
+        }
 
-//        public class LeftRightTests
-//        {
-//            [Test]
-//            [TestCase(1, 19)]
-//            [TestCase(2, 20)]
-//            [TestCase(3, 21)]
-//            public void LeftHalf_and_RightHalf_ShouldFillTheParentConsole(int test, int width)
-//            {
-//                // test to show how uneven lines are split between left and right windows.
-//                var c = new MockConsole(width, 5);
-//                (var left, var right) = c.SplitLeftRight("left", "right");
-//                left.WriteLine("one");
-//                left.WriteLine("two");
-//                left.Write("three");
+        [Test]
+        public void top_half_and_bottom_half__should_fill_the_parent_console_double_5()
+        {
+            var con = new MockConsole(10, 5);
+            (var top, var bottom) = con.SplitTopBottom("top", "bot");
+            Fill(top);
+            Fill(bottom);
 
-//                right.WriteLine("four");
-//                right.WriteLine("five");
-//                right.Write("six");
-//                Console.WriteLine(c.BufferString);
+            var expected = new[]
+            {
+                "┌── top ─┐",
+                "│five    │",
+                "├── bot ─┤",
+                "│five    │",
+                "└────────┘",
+            };
 
-//                var _19Cols = new[]
-//                {
-//                    "┌ left ─┐┌─ right ┐",
-//                    "│one    ││four    │",
-//                    "│two    ││five    │",
-//                    "│three  ││six     │",
-//                    "└───────┘└────────┘"
-//            };
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 
-//                var _20Cols = new[]
-//                {
-//                    "┌─ left ─┐┌─ right ┐",
-//                    "│one     ││four    │",
-//                    "│two     ││five    │",
-//                    "│three   ││six     │",
-//                    "└────────┘└────────┘"
-//            };
+        [Test]
+        public void top_half_and_bottom_half__should_fill_the_parent_console_single_5()
+        {
+            var con = new MockConsole(10, 5);
+            (var top, var bottom) = con.SplitTopBottom("top", "bot");
+            Fill(top);
+            Fill(bottom);
 
-//                var _21Cols = new[]
-//                {
-//                    "┌─ left ─┐┌─ right ─┐",
-//                    "│one     ││four     │",
-//                    "│two     ││five     │",
-//                    "│three   ││six      │",
-//                    "└────────┘└─────────┘"
+            var expected = new[]
+            {
+                "┌── top ─┐",
+                "│five    │",
+                "├── bot ─┤",
+                "│five    │",
+                "└────────┘",
+            };
 
-//            };
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 
-//                var expecteds = new[]
-//                {
-//                _19Cols, _20Cols, _21Cols
-//            };
-//                c.Buffer.Should().BeEquivalentTo(expecteds[test - 1]);
-//            }
+        [Test]
+        public void top_half_and_bottom_half__should_fill_the_parent_console_single_10()
+        {
+            var con = new MockConsole(10, 10);
+            (var top, var bottom) = con.SplitTopBottom("top", "bot");
+            Fill(top);
+            Fill(bottom);
 
+            var expected = new[]
+            {
+                "┌── top ─┐",
+                "│three   │",
+                "│four    │",
+                "│five    │",
+                "├── bot ─┤",
+                "│two     │",
+                "│three   │",
+                "│four    │",
+                "│five    │",
+                "└────────┘",
+            };
 
-//            [Test]
-//            [TestCase(1, 19)]
-//            [TestCase(2, 20)]
-//            [TestCase(3, 21)]
-//            public void LeftHalf_and_RightHalf_WithoutBorder_ShouldFillTheParentConsole(int test, int width)
-//            {
-//                // test to show how uneven lines are split between left and right windows.
-//                var c = new MockConsole(width, 5);
-//                (var left, var right) = c.SplitLeftRight();
-//                left.WriteLine("one");
-//                left.WriteLine("two");
-//                left.WriteLine("three");
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 
-//                right.WriteLine("four");
-//                right.WriteLine("five");
-//                right.Write("six");
-//                Console.WriteLine(c.BufferString);
+        [Test]
+        public void top_half_and_bottom_half__should_fill_the_parent_console_single_11()
+        {
+            var con = new MockConsole(10, 11);
+            (var top, var bottom) = con.SplitTopBottom("top", "bot");
+            Fill(top);
+            Fill(bottom);
 
-//                var _19Cols = new[]
-//                {
-//                    "one      four      ",
-//                    "two      five      ",
-//                    "three    six       ",
-//                    "                   ",
-//                    "                   ",
-//            };
+            var expected = new[]
+            {
+                "┌── top ─┐",
+                "│two     │",
+                "│three   │",
+                "│four    │",
+                "│five    │",
+                "├── bot ─┤",
+                "│two     │",
+                "│three   │",
+                "│four    │",
+                "│five    │",
+                "└────────┘",
+            };
 
-//                var _20Cols = new[]
-//                {
-//                    "one       four      ",
-//                    "two       five      ",
-//                    "three     six       ",
-//                    "                    ",
-//                    "                    "
-//            };
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 
-//                var _21Cols = new[]
-//                {
-//                    "one       four       ",
-//                    "two       five       ",
-//                    "three     six        ",
-//                    "                     ",
-//                    "                     ",
+        [Test]
+        public void top_half_and_bottom_half__should_fill_the_parent_console_10_high_double()
+        {
+            var con = new MockConsole(10, 11);
+            (var top, var bottom) = con.SplitTopBottom("top", "bot");
+            Fill(top);
+            Fill(bottom);
 
-//            };
+            var expected = new[]
+            {
+                "┌── top ─┐",
+                "│two     │",
+                "│three   │",
+                "│four    │",
+                "│five    │",
+                "├── bot ─┤",
+                "│two     │",
+                "│three   │",
+                "│four    │",
+                "│five    │",
+                "└────────┘",
+            };
 
-//                var expecteds = new[]
-//                {
-//                _19Cols, _20Cols, _21Cols
-//            };
-//                c.Buffer.Should().BeEquivalentTo(expecteds[test - 1]);
-//            }
-
-
-//            [Test]
-//            public void WhenScrolling_ShouldScroll()
-//            {
-//                // dammit? this is working with them mock console but not the real console????
-
-//                var c = new MockConsole(20, 5);
-//                (var left, var right) = c.SplitLeftRight("left", "right");
-//                left.WriteLine("one");
-//                left.WriteLine("two");
-//                left.WriteLine("three");
-//                left.WriteLine("four");
-//                // used write here so that last line does not add aditional scroll
-//                left.Write("five");
-
-//                right.WriteLine("foo");
-//                right.WriteLine("cats");
-//                right.WriteLine("dogs");
-//                // last line is already scrolling ie at the bottom of the screen so this adds an additional scroll
-//                right.WriteLine("dots");
-//                Console.WriteLine(c.BufferString);
-//                var expectedParent = new[]
-//                {
-//                    "┌─ left ─┐┌─ right ┐",
-//                    "│three   ││dogs    │",
-//                    "│four    ││dots    │",
-//                    "│five    ││        │",
-//                    "└────────┘└────────┘"
-//            };
-
-//                c.Buffer.Should().BeEquivalentTo(expectedParent);
-//            }
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 
 
+        [Test]
+        public void LeftHalf_and_RightHalf_ShouldFillTheParentConsole_19wide()
+        {
+            var con = new MockConsole(19, 5);
+            (var left, var right) = con.SplitLeftRight("left", "right");
+            Fill(left);
+            Fill(right);
 
-//        }
+            var expected = new[]
+            {
+                "┌─ left ─┬─ right ┐",
+                "│three   │three   │",
+                "│four    │four    │",
+                "│five    │five    │",
+                "└────────┴────────┘"
+            };
 
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 
-//        public class TopBottomTests
-//        {
-//            [Test]
-//            [TestCase(1, 10)]
-//            [TestCase(2, 11)]
-//            [TestCase(3, 12)]
-//            public void TopHalf_and_BottomHalf_ShouldFillTheParentConsole(int test, int height)
-//            {
-//                // test to show how uneven lines are split between top and bottom windows.
-//                var c = new MockConsole(10, height);
-//                var top = c.SplitTop("top");
-//                var bottom = c.SplitBottom("bot");
-//                top.WriteLine("one");
-//                top.WriteLine("two");
-//                top.Write("three");
+        [Test]
+        public void LeftHalf_and_RightHalf_ShouldFillTheParentConsole_20wide()
+        {
+            var con = new MockConsole(20, 5);
+            (var left, var right) = con.SplitLeftRight("left", "right");
+            Fill(left);
+            Fill(right);
 
+            var expected = new[]
+            {
+                "┌─ left ─┬─ right ─┐",
+                "│three   │three    │",
+                "│four    │four     │",
+                "│five    │five     │",
+                "└────────┴─────────┘"
+            };
 
-//                bottom.WriteLine("four");
-//                bottom.WriteLine("five");
-//                bottom.Write("six");
-//                Console.WriteLine(c.BufferString);
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 
-//                var _10Rows = new[]
-//                {
-//                "┌── top ─┐",
-//                "│one     │",
-//                "│two     │",
-//                "│three   │",
-//                "└────────┘",
-//                "┌── bot ─┐",
-//                "│four    │",
-//                "│five    │",
-//                "│six     │",
-//                "└────────┘"
-//            };
+        // tests to show how uneven lines are split between left and right windows.
+        // ------------------------------------------------------------------------
 
-//                var _11Rows = new[]
-//                {
-//                "┌── top ─┐",
-//                "│one     │",
-//                "│two     │",
-//                "│three   │",
-//                "└────────┘",
-//                "┌── bot ─┐",
-//                "│four    │",
-//                "│five    │",
-//                "│six     │",
-//                "│        │",
-//                "└────────┘"
-//            };
+        [Test]
+        public void LeftHalf_and_RightHalf_WithoutBorder_ShouldFillTheParentConsole_19wide()
+        {
+            var c = new MockConsole(19, 5);
+            (var left, var right) = c.SplitLeftRight(BorderCollapse.None);
+            Fill(left);
+            Fill(right);
 
-//                var _12Rows = new[]
-//    {
-//                "┌── top ─┐",
-//                "│one     │",
-//                "│two     │",
-//                "│three   │",
-//                "│        │",
-//                "└────────┘",
-//                "┌── bot ─┐",
-//                "│four    │",
-//                "│five    │",
-//                "│six     │",
-//                "│        │",
-//                "└────────┘"
-//            };
+            var expected = new[]
+            {
+                    "one      one       ",
+                    "two      two       ",
+                    "three    three     ",
+                    "four     four      ",
+                    "five     five      ",
+            };
+            c.Buffer.Should().BeEquivalentTo(expected);
+        }
 
-//                var expecteds = new[]
-//                {
-//                _10Rows, _11Rows, _12Rows
-//            };
-//                c.Buffer.Should().BeEquivalentTo(expecteds[test - 1]);
-//            }
+        [Test]
+        public void LeftHalf_and_RightHalf_WithoutBorder_ShouldFillTheParentConsole_20wide()
+        {
+            var c = new MockConsole(20, 5);
+            (var left, var right) = c.SplitLeftRight(BorderCollapse.None);
+            Fill(left);
+            Fill(right);
 
-//            [Test]
-//            public void WhenScrolling_ShouldScroll()
-//            {
-//                var c = new MockConsole(10, 10);
-//                var top = c.SplitTop("top");
-//                var bottom = c.SplitBottom("bot");
-//                top.WriteLine("one");
-//                top.WriteLine("two");
-//                top.WriteLine("three");
-//                top.WriteLine("four");
-//                top.Write("five");
+            var expected = new[]
+            {
+                    "one       one       ",
+                    "two       two       ",
+                    "three     three     ",
+                    "four      four      ",
+                    "five      five      ",
+            };
+            c.Buffer.Should().BeEquivalentTo(expected);
+        }
 
-//                bottom.WriteLine("cats");
-//                bottom.WriteLine("dogs");
-//                bottom.Write("dots");
-//                Console.WriteLine(c.BufferString);
-//                var expectedParent = new[]
-//                {
-//                    "┌── top ─┐",
-//                    "│three   │",
-//                    "│four    │",
-//                    "│five    │",
-//                    "└────────┘",
-//                    "┌── bot ─┐",
-//                    "│cats    │",
-//                    "│dogs    │",
-//                    "│dots    │",
-//                    "└────────┘",
-//                };
-//                c.Buffer.Should().BeEquivalentTo(expectedParent);
-//            }
-//        }
-//    }
-//}
+        [Test]
+        public void LeftHalf_and_RightHalf_WithoutBorder_ShouldFillTheParentConsole_21wide()
+        {
+            var c = new MockConsole(21, 5);
+            (var left, var right) = c.SplitLeftRight(BorderCollapse.None);
+            Fill(left);
+            Fill(right);
+            var expected = new[]
+            {
+                    "one       one        ",
+                    "two       two        ",
+                    "three     three      ",
+                    "four      four       ",
+                    "five      five       ",
+            };
+            c.Buffer.Should().BeEquivalentTo(expected);
+        }
+
+    }
+}

@@ -11,7 +11,7 @@ and this project
  - `MergeOrOverlap`
 - Renamed `LineThickNess.Double` to `DoubleLine` enum values so that you can use new `static using Konsole.LineThickness`. (double is a reserved word).
 
-## [5.1.1] BUSY
+## [5.2.0]
 
 ### fixed (busy)
 
@@ -22,6 +22,13 @@ and this project
     ─ content here     ─  =>   │ content here     |
     └──────────────────┘       └──────────────────┘
 ```
+
+### added
+
+* `myWindow.SplitTopBottom()`
+  
+- same as SplitLeftRight, but for Top and Bottom.  
+
 
 ## [5.1.0]
 
@@ -54,9 +61,6 @@ and this project
     └───────┴────────┘    
 ```
 
-* `myWindow.SplitTopBottom()`
-  
-- same as SplitLeftRight, but for Top and Bottom.  
 
 ## [5.0.1]
 

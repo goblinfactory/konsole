@@ -40,7 +40,40 @@ namespace Konsole.Tests.Lines
         }
 
         [Test]
-        public void should_support_drawing_any_positive_size_boxes()
+        public void three_lines_high_box_single()
+        {
+            var console = new MockConsole(10, 3);
+            new Draw(console).Box(0, 0, 9, 2, "test", LineThickNess.Single);
+
+            var expected = new[]
+            {
+                "┌─ test ─┐",
+                "│        │",
+                "└────────┘",
+            };
+
+            console.Buffer.Should().BeEquivalentTo(expected);
+        }
+
+        [Test]
+        public void three_lines_high_box_double()
+        {
+            var console = new MockConsole(10, 3);
+            new Draw(console).Box(0, 0, 9, 2, "test", LineThickNess.Double);
+
+            var expected = new[]
+            {
+                "╔═ test ═╗",
+                "║        ║",
+                "╚════════╝",
+            };
+
+            console.Buffer.Should().BeEquivalentTo(expected);
+        }
+
+
+        [Test]
+        public void should_support_drawing_any_positive_size_width_boxes()
         {
             var console = new MockConsole(50, 40);
             var line = new Draw(console);

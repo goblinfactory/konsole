@@ -28,7 +28,7 @@ namespace Konsole.Tests.WindowTests
             var expected = new[]
             {
                     "┌──── headline ────┐",
-                    "─wrapping          ─",
+                    "│wrapping          │",
                     "└──────────────────┘",
                     "┌───── content ────┐",
                     "│ if long enough wi│",
@@ -36,7 +36,7 @@ namespace Konsole.Tests.WindowTests
                     "│scrolling.        │",
                     "└──────────────────┘",
                     "┌───── status ─────┐",
-                    "─roll off.         ─",
+                    "│roll off.         │",
                     "└──────────────────┘"
             };
 
@@ -66,7 +66,7 @@ namespace Konsole.Tests.WindowTests
             var expected = new[]
             {
                     "┌──── headline ────┐",
-                    "─wrapping          ─",
+                    "│wrapping          │",
                     "└──────────────────┘",
                     "┌───── content ────┐",
                     "│ if long enough wi│",
@@ -74,7 +74,7 @@ namespace Konsole.Tests.WindowTests
                     "│scrolling.        │",
                     "└──────────────────┘",
                     "┌───── status ─────┐",
-                    "─roll off.         ─",
+                    "│roll off.         │",
                     "└──────────────────┘"
             };
 
@@ -103,7 +103,7 @@ namespace Konsole.Tests.WindowTests
             var expected = new[]
             {
                     "┌──── headline ────┐",
-                    "─wrapping          ─",
+                    "│wrapping          │",
                     "└──────────────────┘",
                     "┌───── content ────┐",
                     "│ if long enough wi│",
@@ -111,7 +111,7 @@ namespace Konsole.Tests.WindowTests
                     "│scrolling.        │",
                     "└──────────────────┘",
                     "┌───── status ─────┐",
-                    "─roll off.         ─",
+                    "│roll off.         │",
                     "└──────────────────┘"
             };
 

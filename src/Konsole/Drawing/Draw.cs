@@ -53,13 +53,21 @@ namespace Konsole
             var line = thickness == LineThickNess.Single ? ThinBox : ThickBox;
             DrawCorners(sx, sy, ex, ey, line);
             // top edge
-            Line(sx + 1, sy, ex - 1, sy, thickness);
+            //Line(sx + 1, sy, ex - 1, sy, thickness);
+            DrawHorizontal(sx + 1, sy, ex - 1, line);
+
             // left edge
-            Line(sx, sy + 1, sx, ey - 1, thickness);
+            //Line(sx, sy + 1, sx, ey - 1, thickness);
+            DrawVertical(sx, sy + 1, ey - 1, line);
+
             // right edge
-            Line(ex, sy + 1, ex, ey - 1, thickness);
+            //Line(ex, sy + 1, ex, ey - 1, thickness);
+            DrawVertical(ex, sy + 1, ey - 1, line);
+
             // bottom edge
-            Line(sx + 1, ey, ex - 1, ey, thickness);
+            //Line(sx + 1, ey, ex - 1, ey, thickness);
+            DrawHorizontal(sx + 1, ey, ex - 1, line);
+
             // print centered title
             var titleText = $" {title} ";
             int len = titleText.Length;
@@ -76,10 +84,41 @@ namespace Konsole
             return this;
         }
 
+        /// <summary>
+        /// Draw a line between two points, either horizontally or vertically. 
+        /// </summary>
+        /// <param name="sx">the start x position. (0 ordinal)</param>
+        /// <param name="sy">the start y position. (0 ordinal)</param>
+        /// <param name="ex">the end x position. (0 ordinal)</param>
+        /// <param name="ey">the end y position. (0 ordinal)</param>
+        /// <param name="_thicknessOverride"></param>
+        /// <returns>the draw instance being used so that you can continue to chain drawing calls together. The returned instance knows what has been drawn, so that it can merge the lines drawn. Starting or using a different draw instance will stop the ability of the draw to merge lines.</returns>
+        /// <remarks>Lines do not need to be connected. If the two coordinates for start and end are the same, then this will draw a horizontal line. If you need to draw a single character tall or wide line then use DrawHorizontal, or DrawVertical.</remarks>
         public Draw Line(int sx, int sy, int ex, int ey, LineThickNess? _thicknessOverride = null)
+        {
+            return _Line(sx, sy, ex, ey, _thicknessOverride, HV.Undefined);
+        }
+
+        private enum HV {  Undefined, Horizontal, Vertical }
+
+        private Draw _Line(int sx, int sy, int ex, int ey, LineThickNess? _thicknessOverride, HV hvHint)
         {
             var thickness = _thicknessOverride ?? Thickness;
             IBoxStyle line = thickness == LineThickNess.Single ? _thin : _thick;
+
+            // hv hint is only required when sx, sy and ex, ey are all the same 
+            // added to try to sort out issue I have with box 3 lines high resulting
+            // in the line height being only 1 high, and thus sx, sy, ex, ey all being 
+            // equal, meaning the default as per code without this change results in a 
+            // horzontal line.
+            // I was certain I could fix this by changing the calling code to call
+            // drawHorizontal, drawVertical but that didnt work? need to test again.
+
+            if (hvHint != HV.Undefined)
+            {
+                if(hvHint == HV.Horizontal) return DrawVertical(sx, sy, ey, line);
+                if (hvHint == HV.Vertical) return DrawVertical(sx, sy, ey, line);
+            }
 
             // horizontal or vertical?
             if (sy == ey) return DrawHorizontal(sx, sy, ex, line);
@@ -87,6 +126,7 @@ namespace Konsole
             // throw new ArgumentOutOfRangeException("cannot draw diagonal lines");
             return this;
         }
+
 
         private Draw DrawHorizontal(int sx, int sy, int ex, IBoxStyle line)
         {
