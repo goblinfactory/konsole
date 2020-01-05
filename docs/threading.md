@@ -1,7 +1,40 @@
-﻿using Konsole.Internal;
+# Threading - worked examples
+
+If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
+
+## `ConcurrentWriter`
+
+Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. For example, if you tried to write your own wrapper you may likely end up with code that mostly runs well, but occasionally a race condition between your wrapper and the `System.Console` will cause either the cursor position or colors to change, or even have text appearing with small corruptions. Here's an example that does not use `ConcurrentWriter`.
+
+**writing your own wrapper is hard!**
+
+This is typically the types of bugs you will get when trying to write your own. It's not hugely difficult, it's just time consuming and requires a lot of concurrency testing.
+
+In the example below, we're simuluating a main build task as a thread, and two background tasks that update a small window on the console screen. What's happened here is when we were printing the file size in Red, we have to first set `Console.ForeGround = ConsoleColor.Red`, and before we could reset the console, the main build thread just happened to switch a and wrote 'I am build task out number 8` and both the color, and the cursor position had been changed by a different thread. (sample code included at the bottom.)  
+
+<img src='concurrentWriterOwn.png' width='500'/>
+
+<br/>
+<img src='writer-bug5.png'/>
+
+
+# Fix with `ConcurrentWriter`
+
+In the example below, we've switched from writing directly to `Console.WriteLine` and instead we make all the printing calls through a `new ConcurrentWriter()` that makes sure that any other threads do not change any console state. And we see that the color, cursorPosition and text no longer shows any corruption. Each seperate area of the screen can be written to independantly by different threads, without any complex async or threading (getAwaiter) etc shananigans.
+
+<img src='writer-fixed2.png'/>
+
+and ... boom, working like a cracker....
+
+<img src='concurrentWriter2.png' width='500'/>
+
+# full source code for this example
+
+```csharp
+
+using Konsole.Internal;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.ConsoleColor;
@@ -9,7 +42,7 @@ using static System.ConsoleColor;
 namespace Konsole.Sample
 {
     class Program
-    {
+    {  
         static void Main(string[] args)
         {
             Console.WriteLine("build task 1");
@@ -38,9 +71,6 @@ namespace Konsole.Sample
 
             Task.WaitAll(tasks.ToArray());
 
-            // this is safe, because there's only 1 thread here
-            // so it doesn't matter if this uses IConsole or not.
-            //Console.CursorTop = console.CursorTop + 1;
             Console.CursorVisible = true;
             Console.WriteLine("------------");
             Console.WriteLine("All finished");
@@ -73,3 +103,6 @@ namespace Konsole.Sample
         }
     }
 }
+
+
+```

@@ -6,6 +6,8 @@
 
 Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's like the following in very few lines of code.
 
+**Konsole is the ONLY simple threadsafe way to write to the C# console window.** Write your own threadsafe wrapper at your peril. Even wrapping using Akka.NET console writer will not keep your sanity. (See section on threading below) :D
+
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole) and I'll be happy to help you. 
 
 cheers, 
@@ -85,7 +87,29 @@ Alan
 ```
 ![sample output](docs/progressbar2.gif)
 
-# Windows
+# Threading (and `threadsafe` writing to the Console at last!)
+
+If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
+
+## `ConcurrentWriter`
+
+Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. For example, if you tried to write your own wrapper you may likely end up with code that mostly runs well, but occasionally a race condition between your wrapper and the `System.Console` will cause either the cursor position or colors to change, or even have text appearing with small corruptions. Here's an example that does not use `ConcurrentWriter`.
+
+**writing your own wrapper is hard!**
+
+This is typically the types of bugs you will get when trying to write your own. It's not hugely difficult, it's just time consuming and requires a lot of concurrency testing.
+
+In the example below, we're simuluating a main build task as a thread, and two background tasks that update a small window on the console screen. What's happened here is when we were printing the file size in Red, we have to first set `Console.ForeGround = ConsoleColor.Red`, and before we could reset the console, the main build thread just happened to switch a and wrote 'I am build task out number 8` and both the color, and the cursor position had been changed by a different thread. (sample code included at the bottom.)  
+
+<img src='docs/concurrentWriterOwn.png' width='500'/>
+
+In the example below, we've switched from writing directly to `Console.WriteLine` and instead we make all the printing calls through a `new ConcurrentWriter()` that makes sure that any other threads do not change any console state. 
+
+<img src='docs/concurrentWriter2.png' width='500'/>
+
+
+
+# Windows, `Window.Open`, `new Window`
 
   - ( 100%-ish console compatible window, supporting all normal console writing to a windowed section of the screen) 
   - Supports scrolling and clipping of console output.
