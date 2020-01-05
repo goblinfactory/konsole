@@ -6,6 +6,14 @@
 
 Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's like the following in very few lines of code.
 
+If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole) and I'll be happy to help you. 
+
+cheers, 
+
+Alan
+
+***cross-platform*** Konsole is 90% cross platform. `ProgressBar` and `Forms` and small inline `windows` that do not use text that causes scrolling all work in Nix, OSX and .NET standard code). **Konsole is a .NET Standard 2.2 project.**
+
 ![sample demo using HighSpeedWriter](docs/crazy-fast-screen.PNG)
 
 
