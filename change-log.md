@@ -27,7 +27,7 @@ and this project
 
 * `myWindow.SplitTopBottom()`
   
-- same as SplitLeftRight, but for Top and Bottom.  
+- : Split the current window Top and bottom and return a tuple. Default to use a single middle line, instead of the older double. (Was missing from previous release)
 
 
 ## [5.1.0]
