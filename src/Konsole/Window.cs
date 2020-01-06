@@ -137,13 +137,13 @@ namespace Konsole
         }
 
         public Window(int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)
-            : this(0, 0, width, height, foreground, background, true, null, options)
+            : this(null, null, width, height, foreground, background, true, null, options)
         {
         }
 
         public Window(IConsole console, int width, int height, ConsoleColor foreground, ConsoleColor background,
             params K[] options)
-            : this(0, 0, width, height, foreground, background, true, console, options)
+            : this(null, null, width, height, foreground, background, true, console, options)
         {
         }
 
@@ -154,7 +154,7 @@ namespace Konsole
         }
 
         public Window(IConsole console, int width, int height, params K[] options)
-    : this(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, true, console, options)
+    : this(null, null, width, height, ConsoleColor.White, ConsoleColor.Black, true, console, options)
         {
         }
 
@@ -170,7 +170,7 @@ namespace Konsole
 
         // TODO: fix the window constructors, second parameter is sometimes height, and sometimes not!
         public Window(IConsole echoConsole, int height, ConsoleColor foreground, ConsoleColor background)
-    : this(0, 0, echoConsole.WindowWidth, height, foreground, background, true, echoConsole)
+    : this(null, null, echoConsole.WindowWidth, height, foreground, background, true, echoConsole)
         {
         }
 

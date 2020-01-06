@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>5.3.2</Version>
+    <Version>5.3.3</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -13,11 +13,12 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>console konsole progress progressbar window</PackageTags>
-    <PackageReleaseNotes>## [5.3.2]
+    <PackageReleaseNotes>
+## [5.3.3]
 
 ### Fixed
 
-- `Window.Open` now returns a threadsafe window. (`ConcurrentWindow` wrapping the newly created window) All static constructors now return threadsafe windows.</PackageReleaseNotes>
+- when not supplying the x,y start position for a window, the window was supposed to be created inline, instead the window was being created at 0, 0. Fixed, now it's created at the starting Y position and left = 0.</PackageReleaseNotes>
     <PackageIcon>progress.png</PackageIcon>
     <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
