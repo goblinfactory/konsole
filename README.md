@@ -6,7 +6,7 @@
 
 Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's like the following in very few lines of code.
 
-**Konsole is the ONLY simple threadsafe way to write to the C# console window.** Write your own threadsafe wrapper at your peril. Even wrapping using Akka.NET console writer will not keep your sanity. (See section on threading below) :D
+**Konsole is the ONLY simple threadsafe way to write to the C# console window.** Write your own threadsafe wrapper at your peril. Even wrapping using Akka.NET console writer will not keep your sanity. [See my notes on threading](docs/threading.md) :D
 
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole) and I'll be happy to help you. 
 
@@ -781,10 +781,19 @@ The rest of the unit test code will work the same in production as in testing.
             new Split(12, "col3", LineThickNess.Single)
             ... rest of code
 ```
+ 
+ # Other .NET console libraries
 
-# Side by side writing 
+placeholder list for now, will expand on this shortly. (this is a placeholder starter list only, there are a lot of console libraries. )
 
-TBD : describe how Konsole workes side by side with existing code or apps that share the console.
+ - ncurses : Various links, tbd.
+ - [Gui.cs](https://github.com/migueldeicaza/gui.cs) : For building Full console applications (APPS) like a windows app, but using the console and supports mouse. THis *is* fully Windows, Linux, Unix compatible. 
+ - [DragonFruit - as described by Scott Hanselman](https://www.hanselman.com/blog/DragonFruitAndSystemCommandLineIsANewWayToThinkAboutNETConsoleApps.aspx) strongly typed `void main(int x, string something, bool yesOrNo)` <-- this is madness on a stick...so great!
+ - [AnyConsole](https://github.com/replaysMike/AnyConsole) : Great for writing utilities for full screen browsing of logs or files where you will be scrolling through large sections of text.
+
+I still need to add a few links to various .NET console templates that allow you to take advantage of full asp.net .NET core stack, e.g. dependancy injection etc. Plus command line parsing! (don't re-invent the wheel) 
+
+
 
 # Why did I write Konsole?
 
