@@ -3,11 +3,17 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project 
 
+## [5.3.2]
+
+### Fixed
+
+- `Window.Open` now returns a threadsafe window. (`ConcurrentWindow` wrapping the newly created window) All static constructors now return threadsafe windows.
+
 ## [5.3.1]
 
 ### Fixed
 
-- `Window.Open` now returns a threadsafe window. (`ConcurrentWindow` wrapping the newly created window)
+- fixed nuget tags
 
 ## [5.3.0]
 
