@@ -22,11 +22,6 @@ All the static constructors return threadsafe windows by default.
 
 - `new Window(...)`
 
-** [Full documentation here, with worked example for threading and `ConcurrentWriter`](docs/threading.md)
-
-
-
-
 If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
 
 ## `ConcurrentWriter`
