@@ -40,7 +40,7 @@ In the example below, we're simuluating a main build task as a thread, and two b
 
 In the example below, we've switched from writing directly to `Console.WriteLine` and instead we make all the printing calls through a `new ConcurrentWriter()` that makes sure that any other threads do not change any console state. And we see that the color, cursorPosition and text no longer shows any corruption. Each seperate area of the screen can be written to independantly by different threads, without any complex async or threading (getAwaiter) etc shananigans.
 
-<img src='writer-fixed2.png'/>
+<img src='writer-fixed6.png'/>
 
 and ... boom, working like a cracker....
 
@@ -68,7 +68,7 @@ namespace Konsole.Sample
             Console.WriteLine("build task 3");
 
             Console.CursorVisible = false;
-            var window = new Window(40, 7);
+            var window = new Window(40, 7).Concurrent();
             var console = new ConcurrentWriter();
             var processing = window.SplitTop("processing");
             var status = window.SplitBottom("status");
