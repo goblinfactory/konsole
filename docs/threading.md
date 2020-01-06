@@ -22,12 +22,6 @@ All the static constructors return threadsafe windows by default.
 
 - `new Window(...)`
 
-If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
-
-## `ConcurrentWriter`
-
-Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. For example, if you tried to write your own wrapper you may likely end up with code that mostly runs well, but occasionally a race condition between your wrapper and the `System.Console` will cause either the cursor position or colors to change, or even have text appearing with small corruptions. Here's an example that does not use `ConcurrentWriter`.
-
 **writing your own threadsafe wrapper around System.Console is hard, don't do it!**
 
 Below is a typical example of the types of bugs you will get when trying to write your own wrapper. It's not hugely difficult, it's just time consuming, lots and lots of edge cases, and requires a lot of concurrency testing.
