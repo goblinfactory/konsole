@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project 
 
+## [5.3.3]
+
+### Fixed
+
+- when not supplying the x,y start position for a window, the window was supposed to be created inline, instead the window was being created at 0, 0. Fixed, now it's created at the starting Y position and left = 0.
+
 ## [5.3.2]
 
 ### Fixed
