@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-
 		global.json = global.json
 		..\README.md = ..\README.md
 		..\test.ps1 = ..\test.ps1
+		..\docs\threading.md = ..\docs\threading.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole", "Konsole\Konsole.csproj", "{2F5B6DC2-C669-4554-867F-B4F5F1B01CB7}"
@@ -34,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Platform.Windows.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Tests.Slow", "Konsole.Tests.Slow\Konsole.Tests.Slow.csproj", "{88673DE4-7501-4B72-9EDA-047E4C58BF9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackage", "TestPackage\TestPackage.csproj", "{B0DDCF86-9755-4EAD-98FC-D22719F5D218}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestPackage", "TestPackage\TestPackage.csproj", "{B0DDCF86-9755-4EAD-98FC-D22719F5D218}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

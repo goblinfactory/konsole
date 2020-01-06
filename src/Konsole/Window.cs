@@ -215,16 +215,21 @@ namespace Konsole
 
         public static IConsole Open()
         {
-            return new Window();
-        }
-
-        public static IConsole Open(IConsole parent)
-        {
-            return new Window(parent);
+            return new Window().Concurrent();
         }
 
         /// <summary>
-        /// This is the the only threadsafe way to create a window at the moment.
+        /// Opens a new Threadsafe window which as a child of parent.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public static IConsole Open(IConsole parent)
+        {
+            return new Window(parent).Concurrent();
+        }
+
+        /// <summary>
+        /// Returns a Threadsafe ConcurrentWriter around the newly created window.
         /// </summary>
         public static IConsole Open(int x, int y, int width, int height, string title,
         LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray,

@@ -87,13 +87,27 @@ Alan
 ```
 ![sample output](docs/progressbar2.gif)
 
-# Threading (and `threadsafe` writing to the Console at last!)
+# Threading (and `threadsafe` writing to the Console at last!) `.Concurrent()`
 
 If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
 
-## `ConcurrentWriter` and `Threading`
+## `ConcurrentWriter` and `Threading` with `.Concurrent()`
 
-Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. 
+Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. New Window is not threadsafe. Call `.Concurrent()` on a new window to return a thread safe window.
+
+e.g. `new Window(...).Concurrent()`
+
+All the static constructors return threadsafe windows by default. 
+
+**THREADSAFE**
+
+- `Window.Open`
+- `Window.OpenInline`
+- `new ConcurrentWriter()`
+
+**NOT THREADSAFE** (make safe with `.Concurrent()`)
+
+- `new Window(...)`
 
 ** [Full documentation here, with worked example for threading and `ConcurrentWriter`](docs/threading.md)
 
