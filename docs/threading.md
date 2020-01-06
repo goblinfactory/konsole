@@ -17,6 +17,7 @@ All the static constructors return threadsafe windows by default.
 - `Window.OpenInline`
 - `new ConcurrentWriter()`
 - `new Window().Concurrent()`
+- `new ProgressBar()`  Progress bars are all threadsafe.
 
 **NOT THREADSAFE** (make safe with `.Concurrent()`)
 
