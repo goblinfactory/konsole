@@ -33,7 +33,7 @@ In the example below, we're simuluating a main build task as a thread, and two b
 <img src='concurrentWriterOwn.png' width='500'/>
 
 <br/>
-<img src='writer-bug5.png'/>
+<img src='writer-bug6.png'/>
 
 
 # Fix with `ConcurrentWriter`
@@ -72,6 +72,8 @@ namespace Konsole.Sample
             var console = new ConcurrentWriter();
             var processing = window.SplitTop("processing");
             var status = window.SplitBottom("status");
+
+            // progress bars are ONLY threadsafe if they are children of a threadsafe parent.
             var compressProgress = new ProgressBar(processing, 100);
             var encryptProgress = new ProgressBar(processing, 100);
 
