@@ -1,7 +1,7 @@
 # Threading - worked examples
 
 
-If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
+If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console then `Konsole` will make this a whole lot simpler.
 
 ## `ConcurrentWriter` and `Threading` with `.Concurrent()`
 
