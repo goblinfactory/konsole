@@ -790,6 +790,7 @@ placeholder list for now, will expand on this shortly. (this is a placeholder st
  - [Gui.cs](https://github.com/migueldeicaza/gui.cs) : For building Full console applications (APPS) like a windows app, but using the console and supports mouse. THis *is* fully Windows, Linux, Unix compatible. 
  - [DragonFruit - as described by Scott Hanselman](https://www.hanselman.com/blog/DragonFruitAndSystemCommandLineIsANewWayToThinkAboutNETConsoleApps.aspx) strongly typed `void main(int x, string something, bool yesOrNo)` <-- this is madness on a stick...so great!
  - [AnyConsole](https://github.com/replaysMike/AnyConsole) : Great for writing utilities for full screen browsing of logs or files where you will be scrolling through large sections of text.
+ - [FluentCommandLineParser](https://github.com/fclp/fluent-command-line-parser) Does what it says on the tin.
 
 I still need to add a few links to various .NET console templates that allow you to take advantage of full asp.net .NET core stack, e.g. dependancy injection etc. Plus command line parsing! (don't re-invent the wheel) 
 
@@ -802,17 +803,6 @@ I wrote Konsole to allow me to write simple test projects, or "reference archite
 A big benefit to me is being able to visually describe in text any complex screen layout and application without requiring images. 
 
 I'm now also using it for other serious applications besides learning material. I'm using `Konsole` in `Gunner` a `.NET` testing library similar to `Gattling` that I need to put code under stress when evaulating different enterprise messaging libraries.
-
-# Open source projects already using Konsole
-
-- 10 alternatives to Akka.net : (A console based reference architecture using Konsole to simplify the demo / reference code)
-- Please add your project to this list. (drop me a tweet or email)
-
-Samples I am busy with 
-
-- remote Konsole. Run a console app on a remote linux container and view the output in a console window in a browser on any platform.
-
-
 
 # Debugging problems with Konsole, random items
 
@@ -834,6 +824,11 @@ If you are using the `HighSpeedWriter` you must call `Flush()` to render the out
 
 <img src='docs/flush.PNG' width='400'/>
 
+## Corrupt output - colours or text output appearing in the wrong place.
+
+possible causes and fixes
+
+- some code somewhere is writing directly to the `System.Console`. Replace that code with calls to a `new ConcurrentWriter()`. See [Threading docs](docs/theading.md) for more information. 
 
 # Writing Tests for your code that uses Konsole
 
