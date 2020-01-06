@@ -1,16 +1,45 @@
 # Threading - worked examples
 
+
+If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
+
+## `ConcurrentWriter` and `Threading` with `.Concurrent()`
+
+Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. New Window is not threadsafe. Call `.Concurrent()` on a new window to return a thread safe window.
+
+e.g. `new Window(...).Concurrent()`
+
+All the static constructors return threadsafe windows by default. 
+
+**THREADSAFE**
+
+- `Window.Open`
+- `Window.OpenInline`
+- `new ConcurrentWriter()`
+- `new Window().Concurrent()`
+
+**NOT THREADSAFE** (make safe with `.Concurrent()`)
+
+- `new Window(...)`
+
+** [Full documentation here, with worked example for threading and `ConcurrentWriter`](docs/threading.md)
+
+
+
+
 If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
 
 ## `ConcurrentWriter`
 
 Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. For example, if you tried to write your own wrapper you may likely end up with code that mostly runs well, but occasionally a race condition between your wrapper and the `System.Console` will cause either the cursor position or colors to change, or even have text appearing with small corruptions. Here's an example that does not use `ConcurrentWriter`.
 
-**writing your own wrapper is hard!**
+**writing your own threadsafe wrapper around System.Console is hard, don't do it!**
 
-This is typically the types of bugs you will get when trying to write your own. It's not hugely difficult, it's just time consuming and requires a lot of concurrency testing.
+Below is a typical example of the types of bugs you will get when trying to write your own wrapper. It's not hugely difficult, it's just time consuming, lots and lots of edge cases, and requires a lot of concurrency testing.
 
-In the example below, we're simuluating a main build task as a thread, and two background tasks that update a small window on the console screen. What's happened here is when we were printing the file size in Red, we have to first set `Console.ForeGround = ConsoleColor.Red`, and before we could reset the console, the main build thread just happened to switch a and wrote 'I am build task out number 8` and both the color, and the cursor position had been changed by a different thread. (sample code included at the bottom.)  
+In the example below, we're simuluating a main build task as a thread, and two background tasks that update a small window on the console screen. What's happened here is when we were printing the file size in Red, we have to first set `Console.ForeGround = ConsoleColor.Red`, and before we could reset the console, the main build thread just happened to switch a and wrote `I am build task out number 8` and both the color, and the cursor position had been changed by a different thread. (sample code included at the bottom.) So you get random corruption. The fix is to use `ConcurrentWriter` as shown further below.
+
+*Sample screen showing corruption - race conditions printing to console*
 
 <img src='concurrentWriterOwn.png' width='500'/>
 
