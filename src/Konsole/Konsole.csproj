@@ -12,7 +12,7 @@
     <Description>Simple console library consisting of ProgressBar, Window, Form, Draw and MockConsole.</Description>
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <PackageTags>konsole progress progressbar window form iconsole&lt;</PackageTags>
+    <PackageTags>console konsole progress progressbar window</PackageTags>
     <PackageReleaseNotes>### Added
 
 - `new ConcurrentWriter()` now returns a thread safe concurrent writer that continues writing to the current console as if it were the console. Previously the concurrentwriter required a window instance. That still exists but you can now create a `ConcurrentWriter` without needing to first create a window. This allows for thread safe writing to the console without needing a window. See the new section in the readme under `Threading` for more information and for examples.</PackageReleaseNotes>

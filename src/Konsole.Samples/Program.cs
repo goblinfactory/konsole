@@ -1,7 +1,6 @@
 ﻿using Konsole.Internal;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.ConsoleColor;
@@ -9,7 +8,7 @@ using static System.ConsoleColor;
 namespace Konsole.Sample
 {
     class Program
-    {
+    {  
         static void Main(string[] args)
         {
             Console.WriteLine("build task 1");
@@ -38,9 +37,6 @@ namespace Konsole.Sample
 
             Task.WaitAll(tasks.ToArray());
 
-            // this is safe, because there's only 1 thread here
-            // so it doesn't matter if this uses IConsole or not.
-            //Console.CursorTop = console.CursorTop + 1;
             Console.CursorVisible = true;
             Console.WriteLine("------------");
             Console.WriteLine("All finished");
