@@ -2,9 +2,9 @@
 
 ## Busy now
 
-- add new feature SplitLeftRight
-- improve overlapping of boxes to correctly overlap when box edge overlapping.
-- .Box to use Draw() default thickness.
+- OpenBox
+- list view :D
+- fix bug - when creating an inline window from an new ConcurrentWriter() IConsole the colors are wrong? See spike "paul".
 
 ## busy next 5.4
 
