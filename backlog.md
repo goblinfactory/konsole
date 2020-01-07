@@ -6,6 +6,30 @@
 - list view :D
 - fix bug - when creating an inline window from an new ConcurrentWriter() IConsole the colors are wrong? See spike "paul".
 
+- Input
+  - The design I have so far in my head for input is to have a frame that can hold windows. 
+  - The frame will keep track of the active windows and handle all input and keystrokes, defaults will be tab to move between active window. 
+  - Active window will have theme to show active window, and will be StyleActive and StylePassive. 
+  - I have a library that I've written many years ago for forms based input, and will be re-using that. 
+  - The simplest will be a text input. Other inputs, date/ number / float etc will also be created.
+  - I'll be starting with a simple replacement for ReadLine(); Something like
+
+```
+    var inputBox = Window.Open(40, 3, "Enter Name");
+    var name = inputBox.ReadLine("Enter name:");
+```
+  - Default will be limited to the balance of the current line, text will scroll left and right and will be shown in reverse Black on White with a default max width of 255 chars.
+  - overloads will allow for setting inputMask, and text width etc.
+  - if you have more than 1 ReadLine, then it will allow you to move between entries using arrow keys, using something like
+```
+    var inputBox = Window.Open(80, 3, "Register (press F10) to save, esc to quit");
+    var user = inputBox.ReadInput<User>();
+```
+  - will use Microsoft Data Annotations
+
+Alan Hemmings @goblinfactory 11:32
+
+
 ## busy next 5.4
 
 - simpler way to create inline window with title. ideally new window(x,y, title);

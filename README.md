@@ -406,6 +406,57 @@ new Split(size)
 };
 ```
 
+# Handling Input
+
+To capture input, create an Inline Window, e.g. `var myWindow = Window.Open(width, height, title)` and the cursor will be placed immediately UNDERNEATH the newly created window, and you can use and normal `Console.ReadLine()` reads, `Console.ReadLine()` will run at the current cursor.
+
+Here's a worked example showing you how to read input using `Konsole`
+
+```csharp
+
+        static void Main(string[] args)
+        {
+            static void Compress(IConsole status, string file)
+            {
+                status.WriteLine($"compressing {file}");
+                Thread.Sleep(new Random().Next(10000));
+                status.WriteLine(Green, $"{file} (OK)");
+            }
+
+            static void Index(IConsole status, string file)
+            {
+                status.WriteLine($"indexing {file}");
+                Thread.Sleep(new Random().Next(10000));
+                status.WriteLine(Green, " finished.");
+            }
+
+            var console = new ConcurrentWriter();  // < -- NOTE THE ConcurrentWriter to replace Console
+            var window = new Window(50, 20);
+            var compressWindow = window.SplitTop("compress");
+            var encryptWindow = window.SplitBottom("encrypt");
+
+            var tasks = new List<Task>();
+
+            while (true)
+            {
+                console.Write("Enter name of file to process (quit) to exit:");
+                var file = Console.ReadLine();
+                if (file == "quit") break;
+                tasks.Add(Task.Run(()=> Compress(compressWindow, file)));
+                tasks.Add(Task.Run(()=> Index(encryptWindow, file)));
+                console.WriteLine($"processing {file}");
+            }
+            
+            console.WriteLine("waiting for background tasks");
+            Task.WaitAll(tasks.ToArray());
+            Console.WriteLine("done.");
+        }
+```
+
+Running the code above gives you
+
+<img src='./docs/image-input.png' width='600' />
+
 # Draw
 
 Draw lines and boxes single or double line width on the console window and intelligently merge lines that are drawn.
