@@ -5,7 +5,8 @@
 - OpenBox
 - list view :D
 - fix bug - when creating an inline window from an new ConcurrentWriter() IConsole the colors are wrong? See spike "paul".
-
+- NB! Set scrollable region (using VT100 commands!)
+- so that you can have input region at the bottom, and "app" at the top?
 - Input
   - The design I have so far in my head for input is to have a frame that can hold windows. 
   - The frame will keep track of the active windows and handle all input and keystrokes, defaults will be tab to move between active window. 
