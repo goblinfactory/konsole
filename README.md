@@ -4,7 +4,7 @@
 
 # Konsole library
 
-Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's like the following in very few lines of code.
+Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's as shown below in very few lines of code.
 
 **Konsole is a simple threadsafe way to write to the C# console window.** Write your own threadsafe wrapper at your peril. [See my notes on threading](docs/threading.md) :D
 
