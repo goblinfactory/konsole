@@ -1,7 +1,6 @@
 ﻿# Change Log
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
-and this project 
 
 ## [5.3.3]
 

@@ -12,7 +12,7 @@
     <Description>Simple console library consisting of ProgressBar, Window, Form, Draw and MockConsole.</Description>
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <PackageTags>console konsole progress progressbar window</PackageTags>
+    <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
     <PackageReleaseNotes>
 ## [5.3.3]
 

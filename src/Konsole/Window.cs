@@ -7,6 +7,18 @@ namespace Konsole
 {
     public partial class Window : IConsole
     {
+        internal static IConsole _hostConsole;
+        public static IConsole HostConsole
+        {
+            get
+            {
+                return _hostConsole ?? (_hostConsole = new ConcurrentWriter());
+            }
+            set
+            {
+                _hostConsole = value;
+            }
+        }
 
         public string GetVersion()
         {

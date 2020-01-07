@@ -5,7 +5,7 @@ using static System.ConsoleColor;
 
 namespace Konsole.Samples
 {
-    public static class WindowSamples
+    public static class OpenBoxSamples
     {
         private static void wait() => Console.ReadKey(true);
 

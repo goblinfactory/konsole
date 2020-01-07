@@ -799,17 +799,19 @@ The rest of the unit test code will work the same in production as in testing.
  
  # Other .NET console libraries
 
-placeholder list for now, will expand on this shortly. (this is a placeholder starter list only, there are a lot of console libraries. )
+placeholder list for now, will expand on this shortly. (this is a placeholder starter list only, there are a lot of good console libraries. )
 
- - ncurses : Various links, tbd.
- - [Gui.cs](https://github.com/migueldeicaza/gui.cs) : For building Full console applications (APPS) like a windows app, but using the console and supports mouse. THis *is* fully Windows, Linux, Unix compatible. 
- - [DragonFruit - as described by Scott Hanselman](https://www.hanselman.com/blog/DragonFruitAndSystemCommandLineIsANewWayToThinkAboutNETConsoleApps.aspx) strongly typed `void main(int x, string something, bool yesOrNo)` <-- this is madness on a stick...so great!
- - [AnyConsole](https://github.com/replaysMike/AnyConsole) : Great for writing utilities for full screen browsing of logs or files where you will be scrolling through large sections of text.
- - [FluentCommandLineParser](https://github.com/fclp/fluent-command-line-parser) Does what it says on the tin.
+| nuget | |
+| --- | --- |
+| [tonerdo/readline](https://github.com/tonerdo/readline) |  A Pure C# GNU-Readline like library for .NET/.NET Core. (works well with Konsole)
+| ncurses | Various links, tbd.
+| [migueldeicaza/Gui.cs](https://github.com/migueldeicaza/gui.cs) | For building Full console applications (APPS) like a windows app, but using the console and supports mouse. THis *is* fully Windows, Linux, Unix compatible. 
+| [DragonFruit - as described by Scott Hanselman](https://www.hanselman.com/blog/DragonFruitAndSystemCommandLineIsANewWayToThinkAboutNETConsoleApps.aspx) | Strongly typed `void main(int x, string something, bool yesOrNo)` <-- this is madness on a stick...so great!
+| [replaysMike/AnyConsole](https://github.com/replaysMike/AnyConsole) | Great for writing utilities for full screen browsing of logs or files where you will be scrolling through large sections of text.
+| [fclp/FluentCommandLineParser](https://github.com/fclp/fluent-command-line-parser) | Does what it says on the tin.
+| --- | --- |
 
 I still need to add a few links to various .NET console templates that allow you to take advantage of full asp.net .NET core stack, e.g. dependancy injection etc. Plus command line parsing! (don't re-invent the wheel) 
-
-
 
 # Why did I write Konsole?
 

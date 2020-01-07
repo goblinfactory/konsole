@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-
+    <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
+    <MSBuildWarningsAsMessages>NU1701</MSBuildWarningsAsMessages>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

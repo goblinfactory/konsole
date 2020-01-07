@@ -5,28 +5,49 @@ using System.Text;
 
 namespace Konsole
 {
+    public static class OpenBoxExtensions
+    {
+        public static IConsole OpenBox(this IConsole c, string title)
+        {
+            return Window._OpenBox(c, title, null, null, null, null, new BoxStyle());
+        }
+
+        public static IConsole OpenBox(this IConsole c, string title, BoxStyle style)
+        {
+            return Window._OpenBox(c, title, null, null, null, null, style);
+        }
+
+        public static IConsole OpenBox(this IConsole c, string title, int width, int height, BoxStyle style)
+        {
+            return Window._OpenBox(c, title, null, null, width, height, style);
+        }
+
+        public static IConsole OpenBox(this IConsole c, string title, int sx, int sy, int height, int width, BoxStyle style)
+        {
+            return Window._OpenBox(c, title, sx, sy, width, height, style);
+        }
+    }
+
     public partial class Window
     {
         public static IConsole OpenBox(string title)
         {
-            var dims = Window.GetHostWidthHeight();
-            return _OpenBox(null, title, null, null, dims.width, dims.height, new BoxStyle());
+            return _OpenBox(Window.HostConsole, title, null, null, null, null, new BoxStyle());
         }
 
         public static IConsole OpenBox(string title, BoxStyle style)
         {
-            var dims = Window.GetHostWidthHeight();
-            return _OpenBox(null, title, null, null, dims.width, dims.height, style);
+            return _OpenBox(Window.HostConsole, title, null, null, null, null, style);
         }
 
-        public static IConsole OpenBox(string title, int height, int width, BoxStyle style = null)
+        public static IConsole OpenBox(string title, int width, int height, BoxStyle style = null)
         {
-            return _OpenBox(null, title, null, null, height, width, style ?? new BoxStyle());
+            return _OpenBox(Window.HostConsole, title, null, null, width, height, style ?? new BoxStyle());
         }
 
-        public static IConsole OpenBox(string title, int sx, int sy, int height, int width, BoxStyle style)
+        public static IConsole OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)
         {
-            throw new NotImplementedException();
+            return _OpenBox(Window.HostConsole, title, sx, sy, width, height, style ?? new BoxStyle());
         }
 
         internal static IConsole _OpenBox(IConsole _parent, string title, int? _sx, int? _sy, int? _width, int? _height, BoxStyle style)
@@ -55,24 +76,6 @@ namespace Konsole
 
                 return window;
             }
-        }
-    }
-
-    public static class OpenBoxExtensions
-    {
-        public static IConsole OpenBox(this IConsole c, string title, BoxStyle style)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static IConsole OpenBox(this IConsole c, string title, int height, int width, BoxStyle style)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static IConsole OpenBox(this IConsole c, string title, int sx, int sy, int height, int width, BoxStyle style)
-        {
-            throw new NotImplementedException();
         }
     }
 }
