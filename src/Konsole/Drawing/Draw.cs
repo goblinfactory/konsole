@@ -37,6 +37,8 @@ namespace Konsole
 
         public Draw Box(int sx, int sy, int ex, int ey, string title, LineThickNess? thicknessOverride = null)
         {
+            // TODO : remove duplication!
+
             var thickness = thicknessOverride ?? Thickness;
             int width = ex - sx + 1;
             int height = ey - sy + 1;
@@ -82,6 +84,51 @@ namespace Konsole
             }
 
             return this;
+        }
+
+        public Draw Box(int sx, int sy, int ex, int ey, string title, Colors lineColor, Colors titleColor, LineThickNess? thicknessOverride = null)
+        {
+            _console.DoCommand(_console, () =>
+            {
+                _console.Colors = lineColor;
+                var thickness = thicknessOverride ?? Thickness;
+                int width = ex - sx + 1;
+                int height = ey - sy + 1;
+                // if box is not visible, return.
+                if (ex - sx < 0) return;
+                if (ey - sy < 0) return;
+
+                if (height == 1 && width == 1)
+                {
+                    _console.PrintAt(sx, sy, '☐');
+                    return;
+                }
+                DrawBoxLines(sx, sx, ex, ey, thickness);
+                var titleText = $" {title} ";
+                int len = titleText.Length;
+                int maxLen = width - 2;
+                if (len > maxLen)
+                {
+                    titleText = maxLen > 0 ? titleText.Substring(0, maxLen) : "";
+                }
+                if (!string.IsNullOrWhiteSpace(titleText))
+                {
+                    _console.Colors = titleColor;
+                    int titleX = sx + (width / 2) - (titleText.Length / 2);
+                    _console.PrintAt(titleX, sy, titleText);
+                }
+            });
+            return this;
+        }
+
+        private void DrawBoxLines(int sx, int sy, int ex, int ey, LineThickNess thickness)
+        {
+            var line = thickness == LineThickNess.Single ? ThinBox : ThickBox;
+            DrawCorners(sx, sy, ex, ey, line);
+            DrawHorizontal(sx + 1, sy, ex - 1, line);
+            DrawVertical(sx, sy + 1, ey - 1, line);
+            DrawVertical(ex, sy + 1, ey - 1, line);
+            DrawHorizontal(sx + 1, ey, ex - 1, line);
         }
 
         /// <summary>

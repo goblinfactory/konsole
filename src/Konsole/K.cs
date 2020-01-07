@@ -1,6 +1,5 @@
 ﻿namespace Konsole
-{
-    // (K) Konsole shortcut options
+{   
     public enum K
     {
         // currently under development
