@@ -166,7 +166,7 @@ tbd
 
 Print the text, optionally wrapping and causing any scrolling in the current window, at cursor position X,Y in foreground and background color without impacting the current window's cursor position or colours. This method is only threadsafe if you have created a window by using .ToConcurrent() after creating a new Window(), or the window was created using Window.Open(...) which returns a threadsafe window.
 
-**Maintaining seperate colors and cursor positions for windows so that other threads do not change the color or printing while another thread is writing to the console is a really big deal and is what makes Konsole a safe library to use when testing multi-threaded libraries.**
+**Maintaining seperate colors and cursor positions for windows so that other threads do not change the color or printing while another thread is writing to the console is a really big deal and is what makes Konsole a solid library to use when evaluating multi-threaded libraries** and need a simple way to monitor the results of various asynchronous operations without having to write multiple console apps, or create a Javascript UX library. 
 
 ## `window.Write(string format, params object[] args)`
 ## `window.Write(stringConsoleColor color, format, params object[] args)`
