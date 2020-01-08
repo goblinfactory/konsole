@@ -152,7 +152,7 @@ All the static constructors return threadsafe windows by default.
 
 ![window simple demo](docs/window-demo.png)
 
-#### Window.OpenBox
+#### [Window.OpenBox](window-openbox)
 
 - `Window.OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)`
 - `Window.OpenBox(string title, int sx, int sy, int width, int height)`
@@ -234,10 +234,8 @@ Open a full screen styled window with a lined box border with a title. Styling a
         }
 ```
 
-**Example**
-<p align='right'>
-gives you
-</p>
+#### Simple Example - Mix and match `System.Console` with `Konsole`
+
 <img src='docs/openbox-example.png' width='200' align='right'/>
 
 ```csharp
@@ -246,7 +244,8 @@ gives you
     // show how you can mix and match Console with Konsole
     Console.WriteLine("line one");
 
-    // create an inline Box window at the current cursor position (Window implements IConsole)
+    // create an inline Box window at the current cursor position
+    // (returned Window implements IConsole) 
     var nyse = Window.OpenBox("NYSE", 20, 12, new BoxStyle() { 
         ThickNess = LineThickNess.Single, 
         Title = new Colors(White, Red) 
