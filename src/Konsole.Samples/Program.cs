@@ -18,7 +18,7 @@ namespace Konsole.Samples
             //InputSamples.Sample();
             var w = Window.OpenBox("test", new BoxStyle() { Title = new Colors(White, Red) });
             var child = w.OpenBox("child");
-            child.WriteLine("hello hello!");
+            w.WriteLine("hello hello! {0}");
             Console.ReadKey(true);
         }
     }

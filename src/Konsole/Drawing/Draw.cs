@@ -103,7 +103,7 @@ namespace Konsole
                     _console.PrintAt(sx, sy, '☐');
                     return;
                 }
-                DrawBoxLines(sx, sx, ex, ey, thickness);
+                DrawBoxLines(sx, sy, ex, ey, thickness);
                 var titleText = $" {title} ";
                 int len = titleText.Length;
                 int maxLen = width - 2;

@@ -32,7 +32,32 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void when_opening_inside_existing_window_open_a_window_with_border_using_default_values()
+        public void WhenNestedShould_open_a_window_with_border_using_default_values()
+        {
+            _console = new MockConsole(10, 7);
+            Window.HostConsole = _console;
+            var parent = Window.OpenBox("parent");
+            var child = parent.OpenBox("child");
+            child.WriteLine("......");
+            child.WriteLine("......");
+            child.Write("......");
+            var expected = new[]
+            {
+                "┌ parent ┐",
+                "│┌ child┐│",
+                "││......││",
+                "││......││",
+                "││......││",
+                "│└──────┘│",
+                "└────────┘"
+            };
+
+            _console.Buffer.Should().BeEquivalentTo(expected);
+        }
+
+
+        [Test]
+        public void WhenNestedShould_print_relative_to_the_window_being_printed_to_not_the_parent()
         {
             var parent = Window.OpenBox("parent");
             var child = parent.OpenBox("child");
@@ -82,6 +107,30 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
+        public void open_a_Floating_window_using_provided_sizes()
+        {
+            Window.OpenBox("x", 1, 1, 5, 3);
+            var expected = new[]
+            {
+                "          ",
+                " ┌ x ┐    ",
+                " │   │    ",
+                " └───┘    ",
+                "          "
+            };
+
+            //"          ",
+            //" ┌ x┐     ",
+            //" └        ",
+            //"          ",
+            //"          "
+
+
+
+            _console.Buffer.Should().BeEquivalentTo(expected);
+        }
+
+        [Test]
         public void open_an_inline_window_using_provided_sizes()
         {
             Window.OpenBox("x", 5, 3);
@@ -112,17 +161,17 @@ namespace Konsole.Tests.WindowTests
             _console.Buffer.Should().BeEquivalentTo(expected);
         }
 
+        // needs new feature for box, i.e. that box clips parent and draws box inside parent boundary.
+
         //[Test]
         //public void clip_child_window_to_not_exceed_parent_boundaries_test1()
         //{
         //    var con = new MockConsole(40, 10);
         //    Window.HostConsole = con;
-        //    Window.OpenBox(0, 0, 40, 10, "test", LineThickNess.Double, White, Black, con);
-        //    var child = Window.Open(20, 0, 30, 6, "child", LineThickNess.Double, White, Black, win);
+        //    var parent = Window.OpenBox("test", new BoxStyle() { ThickNess = LineThickNess.Double, Line = new Colors(White, Black) });
+        //    var child = parent.OpenBox("child", 20, 0, 30, 6, new BoxStyle() { ThickNess = LineThickNess.Double });
         //    child.WriteLine("test");
 
-        //    // this is the current behaviour, not ideal, but test needs to be this until
-        //    // the change is made.
         //    var expected = new[]
         //    {
         //            "╔════════════════ test ════════════════╗",
@@ -135,160 +184,105 @@ namespace Konsole.Tests.WindowTests
         //            "║                                      ║",
         //            "║                                      ║",
         //            "╚══════════════════════════════════════╝"
-        //            };
+        //    };
+        //    con.Buffer.Should().BeEquivalentTo(expected);
         //}
 
-        //            con.Buffer.Should().BeEquivalentTo(expected);
-        //        }
+        [Test]
+        public void should_not_move_parent_cursor_when_box_is_not_inline()
+        {
+            var con = new MockConsole(20, 9);
+            Window.HostConsole = con;
+            var parent = Window.OpenBox("parent", 0, 0, 20, 8, new BoxStyle() { ThickNess = LineThickNess.Double });
+            // write the child, and then check if parent cursor still 
+            // at 0,0 by writing two lines to parent
+            var child = parent.OpenBox("c1", 7, 2, 8, 4, new BoxStyle() { ThickNess = LineThickNess.Single });
+            parent.WriteLine("line1");
+            parent.WriteLine("line2");
 
-        //        [Test]
-        //        public void clip_child_window_to_not_exceed_parent_boundaries_test2()
-        //        {
-        //            var con = new MockConsole(40, 10);
-        //            var win = Window.Open(20, 5, 30, 20, "test", LineThickNess.Double, White, Black, con);
-        //            win.WriteLine("cats and dogs");
+            var expected = new[]
+            {
+                        "╔═════ parent ═════╗",
+                        "║line1             ║",
+                        "║line2             ║",
+                        "║       ┌─ c1 ─┐   ║",
+                        "║       │      │   ║",
+                        "║       │      │   ║",
+                        "║       └──────┘   ║",
+                        "╚══════════════════╝",
+                        "                    "
+                    };
 
-        //            // this is the current behaviour, not ideal, but test needs to be this until
-        //            // the change is made.
-        //            var expected = new[]
-        //            {
-        //            "                                        ",
-        //            "                                        ",
-        //            "                                        ",
-        //            "                                        ",
-        //            "                                        ",
-        //            "                    ╔═══════════ test ══",
-        //            "                    ║cats and dogs     ║",
-        //            "                    ║                  ║",
-        //            "                    ║                  ║",
-        //            "                    ║                  ║"
-        //            };
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 
-        //            con.Buffer.Should().BeEquivalentTo(expected);
-        //        }
+        [Test]
+        public void WhenNested_draw_a_box_around_the_scrollable_window_with_a_centered_title_and_return_a_live_window_at_the_correct_screen_location()
+        {
+            var con = new MockConsole(20, 9);
+            Window.HostConsole = con;
+            var parent = Window.OpenBox("parent", 0, 0, 20, 8, new BoxStyle() { ThickNess = LineThickNess.Double });
+            var child = parent.OpenBox("c1", 7, 2, 8, 4);
+            parent.WindowWidth.Should().Be(18);
+            parent.WindowHeight.Should().Be(6);
+            //var child = parent.OpenBox("c1", 7, 2, 8, 4);
 
-        //        [Test]
-        //        [TestCase("title")]
-        //        [TestCase("titles")]
-        //        [TestCase("catsandDogs is a long title")]
-        //        [TestCase(null)]
-        //        [TestCase("")]
-        //        public void text_should_be_centered_or_clipped(string title)
-        //        {
-        //            var c = new MockConsole(10, 4);
-        //            var w = Window.Open(0, 0, 10, 4, title, LineThickNess.Double, White, Black, c);
+            parent.WriteLine("line1");
+            parent.WriteLine("line2");
 
-        //            string[] expected = new string[0];
-        //            switch (title)
-        //            {
-        //                case "title":
-        //                    expected = new[]
-        //                    {
-        //                        "╔═ title ╗",
-        //                        "║        ║",
-        //                        "║        ║",
-        //                        "╚════════╝"
-        //                    };
-        //                    break;
-        //                case "catsandDogs is a long title":
-        //                    expected = new[]
-        //                    {
-        //                        "╔ catsand╗",
-        //                        "║        ║",
-        //                        "║        ║",
-        //                        "╚════════╝"
-        //                    };
-        //                    break;
+            var expected = new[]
+            {
+                        "╔═════ parent ═════╗",
+                        "║line1             ║",
+                        "║line2             ║",
+                        "║       ┌─ c1 ─┐   ║",
+                        "║       │      │   ║",
+                        "║       │      │   ║",
+                        "║       └──────┘   ║",
+                        "╚══════════════════╝",
+                        "                    "
+            };
 
-        //                case "titles":
-        //                    expected = new[]
-        //                    {
-        //                        "╔ titles ╗",
-        //                        "║        ║",
-        //                        "║        ║",
-        //                        "╚════════╝"
-        //                    };
-        //                    break;
-        //                case null:
-        //                    expected = new[]
-        //                    {
-        //                        "╔════════╗",
-        //                        "║        ║",
-        //                        "║        ║",
-        //                        "╚════════╝"
-        //                    };
-        //                    break;
+            con.Buffer.Should().BeEquivalentTo(expected);
 
-        //                case "":
-        //                    expected = new[]
-        //                    {
-        //                        "╔════════╗",
-        //                        "║        ║",
-        //                        "║        ║",
-        //                        "╚════════╝"
-        //                    };
-        //                    break;
-        //            }
-        //            c.BufferWritten.Should().BeEquivalentTo(expected);
-        //        }
+            child.WriteLine("cats");
+            child.Write("dogs");
+            
+            expected = new[]
+            {
+                        "╔═════ parent ═════╗",
+                        "║line1             ║",
+                        "║line2             ║",
+                        "║       ┌─ c1 ─┐   ║",
+                        "║       │cats  │   ║",
+                        "║       │dogs  │   ║",
+                        "║       └──────┘   ║",
+                        "╚══════════════════╝",
+                        "                    "
+            };
 
-        //        [Test]
-        //        public void WhenNested_draw_a_box_around_the_scrollable_window_with_a_centered_title_and_return_a_live_window_at_the_correct_screen_location()
-        //        {
-        //            var con = new MockConsole(20, 8);
-        //            var w = Window.Open(0, 0, 20, 8, "title", LineThickNess.Double, White, Black, con);
-        //            w.WriteLine("line1");
-        //            w.WriteLine("line2");
-        //            var child = Window.Open(7, 2, 8, 4, "c1", LineThickNess.Single, White, Black, w);
-        //            var expected = new[]
-        //            {
-        //                "╔══════ title ═════╗",
-        //                "║line1             ║",
-        //                "║line2             ║",
-        //                "║       ┌─ c1 ─┐   ║",
-        //                "║       │      │   ║",
-        //                "║       │      │   ║",
-        //                "║       └──────┘   ║",
-        //                "╚══════════════════╝"
-        //            };
+            con.Buffer.Should().BeEquivalentTo(expected);
 
-        //            con.BufferWritten.Should().BeEquivalentTo(expected);
+            // should not interfere with original window cursor position so should still be able to continue writing as 
+            // if no new child window had been created.
 
-        //            child.WriteLine("cats");
-        //            child.Write("dogs");
-        //            expected = new[]
-        //            {
-        //                "╔══════ title ═════╗",
-        //                "║line1             ║",
-        //                "║line2             ║",
-        //                "║       ┌─ c1 ─┐   ║",
-        //                "║       │cats  │   ║",
-        //                "║       │dogs  │   ║",
-        //                "║       └──────┘   ║",
-        //                "╚══════════════════╝"
-        //            };
+            parent.WriteLine("line3");
+            parent.WriteLine("line4");
 
-        //            con.BufferWritten.Should().BeEquivalentTo(expected);
+            expected = new[]
+{
+                        "╔═════ parent ═════╗",
+                        "║line1             ║",
+                        "║line2             ║",
+                        "║line3  ┌─ c1 ─┐   ║",
+                        "║line4  │cats  │   ║",
+                        "║       │dogs  │   ║",
+                        "║       └──────┘   ║",
+                        "╚══════════════════╝",
+                        "                    "
+            };
 
-        //            // should not interfere with original window cursor position so should still be able to continue writing as 
-        //            // if no new child window had been created.
-
-        //            w.WriteLine("line3");
-        //            w.WriteLine("line4");
-
-        //            expected = new[]
-        //{
-        //                "╔══════ title ═════╗",
-        //                "║line1             ║",
-        //                "║line2             ║",
-        //                "║line3  ┌─ c1 ─┐   ║",
-        //                "║line4  │cats  │   ║",
-        //                "║       │dogs  │   ║",
-        //                "║       └──────┘   ║",
-        //                "╚══════════════════╝"
-        //            };
-
-        //            con.BufferWritten.Should().BeEquivalentTo(expected);
-        //        }
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
     }
 }

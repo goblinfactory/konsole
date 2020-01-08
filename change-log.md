@@ -2,6 +2,13 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [5.4.0]
+
+### Added
+
+- `Window.OpenBox` : Open a styled floating or inline window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double. Returns a window instance representing the window inside the box. The returned instance is threadsafe.
+- #39 Add double to NumericTypes in FieldReader.
+
 ## [5.3.3]
 
 ### Fixed

@@ -221,6 +221,7 @@ namespace Konsole
             return new Window(parent).Concurrent();
         }
 
+        [Obsolete("Please use OpenBox. This will be removed in the next major release.")]
         /// <summary>
         /// Returns a Threadsafe ConcurrentWriter around the newly created window.
         /// </summary>
@@ -287,7 +288,7 @@ namespace Konsole
                 _y = y ?? _echoConsole?.CursorTop ?? _echoConsole.CursorTop + height ?? 0;
                 _x = x ?? 0;
                 _absoluteX = echoConsole?.AbsoluteX ?? 0 + _x;
-                _absoluteY = echoConsole?.AbsoluteX ?? 0 + _y;
+                _absoluteY = echoConsole?.AbsoluteY ?? 0 + _y;
                 _width = GetStartWidth(_echo, width, _x, echoConsole);
                 _height = GetStartHeight(height, _y, echoConsole);
                 _startForeground = foreground;
@@ -296,7 +297,8 @@ namespace Konsole
                 SetOptions(options);
                 init();
                 // if we're creating an inline window
-                if (_echoConsole != null && x == null && y == null)
+                var inline = (echoConsole != null && x == null && y == null);
+                if (inline)
                 {
                     _echoConsole.CursorTop += _height;
                     _echoConsole.CursorLeft = 0;
@@ -351,6 +353,7 @@ namespace Konsole
             _lines.Clear();
             for (int i = 0; i < _height; i++)
             {
+                // TODO optimise this #performance Wrapping every call in a setState restore state is very very inneficient.
                 _lines.Add(i, new Row(_width, ' ', ForegroundColor, BackgroundColor));
                 if (!_transparent) PrintAt(0, i, new string(' ', _width));
             }

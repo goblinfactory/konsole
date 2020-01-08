@@ -2,15 +2,19 @@
 
 ## Busy now
 
+- do pull request and squash commits after a nice cleanup so that my commits can be easier to read.
 - OpenBox
 - list view :D
 - fix bug - when creating an inline window from an new ConcurrentWriter() IConsole the colors are wrong? See spike "paul".
 
-## busy next 5.4
+## busy next unsorted
 
-- simpler way to create inline window with title. ideally new window(x,y, title);
-
-## Busy next 5.x.x (unsorted)
+- add table of contents
+- deprecate old Window.Open (check readme for examples using that?)
+- move images to seperate docs folder
+- improve docs, keep it simple.
+- add a short description of how to test projects that use MockConsole.
+- replace all cases of passing IConsole via parameter, remove, and replace with static HostConsole. Much cleaner.
 
 - improve speed of drawing splitleft and right. currently duplicating the middle line which could be slow on large screen areas.
 - add snippets using Simon Cropp's snippets markdown builder!
@@ -27,10 +31,7 @@
 - add overload that takes DTO { } so that we can more fluently configure windows, and make it easier to get your head around the options.
 - add more documentation for the overload options
 - remove all the approvalTests, move approvals "inline" so that my tests can be more easily used as documentation.
-  
-## busy NOW 5.0.0-alpha-08
-
-- see if I can include both projects in the package so that I dont have to distribute 2 packages? (manually test in osx)
+  - see if I can include both projects in the package so that I dont have to distribute 2 packages? (manually test in osx)
 - more samples so that I can create some nice videos (animated gifs) proving that it's much faster.
 - see if I can create a means of referencing tests from markdown using ---LongRunningTaskMustFoo()--- or some type of reference.
 - add a build status badge. See what popular OS projects are using.
@@ -49,8 +50,10 @@
   - Windows Console Game    : http://cecilsunkure.blogspot.com/2011/11/windows-console-game-writing-to-console.html
   - launching more consoles : https://neowin.net/forum/topic/904788-c-adding-a-console-window-in-a-windows-app/
 
-## UNSORTED NEXT
+## more UNSORTED NEXT
 
+- test OpenBox on OSX.
+- better documentation, See SimonCrop's snippet extractor, also create website and auto extract api docs as part of build? 
 - website with Full API documentation automatically generated from source code.
 - improve clipping see `clip_child_window_to_not_exceed_parent_boundaries` and `clip_child_window_to_not_exceed_parent_boundaries_test2`
 - add more tests.

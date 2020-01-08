@@ -22,7 +22,12 @@ namespace Konsole
             return Window._OpenBox(c, title, null, null, width, height, style);
         }
 
-        public static IConsole OpenBox(this IConsole c, string title, int sx, int sy, int height, int width, BoxStyle style)
+        public static IConsole OpenBox(this IConsole c, string title, int sx, int sy, int width, int height)
+        {
+            return Window._OpenBox(c, title, sx, sy, width, height, new BoxStyle());
+        }
+
+        public static IConsole OpenBox(this IConsole c, string title, int sx, int sy, int width, int height, BoxStyle style)
         {
             return Window._OpenBox(c, title, sx, sy, width, height, style);
         }
@@ -45,6 +50,11 @@ namespace Konsole
             return _OpenBox(Window.HostConsole, title, null, null, width, height, style ?? new BoxStyle());
         }
 
+        public static IConsole OpenBox(string title, int sx, int sy, int width, int height)
+        {
+            return _OpenBox(Window.HostConsole, title, sx, sy, width, height, new BoxStyle());
+        }
+
         public static IConsole OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)
         {
             return _OpenBox(Window.HostConsole, title, sx, sy, width, height, style ?? new BoxStyle());
@@ -53,28 +63,33 @@ namespace Konsole
         internal static IConsole _OpenBox(IConsole _parent, string title, int? _sx, int? _sy, int? _width, int? _height, BoxStyle style)
         {
             IConsole parent = _parent ?? new ConcurrentWriter();
-            bool isInline = _sx == null && _sy == null;
             lock (Window._staticLocker)
             {
-                int sx = _sx ?? 0;
-                int sy = _sy ?? 0;
                 int width = _width ?? parent.WindowWidth;
                 int height = _height ?? parent.WindowHeight;
 
+                int sx = _sx ?? 0;
+                int sy = _sy ?? 0;
+                int ex = sx + width - 1;
+                int ey = sy + height - 1;
+
                 parent.DoCommand( parent, () => {
-                    // subtract 1 because box uses ex, and ey which is 0 ordinal
-                    new Draw(parent).Box(sx, sy, width - 1, height - 1, title, style.Line, style.Title, style.ThickNess);
+                    // draw commands are all relative to the Draw() console host.
+                    var draw = new Draw(parent, style.ThickNess, Drawing.MergeOrOverlap.Overlap);
+                    draw.Box(sx, sy, ex, ey, title, style.Line, style.Title, style.ThickNess);
                 });
-                
-                var window = _CreateFloatingWindow(1, 1, width - 2, height - 2, style.Body.Foreground, style.Body.Background, true, parent, null);
-                
-                if(isInline)
                 {
-                    parent.CursorTop = parent.CursorTop + 1;
-                    parent.CursorLeft = 0;
+                    // returns a concurrentWindow
+                    var window = _CreateFloatingWindow(sx + 1, sy + 1, width - 2, height - 2, style.Body.Foreground, style.Body.Background, true, parent, null);
+                    var inline = _sx == null && _sy == null;
+                    if (inline)
+                    {
+                        parent.CursorTop = parent.CursorTop + height;
+                        parent.CursorLeft = 0;
+                    }
+                    return window;
                 }
 
-                return window;
             }
         }
     }
