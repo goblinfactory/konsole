@@ -2,13 +2,14 @@
 
 ## Busy now
 
+- more manual testing.
 - do pull request and squash commits after a nice cleanup so that my commits can be easier to read.
 - OpenBox
 - list view :D
 - fix bug - when creating an inline window from an new ConcurrentWriter() IConsole the colors are wrong? See spike "paul".
 
 ## busy next unsorted
-
+- change titles to make easier to read
 - add table of contents
 - deprecate old Window.Open (check readme for examples using that?)
 - move images to seperate docs folder

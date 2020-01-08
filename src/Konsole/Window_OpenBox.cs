@@ -35,26 +35,55 @@ namespace Konsole
 
     public partial class Window
     {
+        /// <summary>
+        /// Open a full screen styled window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
+        /// </summary>
+        /// <param name="title">title text centered on the top line</param>
+        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
         public static IConsole OpenBox(string title)
         {
             return _OpenBox(Window.HostConsole, title, null, null, null, null, new BoxStyle());
         }
 
+        /// <summary>
+        /// Open a fullscreen boxed window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
+        /// </summary>
+        /// <param name="title">title text centered on the top line</param>
+        /// <param name="style">Line colors, Line thickness, content colors, Title colors</param>
+        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
         public static IConsole OpenBox(string title, BoxStyle style)
         {
             return _OpenBox(Window.HostConsole, title, null, null, null, null, style);
         }
 
+        /// <summary>
+        /// Open a styled floating or inline window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
+        /// </summary>
+        /// <param name="title">title text centered on the top line</param>
+        /// <param name="width">width (columns)</param>
+        /// <param name="height">height (rows)</param>
+        /// <param name="style">Line colors, Line thickness, content colors, Title colors</param>
+        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
         public static IConsole OpenBox(string title, int width, int height, BoxStyle style = null)
         {
             return _OpenBox(Window.HostConsole, title, null, null, width, height, style ?? new BoxStyle());
         }
 
+        /// <summary>
+        /// Open a styled floating or inline window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
+        /// </summary>
+        /// <param name="title">title text centered on the top line</param>
+        /// <param name="width">width (columns)</param>
+        /// <param name="height">height (rows)</param>
+        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
         public static IConsole OpenBox(string title, int sx, int sy, int width, int height)
         {
             return _OpenBox(Window.HostConsole, title, sx, sy, width, height, new BoxStyle());
         }
 
+        /// <summary>
+        /// Open a styled floating or inline window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double. Returns a window instance representing the window inside the box. The returned instance is threadsafe.
+        /// </summary>
         public static IConsole OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)
         {
             return _OpenBox(Window.HostConsole, title, sx, sy, width, height, style ?? new BoxStyle());

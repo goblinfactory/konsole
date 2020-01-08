@@ -1,4 +1,4 @@
-# Konsole ver
+# Konsole
 
 [![nuget](https://img.shields.io/nuget/dt/Goblinfactory.Konsole.svg)](https://www.nuget.org/packages/Goblinfactory.Konsole/) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Join the chat at https://gitter.im/goblinfactory-konsole/community](https://badges.gitter.im/goblinfactory-konsole/community.svg)](https://gitter.im/goblinfactory-konsole/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -6,7 +6,7 @@
 
 Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's like the following in very few lines of code.
 
-**Konsole is the ONLY simple threadsafe way to write to the C# console window.** Write your own threadsafe wrapper at your peril. [See my notes on threading](docs/threading.md) :D
+**Konsole is a simple threadsafe way to write to the C# console window.** Write your own threadsafe wrapper at your peril. [See my notes on threading](docs/threading.md) :D
 
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole) and I'll be happy to help you. 
 
@@ -29,7 +29,9 @@ Alan
 
 ![install-package Goblinfactory.Konsole](docs/install-package.png)
 
-## ProgressBar usage - simple syntax
+# ProgressBars
+
+#### `ProgressBar`
 ```csharp
     using Konsole;
            
@@ -41,12 +43,9 @@ Alan
             Console.ReadLine();
             pb.Refresh(50, "finished.");
 ```
-
-# ProgressBars
-
-## ProgressBarTwoLine (alternative style)
-
-![sample output](docs/progressbar.gif)
+<p align='center'>
+<img src='docs/progressbar.gif' align='center'/>
+</p>
 
 ## ProgressBar worked parallel example
 ```csharp
@@ -102,6 +101,7 @@ All the static constructors return threadsafe windows by default.
 **THREADSAFE**
 
 - `Window.Open`
+- `Window.OpenBox`
 - `Window.OpenInline`
 - `new ConcurrentWriter()`
 - `new Window().Concurrent()`
@@ -114,7 +114,7 @@ All the static constructors return threadsafe windows by default.
 
 
 
-# Windows, `Window.Open`, `new Window`
+## Windows,  `Window.Open`, `new Window`, `Window.OpenBox`
 
   - ( 100%-ish console compatible window, supporting all normal console writing to a windowed section of the screen) 
   - Supports scrolling and clipping of console output.
@@ -152,11 +152,94 @@ All the static constructors return threadsafe windows by default.
 
 ![window simple demo](docs/window-demo.png)
 
-## `window.PrintAt()`
+#### Window.OpenBox
 
-tbd
+- `Window.OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)`
+- `Window.OpenBox(string title, int sx, int sy, int width, int height)`
+- `Window.OpenBox(string title, int width, int height, BoxStyle style = null)`
+- `Window.OpenBox(string title, BoxStyle style)`
+- `Window.OpenBox(string title)`
 
-## `window.PrintAtColor(foregroundColor, x, y, text, backgroundColor ?)`
+Open a full screen styled window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
+
+```csharp
+
+  [Test]
+        public void WhenNested_draw_a_box_around_the_scrollable_window_with_a_centered_title_and_return_a_live_window_at_the_correct_screen_location()
+        {
+            var con = new MockConsole(20, 9);
+            Window.HostConsole = con;
+            var parent = Window.OpenBox("parent", 0, 0, 20, 8, new BoxStyle() { ThickNess = LineThickNess.Double });
+            var child = parent.OpenBox("c1", 7, 2, 8, 4);
+            parent.WindowWidth.Should().Be(18);
+            parent.WindowHeight.Should().Be(6);
+            //var child = parent.OpenBox("c1", 7, 2, 8, 4);
+
+            parent.WriteLine("line1");
+            parent.WriteLine("line2");
+
+            var expected = new[]
+            {
+                        "╔═════ parent ═════╗",
+                        "║line1             ║",
+                        "║line2             ║",
+                        "║       ┌─ c1 ─┐   ║",
+                        "║       │      │   ║",
+                        "║       │      │   ║",
+                        "║       └──────┘   ║",
+                        "╚══════════════════╝",
+                        "                    "
+            };
+
+            con.Buffer.Should().BeEquivalentTo(expected);
+
+            child.WriteLine("cats");
+            child.Write("dogs");
+            
+            expected = new[]
+            {
+                        "╔═════ parent ═════╗",
+                        "║line1             ║",
+                        "║line2             ║",
+                        "║       ┌─ c1 ─┐   ║",
+                        "║       │cats  │   ║",
+                        "║       │dogs  │   ║",
+                        "║       └──────┘   ║",
+                        "╚══════════════════╝",
+                        "                    "
+            };
+
+            con.Buffer.Should().BeEquivalentTo(expected);
+
+            // should not interfere with original window cursor position so should still be able to continue writing as 
+            // if no new child window had been created.
+
+            parent.WriteLine("line3");
+            parent.WriteLine("line4");
+
+            expected = new[]
+{
+                        "╔═════ parent ═════╗",
+                        "║line1             ║",
+                        "║line2             ║",
+                        "║line3  ┌─ c1 ─┐   ║",
+                        "║line4  │cats  │   ║",
+                        "║       │dogs  │   ║",
+                        "║       └──────┘   ║",
+                        "╚══════════════════╝",
+                        "                    "
+            };
+
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
+```
+
+#### Window.PrintAt()
+
+- `window.PrintAt(x, y, text)`
+- `window.PrintAtColor(foregroundColor, x, y, text, backgroundColor ?)`
+
+PrintAt an area of a window, optionally providing the color.
 
 ```csharp
  var window = new Window();
