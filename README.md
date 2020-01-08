@@ -4,7 +4,7 @@
 
 # Konsole library
 
-Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's like the following in very few lines of code.
+Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's as shown below in very few lines of code.
 
 **Konsole is a simple threadsafe way to write to the C# console window.** Write your own threadsafe wrapper at your peril. [See my notes on threading](docs/threading.md) :D
 
@@ -249,7 +249,7 @@ PrintAt an area of a window, optionally providing the color.
 
 Print the text, optionally wrapping and causing any scrolling in the current window, at cursor position X,Y in foreground and background color without impacting the current window's cursor position or colours. This method is only threadsafe if you have created a window by using .ToConcurrent() after creating a new Window(), or the window was created using Window.Open(...) which returns a threadsafe window.
 
-**Maintaining seperate colors and cursor positions for windows so that other threads do not change the color or printing while another thread is writing to the console is a really big deal and is what makes Konsole a safe library to use when testing multi-threaded libraries.**
+**Maintaining seperate colors and cursor positions for windows so that other threads do not change the color or printing while another thread is writing to the console is a really big deal and is what makes Konsole a solid library to use when evaluating multi-threaded libraries** and need a simple way to monitor the results of various asynchronous operations without having to write multiple console apps, or create a Javascript UX library. 
 
 ## `window.Write(string format, params object[] args)`
 ## `window.Write(stringConsoleColor color, format, params object[] args)`
@@ -488,6 +488,57 @@ new Split(size)
     backgroundColor
 };
 ```
+
+# Handling Input
+
+To capture input, create an Inline Window, e.g. `var myWindow = Window.Open(width, height, title)` and the cursor will be placed immediately UNDERNEATH the newly created window, and you can use and normal `Console.ReadLine()` reads, `Console.ReadLine()` will run at the current cursor.
+
+Here's a worked example showing you how to read input using `Konsole`
+
+```csharp
+
+        static void Main(string[] args)
+        {
+            static void Compress(IConsole status, string file)
+            {
+                status.WriteLine($"compressing {file}");
+                Thread.Sleep(new Random().Next(10000));
+                status.WriteLine(Green, $"{file} (OK)");
+            }
+
+            static void Index(IConsole status, string file)
+            {
+                status.WriteLine($"indexing {file}");
+                Thread.Sleep(new Random().Next(10000));
+                status.WriteLine(Green, " finished.");
+            }
+
+            var console = new ConcurrentWriter();  // < -- NOTE THE ConcurrentWriter to replace Console
+            var window = new Window(50, 20);
+            var compressWindow = window.SplitTop("compress");
+            var encryptWindow = window.SplitBottom("encrypt");
+
+            var tasks = new List<Task>();
+
+            while (true)
+            {
+                console.Write("Enter name of file to process (quit) to exit:");
+                var file = Console.ReadLine();
+                if (file == "quit") break;
+                tasks.Add(Task.Run(()=> Compress(compressWindow, file)));
+                tasks.Add(Task.Run(()=> Index(encryptWindow, file)));
+                console.WriteLine($"processing {file}");
+            }
+            
+            console.WriteLine("waiting for background tasks");
+            Task.WaitAll(tasks.ToArray());
+            Console.WriteLine("done.");
+        }
+```
+
+Running the code above gives you
+
+<img src='./docs/image-input.png' width='600' />
 
 # Draw
 
