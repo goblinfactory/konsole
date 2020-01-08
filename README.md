@@ -152,7 +152,7 @@ All the static constructors return threadsafe windows by default.
 
 ![window simple demo](docs/window-demo.png)
 
-#### [Window.OpenBox](window-openbox)
+#### [Window.OpenBox](#window-openbox)
 
 - `Window.OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)`
 - `Window.OpenBox(string title, int sx, int sy, int width, int height)`
