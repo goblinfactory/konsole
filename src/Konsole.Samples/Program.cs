@@ -1,8 +1,10 @@
-﻿using Konsole.Internal;
+﻿using Konsole.Forms;
+using Konsole.Internal;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.ConsoleColor;
 using static System.ConsoleColor;
 
 namespace Konsole.Sample
@@ -10,6 +12,37 @@ namespace Konsole.Sample
     class Program
     {
         static void Main(string[] args)
+        {
+            void Wait() => Console.ReadKey(true);
+
+            decimal amazon = 84;
+            decimal bp = 146;
+
+            void Tick(IConsole con, string sym, decimal newPrice, ConsoleColor color, char sign, decimal perc) {
+                con.Write(White, $"{sym,-10}");
+                con.WriteLine(color, $"{newPrice:0.00}");
+                con.WriteLine(color, $"  ({sign}{newPrice}, {perc}%)");
+                con.WriteLine("");
+            }
+
+            Console.WriteLine("line one");
+            var nyse = Window.OpenBox("NYSE", 20, 12, new BoxStyle() { ThickNess = LineThickNess.Single, Title = new Colors(White, Red) });
+            
+            Console.WriteLine("line two");
+            var ftse100 = Window.OpenBox("FTSE 100", 20, 12, new BoxStyle() { ThickNess = LineThickNess.Double, Title = new Colors(White, Blue) });
+            Console.Write("line three");
+
+
+            while(true) {
+                Tick(nyse, "AMZ", amazon -= 0.04M, Red, '-', 4.1M);
+                Tick(ftse100, "BP", bp += 0.05M, Green, '+', 7.2M);
+                Wait();
+            }
+
+            
+        }
+
+        static void Main3(string[] args)
         {
             static void Compress(IConsole status, string file)
             {
@@ -25,10 +58,18 @@ namespace Konsole.Sample
                 status.WriteLine(Green, " finished.");
             }
 
-            var console = new ConcurrentWriter();
-            var window = new Window(50, 20);
-            var compressWindow = window.SplitTop("compress");
-            var encryptWindow = window.SplitBottom("encrypt");
+            // seems to keep the cursor on top! (not showing up as an inline window)
+            //var window = new Window(50, 20);
+
+            var console = new Window();
+            console.WriteLine(console.CursorTop.ToString());
+
+            var compressWindow = console.OpenBox("compress", 40, 4);
+            console.WriteLine(console.CursorTop.ToString());
+
+            var encryptWindow = console.OpenBox("encrypt", 40, 4);
+            console.WriteLine(console.CursorTop.ToString());
+
 
             var tasks = new List<Task>();
 

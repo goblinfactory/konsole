@@ -55,7 +55,6 @@ namespace Konsole.Tests.WindowTests
             _console.Buffer.Should().BeEquivalentTo(expected);
         }
 
-
         [Test]
         public void WhenNestedShould_print_relative_to_the_window_being_printed_to_not_the_parent()
         {
@@ -144,6 +143,32 @@ namespace Konsole.Tests.WindowTests
             };
             _console.Buffer.Should().BeEquivalentTo(expected);
         }
+
+        [Test]
+        public void WhenOpeningInlineShould_open_window_at_current_cursorTop()
+        {
+            var console = new MockConsole(10, 9);
+            Window.HostConsole = console;
+            console.WriteLine("one");
+            var box1 = Window.OpenBox("A", 5, 3);
+            console.WriteLine("two");
+            var box2 = Window.OpenBox("B", 5, 3);
+            console.Write("Under B");
+            var expected = new[]
+            {
+                "one       ",
+                "┌ A ┐     ",
+                "│   │     ",
+                "└───┘     ",
+                "two       ",
+                "┌ B ┐     ",
+                "│   │     ",
+                "└───┘     ",
+                "Under B   "
+            };
+            console.Buffer.Should().BeEquivalentTo(expected);
+        }
+
 
         [Test]
         public void move_the_cursor_to_below_the_inline_window()

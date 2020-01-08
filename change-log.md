@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [5.4.1]
+
+### Fixed
+
+- `WhenOpeningInlineShould_open_window_at_current_cursorTop()` : OpenBox (inline) when supplying only a width and a height was not opening the new inline window at the current cursor position.
+
 ## [5.4.0]
 
 ### Added

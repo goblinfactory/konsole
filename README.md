@@ -234,6 +234,54 @@ Open a full screen styled window with a lined box border with a title. Styling a
         }
 ```
 
+**Example**
+<p align='right'>
+gives you
+</p>
+<img src='docs/openbox-example.png' width='200' align='right'/>
+
+```csharp
+    void Wait() => Console.ReadKey(true);
+
+    // show how you can mix and match Console with Konsole
+    Console.WriteLine("line one");
+
+    // create an inline Box window at the current cursor position (Window implements IConsole)
+    var nyse = Window.OpenBox("NYSE", 20, 12, new BoxStyle() { 
+        ThickNess = LineThickNess.Single, 
+        Title = new Colors(White, Red) 
+    });
+    
+    Console.WriteLine("line two");
+
+    // create another inline Box window at the current cursor position
+    var ftse100 = Window.OpenBox("FTSE 100", 20, 12, new BoxStyle() { 
+        ThickNess = LineThickNess.Double, 
+        Title = new Colors(White, Blue) 
+    });
+    Console.Write("line three");
+
+
+    while(true) {
+        Tick(nyse, "AMZ", amazon -= 0.04M, Red, '-', 4.1M);
+        Tick(ftse100, "BP", bp += 0.05M, Green, '+', 7.2M);
+        Wait();
+    }
+
+    decimal amazon = 84;
+    decimal bp = 146;
+
+    // simple method that takes a window and prints a stock price to that window in color
+    void Tick(IConsole con, string sym, decimal newPrice, ConsoleColor color, char sign, decimal perc) 
+    {
+        con.Write(White, $"{sym,-10}");
+        con.WriteLine(color, $"{newPrice:0.00}");
+        con.WriteLine(color, $"  ({sign}{newPrice}, {perc}%)");
+        con.WriteLine("");
+    }
+
+```
+
 #### Window.PrintAt()
 
 - `window.PrintAt(x, y, text)`
