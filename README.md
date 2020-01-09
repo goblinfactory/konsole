@@ -561,9 +561,15 @@ Here's a worked example showing you how to read input using `Konsole`
             }
 
             var console = new ConcurrentWriter();  // < -- NOTE THE ConcurrentWriter to replace Console
-            var window = new Window(50, 20);
-            var compressWindow = window.SplitTop("compress");
-            var encryptWindow = window.SplitBottom("encrypt");
+
+            // open two new windows inline at the current cursor position
+            // cursor will move to below the new windows for easy ReadLine input
+
+            var compressWindow = Window.OpenBox("compress", 50, 10);
+            
+            console.WriteLine("I am below compress");
+
+            var encryptWindow = Window.OpenBox("encrypt", 50, 10);
 
             var tasks = new List<Task>();
 
@@ -572,11 +578,11 @@ Here's a worked example showing you how to read input using `Konsole`
                 console.Write("Enter name of file to process (quit) to exit:");
                 var file = Console.ReadLine();
                 if (file == "quit") break;
-                tasks.Add(Task.Run(()=> Compress(compressWindow, file)));
-                tasks.Add(Task.Run(()=> Index(encryptWindow, file)));
+                tasks.Add(Task.Run(() => Compress(compressWindow, file)));
+                tasks.Add(Task.Run(() => Index(encryptWindow, file)));
                 console.WriteLine($"processing {file}");
             }
-            
+
             console.WriteLine("waiting for background tasks");
             Task.WaitAll(tasks.ToArray());
             Console.WriteLine("done.");
