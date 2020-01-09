@@ -22,12 +22,23 @@ Alan
   * [IConsole](#iconsole)
   * [ConcurrentWriter](#concurrentwriter)
   * [Progress Bars](#progressbars)
-  * [DoubleLine progress bar](#doubleline-progress-bar)
+    * [ProgressBar worked parallel example](#progressbar-worked-parallel-example)
+    * [DoubleLine progress bar](#doubleline-progress-bar)
+    * [DoubleLine progress bar](#doubleline-progress-bar)
   * [Threading and threadsafe writing to the Console.](#threading-and-threadsafe-writing-to-the-console)
     * [Threadsafe static constructors](#threadsafe-static-constructors)
     * [new Window is not threadsafe](#new-window-is-not-threadsafe)
     * [Make it threadsafe](#make-it-threadsafe)
     * [ConcurrentWriter](#concurrentWriter)
+  * [Window](#window)
+    * [Window.OpenBox](#windowopenbox)
+    * [Window.PrintAt](#windowprintat)
+    * [using static Console.ConsoleColor](#using-static-consoleconsoleColor)
+    * [Window.Write](#windowwrite)
+    * [Window.WriteLine](#windowwriteLine)
+    * [Window.Open](#windowopen)
+  * [Inline Windows](#inline-windows)
+    * [inline window without a border](#inline-window-without-a-border)
     
 ## Nuget Packages
 
@@ -254,8 +265,9 @@ You wrap any instance of any class that implements `IConsole` in a `ConcurrentWr
 var myThreadSafeWriter = new ConcurrentWriter(myObjectThatImplementsIConsole);
 ```
 
+## Window
 
-## Windows,  `Window.Open`, `new Window`, `Window.OpenBox`
+Create a region of the window (with or without a boxed border and title) that you can create as if it were a new Console. It will wrap text and scroll, and you can print to it using PrintAt, as well as nest child windows in windows for more advanced window layouts.
 
   - ( 100%-ish console compatible window, supporting all normal console writing to a windowed section of the screen) 
   - Supports scrolling and clipping of console output.
@@ -293,7 +305,7 @@ var myThreadSafeWriter = new ConcurrentWriter(myObjectThatImplementsIConsole);
 
 ![window simple demo](docs/window-demo.png)
 
-#### [Window.OpenBox](#window-openbox)
+#### Window.OpenBox
 
 - `Window.OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)`
 - `Window.OpenBox(string title, int sx, int sy, int width, int height)`
@@ -375,7 +387,7 @@ Open a full screen styled window with a lined box border with a title. Styling a
         }
 ```
 
-#### Window.PrintAt()
+#### Window.PrintAt
 
 - `window.PrintAt(x, y, text)`
 - `window.PrintAtColor(foregroundColor, x, y, text, backgroundColor ?)`
@@ -390,64 +402,87 @@ PrintAt an area of a window, optionally providing the color.
 
 Print the text, optionally wrapping and causing any scrolling in the current window, at cursor position X,Y in foreground and background color without impacting the current window's cursor position or colours. This method is only threadsafe if you have created a window by using .ToConcurrent() after creating a new Window(), or the window was created using Window.Open(...) which returns a threadsafe window.
 
-**Maintaining seperate colors and cursor positions for windows so that other threads do not change the color or printing while another thread is writing to the console is a really big deal and is what makes Konsole a solid library to use when evaluating multi-threaded libraries** and need a simple way to monitor the results of various asynchronous operations without having to write multiple console apps, or create a Javascript UX library. 
+#### using static Console.ConsoleColor
 
-## `window.Write(string format, params object[] args)`
-## `window.Write(stringConsoleColor color, format, params object[] args)`
+If you will be using a lot of different colors throughout your application I recommend making use of the new C# `static using` language feature to make the code a bit easier to read.
 
-Write the text to the window in the {color} color, withouting resetting the window's current foreground colour.  Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll. The current cursor remains at the last printed position.
+before
+```csharp
+Console.WriteLine(ConsoleColor.Red, "I am red"); 
+var box = Window.OpenBox("warnings", new BoxStyle() { Title = new Colors(ConsoleColor.White, ConsoleColor.Red) })
+```
+becomes
+```csharp
+using static System.Console;
+...
+Console.WriteLine(Red, "I am red"); 
+var box = Window.OpenBox("warnings", new BoxStyle() { Title = new Colors(White, Red) })
+```
 
-## `window.WriteLine(string format, params object[] args)`
-## `window.WriteLine(ConsoleColor color, string format, params object[] args)`
+#### Window.Write
 
-Write the text to the window in the {color} color, withouting resetting the window's current foreground colour.  Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll. Moves the cursor to the next line after printing and `CursorLeft` is reset to 0.
-
-## `Window.Open()`
-
-*Open a window taking up the whole screen.*
+Write the text to the window in the {color} color, withouting resetting the window's current foreground colour.  Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll. The cursor of the window that did the writing remains at the last printed position, and no other window's cursor positions are changed.
 
 ```csharp
-    var numbers = Window.Open();
+ var window = new Window();
+ window.Write(Red, "WARNING!");
+ window.Write("this text is in the default colour and is not red.");
+```
+
+#### Window.WriteLine
+
+Same as `Write` but simulates a carriage return by moving the `CursorTop` to next line and resetting `CursorLeft` to `0`.
+
+#### Window.Open
+
+`Window.Open()`
+
+Calling `Window.Open()` without any parameters will create a new window region consisting of the whole screen, and will clear the screen, and reset the cursor position. Returns a threadsafe `Concurrent` window.
+
+```csharp
+var win = Window.Open();
 ```
 this is equivalent to 
 ```
-    var numbers = new Window();
+var win = new Window().Concurrent();
 ```
 
-## `Window.Open(sx, sy, ex, ey, title)`
+## Inline Windows
+
+If you only need to use Konsole to solve a single problem you might have, e.g. displaying status while a background task is running, and do not need to do anything else, then in order to avoid screen corruption, you have 2 choices, either make sure your background tasks complete before resuming, or, make sure that ALL code that writes to the console uses a threadsafe writer. (See [ConcurrentWriter](#concurrentwriter).) 
+
+When creating an inline window, you need to decide if you need a border (box with title) around the new region of screen (the window) or not. 
+
+#### inline window with a border
+
+Use [Window.OpenBox](#openbox) to open inline windows with a border.
 
 ```csharp
-    var numbers = Window.Open(50, 15, 40, 10, "numbers");
+var invoiceWin = Window.Openbox("invoices", 40, 20);
 ```
 
-## `Window.Open(sx, sy, ex, ey, title, LineThickNess, ForegroundColor, BackgroundColor)`
+#### inline window without a border
+
+Use an inline window without a border, if you're going to be further dividing up the window and don't want to clutter up the screen with too many boxes. (boxes within boxes).
+
+Use `new Window(width, height)` followed by `Window.SplitLeft`, `Window.SplitRight`, `Window.SplitTop`, `Window.SplitBottom`, `Window.SplitColumns`, `Window.SplitRows`.     
 
 ```csharp
-    var numbers = Window.Open(50, 15, 40, 10, "numbers", 
-        LineThickNess.Double,
-        ConsoleColor.White,
-        ConsoleColor.Blue
-    );
-```
-gives you the blue window in the same code further up. (there is a known bug atmo, this constructor does not currently print the title. Will be fixed in upcoming version 6.x) As a workaround for now, If you need a title, use any of the Splits, `SplitTop`, and `SplitBottom`, or `SplitLeft`, and `SplitRight`. Or use `PrintAt` to print the title on top of the border. 
+// example inline window for display some invoicing data
 
-## Opening Inline Windows `new Window(height, width)` or `new Window(height)`
-
-```
-var fruit = new Window(3, 20);
-or
-var fruit = new Window(3);
+var accounts = new Window(80,40);
+var invoices = accounts.SplitLeft("invoices");
+var rows = invoices.SplitRows(
+    new Split("due 30", 10),
+    new Split("due 60", 10),
+    new Split("due 90", 0), 
+)
+var due30 = rows[0];
+var due60 = rows[1];
+var due90 = rows[2];
 ```
 
 Create a new window inline starting on the next line, at current `CursorTop + 1, using the specified width or the whole screen width if none is provided. Default color of White on Black. If you need to override the defaults then use the static constructor. `Window.OpenInline`
-
-## `Window.OpenInline(echoConsole, padLeft, width, height, foregroundColor, backgroundColor)`
-
-Create a new window inline starting on the next line, at current `CursorTop + 1`, using the specified `width` with `foreground` and `background` color. 
-
-```csharp
-   var fruit = Window.OpenInline(2, 50, 3, White, Blue);
-```
 
 
 # `SplitLeft()`, `SplitRight()`

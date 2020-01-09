@@ -37,7 +37,9 @@ namespace Konsole.Samples
             foreach (var d in dirs)
             {
                 var files = TestData.MakeNames(r.Next(filesPerDir));
-                var bar = new ProgressBar(files.Count());
+                //var bar = new ProgressBar(files.Count());
+                //var bar = new ProgressBar(TextWidth, PbStyle.DoubleLine, Max);
+                var bar = new ProgressBar(PbStyle.DoubleLine, files.Count());
                 bars.Add(bar);
                 bar.Refresh(0, d);
                 tasks.Add(ProcessFakeFiles(d, files, bar));
