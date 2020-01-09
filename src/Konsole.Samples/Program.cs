@@ -1,18 +1,22 @@
-﻿using Konsole.Forms;
-using Konsole.Internal;
+﻿using Konsole.Internal;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.ConsoleColor;
-using static System.ConsoleColor;
 
-namespace Konsole.Sample
+namespace Konsole.Samples
 {
     class Program
     {
         static void Main(string[] args)
         {
+            ProgressBarSamples.Samples();
+            return;
+            //GettingStartedDemos.TailLogging();
+            ////WindowClientServerSamples.Foo();
+            //return;
+
             void Wait() => Console.ReadKey(true);
 
             decimal amazon = 84;

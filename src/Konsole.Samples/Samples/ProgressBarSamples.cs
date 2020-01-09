@@ -10,18 +10,20 @@ namespace Konsole.Samples
 {
     public class ProgressBarSamples
     {
-        static void Samples()
+        public static void Samples()
         {
+            void Pause() => Console.ReadKey(true);
 
             Console.WriteLine("progress bar in a floating inline window");
             // --------------------------------------------------------
-
+            Pause();
             var w = new Window(80, 10, White, DarkCyan);
             var pb1 = new ProgressBar(w, 100);
             var pb2 = new ProgressBar(w, 100);
             pb1.Refresh(25, "hello world! 1");
             pb2.Refresh(25, "hello world! 2");
-            Console.ReadKey(true);
+            
+            Pause();
 
             Console.WriteLine("progress bar in a floating inline window with title box");
             // --------------------------------------------------------------------------

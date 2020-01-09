@@ -1,12 +1,12 @@
-# Konsole
+# Konsole 
 
-[![nuget](https://img.shields.io/nuget/dt/Goblinfactory.Konsole.svg)](https://www.nuget.org/packages/Goblinfactory.Konsole/) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Join the chat at https://gitter.im/goblinfactory-konsole/community](https://badges.gitter.im/goblinfactory-konsole/community.svg)](https://gitter.im/goblinfactory-konsole/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![nuget](https://img.shields.io/nuget/dt/Goblinfactory.Konsole.svg)](https://www.nuget.org/packages/Goblinfactory.Konsole/) 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
+[![Join the chat at https://gitter.im/goblinfactory-konsole/community](https://badges.gitter.im/goblinfactory-konsole/community.svg)](https://gitter.im/goblinfactory-konsole/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Konsole library
 
-Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's as shown below in very few lines of code.
-
-**Konsole is a simple threadsafe way to write to the C# console window.** Write your own threadsafe wrapper at your peril. [See my notes on threading](docs/threading.md) :D
+Low ceremony, Fluent DSL for writing console apps, utilities and spike projects. Providing thread safe progress bars, windows and forms and drawing for console applications. Build UX's as shown below in very few lines of code. Konsole provides simple threadsafe ways to write to the C# console window. [See my notes on threading](docs/threading.md). The project is growing quickly with fast responses to issues raised. 
 
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole) and I'll be happy to help you. 
 
@@ -14,22 +14,123 @@ cheers,
 
 Alan
 
-***cross-platform*** Konsole is 90% cross platform. `ProgressBar` and `Forms` and small inline `windows` that do not use text that causes scrolling all work in Nix, OSX and .NET standard code). **Konsole is a .NET Standard 2.2 project.**
-
 ![sample demo using HighSpeedWriter](docs/crazy-fast-screen.PNG)
 
+## Contents
 
-### ProgressBar , Window  , Form , Menu , Draw & MockConsole
+  * [Installing and getting started](#installing-and-getting-started)
+  * [IConsole](#iconsole)
+  * [ConcurrentWriter](#concurrentwriter)
+  * [Progress Bars](#progressbars)
+  
+## Nuget Packages
 
----
+ * https://nuget.org/packages/Goblinfactory.Konsole/
+ * https://nuget.org/packages/Goblinfactory.Konsole.Windows/
+
+## Installing and Getting started
+
+1. start a new console application 
+
+```
+dotnet new console -n myutility
+```
+2. add `Konsole` package 
+```
+dotnet add package Goblinfactory.Konsole
+```
+
+3. add the code in the same shown below to your  `void main(string[] args)` method
+4. run your program
+
+```
+dotnet run
+```
+
+Will give you the screenshot on the right. If not, please [join our gitter chat and get some help.](https://gitter.im/goblinfactory-konsole)
+
+have fun!
+
+Alan
+
+<img src='docs/openbox-example.png' width='200' align='right'/>
+
+```csharp
+
+using Konsole.Internal;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using static System.ConsoleColor;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+
+        // quick dive in example 
+
+        void Wait() => Console.ReadKey(true);
+
+        // show how you can mix and match System.Console with Konsole
+        Console.WriteLine("line one");
+
+        // create an inline Box window at the current cursor position
+        // (returned Window implements IConsole) 
+        var nyse = Window.OpenBox("NYSE", 20, 12, new BoxStyle() { 
+            ThickNess = LineThickNess.Single, 
+            Title = new Colors(White, Red) 
+        });
+        
+        Console.WriteLine("line two");
+
+        // create another inline Box window at the current cursor position
+        var ftse100 = Window.OpenBox("FTSE 100", 20, 12, new BoxStyle() { 
+            ThickNess = LineThickNess.Double, 
+            Title = new Colors(White, Blue) 
+        });
+        Console.Write("line three");
+
+
+        while(true) {
+            Tick(nyse, "AMZ", amazon -= 0.04M, Red, '-', 4.1M);
+            Tick(ftse100, "BP", bp += 0.05M, Green, '+', 7.2M);
+            Wait();
+        }
+
+        decimal amazon = 84;
+        decimal bp = 146;
+
+        // simple method that takes a window and prints a stock price to that window in color
+        void Tick(IConsole con, string sym, decimal newPrice, ConsoleColor color, char sign, decimal perc) 
+        {
+            con.Write(White, $"{sym,-10}");
+            con.WriteLine(color, $"{newPrice:0.00}");
+            con.WriteLine(color, $"  ({sign}{newPrice}, {perc}%)");
+            con.WriteLine("");
+        }
+    }
+}
+```
+
+## IConsole
+
+This is the main interface that all windows, and objects that wrap a window, or that wrap the `System.Console` writer. It implements the almost everything that `System.Console` does with some extra magic. 
+
+## ConcurrentWriter
+
+Provides a threadsafe way to write to the current console. You need to switch to writing to the console using a concurrent writer any time you have a background thread that is updating any portion of a console screen or a `Konsole` window. 
+
+> `var console = new ConcurrentWriter();`
+
+You can create a concurrent writer is a wrapper around anything that implements `IConsole`. Make any code of yours that implements IConsole instantly threadsafe with regards to writing to the console.
+
+> `var myThreadSafeWriter = new ConcurrentWriter(myObjectThatImplementsIConsole);`
 
 
 
-## Installing
-
-![install-package Goblinfactory.Konsole](docs/install-package.png)
-
-# ProgressBars
+## ProgressBars
 
 #### `ProgressBar`
 ```csharp
@@ -232,53 +333,6 @@ Open a full screen styled window with a lined box border with a title. Styling a
 
             con.Buffer.Should().BeEquivalentTo(expected);
         }
-```
-
-#### Simple Example - Mix and match `System.Console` with `Konsole`
-
-<img src='docs/openbox-example.png' width='200' align='right'/>
-
-```csharp
-    void Wait() => Console.ReadKey(true);
-
-    // show how you can mix and match Console with Konsole
-    Console.WriteLine("line one");
-
-    // create an inline Box window at the current cursor position
-    // (returned Window implements IConsole) 
-    var nyse = Window.OpenBox("NYSE", 20, 12, new BoxStyle() { 
-        ThickNess = LineThickNess.Single, 
-        Title = new Colors(White, Red) 
-    });
-    
-    Console.WriteLine("line two");
-
-    // create another inline Box window at the current cursor position
-    var ftse100 = Window.OpenBox("FTSE 100", 20, 12, new BoxStyle() { 
-        ThickNess = LineThickNess.Double, 
-        Title = new Colors(White, Blue) 
-    });
-    Console.Write("line three");
-
-
-    while(true) {
-        Tick(nyse, "AMZ", amazon -= 0.04M, Red, '-', 4.1M);
-        Tick(ftse100, "BP", bp += 0.05M, Green, '+', 7.2M);
-        Wait();
-    }
-
-    decimal amazon = 84;
-    decimal bp = 146;
-
-    // simple method that takes a window and prints a stock price to that window in color
-    void Tick(IConsole con, string sym, decimal newPrice, ConsoleColor color, char sign, decimal perc) 
-    {
-        con.Write(White, $"{sym,-10}");
-        con.WriteLine(color, $"{newPrice:0.00}");
-        con.WriteLine(color, $"  ({sign}{newPrice}, {perc}%)");
-        con.WriteLine("");
-    }
-
 ```
 
 #### Window.PrintAt()

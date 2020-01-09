@@ -1,5 +1,9 @@
 # Roadmap
 
+## version 6
+
+- SplitLeft, SplitRight, SplitTop, SplitBottom, SplitColumns, SplitRows, to all use the same boxStyle as OpenBox.
+
 ## Busy now
 
 - more manual testing.
@@ -34,6 +38,8 @@ Alan Hemmings @goblinfactory 11:32
 
 
 ## busy next unsorted
+
+- have ability to show Konsole code running live in a gist, or workbook? tryDotNet ? 
 - change titles to make easier to read
 - add table of contents
 - deprecate old Window.Open (check readme for examples using that?)
