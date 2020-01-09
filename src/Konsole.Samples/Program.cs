@@ -14,7 +14,6 @@ namespace Konsole.Sample
         static void Main(string[] args)
         {
             void Wait() => Console.ReadKey(true);
-
             decimal amazon = 84;
             decimal bp = 146;
 

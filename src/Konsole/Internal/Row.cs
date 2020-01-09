@@ -33,9 +33,8 @@ namespace Konsole.Internal
             }
         }
 
-        public WriteResult WriteToRowBufferReturnWrittenAndOverflow(ConsoleColor color, ConsoleColor background, int x, string format, params object[] args)
+        internal WriteResult WriteToRowBufferReturnWrittenAndOverflow(ConsoleColor color, ConsoleColor background, int x, string text)
         {
-            var text = string.Format(format, args);
             return WriteAndReturnOverflow(color, background, x, text);
         }
 

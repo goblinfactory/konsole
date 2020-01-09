@@ -8,6 +8,21 @@ namespace Konsole.Tests.WindowTests
     [UseReporter(typeof(DiffReporter))]
     public class WriteShould
     {
+        [Test]
+        public void allow_embedded_interpolations_without_exception()
+        {
+            var con = new MockConsole(7, 3);
+            con.Write("{0}");
+            con.Write("{0}", "cat");
+            con.Write("{json}");
+            var expected = new[]
+            {
+                "{0}cat{",
+                "json}  ",
+                "       "
+            };
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 
         [Test]
         public void write_relative_to_the_window_being_printed_to_not_the_parent()
@@ -50,7 +65,6 @@ namespace Konsole.Tests.WindowTests
             System.Console.WriteLine(console.BufferWrittenString);
             Assert.That(console.BufferWrittenTrimmed, Is.EqualTo(expected));
         }
-
 
         [Test]
         public void print_to_the_parent_if_echo_set()
