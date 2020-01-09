@@ -23,6 +23,11 @@ Alan
   * [ConcurrentWriter](#concurrentwriter)
   * [Progress Bars](#progressbars)
   * [DoubleLine progress bar](#doubleline-progress-bar)
+  * [Threading and threadsafe writing to the Console.](#threading-and-threadsafe-writing-to-the-console)
+    * [Threadsafe static constructors](#threadsafe-static-constructors)
+    * [new Window is not threadsafe](#new-window-is-not-threadsafe)
+    * [Make it threadsafe](#make-it-threadsafe)
+    * [ConcurrentWriter](#concurrentWriter)
     
 ## Nuget Packages
 
@@ -119,24 +124,6 @@ class Program
 
 This is the main interface that all windows, and objects that wrap a window, or that wrap the `System.Console` writer. It implements the almost everything that `System.Console` does with some extra magic. 
 
-## ConcurrentWriter
-
-Provides a threadsafe way to write to the current console. You need to switch to writing to the console using a concurrent writer any time you have a background thread that is updating any portion of a console screen or a `Konsole` window. 
-
-```csharp
-var console = new ConcurrentWriter();
-
-console.WriteLine(Green, $"finished encrypting {bytes} bytes.");
-console.Write(...)
-console.PrintAt(...)
-```
-
-You wrap any instance of any class that implements `IConsole` in a `ConcurrentWriter` Make any code of yours that implements `IConsole`  threadsafe when writing to the console.
-
-```csharp
-var myThreadSafeWriter = new ConcurrentWriter(myObjectThatImplementsIConsole);
-```
-
 ## ProgressBars
 
 Create a threadsafe one or two line progress bar. 
@@ -207,21 +194,13 @@ var pb2 = new ProgressBar(PbStyle.DoubleLine, files.Count());
 
 <img src='docs/progressbar.gif' width='75%'/>
 
+## Threading and threadsafe writing to the Console.
 
+If you have a background thread that writes to the screen, then you have to make sure that the thread code is threadsafe, with regards to the console. `System.Console` by default is not threadsafe. Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. New Window is not threadsafe. Call `.Concurrent()` on a new window to return a thread safe window.
 
-# Threading (and `threadsafe` writing to the Console at last!) `.Concurrent()`
+All the static constructors return threadsafe windows by default; So
 
-If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
-
-## `ConcurrentWriter` and `Threading` with `.Concurrent()`
-
-Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. New Window is not threadsafe. Call `.Concurrent()` on a new window to return a thread safe window.
-
-e.g. `new Window(...).Concurrent()`
-
-All the static constructors return threadsafe windows by default. 
-
-**THREADSAFE**
+#### Threadsafe static constructors
 
 - `Window.Open`
 - `Window.OpenBox`
@@ -229,12 +208,51 @@ All the static constructors return threadsafe windows by default.
 - `new ConcurrentWriter()`
 - `new Window().Concurrent()`
 
-**NOT THREADSAFE** (make safe with `.Concurrent()`)
+#### new Window is not threadsafe
 
-- `new Window(...)`
+```csharp
+var myWindow new Window(...);
+```
 
-** [Full documentation here, with worked example for threading and `ConcurrentWriter`](docs/threading.md)
 
+ You can make an existing window instance safe by either calling `.Concurrent()` on an instance, or by only using that window as a region that is then Split using one of the extension methods, `SplitTop`, `SplitBottom`, `SplitLeftRight` etc. Those are static extension methods, and like the static constructors, they all return threadsafe instances wrapped in a `new ConcurrentWriter()`.
+
+#### Make it threadsafe
+
+```csharp
+// create an 80 by 20 inline window
+var window = new Window(80, 20);
+
+// split that window into boxes
+var left = window.SplitLeft("left");
+var right = window.SplitRight("right");
+
+// right and left are threadsafe, window is not.
+
+var safewin = window.Concurrent();
+
+// safewin is threadsafe, window is still NOT threadsafe.
+
+safewin.WriteLine(Green, "This is threadsafe");
+
+```
+#### ConcurrentWriter
+
+Provides a threadsafe way to write to the current console. You need to switch to writing to the console using a concurrent writer any time you have a background thread that is updating any portion of a console screen or a `Konsole` window. 
+
+```csharp
+var console = new ConcurrentWriter();
+
+console.WriteLine(Green, $"finished encrypting {bytes} bytes.");
+console.Write(...)
+console.PrintAt(...)
+```
+
+You wrap any instance of any class that implements `IConsole` in a `ConcurrentWriter` Make any code of yours that implements `IConsole`  threadsafe when writing to the console.
+
+```csharp
+var myThreadSafeWriter = new ConcurrentWriter(myObjectThatImplementsIConsole);
+```
 
 
 ## Windows,  `Window.Open`, `new Window`, `Window.OpenBox`
