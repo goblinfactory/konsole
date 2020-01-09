@@ -13,7 +13,7 @@ namespace Konsole.Tests.WindowTests
         /// and will be created at the current cursor y + 1, and left set to 0
         /// and the cursor should be moved to below the newly created window
         /// </summary>
-        public void WhenCreatingInlineWindows_cursor_should_be_moved_to_below_the_newly_created_window()
+        public void WhenCreatingInlineWindows_cursor_should_be_moved_to_below_the_newly_created_window1()
         {
             IConsole _window;
             IConsole _inline;
@@ -28,6 +28,37 @@ namespace Konsole.Tests.WindowTests
             Assert.AreEqual(3, _window.CursorTop);
             Assert.AreEqual(0, _window.CursorLeft);
             _window.WriteLine("foo");
+        }
+
+        [Test]
+        public void WhenCreatingInlineWindows_cursor_should_be_moved_to_below_the_newly_created_window2()
+        {
+            var console = new MockConsole(10, 9);
+            Window.HostConsole = console;
+            console.WriteLine("one");
+            var box1 = new Window(5, 3);
+            box1.WriteLine("aaaaa");
+            box1.WriteLine("bbbbb");
+            box1.Write("ccccc");
+            console.WriteLine("two");
+            var box2 = new Window(5, 3);
+            box2.WriteLine("aaaaa");
+            box2.WriteLine("bbbbb");
+            box2.Write("ccccc");
+            console.Write("Under B");
+            var expected = new[]
+            {
+                "one       ",
+                "aaaaa     ",
+                "bbbbb     ",
+                "ccccc     ",
+                "two       ",
+                "aaaaa     ",
+                "bbbbb     ",
+                "ccccc     ",
+                "Under B   "
+            };
+            console.Buffer.Should().BeEquivalentTo(expected);
         }
 
 

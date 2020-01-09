@@ -282,7 +282,7 @@ namespace Konsole
             lock (_staticLocker)
             {
                 _echo = echo;
-                _echoConsole = echoConsole;
+                _echoConsole = echoConsole ?? Window.HostConsole;
                 if (_echo && _echoConsole == null) _echoConsole = new Writer();
 
                 _y = y ?? _echoConsole?.CursorTop ?? _echoConsole.CursorTop + height ?? 0;
@@ -297,7 +297,7 @@ namespace Konsole
                 SetOptions(options);
                 init();
                 // if we're creating an inline window
-                var inline = (echoConsole != null && x == null && y == null);
+                var inline = (_echoConsole != null && x == null && y == null);
                 if (inline)
                 {
                     _echoConsole.CursorTop += _height;
