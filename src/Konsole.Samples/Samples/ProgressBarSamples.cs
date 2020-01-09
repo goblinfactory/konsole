@@ -10,14 +10,15 @@ namespace Konsole.Samples
 {
     public class ProgressBarSamples
     {
-        public static void Samples()
+
+        public static void Run()
         {
             void Pause() => Console.ReadKey(true);
 
             Console.WriteLine("progress bar in a floating inline window");
             // --------------------------------------------------------
             Pause();
-            var w = new Window(80, 10, White, DarkCyan);
+            var w = new Window(80, 10);
             var pb1 = new ProgressBar(w, 100);
             var pb2 = new ProgressBar(w, 100);
             pb1.Refresh(25, "hello world! 1");
@@ -25,22 +26,13 @@ namespace Konsole.Samples
             
             Pause();
 
-            Console.WriteLine("progress bar in a floating inline window with title box");
-            // --------------------------------------------------------------------------
-
-            var left = w.SplitLeft("left");
-            var right = w.SplitRight("right");
-            var pb = new ProgressBar(left, 100);
-            pb.Refresh(25, "hello world!");
-            Console.ReadKey(true);
-
             Console.WriteLine("progress bar in a floating inline window + split window LeftRight");
             // -----------------------------------------------------------------------------------
 
             w = new Window(80, 10, White, DarkBlue);
-            left = w.SplitLeft("left");
-            right = w.SplitRight("right");
-            pb = new ProgressBar(left, 100);
+            var left = w.SplitLeft("left");
+            var right = w.SplitRight("right");
+            var pb = new ProgressBar(left, 100);
             pb.Refresh(25, "hello world!");
             Console.ReadKey(true);
 

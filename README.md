@@ -22,7 +22,8 @@ Alan
   * [IConsole](#iconsole)
   * [ConcurrentWriter](#concurrentwriter)
   * [Progress Bars](#progressbars)
-  
+  * [DoubleLine progress bar](#doubleline-progress-bar)
+    
 ## Nuget Packages
 
  * https://nuget.org/packages/Goblinfactory.Konsole/
@@ -122,70 +123,91 @@ This is the main interface that all windows, and objects that wrap a window, or 
 
 Provides a threadsafe way to write to the current console. You need to switch to writing to the console using a concurrent writer any time you have a background thread that is updating any portion of a console screen or a `Konsole` window. 
 
-> `var console = new ConcurrentWriter();`
+```csharp
+var console = new ConcurrentWriter();
 
-You can create a concurrent writer is a wrapper around anything that implements `IConsole`. Make any code of yours that implements IConsole instantly threadsafe with regards to writing to the console.
+console.WriteLine(Green, $"finished encrypting {bytes} bytes.");
+console.Write(...)
+console.PrintAt(...)
+```
 
-> `var myThreadSafeWriter = new ConcurrentWriter(myObjectThatImplementsIConsole);`
+You wrap any instance of any class that implements `IConsole` in a `ConcurrentWriter` Make any code of yours that implements `IConsole`  threadsafe when writing to the console.
 
-
+```csharp
+var myThreadSafeWriter = new ConcurrentWriter(myObjectThatImplementsIConsole);
+```
 
 ## ProgressBars
 
-#### `ProgressBar`
-```csharp
-    using Konsole;
-           
-            var pb = new ProgressBar(PbStyle.DoubleLine, 50);
-            pb.Refresh(0, "connecting to server to download 5 files asychronously.");
-            Console.ReadLine();
+Create a threadsafe one or two line progress bar. 
 
-            pb.Refresh(25, "downloading file number 25");
-            Console.ReadLine();
-            pb.Refresh(50, "finished.");
-```
-<p align='center'>
-<img src='docs/progressbar.gif' align='center'/>
-</p>
-
-## ProgressBar worked parallel example
 ```csharp
-    using Konsole;
-           
-    Console.WriteLine("ready press enter.");
+    var pb = new ProgressBar(PbStyle.DoubleLine, 50);
+    pb.Refresh(0, "connecting to server to download 5 files asychronously.");
     Console.ReadLine();
 
+    pb.Refresh(25, "downloading file number 25");
+    Console.ReadLine();
+    pb.Refresh(50, "finished.");
+```
+
+You can create a `SingleLine` or a `DoubleLine` progress bar. If none is specified, the a single line progressbar is created.
+
+```
+var pb1 = new ProgressBar(max);
+```
+#### ProgressBar worked parallel example
+
+<img src='docs/progressbar2.gif' align='right' width='50%'/>
+
+```csharp       
+using Konsole.Internal;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+static void Main(string[] args) {
+
     var dirCnt = 15;
-    var filesPerDir = 100;
+    var filesPerDir = 30;
+
     var r = new Random();
-    var q = new ConcurrentQueue<string>();
-    foreach (var name in TestData.MakeNames(2000)) q.Enqueue(name);
-    var dirs = TestData.MakeObjectNames(dirCnt).Select(dir => new
-    {
-        name = dir,
-        cnt = r.Next(filesPerDir)
-    });
+    var dirs = TestData.MakeObjectNames(dirCnt);
+
+    Console.WriteLine("Press enter to start");
 
     var tasks = new List<Task>();
-    var bars = new ConcurrentBag<ProgressBar>();
+    var bars = new ConcurrentBag<ProgressBar>(); 
     foreach (var d in dirs)
     {
-        var files = q.Dequeue(d.cnt).ToArray();
-        if (files.Length == 0) continue;
-        tasks.Add(new Task(() =>
-        {
-            var bar = new ProgressBar(files.Count());
-            bars.Add(bar);
-            bar.Refresh(0, d.name);
-            ProcessFakeFiles(d.name, files, bar);
-        }));
+        var files = TestData.MakeNames(r.Next(filesPerDir));
+        var bar = new ProgressBar(files.Count());
+        bars.Add(bar);
+        bar.Refresh(0, d);
+        tasks.Add(ProcessFakeFiles(d, files, bar));
     }
-
-    foreach (var t in tasks) t.Start();
+    Console.ReadLine();
+    start = true;
     Task.WaitAll(tasks.ToArray());
-    Console.WriteLine("done.");
+    Console.WriteLine("finished.");
+    Console.ReadLine();
+}    
 ```
-![sample output](docs/progressbar2.gif)
+
+## DoubleLine progress bar
+
+Double line progress bar is useful if you want to roll up and display the overall progress of a parent group, while displaying the names of the items being processed seperately. For example, when processing a number of folders and files inside folders, then use a DoubleLine `ProgressBar`.
+
+```
+var pb2 = new ProgressBar(PbStyle.DoubleLine, files.Count());
+```
+
+<img src='docs/progressbar.gif' width='75%'/>
+
+
 
 # Threading (and `threadsafe` writing to the Console at last!) `.Concurrent()`
 

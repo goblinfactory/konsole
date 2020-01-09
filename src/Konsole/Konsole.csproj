@@ -13,11 +13,11 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
-    <PackageReleaseNotes>## [5.4.1]
+    <PackageReleaseNotes>## [5.4.2]
 
 ### Fixed
 
-- #42 opening a new window inline should move the cursor to below the newly created window.</PackageReleaseNotes>
+- `WhenOpeningInlineShould_open_window_at_current_cursorTop()` : OpenBox (inline) when supplying only a width and a height was not opening the new inline window at the current cursor position.</PackageReleaseNotes>
     <PackageIcon>progress.png</PackageIcon>
     <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
