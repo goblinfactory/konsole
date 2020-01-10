@@ -32,14 +32,16 @@ Alan
       * [Floating constructors](#floating-constructors)
       * [Inline constructors](#floating-constructors)
       * [Fullscreen constructor](#fullscreen-constructor)
-    * [Static constructors](#staticmethods)
+    * [Static constructors](#static-constructors)
       * [OpenBox](#openbox)
-      * [Window.Open](#windowopen)
-    * [methods and extension methods](#methods)
-      * [Write](#windowwrite)
-      * [WriteLine](#windowwriteLine)
-      * [PrintAt](#windowprintat)
-      * [PrintAtColor](#windowprintatcolor)
+      * [Open](#open)
+    * [methods and extension methods](#methods-and-extension-methods)
+      * [PrintAt](#printat)
+      * [PrintAtColor](#printatcolor)
+      * [Write](#write)
+      * [WriteLine](#writeline)
+      * [SplitRows](#splitrows)
+      * [SplitColumns](#splitcolumns)
       * [SplitLeft](#splitleft)
       * [SplitRight](#splitright)
       * [SplitLeftRight](#splitleftright)
@@ -63,15 +65,14 @@ Alan
     * [Other .NET console libraries](#other-net-console-libraries)
     * [Why did I write Konsole?](#why-did-i-write-konsole)
     * [Debugging problems with Konsole](#debugging-problems-with-konsole)
-      * [warning NU1702](#warning-u1702)
+      * [warning NU1702](#warning-nu1702)
       * [No visible output, blank screen](#no-visible-output-blank-screen)
-      * [Corrupt output - colours or text output appearing in the wrong place.](#corrupt-output-colours-or-text-output-appearing-in-the-wrong-place)
+      * [Corrupt output](#corrupt-output)
     * [MockConsole](#mockconsole)
       * [MockConsole vs Mock<IConsole>](#mockconsole-vs-mockiconsole)
     * [Building the solution](#building-the-solution)
     * [ChangeLog](#changelog)
     * [support me, please check out Snowcode, a free developer conference I hold every year at a great ski venue](www.snowcode.com)
-   
     
 ## Nuget Packages
 
@@ -538,6 +539,137 @@ Same as `Write` but simulates a carriage return by moving the `CursorTop` to nex
 - `WriteLine(string format, params object[] args)`
 - `WriteLine(ConsoleColor color, string format, params object[] args)`
 
+## SplitRows
+
+Split a console window screen into rows of screens. Returns an array of the rows. Specify the height for each split. Use a height of `0` to indicate that row will take the remainder of the rows. Similar to `*` in CSS.
+
+- `IConsole[] _SplitRows(IConsole c, params Split[] splits)`
+
+```csharp
+ var con = new MockConsole(20, 11);
+            var consoles = con.SplitRows(
+                    new Split(3, "headline", LineThickNess.Single, ConsoleColor.Yellow),
+                    new Split(0, "content", LineThickNess.Single),
+                    new Split(3, "status", LineThickNess.Single, ConsoleColor.Yellow)
+            );
+
+            var headline = consoles[0];
+            var content = consoles[1];
+            var status = consoles[2];
+
+            headline.Write("my headline that scrolls because of wrapping");
+            content.Write("content goes here, and this content get's wrapped, and if long enough will cause a bit of scrolling.");
+            status.Write("I get clipped & scroll off.");
+
+            var expected = new[]
+            {
+                    "┌──── headline ────┐",
+                    "│wrapping          │",
+                    "└──────────────────┘",
+                    "┌───── content ────┐",
+                    "│ if long enough wi│",
+                    "│ll cause a bit of │",
+                    "│scrolling.        │",
+                    "└──────────────────┘",
+                    "┌───── status ─────┐",
+                    "│roll off.         │",
+                    "└──────────────────┘"
+            };
+
+            con.Buffer.Should().BeEquivalentTo(expected);
+```
+
+## SplitColumns
+
+Split a console window screen into columns of screens. Returns an array of the rows. Specify the height for each split. Use a height of `0` to indicate that row will take the remainder of the rows. Similar to `*` in CSS.
+
+- `IConsole[] _SplitRows(IConsole c, params Split[] splits)`
+
+```csharp
+
+        [Test]
+        public void split_the_window_into_windows_using_provided_splits()
+        {
+            var con = new MockConsole(19, 5);
+            var cols = con.SplitColumns(
+                new Split(9, "left"),
+                new Split(0, "right")
+                );
+            var left = cols[0];
+            var right = cols[1];
+
+            left.WriteLine("one");
+            left.WriteLine("two");
+            left.Write("three");
+
+            right.WriteLine("four");
+            right.WriteLine("five");
+            right.Write("six");
+
+            var expected = new[]
+            {    
+                "┌ left ─┐┌─ right ┐",
+                "│one    ││four    │",
+                "│two    ││five    │",
+                "│three  ││six     │",
+                "└───────┘└────────┘"
+            };
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
+```
+
+## Advanced windows with `SplitRows` and `SplitColumns`
+
+You can create advanced window layouts using `SplitRows` and `SplitColumns` passing in a collection of Splits. Pass in a size of `0` to indicate that `row` or `column` window must contain the remainder of the window space. 
+
+```csharp
+            var c = new Window();
+            var consoles = c.SplitRows(
+                    new Split(4, "heading", LineThickNess.Single),
+                    new Split(0),
+                    new Split(4, "status", LineThickNess.Single)
+            ); ; ;
+
+            var headline = consoles[0];
+            var status = consoles[2];
+
+            var contents = consoles[1].SplitColumns(
+                    new Split(20),
+                    new Split(0, "content") { Foreground = ConsoleColor.White, Background = ConsoleColor.Cyan },
+                    new Split(20)
+            );
+            var menu = contents[0];
+            var content = contents[1];
+            var sidebar = contents[2];
+
+            headline.Write("my headline");
+            content.WriteLine("content goes here");
+
+            menu.WriteLine("Options A");
+            menu.WriteLine("Options B");
+
+            sidebar.WriteLine("20% off all items between 11am and midnight tomorrow!");
+
+            status.Write("System offline!");
+            Console.ReadLine();
+```
+
+Produces the following window. Each of the console(s) that you have a reference to can be written to like any normal console, and will scroll and clip correctly. You can create progress bar instances inside these windows like any console.
+
+<img src='./docs/window-example.PNG' width='600' />
+
+Configure the properties of each section of a window with the `Split` class.
+
+```csharp
+new Split(size) 
+{
+    title,
+    lineThickNess, 
+    foregroundColor,
+    backgroundColor
+};
+```
+
 ## SplitLeft
 
 Split an `IConsole` window and return the left half of a screen. Returns an `IConsole` consisting of the inner window representing the scrollable window region inside the lined border. 
@@ -671,6 +803,8 @@ gives you
     └────────┘
 ```
 
+## SplitTopBottom
+
 ## Nested Windows
 
 #### combining `SplitTop, SplitBottom` with `SplitLeft, SplitRight`
@@ -708,60 +842,6 @@ Note that `top` and `bottom` windows are only 2 lines high and therefore printin
 ││six        │││             │
 │└───────────┘││             │
 └─────────────┘└─────────────┘
-```
-
-## Advanced windows with `SplitRows` and `SplitColumns`
-
-You can create advanced window layouts using `SplitRows` and `SplitColumns` passing in a collection of Splits. Pass in a size of `0` to indicate that `row` or `column` window must contain the remainder of the window space. 
-
-
-
-```csharp
-            var c = new Window();
-            var consoles = c.SplitRows(
-                    new Split(4, "heading", LineThickNess.Single),
-                    new Split(0),
-                    new Split(4, "status", LineThickNess.Single)
-            ); ; ;
-
-            var headline = consoles[0];
-            var status = consoles[2];
-
-            var contents = consoles[1].SplitColumns(
-                    new Split(20),
-                    new Split(0, "content") { Foreground = ConsoleColor.White, Background = ConsoleColor.Cyan },
-                    new Split(20)
-            );
-            var menu = contents[0];
-            var content = contents[1];
-            var sidebar = contents[2];
-
-            headline.Write("my headline");
-            content.WriteLine("content goes here");
-
-            menu.WriteLine("Options A");
-            menu.WriteLine("Options B");
-
-            sidebar.WriteLine("20% off all items between 11am and midnight tomorrow!");
-
-            status.Write("System offline!");
-            Console.ReadLine();
-```
-
-Produces the following window. Each of the console(s) that you have a reference to can be written to like any normal console, and will scroll and clip correctly. You can create progress bar instances inside these windows like any console.
-
-<img src='./docs/window-example.PNG' width='600' />
-
-Configure the properties of each section of a window with the `Split` class.
-
-```csharp
-new Split(size) 
-{
-    title,
-    lineThickNess, 
-    foregroundColor,
-    backgroundColor
-};
 ```
 
 # Window Properties
@@ -1336,7 +1416,9 @@ If you are using the `HighSpeedWriter` you must call `Flush()` to render the out
 
 <img src='docs/flush.PNG' width='400'/>
 
-## Corrupt output - colours or text output appearing in the wrong place.
+## Corrupt output
+
+#### colors or text output appearing in the wrong place.
 
 possible causes and fixes
 
