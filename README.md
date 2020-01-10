@@ -98,7 +98,7 @@ dotnet add package Goblinfactory.Konsole
 dotnet run
 ```
 
-Will give you the screenshot on the right. If not, please [join our gitter chat and get some help.](https://gitter.im/goblinfactory-konsole)
+Will give you the screenshot on the right. If not, please [join our gitter chat and get some help.](https://gitter.im/goblinfactory-konsole/community)
 
 have fun!
 
