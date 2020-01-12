@@ -11,7 +11,8 @@ namespace Konsole.Samples
     {
         static void Main(string[] args)
         {
-            ProgressBarsWorkedParallelExample.Run();
+            FormSamples.Demo();
+            Console.ReadKey(true);
         }
 
 

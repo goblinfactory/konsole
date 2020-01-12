@@ -12,7 +12,7 @@ cheers,
 
 Alan
 
-![sample demo using HighSpeedWriter](docs/crazy-fast-screen.PNG)
+![sample demo using HighSpeedWriter](docs/img/01-intro.png)
 
 ## Contents
 
@@ -104,7 +104,7 @@ have fun!
 
 Alan
 
-<img src='docs/openbox-example.png' width='200' align='right'/>
+<img src='docs/img/02-nyse-ftse100.png' width='200' align='right'/>
 
 ```csharp
 
@@ -209,7 +209,7 @@ var pb1 = new ProgressBar(max);
 ```
 #### ProgressBar worked parallel example
 
-<img src='docs/progressbar2.gif' align='right' width='50%'/>
+<img src='docs/img/03-progressbar.gif' align='right' width='50%'/>
 
 ```csharp       
 using Konsole.Internal;
@@ -256,7 +256,7 @@ Double line progress bar is useful if you want to roll up and display the overal
 var pb2 = new ProgressBar(PbStyle.DoubleLine, files.Count());
 ```
 
-<img src='docs/progressbar.gif' width='75%'/>
+<img src='docs/img/04-progressbar.gif' width='75%'/>
 
 # Threading and threadsafe writing to the Console.
 
@@ -386,7 +386,7 @@ Console.ReadKey(true);
 ```
 gives you
 
-![window simple demo](docs/window-demo.png)
+![window simple demo](docs/img/05-window-demo.png)
 
 # Static constructors
 
@@ -656,7 +656,7 @@ You can create advanced window layouts using `SplitRows` and `SplitColumns` pass
 
 Produces the following window. Each of the console(s) that you have a reference to can be written to like any normal console, and will scroll and clip correctly. You can create progress bar instances inside these windows like any console.
 
-<img src='./docs/window-example.PNG' width='600' />
+<img src='docs/img/06-window-example.png' width='600' />
 
 Configure the properties of each section of a window with the `Split` class.
 
@@ -905,7 +905,7 @@ Here's a worked example showing you how to read input using `Konsole`
 
 Running the code above gives you
 
-<img src='./docs/image-input.png' width='600' />
+<img src='docs/img/07-input.png' width='600' />
 
 ## Clipping and Transparency
 
@@ -1110,7 +1110,7 @@ Form is written (inline) at current cursor position, and cursor is updated to ne
             form1.Write(person);
 ```
 
-![sample output](docs/Form-Person.png)
+![sample output](docs/img/08-form-person.png)
 
 
 ```csharp        
@@ -1118,14 +1118,14 @@ Form is written (inline) at current cursor position, and cursor is updated to ne
            // works with anonymous types
             new Form().Write(new {Height = "40px", Width = "200px"}, "Demo Box");
 ```
-![sample output](docs/Form-DemoBox.png)
+![sample output](docs/img/09-form-demobox.png)
 
 ```csharp        
 
             // change the box style, and width
             new Form(40, new ThickBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
 ```
-![sample output](docs/Form-Permissions.png)
+![sample output](docs/img/10-form-permissions.png)
 
 # `Goblinfactory.Konsole.Windows` (seperate nuget package)
 
@@ -1155,8 +1155,8 @@ If you have multiple threads writing to the Console, then instead of calling flu
 
 below is code that should give you a clue as to how I'm using HighSpeedWriter for myself. This sample code produces the following screen and output.
 
-![sample demo using HighSpeedWriter](docs/crazy-fast-demo.gif)
-
+![sample demo using HighSpeedWriter](docs/img/11-crazy-fast-demo.gif)
+§
 **Below is the source code that produced these screenshots** It is also available in the code in the single file demo project [src/TestPackage/Program.cs](src/TestPackage/Program.cs)
 
 ```csharp
@@ -1600,4 +1600,4 @@ April 2020 end of season snowcode conf, slushfest, best for boarders! :D will tr
 
 [@snowcode](https://twitter.com/snowcode)
 
-![Alan Hemmings](https://pbs.twimg.com/profile_images/624901555532095488/j5dynw0i_bigger.png)
+![Alan Hemmings](docs/img/12-alan.png)

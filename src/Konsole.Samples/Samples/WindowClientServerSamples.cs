@@ -10,13 +10,13 @@ namespace Konsole.Samples
 {
     public static class WindowClientServerSamples
     {
-        public static void Foo()
+        public static void Run()
         {
             var con = Window.OpenBox("client server demo", 110, 30);
 
             con.WriteLine("starting client server demo");
-            var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con);
-            var server = new Window(25, 4, 20, 20, con);
+            var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con).Concurrent();
+            var server = new Window(25, 4, 20, 20, con).Concurrent();
             client.WriteLine("CLIENT");
             client.WriteLine("------");
             server.WriteLine("SERVER");
