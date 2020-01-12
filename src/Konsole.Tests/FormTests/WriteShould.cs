@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Konsole.Tests.FormTests
 {
-    public class ShowShould
+    public class WriteShould
     {
 
         [Test]
@@ -39,6 +39,27 @@ namespace Konsole.Tests.FormTests
             console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
         }
 
+        [Test]
+        public void render_null_as_NULL()
+        {
+            var console = new MockConsole(80, 20);
+            var form = new Form(console);
+            Person p = null;
+            console.WriteLine("line1");
+            form.Write(p);
+            console.WriteLine("line2");
+            var expected = new[]
+            {
+                "line1",
+                " ┌────────────────────────────────── Person  ──────────────────────────────────┐",
+                " │ Null                                                                        │",
+                " └─────────────────────────────────────────────────────────────────────────────┘",
+                "line2"
+            };
+
+            console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
+
+        }
 
         //public void nested_objects_should_render_as_sub_boxes()
         //{
@@ -47,7 +68,7 @@ namespace Konsole.Tests.FormTests
 
         //public void collection_properties_should_render_as_grid()
         //{
-            
+
         //}
 
         // - renderer to detect cycles maintain a list of already visited objects

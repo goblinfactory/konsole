@@ -61,6 +61,14 @@ namespace Konsole.Forms
         {
             var t = typeof (T);
             var boxtitle = title ?? t.Name;
+            if(item == null)
+            {
+                var nullBox = new BoxWriter(_boxStyle, _width, 10, 1);
+                _console.WriteLine(nullBox.Header(boxtitle));
+                _console.WriteLine(nullBox.Write(" Null"));
+                _console.WriteLine(nullBox.Footer);
+                return;
+            }
             var fl = new FieldReader(item).ReadFieldList();
             var box = new BoxWriter(_boxStyle, _width, fl.CaptionWidth, 1);
             _console.WriteLine(box.Header(boxtitle));

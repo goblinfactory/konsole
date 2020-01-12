@@ -6,6 +6,7 @@
 
 ## Busy now
 
+- add docs for BoxWriter
 - more manual testing.
 - do pull request and squash commits after a nice cleanup so that my commits can be easier to read.
 - OpenBox

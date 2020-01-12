@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [5.4.3]
+
+### Fixed
+
+- #43 Form.Write(null) throws exception, new Form().Write(null); should not throw exception. Instead it should write "Null"
+
 ## [5.4.2]
 
 ### Fixed
