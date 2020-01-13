@@ -18,6 +18,7 @@ namespace Konsole.Forms
 
         private static readonly Type[] NumericTypes = {
             typeof(byte),
+            typeof(double),
             typeof(int),
             typeof(short),
             typeof(int),

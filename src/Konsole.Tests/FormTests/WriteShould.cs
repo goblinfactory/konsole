@@ -106,6 +106,8 @@ namespace Konsole.Tests.FormTests
             var form = new Form(console, 54, new ThinBoxStyle());
             var numclass = new TestClasses.FormTests.MixedNumClass
             {
+                DoubleField = double.MaxValue,
+                DoubleNull = null,
                 IntMinValue = int.MaxValue,
                 IntNull = null,
                 IntField = 123,
@@ -116,14 +118,16 @@ namespace Konsole.Tests.FormTests
                 FloatMaxValue = float.MaxValue,
                 FloatMinValue = float.MinValue,
                 FloatNull = null,
-                FloatEpsilon = float.Epsilon
+                FloatEpsilon = float.Epsilon,
             };
             form.Write(numclass);
             var expected = new[]
             {
                 " ┌────────────────── MixedNumClass  ──────────────────┐",
+                " │ Double Field      : 1.7976931348623157E+308        │",
+                " │ Double Null       : Null                           │",
                 " │ Int Min Value     : 2147483647                     │",
-                " │ Int Null          :                                │",
+                " │ Int Null          : Null                           │",
                 " │ Int Field         : 123                            │",
                 " │ Decimal Min Value : -79228162514264337593543950335 │",
                 " │ Decimal Max Value : 79228162514264337593543950335  │",
@@ -131,7 +135,7 @@ namespace Konsole.Tests.FormTests
                 " │ Float Field       : 10.1234                        │",
                 " │ Float Max Value   : 3.4028235E+38                  │",
                 " │ Float Min Value   : -3.4028235E+38                 │",
-                " │ Float Null        :                                │",
+                " │ Float Null        : Null                           │",
                 " │ Float Epsilon     : 1E-45                          │",
                 " └────────────────────────────────────────────────────┘"
             };

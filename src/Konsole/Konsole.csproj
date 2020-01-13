@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>5.4.3</Version>
+    <Version>5.4.4</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -13,11 +13,15 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
-    <PackageReleaseNotes>## [5.4.3]
+    <PackageReleaseNotes>## [5.4.4]
+
+### Added
+
+- Printing objects with nullable fields now prints "Null" for any nullable fields.
 
 ### Fixed
 
-- #43 Form.Write(null) throws exception, new Form().Write(null); should not throw exception. Instead it should write "Null"</PackageReleaseNotes>
+- #39 Add double to NumericTypes in FieldReader.</PackageReleaseNotes>
     <PackageIcon>progress.png</PackageIcon>
     <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>

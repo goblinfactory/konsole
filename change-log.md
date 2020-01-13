@@ -2,6 +2,16 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [5.4.4]
+
+### Added
+
+- Printing objects with nullable fields now prints "Null" for any nullable fields.
+
+### Fixed
+
+- #39 Add double to NumericTypes in FieldReader.
+
 ## [5.4.3]
 
 ### Fixed

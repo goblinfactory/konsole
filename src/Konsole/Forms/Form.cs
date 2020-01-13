@@ -74,7 +74,7 @@ namespace Konsole.Forms
             _console.WriteLine(box.Header(boxtitle));
             foreach (var f in fl.Fields)
             {
-                var text = string.Format("{0} : {1}", f.Caption.FixLeft(fl.CaptionWidth), f.Value);
+                var text = string.Format("{0} : {1}", f.Caption.FixLeft(fl.CaptionWidth), f.Value ?? "Null");
                 _console.WriteLine(box.Write(text));    
             }
             _console.WriteLine(box.Footer);
