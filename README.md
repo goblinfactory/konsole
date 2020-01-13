@@ -58,6 +58,8 @@ Alan
       * [Line](#line)
     * [Forms](#forms)
       * [Write](#write)
+      * [Rendering Null objects](#rendering-null-objects)
+      * [Rendering Nullable fields](#rendering-nullable-fields)
     * [HighSpeedWriter](#highspeedwriter)
       * [Getting started with HighSpeedWriter](#getting-started-with-highspeedwriter)
       * [HighSpeedWriter end to end sample](#highspeedwriter-end-to-end-sample)
@@ -1085,9 +1087,57 @@ If no width is provided, the whole width of the parent window is used.
 
 ## Write
 
-Form is written (inline) at current cursor position, and cursor is updated to next line below form, with left=0.
+Form is written (inline) at current cursor position, and cursor is updated to next line below form, with left=0. 
 
 - `void Write<T>(T item, string title = null)`
+
+#### Rendering Null objects
+
+```csharp
+var form = new Form();
+Person p = null;
+console.WriteLine("line1");
+form.Write(p);
+console.WriteLine("line2");
+```
+gives you
+```
+line1
+    ┌────────────────────────────────── Person  ──────────────────────────────────┐
+    │ Null                                                                        │
+    └─────────────────────────────────────────────────────────────────────────────┘
+line2
+```
+
+#### Rendering Nullable fields
+
+```csharp
+var form = new Form(54, new ThinBoxStyle());
+var numclass = new TestClasses.FormTests.MixedNumClass
+{
+    DoubleField = double.MaxValue,
+    DoubleNull = null,
+    IntMinValue = int.MaxValue,
+    IntNull = null,
+    FloatField = 10.1234F,
+    FloatNull = null,
+};
+form.Write(numclass);
+```
+gives you
+```
+┌────────────────── MixedNumClass  ──────────────────┐
+│ Double Field      : 1.7976931348623157E+308        │
+│ Double Null       : Null                           │
+│ Int Min Value     : 2147483647                     │
+│ Int Null          : Null                           │
+│ Float Field       : 10.1234                        │
+│ Float Null        : Null                           │
+└────────────────────────────────────────────────────┘
+```
+
+#### Numerics and Nullable types
+
 
 #### examples showing auto rendering of simple objects.
 
