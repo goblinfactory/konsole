@@ -39,7 +39,7 @@ Alan Hemmings @goblinfactory 11:32
 
 
 ## busy next unsorted
-
+- addd copyright to top of all files, so that if cloned, that goblinfactory copyright is clearly visible, see Core.cs (Gui.cs) as an example.
 - have ability to show Konsole code running live in a gist, or workbook? tryDotNet ? 
 - change titles to make easier to read
 - add table of contents
