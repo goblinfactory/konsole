@@ -366,7 +366,8 @@ namespace Konsole
             }
         }
 
-        public void WriteLine(string format, params object[] args)
+
+        public void WriteLine(string text)
         {
             if (_clipping && OverflowBottom)
             {
@@ -376,18 +377,27 @@ namespace Konsole
             if (OverflowBottom)
             {
                 ScrollDown();
-                Write(format, args);
+                Write(text);
                 Cursor = new XY(0, Cursor.Y + 1);
                 return;
             }
 
-            Write(format, args);
+            Write(text);
             Cursor = new XY(0, Cursor.Y + 1);
             if (OverflowBottom && !_clipping)
             {
                 ScrollDown();
             }
+        }
 
+        public void WriteLine(string format, object arg0)
+        {
+            WriteLine(string.Format(format, arg0));
+        }
+
+        public void WriteLine(string format, params object[] args)
+        {
+            WriteLine(string.Format(format, args));
         }
 
         public void Write(ConsoleColor color, string format, params object[] args)
@@ -403,6 +413,12 @@ namespace Konsole
                 ForegroundColor = foreground;
             }
 ;
+        }
+
+        public void Write(string format, object args0)
+        {
+            var text = string.Format(format, args0);
+            Write(text);
         }
 
         public void Write(string format, params object[] args)

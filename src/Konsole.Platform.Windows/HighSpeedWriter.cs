@@ -238,6 +238,16 @@ namespace Konsole
         {
             throw new InvalidOperationException("Please use a window based off the writer to do any writing!");
         }
+
+        public void WriteLine(string text)
+        {
+            throw new InvalidOperationException("Please use a window based off the writer to do any writing!");
+        }
+
+        public void Write(string text)
+        {
+            throw new InvalidOperationException("Please use a window based off the writer to do any writing!");
+        }
     }
 }
 

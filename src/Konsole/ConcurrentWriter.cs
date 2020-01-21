@@ -41,6 +41,14 @@ namespace Konsole
             }
         }
 
+        public void WriteLine(string text)
+        {
+            lock (_locker)
+            {
+                _window.WriteLine(text);
+            }
+        }
+
         public void WriteLine(string format, params object[] args)
         {
             lock (_locker)
@@ -64,6 +72,15 @@ namespace Konsole
                 _window.Write(format,args);
             }
         }
+
+        public void Write(string text)
+        {
+            lock (_locker)
+            {
+                _window.Write(text);
+            }
+        }
+
 
         public ConsoleState State
         {

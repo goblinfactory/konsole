@@ -1,9 +1,4 @@
-﻿using Konsole.Internal;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using static System.ConsoleColor;
+﻿using System;
 
 namespace Konsole.Samples
 {
@@ -14,8 +9,5 @@ namespace Konsole.Samples
             FormSamples.Demo();
             Console.ReadKey(true);
         }
-
-
-
     }
 }
