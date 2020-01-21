@@ -1,104 +1,272 @@
-# Konsole
+# Konsole 
 
-[![nuget](https://img.shields.io/nuget/dt/Goblinfactory.Konsole.svg)](https://www.nuget.org/packages/Goblinfactory.Konsole/) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Join the chat at https://gitter.im/goblinfactory-konsole/community](https://badges.gitter.im/goblinfactory-konsole/community.svg)](https://gitter.im/goblinfactory-konsole/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![nuget](https://img.shields.io/nuget/dt/Goblinfactory.Konsole.svg)](https://www.nuget.org/packages/Goblinfactory.Konsole/) 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
+[![Join the chat at https://gitter.im/goblinfactory-konsole/community](https://badges.gitter.im/goblinfactory-konsole/community.svg)](https://gitter.im/goblinfactory-konsole/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-# Konsole library
+Low ceremony, Fluent DSL for writing console apps, utilities and spike projects. Providing thread safe progress bars, windows and forms and drawing for console applications. Build UX's as shown below in very few lines of code. Konsole provides simple threadsafe ways to write to the C# console window. [See my notes on threading](docs/threading.md). The project is growing quickly with fast responses to issues raised. 
 
-Low ceremony, simply to use C# (.NET standard) windowing console library, providing progress bars, windows and forms and drawing for console applications. Build UX's as shown below in very few lines of code.
-
-**Konsole is a simple threadsafe way to write to the C# console window.** Write your own threadsafe wrapper at your peril. [See my notes on threading](docs/threading.md) :D
-
-If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole) and I'll be happy to help you. 
+If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole/community?source=orgpage) and I'll be happy to help you. 
 
 cheers, 
 
 Alan
 
-***cross-platform*** Konsole is 90% cross platform. `ProgressBar` and `Forms` and small inline `windows` that do not use text that causes scrolling all work in Nix, OSX and .NET standard code). **Konsole is a .NET Standard 2.2 project.**
+![sample demo using HighSpeedWriter](docs/img/01-intro.png)
 
-![sample demo using HighSpeedWriter](docs/crazy-fast-screen.PNG)
+## Contents
 
+  * [Installing and getting started](#installing-and-getting-started)
+  * [using static Console.ConsoleColor](#using-static-consoleconsolecolor)      
+  * [IConsole](#iconsole)
+  * [ConcurrentWriter](#concurrentwriter)
+  * [Progress Bars](#progressbars)
+    * [ProgressBar worked parallel example](#progressbar-worked-parallel-example)
+    * [DoubleLine progress bar](#doubleline-progress-bar)
+  * [Threading and threadsafe writing to the Console.](#threading-and-threadsafe-writing-to-the-console)
+    * [Threadsafe static constructors](#threadsafe-static-constructors)
+    * [new Window is not threadsafe](#new-window-is-not-threadsafe)
+    * [Make it threadsafe](#make-it-threadsafe)
+    * [ConcurrentWriter](#concurrentWriter)
+  * [Window](#window)
+      * [Floating constructors](#floating-constructors)
+      * [Inline constructors](#floating-constructors)
+      * [Fullscreen constructor](#fullscreen-constructor)
+    * [Static constructors](#static-constructors)
+      * [OpenBox](#openbox)
+      * [Open](#open)
+    * [methods and extension methods](#methods-and-extension-methods)
+      * [PrintAt](#printat)
+      * [PrintAtColor](#printatcolor)
+      * [Write](#write)
+      * [WriteLine](#writeline)
+      * [SplitRows](#splitrows)
+      * [SplitColumns](#splitcolumns)
+      * [SplitLeft](#splitleft)
+      * [SplitRight](#splitright)
+      * [SplitLeftRight](#splitleftright)
+      * [SplitTop](#splittop)
+      * [SplitBottom](#splitbottom)
+      * [SplitTopBottom](#splittopbottom)
+    * [Nested Windows](#nested-windows)
+    * [Window properties](#window-properties)
+    * [Advanced windows with SplitRows and SplitColumns](#advanced-windows-with-splitrows-and-splitcolumns)
+    * [Input](#Input)
+    * [Clipping and Transparency](#clipping-and-transparency)
+    * [Draw](#draw)
+      * [Box](#box)
+      * [Line](#line)
+    * [Forms](#forms)
+      * [Write](#write)
+      * [Rendering Null objects](#rendering-null-objects)
+      * [Rendering Nullable fields](#rendering-nullable-fields)
+    * [HighSpeedWriter](#highspeedwriter)
+      * [Getting started with HighSpeedWriter](#getting-started-with-highspeedwriter)
+      * [HighSpeedWriter end to end sample](#highspeedwriter-end-to-end-sample)
+    * [Copying code from the unit tests](#copying-code-from-the-unit-tests)
+    * [Other .NET console libraries](#other-net-console-libraries)
+    * [Why did I write Konsole?](#why-did-i-write-konsole)
+    * [Debugging problems with Konsole](#debugging-problems-with-konsole)
+      * [warning NU1702](#warning-nu1702)
+      * [No visible output, blank screen](#no-visible-output-blank-screen)
+      * [Corrupt output](#corrupt-output)
+    * [MockConsole](#mockconsole)
+      * [MockConsole vs Mock<IConsole>](#mockconsole-vs-mockiconsole)
+    * [Building the solution](#building-the-solution)
+    * [ChangeLog](#changelog)
+    * [support me, please check out Snowcode, a free developer conference I hold every year at a great ski venue](www.snowcode.com)
+    
+## Nuget Packages
 
-### ProgressBar , Window  , Form , Menu , Draw & MockConsole
+ * https://nuget.org/packages/Goblinfactory.Konsole/
+ * https://nuget.org/packages/Goblinfactory.Konsole.Windows/
 
----
+## Installing and Getting started
 
+1. start a new console application 
 
-
-## Installing
-
-![install-package Goblinfactory.Konsole](docs/install-package.png)
-
-# ProgressBars
-
-#### `ProgressBar`
-```csharp
-    using Konsole;
-           
-            var pb = new ProgressBar(PbStyle.DoubleLine, 50);
-            pb.Refresh(0, "connecting to server to download 5 files asychronously.");
-            Console.ReadLine();
-
-            pb.Refresh(25, "downloading file number 25");
-            Console.ReadLine();
-            pb.Refresh(50, "finished.");
 ```
-<p align='center'>
-<img src='docs/progressbar.gif' align='center'/>
-</p>
+dotnet new console -n myutility
+```
+2. add `Konsole` package 
+```
+dotnet add package Goblinfactory.Konsole
+```
 
-## ProgressBar worked parallel example
+3. add the code in the same shown below to your  `void main(string[] args)` method
+4. run your program
+
+```
+dotnet run
+```
+
+Will give you the screenshot on the right. If not, please [join our gitter chat and get some help.](https://gitter.im/goblinfactory-konsole/community)
+
+have fun!
+
+Alan
+
+<img src='docs/img/02-nyse-ftse100.png' width='200' align='right'/>
+
 ```csharp
-    using Konsole;
-           
-    Console.WriteLine("ready press enter.");
+
+using Konsole.Internal;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using static System.ConsoleColor;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+
+        // quick dive in example 
+
+        void Wait() => Console.ReadKey(true);
+
+        // show how you can mix and match System.Console with Konsole
+        Console.WriteLine("line one");
+
+        // create an inline Box window at the current cursor position
+        // (returned Window implements IConsole) 
+        var nyse = Window.OpenBox("NYSE", 20, 12, new BoxStyle() { 
+            ThickNess = LineThickNess.Single, 
+            Title = new Colors(White, Red) 
+        });
+        
+        Console.WriteLine("line two");
+
+        // create another inline Box window at the current cursor position
+        var ftse100 = Window.OpenBox("FTSE 100", 20, 12, new BoxStyle() { 
+            ThickNess = LineThickNess.Double, 
+            Title = new Colors(White, Blue) 
+        });
+        Console.Write("line three");
+
+
+        while(true) {
+            Tick(nyse, "AMZ", amazon -= 0.04M, Red, '-', 4.1M);
+            Tick(ftse100, "BP", bp += 0.05M, Green, '+', 7.2M);
+            Wait();
+        }
+
+        decimal amazon = 84;
+        decimal bp = 146;
+
+        // simple method that takes a window and prints a stock price to that window in color
+        void Tick(IConsole con, string sym, decimal newPrice, ConsoleColor color, char sign, decimal perc) 
+        {
+            con.Write(White, $"{sym,-10}");
+            con.WriteLine(color, $"{newPrice:0.00}");
+            con.WriteLine(color, $"  ({sign}{newPrice}, {perc}%)");
+            con.WriteLine("");
+        }
+    }
+}
+```
+
+## using static Console.ConsoleColor
+
+If you will be using a lot of different colors throughout your application I recommend making use of the new C# `static using` language feature to make the code a bit easier to read.
+
+before
+```csharp
+Console.WriteLine(ConsoleColor.Red, "I am red"); 
+var box = Window.OpenBox("warnings", new BoxStyle() { Title = new Colors(ConsoleColor.White, ConsoleColor.Red) })
+```
+becomes
+```csharp
+using static System.Console;
+...
+Console.WriteLine(Red, "I am red"); 
+var box = Window.OpenBox("warnings", new BoxStyle() { Title = new Colors(White, Red) })
+```
+
+## IConsole
+
+This is the main interface that all windows, and objects that wrap a window, or that wrap the `System.Console` writer. It implements the almost everything that `System.Console` does with some extra magic. 
+
+# Progress bars
+
+## ProgressBar
+
+Create a threadsafe one or two line progress bar. 
+
+```csharp
+    var pb = new ProgressBar(PbStyle.DoubleLine, 50);
+    pb.Refresh(0, "connecting to server to download 5 files asychronously.");
     Console.ReadLine();
 
+    pb.Refresh(25, "downloading file number 25");
+    Console.ReadLine();
+    pb.Refresh(50, "finished.");
+```
+
+You can create a `SingleLine` or a `DoubleLine` progress bar. If none is specified, the a single line progressbar is created.
+
+```
+var pb1 = new ProgressBar(max);
+```
+#### ProgressBar worked parallel example
+
+<img src='docs/img/03-progressbar.gif' align='right' width='50%'/>
+
+```csharp       
+using Konsole.Internal;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+static void Main(string[] args) {
+
     var dirCnt = 15;
-    var filesPerDir = 100;
+    var filesPerDir = 30;
+
     var r = new Random();
-    var q = new ConcurrentQueue<string>();
-    foreach (var name in TestData.MakeNames(2000)) q.Enqueue(name);
-    var dirs = TestData.MakeObjectNames(dirCnt).Select(dir => new
-    {
-        name = dir,
-        cnt = r.Next(filesPerDir)
-    });
+    var dirs = TestData.MakeObjectNames(dirCnt);
+
+    Console.WriteLine("Press enter to start");
 
     var tasks = new List<Task>();
-    var bars = new ConcurrentBag<ProgressBar>();
+    var bars = new ConcurrentBag<ProgressBar>(); 
     foreach (var d in dirs)
     {
-        var files = q.Dequeue(d.cnt).ToArray();
-        if (files.Length == 0) continue;
-        tasks.Add(new Task(() =>
-        {
-            var bar = new ProgressBar(files.Count());
-            bars.Add(bar);
-            bar.Refresh(0, d.name);
-            ProcessFakeFiles(d.name, files, bar);
-        }));
+        var files = TestData.MakeNames(r.Next(filesPerDir));
+        var bar = new ProgressBar(files.Count());
+        bars.Add(bar);
+        bar.Refresh(0, d);
+        tasks.Add(ProcessFakeFiles(d, files, bar));
     }
-
-    foreach (var t in tasks) t.Start();
+    Console.ReadLine();
+    start = true;
     Task.WaitAll(tasks.ToArray());
-    Console.WriteLine("done.");
+    Console.WriteLine("finished.");
+    Console.ReadLine();
+}    
 ```
-![sample output](docs/progressbar2.gif)
 
-# Threading (and `threadsafe` writing to the Console at last!) `.Concurrent()`
+#### DoubleLine progress bar
 
-If you are writing a small command line utility that will be called from a build script, where you script does something, and uses threads to update the console the Konsole will make that a lot simpler.
+Double line progress bar is useful if you want to roll up and display the overall progress of a parent group, while displaying the names of the items being processed seperately. For example, when processing a number of folders and files inside folders, then use a DoubleLine `ProgressBar`.
 
-## `ConcurrentWriter` and `Threading` with `.Concurrent()`
+```
+var pb2 = new ProgressBar(PbStyle.DoubleLine, files.Count());
+```
 
-Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. New Window is not threadsafe. Call `.Concurrent()` on a new window to return a thread safe window.
+<img src='docs/img/04-progressbar.gif' width='75%'/>
 
-e.g. `new Window(...).Concurrent()`
+# Threading and threadsafe writing to the Console.
 
-All the static constructors return threadsafe windows by default. 
+If you have a background thread that writes to the screen, then you have to make sure that the thread code is threadsafe, with regards to the console. `System.Console` by default is not threadsafe. Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. New Window is not threadsafe. Call `.Concurrent()` on a new window to return a thread safe window.
 
-**THREADSAFE**
+All the static constructors return threadsafe windows by default; So
+
+#### Threadsafe static constructors
 
 - `Window.Open`
 - `Window.OpenBox`
@@ -106,15 +274,60 @@ All the static constructors return threadsafe windows by default.
 - `new ConcurrentWriter()`
 - `new Window().Concurrent()`
 
-**NOT THREADSAFE** (make safe with `.Concurrent()`)
+#### new Window is not threadsafe
 
-- `new Window(...)`
+```csharp
+var myWindow new Window(...);
+```
 
-** [Full documentation here, with worked example for threading and `ConcurrentWriter`](docs/threading.md)
+You can make an existing window instance safe by either calling `.Concurrent()` on an instance, or by only using that window as a region that is then Split using one of the extension methods, `SplitTop`, `SplitBottom`, `SplitLeftRight` etc. Those are static extension methods, and like the static constructors, they all return threadsafe instances wrapped in a `new ConcurrentWriter()`.
 
+#### Make it threadsafe
 
+```csharp
+// create an 80 by 20 inline window
+var window = new Window(80, 20);
 
-## Windows,  `Window.Open`, `new Window`, `Window.OpenBox`
+// split that window into boxes
+var left = window.SplitLeft("left");
+var right = window.SplitRight("right");
+
+// right and left are threadsafe, window is not.
+
+var safewin = window.Concurrent();
+
+// safewin is threadsafe, window is still NOT threadsafe.
+
+safewin.WriteLine(Green, "This is threadsafe");
+
+```
+
+## ConcurrentWriter
+
+Provides a threadsafe way to write to the current console. You need to switch to writing to the console using a concurrent writer any time you have a background thread that is updating any portion of a console screen or a `Konsole` window. 
+
+```csharp
+var console = new ConcurrentWriter();
+
+console.WriteLine(Green, $"finished encrypting {bytes} bytes.");
+console.Write(...)
+console.PrintAt(...)
+```
+
+You wrap any instance of any class that implements `IConsole` in a `ConcurrentWriter` Make any code of yours that implements `IConsole`  threadsafe when writing to the console.
+
+```csharp
+var myThreadSafeWriter = new ConcurrentWriter(myObjectThatImplementsIConsole);
+```
+# The Window object
+
+## Window
+
+```csharp
+var window = new Window();
+```
+
+Create a windowed region of the console (with or without a boxed border and title) that you can write to as if it were a new Console. It will wrap text and scroll, and you can print to it using PrintAt, as well as nest child windows in windows for more advanced window layouts.
 
   - ( 100%-ish console compatible window, supporting all normal console writing to a windowed section of the screen) 
   - Supports scrolling and clipping of console output.
@@ -122,47 +335,74 @@ All the static constructors return threadsafe windows by default.
   - automatic borders
   - full color support
 
+#### Floating constructors
+
+When you provide a startX and startY position, as well as height and width, then the window created will be a `floating` window. The following are all floating constructors. The default foreground and background colors when none are provided are white on black.
+
+#### Inline constructors
+
+When you do not provide a startX and startY position, and only provide a height and width, then the window created is an `inline` window. The window is created starting at the next line using the height and width provided. The parent console `CursorTop` is advanced to the next line after the newly created window, and the cursorLeft is set to `0`.
+
+- `public Window(int width, int height)`
+- `public Window(int width, int height, ConsoleColor foreground, ConsoleColor background)`
+
+#### fullscreen constructor
+
+When no start position or height and width is provided, then the window is fullscreen. It fill the entire parent window, even if the cursor is halfway down the parent window at the time. The cursor position is reset to the parent window `0,0`.
+
+* `Window()`
+
 ```csharp
-            var con = new Window(200,50);
-            con.WriteLine("starting client server demo");
-            var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con);
-            var server = new Window(25, 4, 20, 20, con);
-            client.WriteLine("CLIENT");
-            client.WriteLine("------");
-            server.WriteLine("SERVER");
-            server.WriteLine("------");
-            client.WriteLine("<-- PUT some long text to show wrapping");
-            server.WriteLine(ConsoleColor.DarkYellow, "--> PUT some long text to show wrapping");
-            server.WriteLine(ConsoleColor.Red, "<-- 404|Not Found|some long text to show wrapping|");
-            client.WriteLine(ConsoleColor.Red, "--> 404|Not Found|some long text to show wrapping|");
-
-            con.WriteLine("starting names demo");
-            // let's open a window with a box around it by using Window.Open
-            var names = Window.Open(50, 4, 40, 10, "names");
-            TestData.MakeNames(40).OrderByDescending(n => n).ToList()
-                 .ForEach(n => names.WriteLine(n));
-
-            con.WriteLine("starting numbers demo");
-            var numbers = Window.Open(50, 15, 40, 10, "numbers", 
-                  LineThickNess.Double,ConsoleColor.White,ConsoleColor.Blue);
-            Enumerable.Range(1,200).ToList()
-                 .ForEach(i => numbers.WriteLine(i.ToString())); // shows scrolling
+var myConsoleAppMainWindow = new Window();
 ```
-**gives you**
 
-![window simple demo](docs/window-demo.png)
+#### window example        
 
-#### [Window.OpenBox](#window-openbox)
+```csharp
+var con = Window.OpenBox("client server demo", 110, 30);
 
-- `Window.OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)`
+con.WriteLine("starting client server demo");
+var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con).Concurrent();
+var server = new Window(25, 4, 20, 20, con).Concurrent();
+client.WriteLine("CLIENT");
+client.WriteLine("------");
+server.WriteLine("SERVER");
+server.WriteLine("------");
+client.WriteLine("<-- PUT some long text to show wrapping");
+server.WriteLine(ConsoleColor.DarkYellow, "--> PUT some long text to show wrapping");
+server.WriteLine(ConsoleColor.Red, "<-- 404|Not Found|some long text to show wrapping|");
+client.WriteLine(ConsoleColor.Red, "--> 404|Not Found|some long text to show wrapping|");
+
+con.WriteLine("starting names demo");
+// let's open a window with a box around it by using Window.Open
+var names = Window.OpenBox("names", 50, 4, 40, 10);
+TestData.MakeNames(40).OrderByDescending(n => n).ToList()
+        .ForEach(n => names.WriteLine(n));
+
+con.WriteLine("starting numbers demo");
+var numbers = Window.OpenBox("{numbers", 50, 15, 40, 10, new BoxStyle() { ThickNess = LineThickNess.Double, Body = new Colors(White, Blue) });
+Enumerable.Range(1, 200).ToList()
+        .ForEach(i => numbers.WriteLine(i.ToString())); // shows scrolling
+
+Console.ReadKey(true);
+```
+gives you
+
+![window simple demo](docs/img/05-window-demo.png)
+
+# Static constructors
+
+## OpenBox
+
+- `Window.OpenBox(string title)`
+- `Window.OpenBox(string title, BoxStyle style)`
 - `Window.OpenBox(string title, int sx, int sy, int width, int height)`
 - `Window.OpenBox(string title, int width, int height, BoxStyle style = null)`
-- `Window.OpenBox(string title, BoxStyle style)`
-- `Window.OpenBox(string title)`
+- `Window.OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)`
 
 Open a full screen styled window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
 
-```csharp
+```csharp4
 
   [Test]
         public void WhenNested_draw_a_box_around_the_scrollable_window_with_a_centered_title_and_return_a_live_window_at_the_correct_screen_location()
@@ -234,131 +474,228 @@ Open a full screen styled window with a lined box border with a title. Styling a
         }
 ```
 
-#### Simple Example - Mix and match `System.Console` with `Konsole`
+## Open
 
-<img src='docs/openbox-example.png' width='200' align='right'/>
+`Window.Open()`
+
+Calling `Window.Open()` without any parameters will create a new window region consisting of the whole screen, and will clear the screen, and reset the cursor position. Returns a threadsafe `Concurrent` window.
 
 ```csharp
-    void Wait() => Console.ReadKey(true);
-
-    // show how you can mix and match Console with Konsole
-    Console.WriteLine("line one");
-
-    // create an inline Box window at the current cursor position
-    // (returned Window implements IConsole) 
-    var nyse = Window.OpenBox("NYSE", 20, 12, new BoxStyle() { 
-        ThickNess = LineThickNess.Single, 
-        Title = new Colors(White, Red) 
-    });
-    
-    Console.WriteLine("line two");
-
-    // create another inline Box window at the current cursor position
-    var ftse100 = Window.OpenBox("FTSE 100", 20, 12, new BoxStyle() { 
-        ThickNess = LineThickNess.Double, 
-        Title = new Colors(White, Blue) 
-    });
-    Console.Write("line three");
-
-
-    while(true) {
-        Tick(nyse, "AMZ", amazon -= 0.04M, Red, '-', 4.1M);
-        Tick(ftse100, "BP", bp += 0.05M, Green, '+', 7.2M);
-        Wait();
-    }
-
-    decimal amazon = 84;
-    decimal bp = 146;
-
-    // simple method that takes a window and prints a stock price to that window in color
-    void Tick(IConsole con, string sym, decimal newPrice, ConsoleColor color, char sign, decimal perc) 
-    {
-        con.Write(White, $"{sym,-10}");
-        con.WriteLine(color, $"{newPrice:0.00}");
-        con.WriteLine(color, $"  ({sign}{newPrice}, {perc}%)");
-        con.WriteLine("");
-    }
-
+var win = Window.Open();
+```
+this is equivalent to 
+```
+var win = new Window().Concurrent();
 ```
 
-#### Window.PrintAt()
+# Methods and Extension Methods
 
-- `window.PrintAt(x, y, text)`
-- `window.PrintAtColor(foregroundColor, x, y, text, backgroundColor ?)`
+These methods require an existing instance of a window. (`IConsole`)
 
-PrintAt an area of a window, optionally providing the color.
+## PrintAt
+
+- `PrintAt(int x, int y, char c)`
+- `PrintAt(x, y, text)`
+- `PrintAt(int x, int y, string format, params object[] args)`
+
+PrintAt an area of a window
 
 ```csharp
  var window = new Window();
  ...
- window.PrintAtColor(Red, 20, 20, "WARNING!");
+ window.PrintAt(20, 20, "WARNING!");
+```
+
+## PrintAtColor
+
+- `PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background = null)`
+
+PrintAt an area of a window providing the color.
+
+```csharp
+ var window = new Window();
+ ...
+ window.PrintAtColor(Red, 20, 20, "WARNING!", White);
 ```
 
 Print the text, optionally wrapping and causing any scrolling in the current window, at cursor position X,Y in foreground and background color without impacting the current window's cursor position or colours. This method is only threadsafe if you have created a window by using .ToConcurrent() after creating a new Window(), or the window was created using Window.Open(...) which returns a threadsafe window.
 
-**Maintaining seperate colors and cursor positions for windows so that other threads do not change the color or printing while another thread is writing to the console is a really big deal and is what makes Konsole a solid library to use when evaluating multi-threaded libraries** and need a simple way to monitor the results of various asynchronous operations without having to write multiple console apps, or create a Javascript UX library. 
+## Write
 
-## `window.Write(string format, params object[] args)`
-## `window.Write(stringConsoleColor color, format, params object[] args)`
+Write the text to the window in the color, withouting resetting the window's current foreground colour.  Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll. The cursor of the window that did the writing remains at the last printed position, and no other window's cursor positions are changed.
 
-Write the text to the window in the {color} color, withouting resetting the window's current foreground colour.  Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll. The current cursor remains at the last printed position.
-
-## `window.WriteLine(string format, params object[] args)`
-## `window.WriteLine(ConsoleColor color, string format, params object[] args)`
-
-Write the text to the window in the {color} color, withouting resetting the window's current foreground colour.  Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll. Moves the cursor to the next line after printing and `CursorLeft` is reset to 0.
-
-## `Window.Open()`
-
-*Open a window taking up the whole screen.*
+- `Write(string text)`
+- `Write(string format, params object[] args)`
+- `Write(ConsoleColor color, string format, params object[] args)`
 
 ```csharp
-    var numbers = Window.Open();
-```
-this is equivalent to 
-```
-    var numbers = new Window();
+ var window = new Window();
+ window.Write(Red, "WARNING!");
+ window.Write("this text is in the default colour and is not red.");
 ```
 
-## `Window.Open(sx, sy, ex, ey, title)`
+## WriteLine
+
+Same as `Write` but simulates a carriage return by moving the `CursorTop` to next line and resetting `CursorLeft` to `0`.
+
+- `WriteLine(string format, params object[] args)`
+- `WriteLine(ConsoleColor color, string format, params object[] args)`
+
+## SplitRows
+
+Split a console window screen into rows of screens. Returns an array of the rows. Specify the height for each split. Use a height of `0` to indicate that row will take the remainder of the rows. Similar to `*` in CSS.
+
+- `IConsole[] _SplitRows(IConsole c, params Split[] splits)`
 
 ```csharp
-    var numbers = Window.Open(50, 15, 40, 10, "numbers");
+ var con = new MockConsole(20, 11);
+            var consoles = con.SplitRows(
+                    new Split(3, "headline", LineThickNess.Single, ConsoleColor.Yellow),
+                    new Split(0, "content", LineThickNess.Single),
+                    new Split(3, "status", LineThickNess.Single, ConsoleColor.Yellow)
+            );
+
+            var headline = consoles[0];
+            var content = consoles[1];
+            var status = consoles[2];
+
+            headline.Write("my headline that scrolls because of wrapping");
+            content.Write("content goes here, and this content get's wrapped, and if long enough will cause a bit of scrolling.");
+            status.Write("I get clipped & scroll off.");
+
+            var expected = new[]
+            {
+                    "┌──── headline ────┐",
+                    "│wrapping          │",
+                    "└──────────────────┘",
+                    "┌───── content ────┐",
+                    "│ if long enough wi│",
+                    "│ll cause a bit of │",
+                    "│scrolling.        │",
+                    "└──────────────────┘",
+                    "┌───── status ─────┐",
+                    "│roll off.         │",
+                    "└──────────────────┘"
+            };
+
+            con.Buffer.Should().BeEquivalentTo(expected);
 ```
 
-## `Window.Open(sx, sy, ex, ey, title, LineThickNess, ForegroundColor, BackgroundColor)`
+## SplitColumns
+
+Split a console window screen into columns of screens. Returns an array of the rows. Specify the height for each split. Use a height of `0` to indicate that row will take the remainder of the rows. Similar to `*` in CSS.
+
+- `IConsole[] _SplitRows(IConsole c, params Split[] splits)`
 
 ```csharp
-    var numbers = Window.Open(50, 15, 40, 10, "numbers", 
-        LineThickNess.Double,
-        ConsoleColor.White,
-        ConsoleColor.Blue
-    );
+
+        [Test]
+        public void split_the_window_into_windows_using_provided_splits()
+        {
+            var con = new MockConsole(19, 5);
+            var cols = con.SplitColumns(
+                new Split(9, "left"),
+                new Split(0, "right")
+                );
+            var left = cols[0];
+            var right = cols[1];
+
+            left.WriteLine("one");
+            left.WriteLine("two");
+            left.Write("three");
+
+            right.WriteLine("four");
+            right.WriteLine("five");
+            right.Write("six");
+
+            var expected = new[]
+            {    
+                "┌ left ─┐┌─ right ┐",
+                "│one    ││four    │",
+                "│two    ││five    │",
+                "│three  ││six     │",
+                "└───────┘└────────┘"
+            };
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
 ```
-gives you the blue window in the same code further up. (there is a known bug atmo, this constructor does not currently print the title. Will be fixed in upcoming version 6.x) As a workaround for now, If you need a title, use any of the Splits, `SplitTop`, and `SplitBottom`, or `SplitLeft`, and `SplitRight`. Or use `PrintAt` to print the title on top of the border. 
 
-## Opening Inline Windows `new Window(height, width)` or `new Window(height)`
+## Advanced windows with `SplitRows` and `SplitColumns`
 
-```
-var fruit = new Window(3, 20);
-or
-var fruit = new Window(3);
-```
-
-Create a new window inline starting on the next line, at current `CursorTop + 1, using the specified width or the whole screen width if none is provided. Default color of White on Black. If you need to override the defaults then use the static constructor. `Window.OpenInline`
-
-## `Window.OpenInline(echoConsole, padLeft, width, height, foregroundColor, backgroundColor)`
-
-Create a new window inline starting on the next line, at current `CursorTop + 1`, using the specified `width` with `foreground` and `background` color. 
+You can create advanced window layouts using `SplitRows` and `SplitColumns` passing in a collection of Splits. Pass in a size of `0` to indicate that `row` or `column` window must contain the remainder of the window space. 
 
 ```csharp
-   var fruit = Window.OpenInline(2, 50, 3, White, Blue);
+            var c = new Window();
+            var consoles = c.SplitRows(
+                    new Split(4, "heading", LineThickNess.Single),
+                    new Split(0),
+                    new Split(4, "status", LineThickNess.Single)
+            ); ; ;
+
+            var headline = consoles[0];
+            var status = consoles[2];
+
+            var contents = consoles[1].SplitColumns(
+                    new Split(20),
+                    new Split(0, "content") { Foreground = ConsoleColor.White, Background = ConsoleColor.Cyan },
+                    new Split(20)
+            );
+            var menu = contents[0];
+            var content = contents[1];
+            var sidebar = contents[2];
+
+            headline.Write("my headline");
+            content.WriteLine("content goes here");
+
+            menu.WriteLine("Options A");
+            menu.WriteLine("Options B");
+
+            sidebar.WriteLine("20% off all items between 11am and midnight tomorrow!");
+
+            status.Write("System offline!");
+            Console.ReadLine();
 ```
 
+Produces the following window. Each of the console(s) that you have a reference to can be written to like any normal console, and will scroll and clip correctly. You can create progress bar instances inside these windows like any console.
 
-# `SplitLeft()`, `SplitRight()`
+<img src='docs/img/06-window-example.png' width='600' />
 
-Split an `IConsole` window into two equal halves, returning either the left or right half.
+Configure the properties of each section of a window with the `Split` class.
+
+```csharp
+new Split(size) 
+{
+    title,
+    lineThickNess, 
+    foregroundColor,
+    backgroundColor
+};
+```
+
+## SplitLeft
+
+Split an `IConsole` window and return the left half of a screen. Returns an `IConsole` consisting of the inner window representing the scrollable window region inside the lined border. 
+
+- `IConsole SplitLeft(this Window c)`
+- `IConsole SplitLeft(this Window c, ConsoleColor foreground)`
+- `IConsole SplitLeft(this Window c, string title)`
+- `IConsole SplitLeft(this Window c, string title, ConsoleColor foreground)`
+- `IConsole SplitLeft(this Window c, string title, LineThickNess thickness)`
+- `IConsole SplitLeft(this Window c, string title, LineThickNess thickness, ConsoleColor foreground)`
+
+## SplitRight
+
+Split an `IConsole` window and return the left half of a screen. Returns an `IConsole` consisting of the inner window representing the scrollable window region inside the lined border.
+
+- `IConsole SplitRight(this Window c)`
+- `IConsole SplitRight(this Window c, ConsoleColor foreground)`
+- `IConsole SplitRight(this Window c, string title)`
+- `IConsole SplitRight(this Window c, string title, ConsoleColor foreground)`
+- `IConsole SplitRight(this Window c, string title, LineThickNess thickness)`
+- `IConsole SplitRight(this Window c, string title, LineThickNess thickness, ConsoleColor foreground)`
+
+
+#### SplitLeft, SplitRight example
 
 ```csharp
     var w = new Window();
@@ -388,9 +725,16 @@ gives you
     └───────┘└────────┘
 ```
 
-# `SplitLeftRight()`
+## SplitLeftRight
 
-- `myWindow.SplitLeftRight()` : Split the current window left and right and return a tuple. Default to use a single middle line, instead of the older double.
+Split an `IConsole` window instance into two equal halves in one command returning a tuple consisting of the two inner windows representing the scrollable window region inside the lined border. The lined border between the two windows are merged.
+
+- `(IConsole left, IConsole right) SplitLeftRight(this Window c, BorderCollapse border = Collapse)`
+- `(IConsole left, IConsole right) SplitLeftRight(this Window c, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)`
+- `(IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, BorderCollapse border = Collapse)`
+- `(IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)`
+- `(IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, LineThickNess thickness, BorderCollapse border = Collapse)`
+- `(IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, LineThickNess thickness, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)`
 
 ```csharp
     void Fill(IConsole con) => { 
@@ -413,7 +757,23 @@ gives you
     └───────┴────────┘    
 ```
 
-# SplitTop, SplitBottom
+## SplitTop
+
+- `IConsole SplitTop(this IConsole c)`
+- `IConsole SplitTop(this IConsole c, ConsoleColor foreground)`
+- `IConsole SplitTop(this IConsole c, string title)`
+- `IConsole SplitTop(this IConsole c, string title, ConsoleColor foreground)`
+- `IConsole SplitTop(this IConsole c, string title, LineThickNess thickness)`
+- `IConsole SplitTop(this IConsole c, string title, LineThickNess thickness, ConsoleColor foreground)`
+
+## SplitBottom
+
+- `IConsole SplitBottom(this IConsole c)`
+- `IConsole SplitBottom(this IConsole c, ConsoleColor foreground)`
+- `IConsole SplitBottom(this IConsole c, string title)`
+- `IConsole SplitBottom(this IConsole c, string title, ConsoleColor foreground)`
+- `IConsole SplitBottom(this IConsole c, string title, LineThickNess thickness)`
+- `IConsole SplitBottom(this IConsole c, string title, LineThickNess thickness, ConsoleColor foreground)`
 
 ```csharp
     var w = new Window();
@@ -445,7 +805,11 @@ gives you
     └────────┘
 ```
 
-# Nested Windows - combining `SplitTop, SplitBottom` with `SplitLeft, SplitRight`
+## SplitTopBottom
+
+## Nested Windows
+
+#### combining `SplitTop, SplitBottom` with `SplitLeft, SplitRight`
 
 ```csharp
     var win = new Window(30,10);
@@ -482,63 +846,15 @@ Note that `top` and `bottom` windows are only 2 lines high and therefore printin
 └─────────────┘└─────────────┘
 ```
 
-# Advanced windows with `SplitRows` and `SplitColumns`
+# Window Properties
 
-You can create advanced window layouts using `SplitRows` and `SplitColumns` passing in a collection of Splits. Pass in a size of `0` to indicate that `row` or `column` window must contain the remainder of the window space. 
+(TBD) - Link to new readme.
 
-
-
-```csharp
-            var c = new Window();
-            var consoles = c.SplitRows(
-                    new Split(4, "heading", LineThickNess.Single),
-                    new Split(0),
-                    new Split(4, "status", LineThickNess.Single)
-            ); ; ;
-
-            var headline = consoles[0];
-            var status = consoles[2];
-
-            var contents = consoles[1].SplitColumns(
-                    new Split(20),
-                    new Split(0, "content") { Foreground = ConsoleColor.White, Background = ConsoleColor.Cyan },
-                    new Split(20)
-            );
-            var menu = contents[0];
-            var content = contents[1];
-            var sidebar = contents[2];
-
-            headline.Write("my headline");
-            content.WriteLine("content goes here");
-
-            menu.WriteLine("Options A");
-            menu.WriteLine("Options B");
-
-            sidebar.WriteLine("20% off all items between 11am and midnight tomorrow!");
-
-            status.Write("System offline!");
-            Console.ReadLine();
-```
-
-Produces the following window. Each of the console(s) that you have a reference to can be written to like any normal console, and will scroll and clip correctly. You can create progress bar instances inside these windows like any console.
-
-<img src='./docs/window-example.PNG' width='600' />
-
-Configure the properties of each section of a window with the `Split` class.
-
-```csharp
-new Split(size) 
-{
-    title,
-    lineThickNess, 
-    foregroundColor,
-    backgroundColor
-};
-```
-
-# Handling Input
+# Input
 
 To capture input, create an Inline Window, e.g. `var myWindow = Window.Open(width, height, title)` and the cursor will be placed immediately UNDERNEATH the newly created window, and you can use and normal `Console.ReadLine()` reads, `Console.ReadLine()` will run at the current cursor.
+
+#### [Roadmap - version 6]  : `version 6 includes significant updates addressed at forms, input and listview` For now, use `Console.ReadLine`.
 
 Here's a worked example showing you how to read input using `Konsole`
 
@@ -561,9 +877,15 @@ Here's a worked example showing you how to read input using `Konsole`
             }
 
             var console = new ConcurrentWriter();  // < -- NOTE THE ConcurrentWriter to replace Console
-            var window = new Window(50, 20);
-            var compressWindow = window.SplitTop("compress");
-            var encryptWindow = window.SplitBottom("encrypt");
+
+            // open two new windows inline at the current cursor position
+            // cursor will move to below the new windows for easy ReadLine input
+
+            var compressWindow = Window.OpenBox("compress", 50, 10);
+            
+            console.WriteLine("I am below compress");
+
+            var encryptWindow = Window.OpenBox("encrypt", 50, 10);
 
             var tasks = new List<Task>();
 
@@ -572,11 +894,11 @@ Here's a worked example showing you how to read input using `Konsole`
                 console.Write("Enter name of file to process (quit) to exit:");
                 var file = Console.ReadLine();
                 if (file == "quit") break;
-                tasks.Add(Task.Run(()=> Compress(compressWindow, file)));
-                tasks.Add(Task.Run(()=> Index(encryptWindow, file)));
+                tasks.Add(Task.Run(() => Compress(compressWindow, file)));
+                tasks.Add(Task.Run(() => Index(encryptWindow, file)));
                 console.WriteLine($"processing {file}");
             }
-            
+
             console.WriteLine("waiting for background tasks");
             Task.WaitAll(tasks.ToArray());
             Console.WriteLine("done.");
@@ -585,9 +907,40 @@ Here's a worked example showing you how to read input using `Konsole`
 
 Running the code above gives you
 
-<img src='./docs/image-input.png' width='600' />
+<img src='docs/img/07-input.png' width='600' />
+
+## Clipping and Transparency
+
+#### experimental Window constructors
+
+These `Window` constructors are specifically to support writing controls and take optional `K` parameters. This is experimental for now and the constructor params will be changed in future release as the API stabilises as we get more users to give us feedback. There's a long story behind why I used the ugly `K` parameter instead of more traditional constructor injection, buy me a beer and I'll tell you. Some of the original problems that led to `K` are no longer a problem and I will be removing it going forward and will be moving this out of `experimental` add adding to `BoxStyle`. 
+
+- `public Window(int x, int y, int width, int height, IConsole echoConsole = null, params K[] options)`
+- `public Window(IConsole echoConsole, params K[] options)`
+- `public Window(IConsole console, int width, int height, params K[] options)`
+- `public Window(IConsole console, int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)`
+- `public Window(int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)`
+
+K | effect
+--- | ---
+Transparent | window background color is transparent until you start writing then will print using the configured fore and background color i.e. initial window will not clear the background
+FullScreen | window background color is transparent until you start writing then will print using the configured fore and background color i.e. initial window will not clear the background
+Clipping | printing off the screen is clipped, no scrolling. Clipping is the default behavior for a window.
+Scrolling | printing off the bottom of the window causes the window to scroll. (cannot be used in conjunction with Clipping) Scrolling is the default window behavior.
+
+```csharp
+    // create a single line 40 characters wide floating window 
+    // starting at 10,10
+    // White on blue text
+    // with any overflow will be clipped. 
+    // No scrolling. 
+    var singleLineWindow = new Window(10,10, 40, 1, White, Blue, K.Clipping);
+```
+
 
 # Draw
+
+## Draw
 
 Draw lines and boxes single or double line width on the console window and intelligently merge lines that are drawn.
 
@@ -598,11 +951,29 @@ var window = new Window();
 var draw = new Draw(window);
 ```
 
-## `.Box(startX, startY, endX, endYT, title)`
+#### Draw constructors
 
-Once you have a `Draw` instance you can draw lines or boxes.
+Draw lines, optionally merging them intelligently to draw console forms or borders or lines.
+
+- `Draw(IConsole console)`
+- `Draw(IConsole console, LineThickNess thickness = LineThickNess.Single, MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)`
+
+[V6 roadmap] 
+
+- `new Draw()` - draw without needing a window instance
+
+#### Draw methods
+
+## Box
+
+Draw a box from start to end, with an optional centered title. Returns the draw instance for fluent chaining.
+
+- `Draw Box(int sx, int sy, int ex, int ey, LineThickNess? thickness = null)`
+- `Draw Box(int sx, int sy, int ex, int ey, string title, LineThickNess? thicknessOverride = null)`
+
 ```csharp
-draw.Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
+var window = new Window();
+new Draw(window).Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
 ```
 gives you
 ```
@@ -614,13 +985,12 @@ gives you
  │                                       │ 
  └───────────────────────────────────────┘ 
 ```
-adding `.Line(2,5, )
 
-## boxes can overlap
+#### boxes can overlap
 
 Boxes can overlap and line chars are intelligently merged. This allows for creating very sophisticated designs.
 
-The sample below uses `MockConsole` which is also part of the `Konsole` library.
+The sample below uses `MockConsole` which is also part of the `Konsole` library, so that we can `assert` on what was drawn to the console.
 
 ```csharp
             var console = new MockConsole(12, 10);
@@ -644,8 +1014,11 @@ The sample below uses `MockConsole` which is also part of the `Konsole` library.
             console.Buffer.Should().BeEquivalentTo(expected);
 ```
 
+## Line
 
-## .Line(startX, StartY, endX, endY, LineThickNess)
+Draw a line between two points, either horizontally or vertically. 
+
+- `Draw Line(int sx, int sy, int ex, int ey, LineThickNess? thickness = null)`
 
 ```csharp
 
@@ -700,14 +1073,76 @@ gives you. (there is a small bug when switching from single to double line at a 
 
 # Forms
 
-  - quickly and neatly render an object and it's properties in a window or to the console.
-  - support multiple border styles.
-  - Support C# objects or dynamic objects
+Quickly and neatly render an object and it's properties in a window or to the console. Support for multiple border styles. Support C# objects or dynamic objects.  Readonly forms are currently rendered. (Currently only text fields, readonly, simple objects.) On the backlog; `[V6]` add additional field types, complex objects, and editing. 
 
-Readonly forms are currently rendered. Below are examples showing auto rendering of simple objects.
-(Currently only text fields, readonly, simple objects.)
-On the backlog; add additional field types, complex objects, and editing. 
+#### constructors
 
+- `public Form()`
+- `public Form(int width)`
+- `Form(IConsole console = null)`
+
+If no width is provided, the whole width of the parent window is used.
+
+#### Form methods
+
+## Write
+
+Form is written (inline) at current cursor position, and cursor is updated to next line below form, with left=0. 
+
+- `void Write<T>(T item, string title = null)`
+
+#### Rendering Null objects
+
+```csharp
+var form = new Form();
+Person p = null;
+console.WriteLine("line1");
+form.Write(p);
+console.WriteLine("line2");
+```
+gives you
+```
+line1
+    ┌────────────────────────────────── Person  ──────────────────────────────────┐
+    │ Null                                                                        │
+    └─────────────────────────────────────────────────────────────────────────────┘
+line2
+```
+
+#### Rendering Nullable fields
+
+```csharp
+var form = new Form(54, new ThinBoxStyle());
+var numclass = new TestClasses.FormTests.MixedNumClass
+{
+    DoubleField = double.MaxValue,
+    DoubleNull = null,
+    IntMinValue = int.MaxValue,
+    IntNull = null,
+    FloatField = 10.1234F,
+    FloatNull = null,
+};
+form.Write(numclass);
+```
+gives you
+```
+┌────────────────── MixedNumClass  ──────────────────┐
+│ Double Field      : 1.7976931348623157E+308        │
+│ Double Null       : Null                           │
+│ Int Min Value     : 2147483647                     │
+│ Int Null          : Null                           │
+│ Float Field       : 10.1234                        │
+│ Float Null        : Null                           │
+└────────────────────────────────────────────────────┘
+```
+
+#### Numerics and Nullable types
+
+
+#### examples showing auto rendering of simple objects.
+
+`using Konsole.Forms`
+ 
 ```csharp
         using Konsole.Form;
         ...
@@ -725,7 +1160,7 @@ On the backlog; add additional field types, complex objects, and editing.
             form1.Write(person);
 ```
 
-![sample output](docs/Form-Person.png)
+![sample output](docs/img/08-form-person.png)
 
 
 ```csharp        
@@ -733,18 +1168,20 @@ On the backlog; add additional field types, complex objects, and editing.
            // works with anonymous types
             new Form().Write(new {Height = "40px", Width = "200px"}, "Demo Box");
 ```
-![sample output](docs/Form-DemoBox.png)
+![sample output](docs/img/09-form-demobox.png)
 
 ```csharp        
 
             // change the box style, and width
             new Form(40, new ThickBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
 ```
-![sample output](docs/Form-Permissions.png)
+![sample output](docs/img/10-form-permissions.png)
 
-# `Goblinfactory.Konsole.Windows`
+# `Goblinfactory.Konsole.Windows` (seperate nuget package)
 
-## HighSpeedWriter 
+TODO: move to seperate readme.
+
+# HighSpeedWriter 
 
 If you want to write a console game, or serious console application that you've tested and it's too slow using normal Konsole writing, and you are OK with the app only running on windows, then you can use `HighSpeedWriter`, which is available as an additional nuget package `Goblinfactory.Konsole.Windows` to write to the console window via windows `Kernal32` for really high speed. This package has a dependancy on `Goblinfactory.Konsole` so you can simply install this package to get all the features. (nuget will automatically install the dependant package as well for you.)
 
@@ -756,9 +1193,7 @@ The other trade off is you need to keep calling `.Flush()` on your writer to ref
 Install package `goblinfactory.konsole.windows`
 ```
 
-`HighSpeedWriter` can write to a 120 x 60 console window at over 30 frames per second with minimal CPU overhead.
-
-TBD - INSERT GIF SHOWING DEMO OF HIGH SPEED OUTPUT
+`HighSpeedWriter` can write to a 120 x 60 console window at over 30 frames per second with minimal CPU overhead. (update, not sure of this, please watch your CPU usage, no tests yet confirming that CPU usage may be quite high when using the writer.)
 
 ## Getting started with `HighSpeedWriter`
 
@@ -766,12 +1201,12 @@ You use `Konsole` in the same way as described in the docs further above, except
 
 If you have multiple threads writing to the Console, then instead of calling flush all the time, another option is to create a background thread that will `tick` over and refresh the screen x times a second. (depending on what framerate you require).
 
-# End to end sample - `HighSpeedWriter`
+## HighSpeedWriter end to end sample
 
 below is code that should give you a clue as to how I'm using HighSpeedWriter for myself. This sample code produces the following screen and output.
 
-![sample demo using HighSpeedWriter](docs/crazy-fast-demo.gif)
-
+![sample demo using HighSpeedWriter](docs/img/11-crazy-fast-demo.gif)
+§
 **Below is the source code that produced these screenshots** It is also available in the code in the single file demo project [src/TestPackage/Program.cs](src/TestPackage/Program.cs)
 
 ```csharp
@@ -952,10 +1387,9 @@ namespace TestPackage
 
 ```
 
-# Using the tests as Documentation
+## Copying code from the unit tests
 
-Because the unit tests are run on an Azure build server that does not have access a open console fileHandle most of the tests use `MockConsole`. 
-Whenever you see sample code, eg the test below from [src/Konsole.Tests/WindowTests/SplitColumnsShould.cs](src/Konsole.Tests/WindowTests/SplitColumnsShould.cs) 
+Because the unit tests are run on an Azure build server that does not have access a open console fileHandle many of the tests use `MockConsole`. Whenever you see sample code, eg the test below from [src/Konsole.Tests/WindowTests/SplitColumnsShould.cs](src/Konsole.Tests/WindowTests/SplitColumnsShould.cs) 
 
 ```csharp
     var con = new MockConsole(30, 4);
@@ -966,7 +1400,7 @@ Whenever you see sample code, eg the test below from [src/Konsole.Tests/WindowTe
             new Split(12, "col3", LineThickNess.Single)
 ```
 
-In order to use the code yourself in a project, simply leave out the MockConsole, and start with a `new Window()` as below. 
+... then in order to use the code yourself in a project, simply leave out the MockConsole, and start with a `new Window()` as below. 
 The rest of the unit test code will work the same in production as in testing.
 
 ```csharp
@@ -980,19 +1414,27 @@ The rest of the unit test code will work the same in production as in testing.
  
  # Other .NET console libraries
 
-placeholder list for now, will expand on this shortly. (this is a placeholder starter list only, there are a lot of good console libraries. )
 
-| nuget | |
-| --- | --- |
-| [tonerdo/readline](https://github.com/tonerdo/readline) |  A Pure C# GNU-Readline like library for .NET/.NET Core. (works well with Konsole)
-| ncurses | Various links, tbd.
-| [migueldeicaza/Gui.cs](https://github.com/migueldeicaza/gui.cs) | For building Full console applications (APPS) like a windows app, but using the console and supports mouse. THis *is* fully Windows, Linux, Unix compatible. 
-| [DragonFruit - as described by Scott Hanselman](https://www.hanselman.com/blog/DragonFruitAndSystemCommandLineIsANewWayToThinkAboutNETConsoleApps.aspx) | Strongly typed `void main(int x, string something, bool yesOrNo)` <-- this is madness on a stick...so great!
-| [replaysMike/AnyConsole](https://github.com/replaysMike/AnyConsole) | Great for writing utilities for full screen browsing of logs or files where you will be scrolling through large sections of text.
-| [fclp/FluentCommandLineParser](https://github.com/fclp/fluent-command-line-parser) | Does what it says on the tin.
-| --- | --- |
+- [tonerdo/readline](https://github.com/tonerdo/readline) : A Pure C# GNU-Readline like library for .NET/.NET Core. (works well with Konsole)
+- ncurses (tbd))
+- [migueldeicaza/Gui.cs](https://github.com/migueldeicaza/gui.cs) : For building Full console applications (APPS) like a windows app, but using the console and supports mouse. THis *is* fully Windows, Linux, Unix compatible. 
+- [DragonFruit - as described by Scott Hanselman] (https://www.hanselman.com/blog/DragonFruitAndSystemCommandLineIsANewWayToThinkAboutNETConsoleApps.aspx) : Strongly typed `void main(int x, string something, bool yesOrNo)` <-- this is madness on a stick...so great!
+- [replaysMike/AnyConsole](https://github.com/replaysMike/AnyConsole) : Great for writing utilities for full screen browsing of logs or files where you will be scrolling through large sections of text.
+- [fclp/FluentCommandLineParser](https://github.com/fclp/fluent-command-line-parser) : Does what it says on the tin.
 
-I still need to add a few links to various .NET console templates that allow you to take advantage of full asp.net .NET core stack, e.g. dependancy injection etc. Plus command line parsing! (don't re-invent the wheel) 
+#### unsorted list of libraries (random links I saved for myself to refer to or investigate)
+
+- fast io stack question  : https://stackoverflow.com/questions/2754518/how-can-i-write-fast-colored-output-to-console
+- low level io, msdn docs : https://docs.microsoft.com/en-us/windows/console/low-level-console-output-functions
+- official msdn docs      : https://docs.microsoft.com/en-us/windows/console/writeconsoleoutput
+- need to detect platform : https://mariusschulz.com/blog/detecting-the-operating-system-in-net-core
+- fast strings            : https://www.stevejgordon.co.uk/creating-strings-with-no-allocation-overhead-using-string-create-csharp
+- simple text buffer      : http://cgp.wikidot.com/consle-screen-buffer
+- other console libraries   : https://github.com/Athari/CsConsoleFormat to render an alternative Console emulator?
+- another                 : http://elw00d.github.io/consoleframework/examples.html
+- TBD                     : https://blog.tedd.no/2015/08/02/better-text-console-for-c/
+- Windows Console Game    : http://cecilsunkure.blogspot.com/2011/11/windows-console-game-writing-to-console.html
+- launching more consoles : https://neowin.net/forum/topic/904788-c-adding-a-console-window-in-a-windows-app/
 
 # Why did I write Konsole?
 
@@ -1002,11 +1444,13 @@ A big benefit to me is being able to visually describe in text any complex scree
 
 I'm now also using it for other serious applications besides learning material. I'm using `Konsole` in `Gunner` a `.NET` testing library similar to `Gattling` that I need to put code under stress when evaulating different enterprise messaging libraries.
 
-# Debugging problems with Konsole, random items
+# Debugging problems with Konsole
 
 ## This project may not be fully compatible with your project.
 
 When building .NET standard or .NET core app, you may recieve the following warning. If you have `treat warnings as errors` turned on, then this will fail your build.
+
+## Warning NU1702
 
 > Warning	NU1702	ProjectReference 'C:\src\git-alan-public\konsole-spike\Konsole.Platform.Windows\Konsole.Platform.Windows.csproj' was resolved using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETStandard,Version=v2.0'. This project may not be fully compatible with your project.	Konsole	C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets		1653
 
@@ -1022,7 +1466,9 @@ If you are using the `HighSpeedWriter` you must call `Flush()` to render the out
 
 <img src='docs/flush.PNG' width='400'/>
 
-## Corrupt output - colours or text output appearing in the wrong place.
+## Corrupt output
+
+#### colors or text output appearing in the wrong place.
 
 possible causes and fixes
 
@@ -1042,7 +1488,7 @@ TBD
 
 ## MockConsole (substitute), and IConsole (interface) usage
 
-Use MockConsole as a real (fully functional) System.Console substitute, that renders with 100% fidelity to an internal buffer that can be used to assert correct console behavior of any object writing using IConsole.
+Use MockConsole as a real (fully functional) `System.Console` substitute, that renders with 100% fidelity to an internal buffer that can be used to assert correct console behavior of any object writing using IConsole.
 MockConsole can even render out a text representation of the current state of the the console, including representations for the foreground and background color of anything written.
 
 All the test for this library have been written using `MockConsole.` For a fully detailed examples of `MockConsole` being stretched to the limits, see `Konsole.Tests.WindowTests`.
@@ -1160,37 +1606,27 @@ using a Test Double like `Konsole.MockConsole` the test above becomes
 
 ``` 
 
-## Cross platform notes
-ProgressBar has been manually tested with Mono on Mac in version 1.0. I don't currently have any automated testing in place for OSX (mono) and Linux. That's all on the backlog.
-It's possible I might split out the ProgressBar into a seperate nuget package, since that appeared to work remarkably well cross platform, while `Window` makes calls to some `System.Console` methods that are not supported in Mono.
+# Cross platform notes
 
-The scrolling support currently uses `Console.MoveBufferArea` which is not implemented on Mono. I will be working on a suitable alrternative to this on Linux and OSX. (on the backlog) Biggest challenge will be doing crossplatform testing, ...mmm, I predict I will be eating [Cake](http://cakebuild.net/docs/tutorials/getting-started) and containers in the very near future!
+TBD
 
-# Source code
+# Building the solution
 
-## Building the solution
+```shell
+git clone https://github.com/goblinfactory/konsole.git
+cd konsole
+dotnet test
+```
 
-
-### using visual studio
-
- 1. `git clone https://github.com/goblinfactory/konsole.git`
- 2. run the following commands from the root folder;
+This will do a GIT checkout of the project, and `dotnet test` will restore packages, build, and run all the tests.
 
 ### requirements
 
 Any version of .net core. Update `global.json` to the version of .net core you have installed and run the command below in order.
 
- > dotnet restore
+# ChangeLog
 
- > dotnet build
- 
- > dotnet test
- 
-
-
-## ChangeLog
-
-* [changelog](change-log.md)
+* here is the [changelog](change-log.md). It is kept up to date.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
@@ -1214,4 +1650,4 @@ April 2020 end of season snowcode conf, slushfest, best for boarders! :D will tr
 
 [@snowcode](https://twitter.com/snowcode)
 
-![Alan Hemmings](https://pbs.twimg.com/profile_images/624901555532095488/j5dynw0i_bigger.png)
+![Alan Hemmings](docs/img/12-alan.png)

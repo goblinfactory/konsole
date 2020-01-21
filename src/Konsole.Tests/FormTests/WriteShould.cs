@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Konsole.Tests.FormTests
 {
-    public class ShowShould
+    public class WriteShould
     {
 
         [Test]
@@ -39,6 +39,27 @@ namespace Konsole.Tests.FormTests
             console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
         }
 
+        [Test]
+        public void render_null_as_NULL()
+        {
+            var console = new MockConsole(80, 20);
+            var form = new Form(console);
+            Person p = null;
+            console.WriteLine("line1");
+            form.Write(p);
+            console.WriteLine("line2");
+            var expected = new[]
+            {
+                "line1",
+                " ┌────────────────────────────────── Person  ──────────────────────────────────┐",
+                " │ Null                                                                        │",
+                " └─────────────────────────────────────────────────────────────────────────────┘",
+                "line2"
+            };
+
+            console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
+
+        }
 
         //public void nested_objects_should_render_as_sub_boxes()
         //{
@@ -47,7 +68,7 @@ namespace Konsole.Tests.FormTests
 
         //public void collection_properties_should_render_as_grid()
         //{
-            
+
         //}
 
         // - renderer to detect cycles maintain a list of already visited objects
@@ -85,6 +106,8 @@ namespace Konsole.Tests.FormTests
             var form = new Form(console, 54, new ThinBoxStyle());
             var numclass = new TestClasses.FormTests.MixedNumClass
             {
+                DoubleField = double.MaxValue,
+                DoubleNull = null,
                 IntMinValue = int.MaxValue,
                 IntNull = null,
                 IntField = 123,
@@ -95,14 +118,16 @@ namespace Konsole.Tests.FormTests
                 FloatMaxValue = float.MaxValue,
                 FloatMinValue = float.MinValue,
                 FloatNull = null,
-                FloatEpsilon = float.Epsilon
+                FloatEpsilon = float.Epsilon,
             };
             form.Write(numclass);
             var expected = new[]
             {
                 " ┌────────────────── MixedNumClass  ──────────────────┐",
+                " │ Double Field      : 1.7976931348623157E+308        │",
+                " │ Double Null       : Null                           │",
                 " │ Int Min Value     : 2147483647                     │",
-                " │ Int Null          :                                │",
+                " │ Int Null          : Null                           │",
                 " │ Int Field         : 123                            │",
                 " │ Decimal Min Value : -79228162514264337593543950335 │",
                 " │ Decimal Max Value : 79228162514264337593543950335  │",
@@ -110,7 +135,7 @@ namespace Konsole.Tests.FormTests
                 " │ Float Field       : 10.1234                        │",
                 " │ Float Max Value   : 3.4028235E+38                  │",
                 " │ Float Min Value   : -3.4028235E+38                 │",
-                " │ Float Null        :                                │",
+                " │ Float Null        : Null                           │",
                 " │ Float Epsilon     : 1E-45                          │",
                 " └────────────────────────────────────────────────────┘"
             };

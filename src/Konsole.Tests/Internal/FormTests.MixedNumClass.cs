@@ -4,6 +4,8 @@
     {
         internal class MixedNumClass
         {
+            public double DoubleField { get; set; }
+            public double? DoubleNull { get; set; }
             public int IntMinValue { get; set; }
             public int? IntNull { get; set; }
             public int? IntField { get; set; }

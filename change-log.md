@@ -2,6 +2,29 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [5.4.4]
+
+### Added
+
+- Printing objects with nullable fields now prints "Null" for any nullable fields.
+
+### Fixed
+
+- #39 Add double to NumericTypes in FieldReader.
+
+## [5.4.3]
+
+### Fixed
+
+- #43 Form.Write(null) throws exception, new Form().Write(null); should not throw exception. Instead it should write "Null"
+
+## [5.4.2]
+
+### Fixed
+
+- `WhenOpeningInlineShould_open_window_at_current_cursorTop()` : OpenBox (inline) when supplying only a width and a height was not opening the new inline window at the current cursor position.
+
+
 ## [5.4.1]
 
 ### Fixed

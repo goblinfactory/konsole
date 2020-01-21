@@ -100,7 +100,7 @@ namespace Konsole
                 _current = current.Max(Max);
                 try
                 {
-                    decimal perc = (decimal) _current/(decimal) _max;
+                    decimal perc = _max == 0 ? 0 : (decimal) _current/(decimal) _max;
                     int barWidth = _console.WindowWidth - (TextWidth+8);
                     var bar = _current > 0
                         ? new string(_character, (int) ((decimal) (barWidth)*perc)).PadRight(barWidth)

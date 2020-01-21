@@ -1,7 +1,17 @@
 # Roadmap
 
-## Busy now
+## version 6
 
+- SplitLeft, SplitRight, SplitTop, SplitBottom, SplitColumns, SplitRows, to all use the same boxStyle as OpenBox.
+
+## Busy now
+- #40 - fix bug WriteLine conflicts with String.Format 
+- #41 - fix bug : If a `Write` ends exactly on the last column, then the cursor is not advanced to the next line. 
+- test for when text overlaps multiple lines.
+- bring IConsole back into this project.
+- combine Konsole.Platform
+- check 
+- add docs for BoxWriter
 - more manual testing.
 - do pull request and squash commits after a nice cleanup so that my commits can be easier to read.
 - OpenBox
@@ -34,6 +44,8 @@ Alan Hemmings @goblinfactory 11:32
 
 
 ## busy next unsorted
+- addd copyright to top of all files, so that if cloned, that goblinfactory copyright is clearly visible, see Core.cs (Gui.cs) as an example.
+- have ability to show Konsole code running live in a gist, or workbook? tryDotNet ? 
 - change titles to make easier to read
 - add table of contents
 - deprecate old Window.Open (check readme for examples using that?)
