@@ -5,7 +5,12 @@
 - SplitLeft, SplitRight, SplitTop, SplitBottom, SplitColumns, SplitRows, to all use the same boxStyle as OpenBox.
 
 ## Busy now
-
+- #40 - fix bug WriteLine conflicts with String.Format 
+- #41 - fix bug : If a `Write` ends exactly on the last column, then the cursor is not advanced to the next line. 
+- test for when text overlaps multiple lines.
+- bring IConsole back into this project.
+- combine Konsole.Platform
+- check 
 - add docs for BoxWriter
 - more manual testing.
 - do pull request and squash commits after a nice cleanup so that my commits can be easier to read.
