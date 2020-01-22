@@ -10,7 +10,7 @@ namespace Konsole.Samples
 {
     public static class WindowClientServerSamples
     {
-        public static void Run()
+        public static void Demo()
         {
             var con = Window.OpenBox("client server demo", 110, 30);
 

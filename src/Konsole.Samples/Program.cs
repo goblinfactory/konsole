@@ -6,7 +6,7 @@ namespace Konsole.Samples
     {
         static void Main(string[] args)
         {
-            FormSamples.Demo();
+            WindowClientServerSamples.Demo();
             Console.ReadKey(true);
         }
     }

@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static System.ConsoleColor;
 
-namespace Konsole.Samples.Samples
+namespace Konsole.Samples
 {
     public static class BuildTaskBackgroundProcessSample
     {
@@ -14,7 +14,7 @@ namespace Konsole.Samples.Samples
         static int _files = 0;
         static int _bytes = 0;
 
-        public static void Main2(string[] args)
+        public static void Demo()
         {
             static void UpdateStatus(IConsole status)
             {
