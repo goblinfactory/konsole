@@ -1,4 +1,4 @@
-# Konsole 
+# <img src="docs/konsole.png" height="30px" valign='bottom'/> Konsole 
 
 [![nuget](https://img.shields.io/nuget/dt/Goblinfactory.Konsole.svg)](https://www.nuget.org/packages/Goblinfactory.Konsole/) 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 

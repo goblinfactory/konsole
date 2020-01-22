@@ -17,7 +17,7 @@
 
 - #40 WriteLine conflicts with String.Format, support string containing {0} {json} tokens.
 - #41 If a `Write` ends exactly on the last column, then the cursor is not advanced to the next line.</PackageReleaseNotes>
-    <PackageIcon>progress.png</PackageIcon>
+    <PackageIcon>konsole.png</PackageIcon>
     <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -25,7 +25,7 @@
     <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="progress.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include="konsole.png" Pack="true" Visible="false" PackagePath="" />
     <None Include="..\LICENSE.txt">
     <Pack>True</Pack>
     <PackagePath></PackagePath>

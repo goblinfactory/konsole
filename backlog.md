@@ -2,14 +2,19 @@
 
 ## version 6
 
-- SplitLeft, SplitRight, SplitTop, SplitBottom, SplitColumns, SplitRows, to all use the same boxStyle as OpenBox.
 
 ## Busy now
-- #40 - fix bug WriteLine conflicts with String.Format 
-- #41 - fix bug : If a `Write` ends exactly on the last column, then the cursor is not advanced to the next line. 
-- test for when text overlaps multiple lines.
-- bring IConsole back into this project.
+
+- high speed writer for Mac (experiment with highspeed writer for just a small window portion [region])
+- removed obsolete Open methods
+- bring goblinfactory.konsole.windows into main project. (no seperate package)
+
+- remove Window.Open (check how folk have used and make sure I have all the correct overloads)
 - combine Konsole.Platform
+- make window serializable by default, so we can get rid of serializblewindow?
+- SplitLeft, SplitRight, SplitTop, SplitBottom, SplitColumns, SplitRows, to all use the same boxStyle as OpenBox.
+- faster box writer
+- test for when text overlaps multiple lines.
 - check 
 - add docs for BoxWriter
 - more manual testing.

@@ -2,7 +2,11 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
-## [6.0.0-alpha]
+## [6.0.0]
+
+### Added
+
+- new `IConsole` interfaces for simpler abstractions, see new contract docs [here]
 
 ### fixed
 
