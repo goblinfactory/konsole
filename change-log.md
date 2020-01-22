@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### fixed
 
-- #40 WriteLine conflicts with String.Format 
+- #40 WriteLine conflicts with String.Format, support string containing {0} {json} tokens.
 - #41 If a `Write` ends exactly on the last column, then the cursor is not advanced to the next line. 
 
 ## [5.4.4]

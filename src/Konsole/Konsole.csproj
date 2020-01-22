@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>5.4.4</Version>
+    <Version>6.0.0-alpha01</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -13,15 +13,10 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
-    <PackageReleaseNotes>## [5.4.4]
+    <PackageReleaseNotes>### fixed
 
-### Added
-
-- Printing objects with nullable fields now prints "Null" for any nullable fields.
-
-### Fixed
-
-- #39 Add double to NumericTypes in FieldReader.</PackageReleaseNotes>
+- #40 WriteLine conflicts with String.Format, support string containing {0} {json} tokens.
+- #41 If a `Write` ends exactly on the last column, then the cursor is not advanced to the next line.</PackageReleaseNotes>
     <PackageIcon>progress.png</PackageIcon>
     <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
