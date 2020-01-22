@@ -8,6 +8,50 @@ namespace Konsole.Tests.WindowTests
     [UseReporter(typeof(DiffReporter))]
     public class WriteShould
     {
+        [Ignore("fix later after refactoring write and writeline to seperate partial")]
+        [Test]
+        public void when_writing_to_last_char_on_screen_move_cursor_to_next_line()
+        {
+            var con = new MockConsole(6, 4);
+            con.Write("123456");
+            con.Write("XY    ");
+            var expected = new[]
+            {
+                "123456",
+                "      ",
+                "XY    ",
+                "      "
+            };
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
+
+        [Ignore("fix later after refactoring write and writeline to seperate partial")]
+        [Test]
+        public void when_printing_ends_exactly_on_last_char_of_screen_do_not_automatically_scroll_until_user_starts_printing_again()
+        {
+            // so that we can allow user to print using all the lines of the window.
+            var con = new MockConsole(6, 3);
+            con.Write("123456");
+            con.Write("ABCDEF");
+            con.Write("789012");
+            var expected = new[]
+            {
+                "123456",
+                "ABCDEF",
+                "789012"
+            };
+
+            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Write(".");
+            expected = new[]
+            {
+                "ABCDEF",
+                "789012",
+                ".     "
+            };
+            con.Buffer.Should().BeEquivalentTo(expected);
+        }
+
         [Test]
         public void allow_embedded_interpolations_without_exception()
         {

@@ -451,11 +451,6 @@ namespace Konsole
 
         }
 
-        public void Write(string text)
-        {
-            _write(text);
-        }
-
         // scroll the screen up 1 line, and pop the top line off the buffer
         //NB!Need to test if this is cross platform ?
         public void ScrollDown()
@@ -471,44 +466,6 @@ namespace Konsole
                 _echoConsole.MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
             }
         }
-
-
-
-        //TODO: convert everything to redirect all calls to PrintAt, so that writing to parent works flawlessly!
-        private void _write(string text)
-        {
-            if (_clipping && OverflowBottom)
-                return;
-            DoCommand(_echoConsole, () =>
-            {
-                var overflow = "";
-                while (overflow != null)
-                {
-                    if (!_lines.ContainsKey(Cursor.Y)) return;
-                    var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
-                    overflow = result.Overflow;
-                    if (_echo && _echoConsole != null)
-                    {
-                        _echoConsole.ForegroundColor = ForegroundColor;
-                        _echoConsole.BackgroundColor = BackgroundColor;
-                        _echoConsole.PrintAt(CursorLeft + _x, CursorTop + _y, result.Written);
-                    }
-                    if (overflow == null)
-                    {
-                        Cursor = Cursor.IncX(text.Length);
-                    }
-                    else
-                    {
-                        Cursor = new XY(0, Cursor.Y + 1);
-                        if (_clipping && OverflowBottom) break;
-                        if (OverflowBottom)
-                            ScrollDown();
-                    }
-                    text = overflow;
-                }
-            });
-        }
-
 
         public int WindowHeight
         {

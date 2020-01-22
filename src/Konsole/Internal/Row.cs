@@ -7,15 +7,17 @@ namespace Konsole.Internal
 {
     public class Row
     {
-        public class WriteResult
+        internal class WriteResult
         {
-            public WriteResult(string written, string overflow)
+            internal WriteResult(string written, string overflow, bool atLastChar)
             {
                 Written = written;
                 Overflow = overflow;
+                AtLastChar = atLastChar;
             }
-            public string Written { get; set; }
-            public string Overflow { get; set; }
+            public string Written { get; }
+            public string Overflow { get; }
+            public bool AtLastChar { get; }
         }
 
         private readonly int _width;
@@ -45,6 +47,7 @@ namespace Konsole.Internal
         {
             int len = text.Length;
             int overflow = len + x > _width ? len - (_width - x) : 0;
+            bool atLastChar = (len + x == _width);
             // strlen - (width - x)
             // e.g. width 10, x = 1 , string len = 20, overflow = 20-(10-1)=11 
             // e.g. width 20, x = 11, string len = 5, overflow = 5 - (20-11) = -4
@@ -56,7 +59,7 @@ namespace Konsole.Internal
             var overflowText = overflow > 0 ? text.Substring(writeLen, overflow) : null;
             // todo; consider asignment overrides? 
             for (int i = 0; i < writeLen; i++) Cells[i + x] = Cells[i + x].WithChar(writeText[i], color, background);
-            return new WriteResult(writeText,overflowText);
+            return new WriteResult(writeText,overflowText, atLastChar);
         }
 
         public override string ToString()

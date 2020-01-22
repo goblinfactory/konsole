@@ -188,7 +188,7 @@ namespace Konsole
             }
         }
 
-        // class written in response to issue #28 https://github.com/goblinfactory/konsole/issues/28 (Crash after window resize)
+        // method written in response to issue #28 https://github.com/goblinfactory/konsole/issues/28 (Crash after window resize)
         private static int CheckWidth(int x)
         {
             return x.Min(Console.WindowWidth, Console.BufferWidth);
@@ -204,7 +204,7 @@ namespace Konsole
         public void PrintAt(int x, int y, string text)
         {
             SetCursorPosition(CheckWidth(x), y);
-            Console.WriteLine(text);            
+            Console.Write(text);            
         }
         public void PrintAt(int x, int y, char c)
         {
