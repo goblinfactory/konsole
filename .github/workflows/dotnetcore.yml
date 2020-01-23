@@ -11,7 +11,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version:  3.1.x
+        dotnet-version:  3.1.100
     - name: Build and Test Konsole
       run: |
         # dotnet build src/Konsole/Konsole.csproj --configuration Release
@@ -31,7 +31,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version:  3.1.x
+        dotnet-version:  3.1.100
     - name: Build and Test Konsole
       run: | 
         dotnet build src/Konsole.sln --configuration Release
