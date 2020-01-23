@@ -1624,6 +1624,11 @@ This will do a GIT checkout of the project, and `dotnet test` will restore packa
 
 Any version of .net core. Update `global.json` to the version of .net core you have installed and run the command below in order.
 
+# Alpha releases will often break API contracts
+
+- I am breaking from the convention that Alpha releases are builds with stable API's and only minor changes expected. I'm using them as a staging step to bring out important step by step refactoring necessary to prepare for a full stable release with a stable API.  
+- Changes between alpha releases may (very likely) contain small incremental changes to the final API, and are released as alpha releases so that I can get early feedback on critical or important fixes. 
+
 # ChangeLog
 
 * here is the [changelog](change-log.md). It is kept up to date.
