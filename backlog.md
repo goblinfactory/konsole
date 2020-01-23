@@ -6,8 +6,9 @@
 
 - bring goblinfactory.konsole.windows into main project. (no seperate package)
 
-## Busy now
+## Busy next
 
+- move documentation to seperate website (my blog) so that I can track traffic using Google Analytics.
 - high speed writer for Mac (experiment with highspeed writer for just a small window portion [region])
 - removed obsolete Open methods
 
