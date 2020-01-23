@@ -1450,19 +1450,24 @@ TBD
 ```shell
 git clone https://github.com/goblinfactory/konsole.git
 cd konsole
-dotnet test
+dotnet test `or` build.bat
 ```
-
-This will do a GIT checkout of the project, and `dotnet test` will restore packages, build, and run all the tests.
 
 ### requirements
 
-Any version of .net core. Update `global.json` to the version of .net core you have installed and run the command below in order.
+Any version of .net core. Update `global.json` to the version of .net core you have installed and run `build.bat`
 
-# Alpha releases will often break API contracts
+# Dev releases
 
-- I am breaking from the convention that Alpha releases are builds with stable API's and only minor changes expected. I'm using them as a staging step to bring out important step by step refactoring necessary to prepare for a full stable release with a stable API.  
-- Changes between alpha releases may (very likely) contain small incremental changes to the final API, and are released as alpha releases so that I can get early feedback on critical or important fixes. 
+- dev branch will be available as `pre-releases` from time to time. To access the latest dev branch, use Nuget to include pre-releases. latest dev branch will be suffixed with `dev-{nn}` e.g. `6.0.1-dev-01`
+
+# Alpha releases
+
+- Alpha releases will be suffixed with `-alpha-{nn}`
+- Alpha releases are any release that I want to make available for user feedback. Most commonly this will effectively be a private release for a user that has requested a specific feature, or reported a bug and I create a candidate release to fix that bug, or add that feature. 
+- Alpha releases may contain public API api changes and would mean to include the fix it would mean that feature would be included in the next major release.  
+
+
 
 # ChangeLog
 
