@@ -2,18 +2,18 @@
 
 ## Busy now
 
-- create proper highspeedwriter interface that's used by the private highspeed writer, or App? so that the interface is real and not fakes.
+- bring goblinfactory.konsole.windows into main project. (no seperate package) test locally
 
-- bring goblinfactory.konsole.windows into main project. (no seperate package)
 
 ## Busy next
+
+- create proper highspeedwriter interface that's used by the private highspeed writer, or App? so that the interface is real and not fakes.
+- write Mac HighSpeedWriter and test locally
 
 - add `mdsnippets` to build script so that it's always up to date!
 - move documentation to seperate website (my blog) so that I can track traffic using Google Analytics.
 - high speed writer for Mac (experiment with highspeed writer for just a small window portion [region])
 - removed obsolete Open methods
-
-
 - remove Window.Open (check how folk have used and make sure I have all the correct overloads)
 - combine Konsole.Platform
 - make window serializable by default, so we can get rid of serializblewindow?

@@ -13,7 +13,7 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
-    <PackageReleaseNotes>## [6.0.0-alpha02]
+    <PackageReleaseNotes>## [6.0.0]
 
 ### Added
 
