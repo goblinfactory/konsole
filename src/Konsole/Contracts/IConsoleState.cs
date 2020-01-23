@@ -2,6 +2,7 @@
 
 namespace Konsole
 {
+    // begin-snippet: IConsoleState
     public interface IConsoleState : ISetColors
     {
         ConsoleState State { get; set; }
@@ -32,4 +33,5 @@ namespace Konsole
 
         bool CursorVisible { get; set; }
     }
+    //end-snippet
 }   

@@ -53,19 +53,13 @@ public class MyClass {
 
 Typically use for Logging and printing only. Nothing fancy, just writing something out the console or the build output.
 
-- `void WriteLine(string format, params object[] args);`
-- `void WriteLine(string text);`
-- `void Write(string format, params object[] args);`
-- `void Write(string text);`
-- `void Clear();`
+snippet: IWrite
 
 ## ISetColors
 
 Change the foreground and background color of what will get printed with the next Write, or WriteLine command.
 
-- `ConsoleColor ForegroundColor { get; set; }`
-- `ConsoleColor BackgroundColor { get; set; }`
-- `Colors Colors { get; set; }`
+snippet: ISetColors
 
 ## Colors (is a POCO class, and not an interface)
 
@@ -121,55 +115,37 @@ console.BackgroundColor = White;
 
 ## IWriteColor 
 
-`public interface IWriteColor : ISetColors`
-
 If you need to print in color. 
 
-- `void Write(ConsoleColor color, string format, params object[] args);`
-- `void Write(ConsoleColor color, string text);`
-- `void WriteLine(ConsoleColor color, string format, params object[] args);`
-- `void WriteLine(ConsoleColor color, string text);`
-- `void Clear(ConsoleColor? backgroundColor);`
+snippet: IWriteColor
 
 ## IPrintAt
 
 Interface for a class that needs to print at a specific location in a window. 
 
-- `void PrintAt(int x, int y, string format, params object[] args);`
-- `void PrintAt(int x, int y, string text);`
-- `void PrintAt(int x, int y, char c);`
-- `int WindowWidth { get; }`
-- `int WindowHeight { get; }`
+snippet: IPrintAt
 
 ## IPrintAtColor
 
-- `void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background);`
+snippet: IPrintAtColor
 
 ## IScrolling
 
 Interface for a class that needs to be able to scroll portions of the screen. This will most likely cause your library to require platform specific implementations for scrolling.
 
-- `void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop, char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor);`
-- `void ScrollDown();`
+snippet: IScrolling
 
 ## IWindowed
 
 If you are writing a windowing library like `Konsole` then each window region needs to report back an AbsoluteX and AbsoluteY position so that printing can happen at the correct (relative) position on the real console.
 
-- `int AbsoluteX { get; }`
-- `int AbsoluteY { get; }`
+snippet: IWindowed
 
 ## IConsoleState
 
 Interface for all the console methods that are most at risk of causing corruptions in multithreaded programs. The way to protect against corruption is to manage locking and manually save and restore state.
 
-- `ConsoleState State { get; set; }`
-- `int CursorTop { get; set; }`
-- `int CursorLeft { get; set; }`
-- `void DoCommand(IConsole console, Action action);`
-- `ConsoleColor ForegroundColor { get; set; }`
-- `ConsoleColor BackgroundColor { get; set; }`
-- `bool CursorVisible { get; set; }`
+snippet: IconsoleState
 
 #### DoCommand
 

@@ -1,5 +1,6 @@
 ﻿namespace Konsole
 {
+// begin-snippet: IWindowed
     public interface IWindowed
     {
         /// <summary>
@@ -15,4 +16,5 @@
         int WindowWidth { get; }
         int WindowHeight { get; }
     }
+    //end-snippet
 }   

@@ -2,16 +2,10 @@
 
 namespace Konsole
 {
+    // begin-snippet: IKeyboard
     public interface IKeyboard
     {
         ConsoleKeyInfo ReadKey(bool intercept = false);
-
-        ///// <summary>
-        ///// blocks, like ReadKey, will discard any keys it's not waiting for. Does not return anything, raises key press events.
-        ///// </summary>
-        //void WaitKey(Case sensitive = Case.Insensitive, params ConsoleKeyInfo[] c);
-
-        
 
         /// <summary>
         /// blocks, like ReadKey, will discard any keys it's not waiting for. Does not return anything, raises key press events.
@@ -31,11 +25,6 @@ namespace Konsole
         void OnCharPressed(char[] chars, Action<char> key);
 
         void OnCharPressed(char c, Action<char> key);
-
-        //void CharPressed(Action<char> key, Case sensitive, params char[] chars);
-
-        //void OnKeyPress(Action<ConsoleKeyInfo> key, params ConsoleKeyInfo[] keys);
-        //void OnKeyPress(Action<ConsoleKeyInfo> key, Case sensitive = Case.Insensitive, params ConsoleKeyInfo[] chars);
-
     }
+    //end-snippet
 }

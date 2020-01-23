@@ -2,6 +2,7 @@
 
 namespace Konsole
 {
+    // begin-snippet: ISetColors
     public interface ISetColors 
     {
         ConsoleColor ForegroundColor { get; set; }
@@ -13,4 +14,5 @@ namespace Konsole
         /// <remarks>Setting Colors = new Colors(Red, White) must be implemented such that it is the same as having called { ForegroundColor = Red; BackgroundColor = White }</remarks>
         Colors Colors { get; set; }
     }
+    //end-snippet
 }

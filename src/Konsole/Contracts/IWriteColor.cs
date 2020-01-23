@@ -2,6 +2,7 @@
 
 namespace Konsole
 {
+    // begin-snippet: IWriteColor
     public interface IWriteColor : IWrite, ISetColors
     {
         /// <summary>
@@ -26,4 +27,5 @@ namespace Konsole
 
         void Clear(ConsoleColor? backgroundColor);
     }
+    //end-snippet
 }

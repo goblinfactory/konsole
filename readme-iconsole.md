@@ -69,19 +69,42 @@ public class MyClass {
 
 Typically use for Logging and printing only. Nothing fancy, just writing something out the console or the build output.
 
-- `void WriteLine(string format, params object[] args);`
-- `void WriteLine(string text);`
-- `void Write(string format, params object[] args);`
-- `void Write(string text);`
-- `void Clear();`
+<!-- snippet: IWrite -->
+<a id='snippet-iwrite'/></a>
+```cs
+public interface IWrite
+{
+    void WriteLine(string format, params object[] args);
+    void WriteLine(string text);
+    void Write(string format, params object[] args);
+    void Write(string text);
+    void Clear();
+}
+```
+<sup><a href='/src/Konsole/Contracts/IWrite.cs#L3-L12' title='File snippet `iwrite` was extracted from'>snippet source</a> | <a href='#snippet-iwrite' title='Navigate to start of snippet `iwrite`'>anchor</a></sup>
+<!-- endsnippet -->
 
 ## ISetColors
 
 Change the foreground and background color of what will get printed with the next Write, or WriteLine command.
 
-- `ConsoleColor ForegroundColor { get; set; }`
-- `ConsoleColor BackgroundColor { get; set; }`
-- `Colors Colors { get; set; }`
+<!-- snippet: ISetColors -->
+<a id='snippet-isetcolors'/></a>
+```cs
+public interface ISetColors 
+{
+    ConsoleColor ForegroundColor { get; set; }
+    ConsoleColor BackgroundColor { get; set; }
+
+    /// <summary>
+    /// Set the foreground and background color in a single threadsafe way. i.e. locks using a static locker before setting the individual ForegroundColor and BackgroundColor properties. 
+    /// </summary>
+    /// <remarks>Setting Colors = new Colors(Red, White) must be implemented such that it is the same as having called { ForegroundColor = Red; BackgroundColor = White }</remarks>
+    Colors Colors { get; set; }
+}
+```
+<sup><a href='/src/Konsole/Contracts/ISetColors.cs#L5-L17' title='File snippet `isetcolors` was extracted from'>snippet source</a> | <a href='#snippet-isetcolors' title='Navigate to start of snippet `isetcolors`'>anchor</a></sup>
+<!-- endsnippet -->
 
 ## Colors (is a POCO class, and not an interface)
 
@@ -137,55 +160,153 @@ console.BackgroundColor = White;
 
 ## IWriteColor 
 
-`public interface IWriteColor : ISetColors`
-
 If you need to print in color. 
 
-- `void Write(ConsoleColor color, string format, params object[] args);`
-- `void Write(ConsoleColor color, string text);`
-- `void WriteLine(ConsoleColor color, string format, params object[] args);`
-- `void WriteLine(ConsoleColor color, string text);`
-- `void Clear(ConsoleColor? backgroundColor);`
+<!-- snippet: IWriteColor -->
+<a id='snippet-iwritecolor'/></a>
+```cs
+public interface IWriteColor : IWrite, ISetColors
+{
+    /// <summary>
+    /// writes out to the console using the requested color, resetting the color back to the console afterwards. Implementor Should be threadsafe.
+    /// </summary>
+    void Write(ConsoleColor color, string format, params object[] args);
+
+    /// <summary>
+    /// writes out to the console using the requested color, resetting the color back to the console afterwards. Implementor Should be threadsafe.
+    /// </summary>
+    void Write(ConsoleColor color, string text);
+
+    /// <summary>
+    /// writes out to the console using the requested color, resetting the color back to the console afterwards. Implementor Should be threadsafe.
+    /// </summary>
+    void WriteLine(ConsoleColor color, string format, params object[] args);
+
+    /// <summary>
+    /// writes out to the console using the requested color, resetting the color back to the console afterwards. Implementor Should be threadsafe.
+    /// </summary>
+    void WriteLine(ConsoleColor color, string text);
+
+    void Clear(ConsoleColor? backgroundColor);
+}
+```
+<sup><a href='/src/Konsole/Contracts/IWriteColor.cs#L5-L30' title='File snippet `iwritecolor` was extracted from'>snippet source</a> | <a href='#snippet-iwritecolor' title='Navigate to start of snippet `iwritecolor`'>anchor</a></sup>
+<!-- endsnippet -->
 
 ## IPrintAt
 
 Interface for a class that needs to print at a specific location in a window. 
 
-- `void PrintAt(int x, int y, string format, params object[] args);`
-- `void PrintAt(int x, int y, string text);`
-- `void PrintAt(int x, int y, char c);`
-- `int WindowWidth { get; }`
-- `int WindowHeight { get; }`
+<!-- snippet: IPrintAt -->
+<a id='snippet-iprintat'/></a>
+```cs
+public interface IPrintAt
+{
+    void PrintAt(int x, int y, string format, params object[] args);
+    void PrintAt(int x, int y, string text);
+    void PrintAt(int x, int y, char c);
+}
+```
+<sup><a href='/src/Konsole/Contracts/IPrintAt.cs#L6-L13' title='File snippet `iprintat` was extracted from'>snippet source</a> | <a href='#snippet-iprintat' title='Navigate to start of snippet `iprintat`'>anchor</a></sup>
+<!-- endsnippet -->
 
 ## IPrintAtColor
 
-- `void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background);`
+<!-- snippet: IPrintAtColor -->
+<a id='snippet-iprintatcolor'/></a>
+```cs
+public interface IPrintAtColor : IPrintAt, ISetColors
+{
+    void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background);
+}
+```
+<sup><a href='/src/Konsole/Contracts/IPrintAtColor.cs#L5-L10' title='File snippet `iprintatcolor` was extracted from'>snippet source</a> | <a href='#snippet-iprintatcolor' title='Navigate to start of snippet `iprintatcolor`'>anchor</a></sup>
+<!-- endsnippet -->
 
 ## IScrolling
 
 Interface for a class that needs to be able to scroll portions of the screen. This will most likely cause your library to require platform specific implementations for scrolling.
 
-- `void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop, char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor);`
-- `void ScrollDown();`
+<!-- snippet: IScrolling -->
+<a id='snippet-iscrolling'/></a>
+```cs
+public interface IScrolling
+{
+    void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft,
+        int targetTop, char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor);
+
+    void ScrollDown();
+}
+```
+<sup><a href='/src/Konsole/Contracts/IScrolling.cs#L5-L13' title='File snippet `iscrolling` was extracted from'>snippet source</a> | <a href='#snippet-iscrolling' title='Navigate to start of snippet `iscrolling`'>anchor</a></sup>
+<!-- endsnippet -->
 
 ## IWindowed
 
 If you are writing a windowing library like `Konsole` then each window region needs to report back an AbsoluteX and AbsoluteY position so that printing can happen at the correct (relative) position on the real console.
 
-- `int AbsoluteX { get; }`
-- `int AbsoluteY { get; }`
+<!-- snippet: IWindowed -->
+<a id='snippet-iwindowed'/></a>
+```cs
+public interface IWindowed
+{
+    /// <summary>
+    /// The absolute X position this window is located on the real or root console. This is where relative x:0 starts from for this window.
+    /// </summary>
+    int AbsoluteX { get; }
+
+    /// <summary>
+    /// The absolute Y position this window is located on the real or root console. This is where relative y:0 starts from for this window.
+    /// </summary>
+    int AbsoluteY { get; }
+
+    int WindowWidth { get; }
+    int WindowHeight { get; }
+}
+```
+<sup><a href='/src/Konsole/Contracts/IWindowed.cs#L3-L19' title='File snippet `iwindowed` was extracted from'>snippet source</a> | <a href='#snippet-iwindowed' title='Navigate to start of snippet `iwindowed`'>anchor</a></sup>
+<!-- endsnippet -->
 
 ## IConsoleState
 
 Interface for all the console methods that are most at risk of causing corruptions in multithreaded programs. The way to protect against corruption is to manage locking and manually save and restore state.
 
-- `ConsoleState State { get; set; }`
-- `int CursorTop { get; set; }`
-- `int CursorLeft { get; set; }`
-- `void DoCommand(IConsole console, Action action);`
-- `ConsoleColor ForegroundColor { get; set; }`
-- `ConsoleColor BackgroundColor { get; set; }`
-- `bool CursorVisible { get; set; }`
+<!-- snippet: IconsoleState -->
+<a id='snippet-iconsolestate'/></a>
+```cs
+public interface IConsoleState : ISetColors
+{
+    ConsoleState State { get; set; }
+    int CursorTop { get; set; }
+    int CursorLeft { get; set; }
+
+    /// <summary>
+    /// runs an action that may or may not modify the console state that can cause corruptions when thread context swaps. Must lock on a static locker, do try catch, and ensure state is back to what it was before the command ran.
+    /// </summary>
+    /// <param name="console"></param>
+    /// <param name="action"></param>
+    /// <remarks>If you're not writing a threadsafe control or threading is not an issue, then you can simply call action() in your implementation.</remarks>
+    /// <example>
+    /// <code>
+    ///  lock(_locker)
+    ///  {
+    ///    var state = console.State;
+    ///    try
+    ///    {
+    ///      action();
+    ///    }
+    ///    finally
+    ///    {
+    ///      console.State = state;</code>
+    ///    }
+    ///  }</example>
+    void DoCommand(IConsole console, Action action);
+
+    bool CursorVisible { get; set; }
+}
+```
+<sup><a href='/src/Konsole/Contracts/IConsoleState.cs#L5-L36' title='File snippet `iconsolestate` was extracted from'>snippet source</a> | <a href='#snippet-iconsolestate' title='Navigate to start of snippet `iconsolestate`'>anchor</a></sup>
+<!-- endsnippet -->
 
 #### DoCommand
 

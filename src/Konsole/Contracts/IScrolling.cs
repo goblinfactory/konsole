@@ -2,6 +2,7 @@
 
 namespace Konsole
 {
+    // begin-snippet: IScrolling
     public interface IScrolling
     {
         void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft,
@@ -9,4 +10,5 @@ namespace Konsole
 
         void ScrollDown();
     }
+    // end-snippet
 }   
