@@ -8,9 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Konsole.Platform.Windows\Konsole.Platform.Windows.csproj" />
     <ProjectReference Include="..\Konsole\Konsole.csproj" />
   </ItemGroup>

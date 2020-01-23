@@ -1,5 +1,6 @@
-# Konsole 
+# <img src="docs/konsole.png" height="30px" valign='bottom'/> Konsole 
 
+[![NuGet Status](https://img.shields.io/nuget/v/Goblinfactory.Konsole.svg?label=Goblinfactory.Konsole)](https://www.nuget.org/packages/IConsole/)
 [![nuget](https://img.shields.io/nuget/dt/Goblinfactory.Konsole.svg)](https://www.nuget.org/packages/Goblinfactory.Konsole/) 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
 [![Join the chat at https://gitter.im/goblinfactory-konsole/community](https://badges.gitter.im/goblinfactory-konsole/community.svg)](https://gitter.im/goblinfactory-konsole/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -18,7 +19,7 @@ Alan
 
   * [Installing and getting started](#installing-and-getting-started)
   * [using static Console.ConsoleColor](#using-static-consoleconsolecolor)      
-  * [IConsole](#iconsole)
+  * [IConsole](readme-iconsole.md)
   * [ConcurrentWriter](#concurrentwriter)
   * [Progress Bars](#progressbars)
     * [ProgressBar worked parallel example](#progressbar-worked-parallel-example)
@@ -186,7 +187,13 @@ var box = Window.OpenBox("warnings", new BoxStyle() { Title = new Colors(White, 
 
 ## IConsole
 
-This is the main interface that all windows, and objects that wrap a window, or that wrap the `System.Console` writer. It implements the almost everything that `System.Console` does with some extra magic. 
+This is the main interface that all windows, and objects that wrap a window, or that wrap the `System.Console` writer. It implements the almost everything that `System.Console` does with some extra magic. `IConsole` is a well thought out .NET System.Console abstractions. Use to remove a direct dependancy on System.Console and replace with a dependancy on a well used and well known console interface, `IConsole`, to allow for building rich 'testable', high quality interactive console applications and utilities.
+
+For more information about the different interfaces [please see the full documentation for the contracts, as well as details of each interface here](docs/iconsole.md)
+
+<img src='docs/img/iconsole.png' align='center' />
+
+
 
 # Progress bars
 
@@ -1623,6 +1630,11 @@ This will do a GIT checkout of the project, and `dotnet test` will restore packa
 ### requirements
 
 Any version of .net core. Update `global.json` to the version of .net core you have installed and run the command below in order.
+
+# Alpha releases will often break API contracts
+
+- I am breaking from the convention that Alpha releases are builds with stable API's and only minor changes expected. I'm using them as a staging step to bring out important step by step refactoring necessary to prepare for a full stable release with a stable API.  
+- Changes between alpha releases may (very likely) contain small incremental changes to the final API, and are released as alpha releases so that I can get early feedback on critical or important fixes. 
 
 # ChangeLog
 

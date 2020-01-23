@@ -57,6 +57,14 @@ namespace Konsole
             }
         }
 
+        public void WriteLine(ConsoleColor color, string text)
+        {
+            lock (_locker)
+            {
+                _window.WriteLine(color, text);
+            }
+        }
+
         public void Write(ConsoleColor color, string format, params object[] args)
         {
             lock (_locker)
@@ -81,6 +89,13 @@ namespace Konsole
             }
         }
 
+        public void Write(ConsoleColor color, string text)
+        {
+            lock (_locker)
+            {
+                _window.Write(color, text);
+            }
+        }
 
         public ConsoleState State
         {
@@ -260,6 +275,5 @@ namespace Konsole
                 _window.MoveBufferArea(sourceLeft,sourceTop,sourceWidth,sourceHeight,targetLeft,targetTop,sourceChar,sourceForeColor,sourceBackColor);
             }
         }
-
     }
 }

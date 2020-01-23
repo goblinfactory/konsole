@@ -53,12 +53,41 @@ namespace Konsole
             try
             {
                 ForegroundColor = color;
-                Write(format, args);
+                Console.Write(format, args);
             }
             finally
             {
                 ForegroundColor = foreground;
             }
+        }
+
+        public void Write(ConsoleColor color, string text)
+        {
+            var foreground = ForegroundColor;
+            try
+            {
+                ForegroundColor = color;
+                Console.Write(text);
+            }
+            finally
+            {
+                ForegroundColor = foreground;
+            }
+        }
+
+        public void WriteLine(ConsoleColor color, string text)
+        {
+            var foreground = ForegroundColor;
+            try
+            {
+                ForegroundColor = color;
+                Console.WriteLine(text);
+            }
+            finally
+            {
+                ForegroundColor = foreground;
+            }
+
         }
 
 

@@ -185,13 +185,19 @@ namespace Konsole
 
         public void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
-        {
-           
+        { 
         }
 
         private void SetCursorPosition(int x, int y)
         {
-            
+        }
+
+        public void Write(ConsoleColor color, string text)
+        {
+        }
+
+        public void WriteLine(ConsoleColor color, string text)
+        {
         }
     }
 }
