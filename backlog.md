@@ -1,9 +1,12 @@
 # Roadmap
 
+- simple input, ReadLine()
+
+## Busy next
+
 - create proper highspeedwriter interface that's used by the private highspeed writer, or App? so that the interface is real and not fakes.
 - write Mac HighSpeedWriter and test locally
 
-## Busy next
 - need to get box writer fast enough that when pressing tab, to move between active windows, I can show the active 
   window by redrawing the window using a highlight theme, e.g. brightwhite double, versus single gray.
 - add `mdsnippets` to build script so that it's always up to date!
