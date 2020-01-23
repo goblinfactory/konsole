@@ -6,7 +6,7 @@ namespace Konsole.Samples
     {
         static void Main(string[] args)
         {
-            WindowClientServerSamples.Demo();
+            RealtimeStockPriceMonitor.Demo();
             Console.ReadKey(true);
         }
     }

@@ -5,14 +5,16 @@ using Konsole;
 using Konsole.Internal;
 using static System.ConsoleColor;
 
-namespace TestPackage
+namespace Konsole.Samples
 {
-    class Program
+    public static class RealtimeStockPriceMonitor
     {
+        //TODO: get a feed of stock symbols, and allow user to pick stock prices from column B, and add to monitor
+        //      on left. use fake (and real) stock service
         static bool finished = false;
         static bool crazyFast = false;
         static Func<bool> rand = () => new Random().Next(100) > 49;
-        static void Main(string[] args)
+        public static void Demo()
         {
 
 
@@ -115,7 +117,7 @@ namespace TestPackage
             // create a menu inside the menu console window
             // the menu will write updates to the status console window
 
-            var menu = new Menu(menuCon, "Progress Bars", ConsoleKey.Escape, 30,
+            var menu = new Menu(menuCon, "Menu", ConsoleKey.Escape, 30,
                 new MenuItem('s', "slow", () =>
                 {
                     speed = 200;

@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using Konsole.Platform;
 using Konsole.Platform.Windows;
 using NUnit.Framework;
@@ -10,20 +10,21 @@ namespace Konsole.Tests.PlatformTests
     [TestFixture]
     public class ScrollerTests
     {
+
         [Test]
         public void WhenScrollingWholeScreen_ScrollDownBy1_Should_ScrollTheWholeScreenDown1Line()
         {
-            var buffer = BufferBuilder.BuildBuffer(7, 5, '.', Colors.WhiteOnBlack,
+            var screen = new TestScreenBuffer(7, 5, '.', Colors.WhiteOnBlack,
                 "the1234",
                 "gray[=]",
                 "cats567",
                 "howled8",
                 "9012345"
             );
-            var scroller = new Scroller(buffer, 7, 4, '.', Colors.WhiteOnBlack);
+            var scroller = new Scroller(screen.Buffer, 7, 4, '.', Colors.WhiteOnBlack);
             scroller.ScrollDown(1, 0, 0, 7, 4);
-            var actual = buffer.ToSingleString();
-            actual.Should().Be(
+
+            screen.ToString().Should().Be(
                 "gray[=]" +
                 "cats567" +
                 "howled8" +
@@ -35,17 +36,17 @@ namespace Konsole.Tests.PlatformTests
         [Test]
         public void WhenScrollingWholeScreen_ScrollDownBy2_Should_ScrollTheWholeScreenDown2Lines()
         {
-            var buffer = BufferBuilder.BuildBuffer(7, 5, '.', Colors.WhiteOnBlack,
+            var screen = new TestScreenBuffer(7, 5, '.', Colors.WhiteOnBlack,
                 "the....",
                 "gray...",
                 "cats...",
                 "howled.",
                 "crazily"
             );
-            var scroller = new Scroller(buffer, 7, 4, '.', Colors.WhiteOnBlack);
+            var scroller = new Scroller(screen.Buffer, 7, 4, '.', Colors.WhiteOnBlack);
             scroller.ScrollDown(2, 0, 0, 7, 4);
-            var actual = buffer.ToSingleString();
-            actual.Should().Be(
+
+            screen.ToString().Should().Be(
                 "cats..." +
                 "howled." +
                 "crazily" +
@@ -58,8 +59,8 @@ namespace Konsole.Tests.PlatformTests
         [Test]
         public void BufferBuilderTests()
         {
-            var buffer = BufferBuilder.BuildBuffer(7, 4, '.', Colors.WhiteOnBlack, "the", "cats", "howled");
-            var actual = buffer.ToSingleString();
+            var buffer = new TestScreenBuffer(7, 4, '.', Colors.WhiteOnBlack, "the", "cats", "howled");
+            var actual = buffer.ToString();
             actual.Should().Be(
                 "the...." +
                 "cats..." +
@@ -67,9 +68,15 @@ namespace Konsole.Tests.PlatformTests
                 ".......");
         }
 
-        internal static class BufferBuilder
+        public class TestScreenBuffer
         {
-            public static CharAndColor[] BuildBuffer(int width, int height, char defaultChar, Colors colors, params string[] lines)
+            public override string ToString()
+            {
+                return new String(Buffer.Select(b => b.Char.UnicodeChar).ToArray());
+            }
+
+            public CharAndColor[] Buffer { get;  }
+            public TestScreenBuffer(int width, int height, char defaultChar, Colors colors, params string[] lines)
             {
                 int size = height * width;
                 var buffer = new CharAndColor[size];
@@ -87,15 +94,9 @@ namespace Konsole.Tests.PlatformTests
                         int offset = i * width + x;
                         buffer[offset] = ColorExtensions.Set(colors, lines[i][x]);
                     }
-                return buffer;
+
+                Buffer = buffer;
             }
-        }
-    }
-    internal static class BufferExtensions
-    {
-        public static string ToSingleString(this CharAndColor[] src)
-        {
-            return new String(src.Select(b => b.Char.UnicodeChar).ToArray());
         }
     }
 }
