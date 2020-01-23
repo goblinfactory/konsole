@@ -19,7 +19,7 @@ Alan
 
   * [Installing and getting started](#installing-and-getting-started)
   * [using static Console.ConsoleColor](#using-static-consoleconsolecolor)      
-  * [IConsole](docs/iconsole.md)
+  * [IConsole](readme-iconsole.md)
   * [ConcurrentWriter](#concurrentwriter)
   * [Progress Bars](#progressbars)
     * [ProgressBar worked parallel example](#progressbar-worked-parallel-example)

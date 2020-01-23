@@ -8,6 +8,7 @@
 
 ## Busy next
 
+- add `mdsnippets` to build script so that it's always up to date!
 - move documentation to seperate website (my blog) so that I can track traffic using Google Analytics.
 - high speed writer for Mac (experiment with highspeed writer for just a small window portion [region])
 - removed obsolete Open methods

@@ -20,17 +20,9 @@ You can use `IConsole` as simply as typing, `add package Goblinfactory.Konsole`.
 
 This is the sum of all interfaces. It will require the most work to implement. Typically you often only need `IWrite` and-or  `IPrintAt` or `IPrintAtColor`. 
 
-```cs
-public interface IConsole : IPrintAtColor, IConsoleState, IWriteColor, IScrollingWindow 
-{ 
-    
-}
-```
+snippet: IConsole
 
-asdasd
-snipplet: IConsole
-
-<img src='img/iconsole.png' align='center' />
+<img src='docs/img/iconsole.png' align='center' />
 
 ## IWrite vs IConsole
 
@@ -292,4 +284,4 @@ Obviously because `IConsole` is distributed as part of the main `Goblinfactory.K
 
 <hr/>
 
-back to [table of contents](../readme.md#contents)
+back to [table of contents](readme.md#contents)
