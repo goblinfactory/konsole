@@ -7,11 +7,11 @@ using System.Text;
 namespace Konsole.Platform.Windows
 {
     //TODO Make this private later.
-    public partial class Kernel32Draw
+    internal partial class Kernel32Draw
     {
 
         [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern SafeFileHandle CreateFile(
+        internal static extern SafeFileHandle CreateFile(
             string consoleFileHandle,
             [MarshalAs(UnmanagedType.U4)] 
             uint fileAccess,
@@ -26,7 +26,7 @@ namespace Konsole.Platform.Windows
         );
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        public static extern bool WriteConsoleOutputW(
+        internal static extern bool WriteConsoleOutputW(
           SafeFileHandle consoleFileHandle,
           CharAndColor[] buffer,
           COORD bufferWidthHeight,
@@ -34,7 +34,7 @@ namespace Konsole.Platform.Windows
           ref ConsoleRegion consoleRegion
         );
 
-        public static SafeFileHandle OpenConsole()
+        internal static SafeFileHandle OpenConsole()
         {
             SafeFileHandle h = CreateFile("CONOUT$", FILE_FLAG_OVERLAPPED, FILE_SHARE_WRITE, IntPtr.Zero, FileMode.Open, 0, IntPtr.Zero);
             return h;

@@ -1,16 +1,24 @@
 # Roadmap
 
-## Busy now
-
-- bring goblinfactory.konsole.windows into main project. (no seperate package) test locally
-
+- simple input, ReadLine()
 
 ## Busy next
 
 - create proper highspeedwriter interface that's used by the private highspeed writer, or App? so that the interface is real and not fakes.
 - write Mac HighSpeedWriter and test locally
 
+- need to get box writer fast enough that when pressing tab, to move between active windows, I can show the active 
+  window by redrawing the window using a highlight theme, e.g. brightwhite double, versus single gray.
 - add `mdsnippets` to build script so that it's always up to date!
+- Window.OpenBox( ) to open box anywhere on screen.
+- SplitTop SplitBottom to use OpenBox syntax and defaults.
+- ability to open empty
+- when on mac and last line of screen, printing to below the last line does not casue the screen to scroll so that it extends. (this can probably be handled!) 
+  - this is needed because if you are on the last line and create a window, e.g. window.OpenBox("here", 10, 3), you only get a window 1 line high, instead of the screen scrolling on each new line.
+  - work around is to console.clear when starting a print on Mac. This only postpones the problem until printing gets back to the bottom again. (a proper fix is needed.)
+  - another workaround is to clear screen, and run a full console app, that scrolls inside the visible area using a highspeed writer.
+
+- ability to open with padded empty line around.
 - move documentation to seperate website (my blog) so that I can track traffic using Google Analytics.
 - high speed writer for Mac (experiment with highspeed writer for just a small window portion [region])
 - removed obsolete Open methods

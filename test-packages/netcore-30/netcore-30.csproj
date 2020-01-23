@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Konsole.Platform.Windows\Konsole.Platform.Windows.csproj" />
     <ProjectReference Include="..\..\src\Konsole\Konsole.csproj" />
   </ItemGroup>
 

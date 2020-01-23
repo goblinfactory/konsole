@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [6.1.0]
+
+### Added
+
+- `Konsole.Platform.Windows.HighSpeedWriter` (native windows driver) now included and no longer an external package.
+
 ## [6.0.0]
 
 ### Added
@@ -34,7 +40,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Fixed
 
 - `WhenOpeningInlineShould_open_window_at_current_cursorTop()` : OpenBox (inline) when supplying only a width and a height was not opening the new inline window at the current cursor position.
-
 
 ## [5.4.1]
 

@@ -53,10 +53,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Konsole.Platform.Windows\Konsole.Platform.Windows.csproj">
-      <Project>{594b9d0d-b3c0-4074-99d9-a9243506ea00}</Project>
-      <Name>Konsole.Platform.Windows</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Konsole\Konsole.csproj">
       <Project>{2f5b6dc2-c669-4554-867f-b4f5f1b01cb7}</Project>
       <Name>Konsole</Name>
