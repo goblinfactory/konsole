@@ -1,35 +1,39 @@
-name: .NET Core
+name: Goblinfactory.Konsole
 
 on: [push]
 
 jobs:
-  konsole:
-    name: Konsole
+  konsole-ubuntu:
+    name: konsole-ubuntu
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version:  3.0.100
+        dotnet-version:  3.x
     - name: Build and Test Konsole
       run: |
-        dotnet build src/Konsole/Konsole.csproj --configuration Release
-        dotnet build src/Konsole.Tests/Konsole.Tests.csproj --configuration Release
-        dotnet build src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj --configuration Release
+        # dotnet build src/Konsole/Konsole.csproj --configuration Release
+        # dotnet build src/Konsole.Tests/Konsole.Tests.csproj --configuration Release
+        # dotnet build src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj --configuration Release
+        # dotnet test src/Konsole.Tests/Konsole.Tests.csproj
+        # dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
+        dotnet build src/Konsole.sln --configuration Release
         dotnet test src/Konsole.Tests/Konsole.Tests.csproj
         dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
    
-  konsole_platform_window:
-    name: Konsole.Platform.Windows
+  konsole-windows:
+    name: konsole-windows
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version:  3.0.100
+        dotnet-version:  3.x
     - name: Build and Test Konsole
       run: | 
         dotnet build src/Konsole.sln --configuration Release
         dotnet test src/Konsole.Tests/Konsole.Tests.csproj
+        dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
