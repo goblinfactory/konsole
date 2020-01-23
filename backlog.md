@@ -3,14 +3,18 @@
 ## Busy now
 
 - bring goblinfactory.konsole.windows into main project. (no seperate package) test locally
-
+- update HighSpeedWriter docs
 
 ## Busy next
-
+- need to get box writer fast enough that when pressing tab, to move between active windows, I can show the active 
+  window by redrawing the window using a highlight theme, e.g. brightwhite double, versus single gray.
+- add `mdsnippets` to build script so that it's always up to date!
+- Window.OpenBox( ) to open box anywhere on screen.
+- SplitTop SplitBottom to use OpenBox syntax and defaults.
+- ability to open empty
+- ability to open with padded empty line around.
 - create proper highspeedwriter interface that's used by the private highspeed writer, or App? so that the interface is real and not fakes.
 - write Mac HighSpeedWriter and test locally
-
-- add `mdsnippets` to build script so that it's always up to date!
 - move documentation to seperate website (my blog) so that I can track traffic using Google Analytics.
 - high speed writer for Mac (experiment with highspeed writer for just a small window portion [region])
 - removed obsolete Open methods

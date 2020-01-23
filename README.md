@@ -130,8 +130,12 @@ class Program
         // show how you can mix and match System.Console with Konsole
         Console.WriteLine("line one");
 
-        // create an inline Box window at the current cursor position
-        // (returned Window implements IConsole) 
+        // create an inline Box window at the current cursor position 
+        // 20 characters wide, by 12 tall.
+        // returns a Window that implements IConsole 
+        // that you can use to write to the window 
+        // and create new windows inside that window.
+        
         var nyse = Window.OpenBox("NYSE", 20, 12, new BoxStyle() { 
             ThickNess = LineThickNess.Single, 
             Title = new Colors(White, Red) 
@@ -156,8 +160,10 @@ class Program
         decimal amazon = 84;
         decimal bp = 146;
 
-        // simple method that takes a window and prints a stock price to that window in color
-        void Tick(IConsole con, string sym, decimal newPrice, ConsoleColor color, char sign, decimal perc) 
+        // simple method that takes a window and prints a stock price 
+        // to that window in color
+        void Tick(IConsole con, string sym, decimal newPrice, 
+           ConsoleColor color, char sign, decimal perc) 
         {
             con.Write(White, $"{sym,-10}");
             con.WriteLine(color, $"{newPrice:0.00}");
