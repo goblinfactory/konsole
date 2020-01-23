@@ -2,11 +2,11 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
-## [6.0.1.alpha.1]
+## [6.1.0]
 
 ### Added
 
-- embed Konsole.Platform.Windows.HighSpeedWriter (native windows driver) now included and no longer an external package.
+- `Konsole.Platform.Windows.HighSpeedWriter` (native windows driver) now included and no longer an external package.
 
 ## [6.0.0]
 

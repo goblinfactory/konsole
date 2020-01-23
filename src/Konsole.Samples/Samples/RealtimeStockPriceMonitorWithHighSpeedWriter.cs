@@ -1,4 +1,5 @@
-﻿using System;
+﻿//begin-snippet: RealtimeStockPriceMonitorWithHighSpeedWriter
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Konsole;
@@ -7,14 +8,14 @@ using static System.ConsoleColor;
 
 namespace Konsole.Samples
 {
-    public static class RealtimeStockPriceMonitor
+    public static class RealtimeStockPriceMonitorWithHighSpeedWriter
     {
         //TODO: get a feed of stock symbols, and allow user to pick stock prices from column B, and add to monitor
         //      on left. use fake (and real) stock service
         static bool finished = false;
         static bool crazyFast = false;
         static Func<bool> rand = () => new Random().Next(100) > 49;
-        public static void Demo()
+        public static void Main(string[] args)
         {
 
 
@@ -161,3 +162,4 @@ namespace Konsole.Samples
         }
     }
 }
+//end-snippet
