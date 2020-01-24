@@ -1,4 +1,5 @@
 ﻿using System;
+using Bogus;
 
 namespace Konsole.Samples
 {
@@ -6,7 +7,7 @@ namespace Konsole.Samples
     {
         static void Main(string[] args)
         {
-            RealtimeStockPriceMonitorWithHighSpeedWriter.Main(args);
+            ProgressBarInsideWindow.Main(null);
             Console.ReadKey(true);
         }
     }

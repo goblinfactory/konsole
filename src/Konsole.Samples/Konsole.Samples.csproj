@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="28.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Konsole\Konsole.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,16 @@
 # Roadmap
 
-## Busy next
+## Busy now
 
+- simple simple list view,  basically it's a menu item that can run keyboard event, no scrolling.
+
+## Now but paused
+
+- faster drawbox (without this we cannot tab between active windows, just too slow)
+- window keyboard event handler, highlight current windows, allow you to open 3 different boxes and tab between them, typing pushes keystrokes to each window in turn, if that window has a ReadText, then that windows gets input, cursor set
+   to blink at that windows current position. Readtext should set cursor to readtext position.
+
+## Busy next
 - simple input, ReadLine()
 - create proper highspeedwriter interface that's used by the private highspeed writer, or App? so that the interface is real and not fakes.
 - write Mac HighSpeedWriter and test locally
