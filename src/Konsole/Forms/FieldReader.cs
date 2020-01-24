@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Konsole.Forms
@@ -39,9 +40,12 @@ namespace Konsole.Forms
             typeof (DateTime)
         }.Concat(NumericTypes).ToArray();
 
+        /// <summary>
+        /// reads the simple non generic public fields and properties that are numbers, strings, dateTime and booleans.
+        /// </summary>
         public FieldList ReadFieldList()
         {
-            var fields = readFields();
+            var fields = readPropertiesAndFields();
             int width = fields.Any() ? fields.Max(f => f.Caption.Length) : 10;
             var fieldlist = new FieldList(fields.ToArray(), width);
             return fieldlist;
@@ -60,14 +64,16 @@ namespace Konsole.Forms
         }
 
 
-        private IEnumerable<Field> readFields()
+        private IEnumerable<Field> readPropertiesAndFields()
         {
-            var properties = _type.GetProperties();
+            var fields = _type.GetFields( BindingFlags.Public | BindingFlags.Instance);
+            var supportedFields = fields.Where(f => SupportedTypes.Contains(NonGenericType(f.FieldType)));
 
+            var properties = _type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             var supportedProps = properties
                 .Where(f => SupportedTypes.Contains(NonGenericType(f.PropertyType)));
 
-            var fields = supportedProps
+            var _props = supportedProps
                 .Select(f => new Field(
                     ParseFieldType(f.PropertyType),
                     f.Name,
@@ -75,7 +81,17 @@ namespace Konsole.Forms
                     IsNullable(f.PropertyType),
                     f.GetValue(_object)
                 ));
-            return fields;
+            var _fields = supportedFields
+                .Select(f => new Field(
+                    ParseFieldType(f.FieldType),
+                    f.Name,
+                    ToCaption(f.Name),
+                    IsNullable(f.FieldType),
+                    f.GetValue(_object)
+                ));
+
+            var fieldsAndProps = _props.Concat(_fields);
+            return fieldsAndProps;
         }
 
         public static FieldType ParseFieldType(Type type)

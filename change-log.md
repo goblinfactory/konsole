@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [6.2.0]
+
+### Added
+
+- Form Write now supports fields as well as properties.
+
 ## [6.1.0]
 
 ### Added
