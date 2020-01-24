@@ -40,7 +40,7 @@ jobs:
         dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
         src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0/Konsole.PerformanceTests.exe
     - name: Archive performance results
-        uses: actions/upload-artifact@v1
-        with:
-          name: performance.log
-          path: src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0/Konsole.performance.log
+      uses: actions/upload-artifact@v1
+      with:
+        name: performance.log
+        path: src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0/Konsole.performance.log
