@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>6.1.0</Version>
+    <Version>6.2.0</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -13,7 +13,13 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
-    <PackageReleaseNotes>## [6.1.0]
+    <PackageReleaseNotes>## [6.2.0]
+
+### Added
+
+- Form Write now supports fields as well as properties.
+
+## [6.1.0]
 
 ### Added
 
