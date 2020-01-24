@@ -19,6 +19,7 @@ jobs:
         # dotnet build src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj --configuration Release
         # dotnet test src/Konsole.Tests/Konsole.Tests.csproj
         # dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
+        
         dotnet build src/Konsole.sln --configuration Release
         dotnet test src/Konsole.Tests/Konsole.Tests.csproj
         dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
@@ -37,3 +38,5 @@ jobs:
         dotnet build src/Konsole.sln --configuration Release
         dotnet test src/Konsole.Tests/Konsole.Tests.csproj
         dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
+        dotnet test src/Konsole.PerformanceTests/Konsole.PerformanceTests.csproj
+        

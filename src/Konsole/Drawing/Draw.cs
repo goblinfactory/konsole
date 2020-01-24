@@ -189,6 +189,20 @@ namespace Konsole
             return this;
         }
 
+        private Draw FastHorizontal(int sx, int sy, int ex, IBoxStyle line)
+        {
+            if (ex - sx < 0) return this;
+            if (sx > ex) throw new ArgumentOutOfRangeException("start x cannot be bigger than end x.");
+            int length = ex - sx + 1;
+            PrintAtAndMerge(sx, sy, line.T, LineMerger.Position.First);
+            for (int i = sx + 1; i < sx + length - 1; i++)
+            {
+                PrintAtAndMerge(i, sy, line.T, LineMerger.Position.Middle);
+            }
+            PrintAtAndMerge(sx + length - 1, sy, line.T, LineMerger.Position.Last);
+            return this;
+        }
+
         private void printAt(int x, int y, char c)
         {
             var key = new XY(x, y);

@@ -7,7 +7,7 @@ namespace Konsole.Samples
     {
         static void Main(string[] args)
         {
-            ProgressBarInsideWindow.Main(null);
+            ListViewSampleFileBrowser.Main(null);
             Console.ReadKey(true);
         }
     }

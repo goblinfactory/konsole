@@ -2,11 +2,14 @@
 
 ## Busy now
 
+
 - simple simple list view,  basically it's a menu item that can run keyboard event, no scrolling.
 
 ## Now but paused
 
 - faster drawbox (without this we cannot tab between active windows, just too slow)
+- OpenBOx without a border or title, so that you can quickly split Left Right.
+
 - window keyboard event handler, highlight current windows, allow you to open 3 different boxes and tab between them, typing pushes keystrokes to each window in turn, if that window has a ReadText, then that windows gets input, cursor set
    to blink at that windows current position. Readtext should set cursor to readtext position.
 
@@ -25,7 +28,7 @@
   - this is needed because if you are on the last line and create a window, e.g. window.OpenBox("here", 10, 3), you only get a window 1 line high, instead of the screen scrolling on each new line.
   - work around is to console.clear when starting a print on Mac. This only postpones the problem until printing gets back to the bottom again. (a proper fix is needed.)
   - another workaround is to clear screen, and run a full console app, that scrolls inside the visible area using a highspeed writer.
-
+  - and nbench to build - automatically test performance : https://petabridge.com/blog/introduction-to-nbench/
 - ability to open with padded empty line around.
 - move documentation to seperate website (my blog) so that I can track traffic using Google Analytics.
 - high speed writer for Mac (experiment with highspeed writer for just a small window portion [region])
