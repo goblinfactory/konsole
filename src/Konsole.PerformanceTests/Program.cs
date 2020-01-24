@@ -14,6 +14,10 @@ namespace Konsole.PerformanceTests
             Console.WriteLine("CAN YOU SEE THIS?");
             Console.WriteLine("*****************");
             Console.WriteLine();
+            using var logstream2 = File.OpenWrite("performance.log");
+            using var writer = new StreamWriter(logstream2);
+            writer.WriteLine("hello from log land");
+            writer.Flush();
             return;
 
             int iterations = args == null || args.Length!=1 ? 10 : int.Parse(args[0]);
