@@ -7,7 +7,45 @@ namespace Konsole.Tests.FormTests
 {
     public class WriteShould
     {
+        internal class Cat
+        {
+            public Cat(int age, string breed, string name) 
+            { 
+                Breed = breed; 
+                Age = age; 
+                Name = name; 
+            }
+            public static string StarSign = "LEO";
+            public int Age;
+            public string Breed { get; set; }
+            private string Breeder { get; set; } = "private";
+            public string Name;
+            public int NumberOfKittens = 3;
+        }
 
+        [Test]
+        public void print_public_properties_then_fields()
+        {
+            var console = new MockConsole(80, 20);
+            var form = new Form(console);
+            var cat = new Cat(10, "Tabby", "Fred");
+            console.WriteLine("line1");
+            form.Write(cat);
+            console.WriteLine("line2");
+            var expected = new[]
+            {
+                "line1",
+                " ┌──────────────────────────────────── Cat ────────────────────────────────────┐",
+                " │ Breed             : Tabby                                                   │",
+                " │ Age               : 10                                                      │",
+                " │ Name              : Fred                                                    │",
+                " │ Number Of Kittens : 3                                                       │",
+                " └─────────────────────────────────────────────────────────────────────────────┘",
+                "line2"
+            };
+
+            console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
+        }
         [Test]
         public void show_the_form_inline_at_the_next_line_below_current_cursor_position_and_update_cursor()
         {

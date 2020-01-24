@@ -1,10 +1,17 @@
 ﻿namespace Konsole.Tests.TestClasses
 {
-    public class Person
+    internal class Person
     {
         public Person()
         {
             Address = new Address();
+        }
+
+        public static string StarSign = "LEO";
+
+        public static decimal Height
+        {
+            get { return 10.5M; }
         }
 
         public string FirstName { get; set; }

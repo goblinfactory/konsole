@@ -1,10 +1,9 @@
 # Roadmap
 
-- update dotnetcore workflow to use sln, to simplify build.
+- Add support to fields to Form.Write #44
 
 ## Busy next
 
-- Add support to fields to Form.Write #44
 - simple input, ReadLine()
 - create proper highspeedwriter interface that's used by the private highspeed writer, or App? so that the interface is real and not fakes.
 - write Mac HighSpeedWriter and test locally
@@ -36,6 +35,7 @@
 - do pull request and squash commits after a nice cleanup so that my commits can be easier to read.
 - OpenBox
 - list view :D
+- move .source.md files to seperate folder. (mdsnippets)
 - fix bug - when creating an inline window from an new ConcurrentWriter() IConsole the colors are wrong? See spike "paul".
 - NB! Set scrollable region (using VT100 commands!)
 - so that you can have input region at the bottom, and "app" at the top?
