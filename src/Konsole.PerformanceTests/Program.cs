@@ -9,6 +9,13 @@ namespace Konsole.PerformanceTests
         static int completed = 0;
         static void Main(string[] args)
         {
+            Console.WriteLine();
+            Console.WriteLine("*****************");
+            Console.WriteLine("CAN YOU SEE THIS?");
+            Console.WriteLine("*****************");
+            Console.WriteLine();
+            return;
+
             int iterations = args == null || args.Length!=1 ? 10 : int.Parse(args[0]);
 
             using (var logstream = File.OpenWrite("performance.log"))

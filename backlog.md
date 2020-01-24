@@ -2,7 +2,7 @@
 
 ## Busy now
 
-
+- add performance test artifact to build.
 - simple simple list view,  basically it's a menu item that can run keyboard event, no scrolling.
 
 ## Now but paused
