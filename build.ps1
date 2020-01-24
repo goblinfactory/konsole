@@ -1,18 +1,33 @@
+$ErrorActionPreference = "Stop"
+
+function Invoke {
+    param (
+        [scriptblock]$ScriptBlock
+    )
+    & @ScriptBlock
+    if ($lastexitcode -ne 0) {
+        Write-Host "------------------------" -foregroundcolor Red -backgroundcolor white
+        Write-Host "BUILD FAILED WITH ERROR!" -foregroundcolor Red -backgroundcolor white
+        Write-Host "------------------------" -foregroundcolor Red -backgroundcolor white
+        exit $lastexitcode
+    }
+}
+
+
 write-host "Konsole"
 write-host "-------"
 
-# when running on linux we cannot build ALL the projects in the sln so have to specify them 1 by 1.
-# so that can limit what frameworks we are testing on.
+# dotnet build src/Konsole/Konsole.csproj --configuration Release
+# dotnet build src/Konsole.Tests/Konsole.Tests.csproj --configuration Release
+# dotnet test src/Konsole.Tests/Konsole.Tests.csproj
 
-dotnet build src/Konsole/Konsole.csproj --configuration Release
-dotnet build src/Konsole.Tests/Konsole.Tests.csproj --configuration Release
-dotnet test src/Konsole.Tests/Konsole.Tests.csproj
+# when running on windows we can short circuit and build ALL the projects in the sln
 
-write-host "------------------------"
-write-host "Konsole.Platform.Windows"
-write-host "------------------------"
 
-# we can short circuit and build ALL the projects in the sln         
-dotnet build src/Konsole.sln --configuration Release
-dotnet test src/Konsole.Tests/Konsole.Tests.csproj
+invoke { dotnet build src/Konsole.sln --configuration Release } 
+invoke { dotnet test src/Konsole.Tests/Konsole.Tests.csproj }
+invoke { dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj }
 
+Write-Host "---------------"
+Write-Host "BUild completed"
+Write-Host "---------------"
