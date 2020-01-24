@@ -43,4 +43,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: performance.log
-        path: src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0/Konsole.performance.log
+        path: src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0/performance.log
