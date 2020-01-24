@@ -38,5 +38,5 @@ jobs:
         dotnet build src/Konsole.sln --configuration Release
         dotnet test src/Konsole.Tests/Konsole.Tests.csproj
         dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
-        Konsole.PerformanceTests/Konsole.PerformanceTests.exe
+        ./Konsole.PerformanceTests/Konsole.PerformanceTests.exe
         
