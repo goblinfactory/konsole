@@ -273,6 +273,17 @@ var pb2 = new ProgressBar(PbStyle.DoubleLine, files.Count());
 
 <img src='docs/img/04-progressbar.gif' width='75%'/>
 
+## Open a progressbar inside a window
+
+To open a progress bar inside a new window, just pass the window (`IConsole`) as the first parameter.
+
+snippet: ProgressBarInsideWindow
+
+Gives you
+
+<img src='docs/img/progressbar-inside-window.png'/>
+
+
 # Threading and threadsafe writing to the Console.
 
 If you have a background thread that writes to the screen, then you have to make sure that the thread code is threadsafe, with regards to the console. `System.Console` by default is not threadsafe. Use `new ConcurrentWriter()` to create a simple threadsafe writer that will write to the current console window. New Window is not threadsafe. Call `.Concurrent()` on a new window to return a thread safe window.
