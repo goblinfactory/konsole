@@ -1,7 +1,5 @@
 # Roadmap
 
-- Add support to fields to Form.Write #44
-
 ## Busy next
 
 - simple input, ReadLine()
