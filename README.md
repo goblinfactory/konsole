@@ -7,11 +7,11 @@ To change this file edit the source file and then run MarkdownSnippets.
 
 # <img src="docs/konsole.png" height="30px" valign='bottom'/> Konsole 
 
+[![Goblinfactory.Konsole](https://github.com/goblinfactory/konsole/workflows/Goblinfactory.Konsole/badge.svg)](https://github.com/goblinfactory/konsole/actions)
 [![NuGet Status](https://img.shields.io/nuget/v/Goblinfactory.Konsole.svg?label=Goblinfactory.Konsole)](https://www.nuget.org/packages/IConsole/)
 [![nuget](https://img.shields.io/nuget/dt/Goblinfactory.Konsole.svg)](https://www.nuget.org/packages/Goblinfactory.Konsole/) 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
 [![Join the chat at https://gitter.im/goblinfactory-konsole/community](https://badges.gitter.im/goblinfactory-konsole/community.svg)](https://gitter.im/goblinfactory-konsole/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-![Goblinfactory.Konsole](https://github.com/goblinfactory/konsole/workflows/Goblinfactory.Konsole/badge.svg)
 
 Low ceremony, Fluent DSL for writing console apps, utilities and spike projects. Providing thread safe progress bars, windows and forms and drawing for console applications. Build UX's as shown below in very few lines of code. Konsole provides simple threadsafe ways to write to the C# console window. [See my notes on threading](docs/threading.md). The project is growing quickly with fast responses to issues raised. 
 

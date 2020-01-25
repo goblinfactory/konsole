@@ -1,6 +1,6 @@
 # <img src="docs/konsole.png" height="30px" valign='bottom'/> Konsole 
 
-![Goblinfactory.Konsole](https://github.com/goblinfactory/konsole/workflows/Goblinfactory.Konsole/badge.svg)
+[![Goblinfactory.Konsole](https://github.com/goblinfactory/konsole/workflows/Goblinfactory.Konsole/badge.svg)](https://github.com/goblinfactory/konsole/actions)
 [![NuGet Status](https://img.shields.io/nuget/v/Goblinfactory.Konsole.svg?label=Goblinfactory.Konsole)](https://www.nuget.org/packages/IConsole/)
 [![nuget](https://img.shields.io/nuget/dt/Goblinfactory.Konsole.svg)](https://www.nuget.org/packages/Goblinfactory.Konsole/) 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
