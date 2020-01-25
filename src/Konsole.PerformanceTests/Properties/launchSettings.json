@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Konsole.PerformanceTests": {
+      "commandName": "Project",
+      "commandLineArgs": "RUN5"
+    }
+  }
+}

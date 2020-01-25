@@ -38,7 +38,7 @@ jobs:
         dotnet build src/Konsole.sln --configuration Release
         dotnet test src/Konsole.Tests/Konsole.Tests.csproj
         dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
-        src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0/Konsole.PerformanceTests.exe
+        src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0/Konsole.PerformanceTests.exe RUN10
     - name: Archive performance results
       uses: actions/upload-artifact@v1
       with:
