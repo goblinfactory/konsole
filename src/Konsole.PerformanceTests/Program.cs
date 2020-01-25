@@ -7,6 +7,7 @@ using System.Reflection;
 
 namespace Konsole.PerformanceTests
 {
+    //TODO: test if I still need the launch external process?
     class Program
     {
         const int ERRORS = -1;
