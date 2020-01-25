@@ -7,6 +7,7 @@
 
 ## Now but paused
 
+- add badge to goblinfactory website.
 - faster drawbox (without this we cannot tab between active windows, just too slow)
 - OpenBOx without a border or title, so that you can quickly split Left Right.
 
