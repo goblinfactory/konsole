@@ -97,10 +97,11 @@ namespace Konsole.PerformanceTests
                 using (Process process = new Process())
                 {
                     var path = Assembly.GetExecutingAssembly().Location.Replace(".dll", ".exe");
+                    process.StartInfo.CreateNoWindow = false;
                     process.StartInfo.UseShellExecute = false;
                     process.StartInfo.FileName = path;
                     process.StartInfo.Arguments = argument;
-                    process.StartInfo.CreateNoWindow = false;
+                    process.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
                     process.Start();
                     process.WaitForExit();
                     return process.ExitCode;
