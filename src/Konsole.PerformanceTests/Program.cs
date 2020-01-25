@@ -110,6 +110,8 @@ namespace Konsole.PerformanceTests
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Console.WriteLine("---------");
+                Console.WriteLine(e.ToString());
                 using var logstream = File.OpenWrite("performance.log");
                 using var log = new StreamWriter(logstream);
                 log.WriteLine(e.Message);
