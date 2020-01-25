@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -125,7 +126,6 @@ namespace Konsole.PerformanceTests
     public class Tester
     {
         private readonly StreamWriter log;
-
         public Tester(StreamWriter log)
         {
             this.log = log;
@@ -133,6 +133,7 @@ namespace Konsole.PerformanceTests
         }
         public void TestIt(int iterations, string test, Action action)
         {
+            int excludeFirst = 2;
             Console.WriteLine($"Running test :{test}");
             int cnt = 0;
             var timer = new Stopwatch();
@@ -140,12 +141,14 @@ namespace Konsole.PerformanceTests
             for (int i = 0; i < iterations; i++)
             {
                 Console.Clear();
-                timer.Start();
+                // exclude the first two
+                bool exclude = (i + 1) >= excludeFirst;
+                if (!exclude) timer.Start();
                 action();
                 cnt++;
-                timer.Stop();
+                if(!exclude) timer.Stop();
             }
-            log.WriteLine(" finished.");
+
             if (iterations != cnt)
             {
                 var errorMessage = $"Error, iterations:${iterations} != cnt:{cnt}";
@@ -156,7 +159,7 @@ namespace Konsole.PerformanceTests
                 Environment.Exit(-1);
             }
 
-            double rps = (double)iterations / timer.Elapsed.TotalSeconds;
+            double rps = (double)(iterations - excludeFirst) / timer.Elapsed.TotalSeconds;
             double response = (1 / rps) * 1000;
             var successMessage = $"TEST:{test,-20} [{rps:000000.00}] requests per second, [{response:0000}]  ms per requst. ";
             Console.WriteLine(successMessage);
