@@ -129,7 +129,7 @@ namespace Konsole.PerformanceTests
         public Tester(StreamWriter log)
         {
             this.log = log;
-            Console.SetWindowSize(120, 50);
+            //Console.SetWindowSize(120, 50);
         }
         public void TestIt(int iterations, string test, Action action)
         {
