@@ -16,6 +16,7 @@
 
 ## Busy next
 - simple input, ReadLine()
+- support IObservable<T> in listView
 - create proper highspeedwriter interface that's used by the private highspeed writer, or App? so that the interface is real and not fakes.
 - write Mac HighSpeedWriter and test locally
 - update build to create new release and push package to nuget, and update package number when merge to master.

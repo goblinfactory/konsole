@@ -40,21 +40,30 @@ namespace Konsole.PerformanceTests
             {
                 using var log = new StreamWriter(logstream);
                 log.WriteLine($"starting test [ {iterations} ] iterations.");
-
+                
+                var logs = Solution.Path("logs");
+                if (!Directory.Exists(logs)) Directory.CreateDirectory(logs);
+                
                 var tester = new Tester(log);
+                Console.WriteLine($"hello from default size console  {Console.WindowWidth}x{Console.WindowHeight}");
+                Screenshot.Take(Path.Combine(logs, "screen1"));
                 Console.SetWindowSize(90, 30);
-
+                Console.WriteLine($"hello from 90x30");
+                Screenshot.Take(Path.Combine(logs, "screen2"));
                 // ----------------------
                 //  THE ACTUAL TESTS 
                 // ----------------------
 
-                tester.TestIt(iterations, "SplitRightLeft", SplitRightLeft);
-                tester.TestIt(iterations, "SplitColumns", SplitColumns);
-                tester.TestIt(iterations, "SplitRows", SplitRows);
+                tester.TestIt(iterations, "SplitRightLeft", SplitRightLeft, TakeScreenShot);
+                tester.TestIt(iterations, "SplitColumns", SplitColumns, TakeScreenShot);
+                tester.TestIt(iterations, "SplitRows", SplitRows, TakeScreenShot);
                 // ----------------------
                 logstream.Flush();
             }
         }
+
+        private static Action<string> TakeScreenShot = (string name)  =>Screenshot.Take(Solution.Path("logs", name));
+
 
         static void WriteHelpThenExitWithError()
         {
@@ -132,22 +141,19 @@ namespace Konsole.PerformanceTests
             this.log = log;
             //Console.SetWindowSize(120, 50);
         }
-        public void TestIt(int iterations, string test, Action action)
+        public void TestIt(int iterations, string testName, Action testMethod, Action<string> screenshot)
         {
-            int excludeFirst = 2;
-            Console.WriteLine($"Running test :{test}");
+            Console.WriteLine($"Running test :{testName}");
             int cnt = 0;
             var timer = new Stopwatch();
-            Console.Write($"{test} - started, ");
+            Console.Write($"{testName} - started, ");
             for (int i = 0; i < iterations; i++)
             {
                 Console.Clear();
-                // exclude the first two
-                bool exclude = (i + 1) >= excludeFirst;
-                if (!exclude) timer.Start();
-                action();
+                timer.Start();
+                testMethod();
                 cnt++;
-                if(!exclude) timer.Stop();
+                timer.Stop();
             }
 
             if (iterations != cnt)
@@ -160,9 +166,10 @@ namespace Konsole.PerformanceTests
                 Environment.Exit(-1);
             }
 
-            double rps = (double)(iterations - excludeFirst) / timer.Elapsed.TotalSeconds;
+            double rps = (double)iterations / timer.Elapsed.TotalSeconds;
             double response = (1 / rps) * 1000;
-            var successMessage = $"TEST:{test,-20} [{rps:000000.00}] requests per second, [{response:0000}]  ms per requst. ";
+            var successMessage = $"TEST:{testName,-20} [{rps:00000.00}] requests per second, [{response:0000}]  ms per requst. ";
+            screenshot($"{testName}-{response:0}ms");
             Console.WriteLine(successMessage);
             log.WriteLine(successMessage);
    }
