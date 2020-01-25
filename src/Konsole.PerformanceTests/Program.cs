@@ -97,7 +97,7 @@ namespace Konsole.PerformanceTests
                 using (Process process = new Process())
                 {
                     var path = Assembly.GetExecutingAssembly().Location.Replace(".dll", ".exe");
-                    process.StartInfo.UseShellExecute = true;
+                    process.StartInfo.UseShellExecute = false;
                     process.StartInfo.FileName = path;
                     process.StartInfo.Arguments = argument;
                     process.StartInfo.CreateNoWindow = false;
@@ -109,6 +109,11 @@ namespace Konsole.PerformanceTests
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                using var logstream = File.OpenWrite("performance.log");
+                using var log = new StreamWriter(logstream);
+                log.WriteLine(e.Message);
+                log.WriteLine("-------");
+                log.WriteLine(e.ToString());
                 return ERRORS;
             }
         }
