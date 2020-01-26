@@ -49,5 +49,5 @@ jobs:
     - name: Archive screenshots
       uses: actions/upload-artifact@v1
       with:
-        name: logs.zip
-        path: logs/*.*
+        name: *.*
+        path: logs
