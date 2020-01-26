@@ -7,6 +7,7 @@ namespace Konsole.Samples
     {
         static void Main(string[] args)
         {
+            Console.CursorVisible = false;
             ListViewSampleFileBrowser.Main(null);
             Console.ReadKey(true);
         }

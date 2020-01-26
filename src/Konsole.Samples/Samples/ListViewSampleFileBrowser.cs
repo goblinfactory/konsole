@@ -14,7 +14,7 @@ namespace Konsole.Samples
     {
         public class FileOrDirectory
         {
-            public static IEnumerable<FileOrDirectory> GetItems(DirectoryInfo di)
+            public static IEnumerable<FileOrDirectory> ReadDir(DirectoryInfo di)
             {
                 var files = di.GetFiles();
                 var dirs = di.GetDirectories();
@@ -55,13 +55,13 @@ namespace Konsole.Samples
             var cd = new DirectoryInfo(Environment.CurrentDirectory);
             var dir = cd.Parent.Parent.Parent;
 
-            var items = FileOrDirectory.GetItems(dir);
+            IEnumerable<FileOrDirectory> items = FileOrDirectory.ReadDir(dir);
 
-            var listview = new ListView<FileOrDirectory>(left, items, item => new [] { 
-                item.Name,                                  
-                item.Size.ToString(), 
-                item.LastModifiedUTC.ToShortDateString() + " " + item.LastModifiedUTC.ToShortTimeString() 
-            }, ("Name", 30), ("Size", 10), ("Modified", 20));
+            var listview = new ListView<FileOrDirectory>(left, items, i => new[] {
+                i.Name,
+                i.Size.ToString(),
+                i.LastModifiedUTC.ToString("dd MMM yyyy hh:mm")
+            }, ("Name", 0), ("Size", 20), ("Modified", 22)); // get algorithm from SplitRows and SplitColumns
 
             listview.Refresh();
             
@@ -78,6 +78,14 @@ namespace Konsole.Samples
             // will need to define exit? to stop
             // window.clear to remove list?
 
+        }
+
+        public static int[] GetColumnSizes()
+        {
+            // if there are no wildcards then size is fixed with balance going to wildcard.
+            // if there Bare multiple wildcards, then sizes are fixed with balance equally split between wildcards
+            // if all are fixed, then all columns are sized pro-ratio with extra size due to rounding up or down go to any column that suits keep the algorithm simple and deterministic.
+            return null;
         }
         
 
@@ -98,7 +106,8 @@ namespace Konsole.Samples
             private readonly IConsole _console;
             private readonly IEnumerable<T> _src;
 
-            public ListView(IConsole console, IEnumerable<T> src, Func<T, string[]> getRow, params (string name, int width)[] columns)
+            public ListView(IConsole console, IEnumerable<T> src, 
+                Func<T, string[]> getRow, params (string name, int width)[] columns)
             {
 
                 _console = console;
@@ -131,7 +140,7 @@ namespace Konsole.Samples
                         else
                         {
                             _console.Write(columnText.FixLeft(column.width));
-                            _console.Write("|");
+                            _console.Write("│");
                         }
                     }
                 }
