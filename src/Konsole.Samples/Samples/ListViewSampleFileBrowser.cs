@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Konsole.IO;
 using static System.ConsoleColor;
 
 namespace Konsole.Samples
@@ -25,10 +24,9 @@ namespace Konsole.Samples
             };
 
             listView.Refresh();
-            
+        
             
             Console.ReadKey(true);
-
 
             //SampleColors.PrintSampleColors(console);
             // list needs to scroll

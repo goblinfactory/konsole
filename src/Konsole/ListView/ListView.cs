@@ -6,7 +6,7 @@ using static System.ConsoleColor;
 
 namespace Konsole
 {
-    public class ListView<T> : IListView
+    public class ListView<T> 
     {
         public int selectedItemIndex { get; set; }
         public (string name, int width)[] Columns { get; set; }

@@ -6,6 +6,7 @@
 - simple simple list view,  basically it's a menu item that can run keyboard event, no scrolling.
 
 ## Now but paused
+
 - add "Inherited" to Colors so that when printing would convert to use inherited fore or background color.
 - add RGB colors to IWriteColor (if I'm going to be bringin out version 7!)
 - update the docs for Konsole. Move to goblinfactory website, add stats.
@@ -20,6 +21,10 @@
    to blink at that windows current position. Readtext should set cursor to readtext position.
 
 ## Busy next
+
+- attach F1 to F12 keys to windows, allow you to attach them automatically and keep a status window with the windows,
+ so that pressing F3 will automatically highlight the third window, if using default auto-assigning (press tab) will cycle through
+ the windows in turn etc etc. :D all lovely goodness. (F menu sits at bottom of screen, numbers are automatic and pick up window titles.)
 - add change to IConsole to include printing in foreground and background colour simultaneously without having to set background seperately.
 - simple input, ReadLine()
 - support IObservable<T> in listView

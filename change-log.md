@@ -6,10 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### Added
 
-Allow you to print by setting the foreground and background color at the same time.3
-
-- new Method to `IConsole`, added `void Write(Colors colors, string text);` to `IWrite`
-- new Method to `IConsole`, added `void WriteLine(Colors colors, string text);` to `IWrite`
+- new Methods to `IConsole`, added `void Write(Colors colors, string text);` and `void WriteLine(Colors colors, string text);` to `IWrite` 
+  - Allows you to print by setting the foreground and background color at the same time.
+- New controls `ListView` and `DirectoryListView`
 
 ## [6.2.0]
 

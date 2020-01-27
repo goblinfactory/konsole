@@ -3,7 +3,7 @@ using System.IO;
 using static System.ConsoleColor;
 
 
-namespace Konsole.IO
+namespace Konsole
 {
     public class DirectoryListView : ListView<FileOrDirectory>
     {
@@ -13,12 +13,12 @@ namespace Konsole.IO
         Func<FileInfo, bool> FilterFiles = null;
         Func<DirectoryInfo, bool> FilterDirs = null;
 
-        public class Theme
+        public class DirTheme
         {
             public Colors Directories = new Colors(Green, Black);
         }
 
-        public Theme StyleExtras = new Theme();
+        public DirTheme StyleExtras = new DirTheme();
 
         public DirectoryListView(
             IConsole console, 
