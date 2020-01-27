@@ -22,6 +22,8 @@
 
 ## Busy next
 
+- if OS !=windows, then all the Splits,Left, Right, Columns and rows should all exclude the bottom row to prevent auto scrolling. (& if not using highspeed writer.)
+  - argh, this will cascade down to all child windows, so need some thought.
 - attach F1 to F12 keys to windows, allow you to attach them automatically and keep a status window with the windows,
  so that pressing F3 will automatically highlight the third window, if using default auto-assigning (press tab) will cycle through
  the windows in turn etc etc. :D all lovely goodness. (F menu sits at bottom of screen, numbers are automatic and pick up window titles.)

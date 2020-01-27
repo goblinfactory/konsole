@@ -126,8 +126,8 @@ namespace Konsole.PerformanceTests
         private static IConsole ListViewTestsSetup()
         {
             var w = new Window();
-            var left = w.SplitLeft();
-            var right = w.SplitRight();
+            var left = w.SplitLeft("left");
+            var right = w.SplitRight("right");
             return left;
         }
         public static void ListViewTests(IConsole console)
