@@ -48,6 +48,7 @@ jobs:
         path: performance.log
     - name: Archive screenshots
       uses: actions/upload-artifact@v1
+      if: always()
       with:
         name: performance-logs
         path: logs
