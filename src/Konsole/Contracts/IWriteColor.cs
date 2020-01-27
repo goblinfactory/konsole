@@ -26,6 +26,10 @@ namespace Konsole
         void WriteLine(ConsoleColor color, string text);
 
         void Clear(ConsoleColor? backgroundColor);
+
+        void Write(Colors colors, string text); 
+
+        void WriteLine(Colors colors, string text);
     }
     //end-snippet
 }

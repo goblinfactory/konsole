@@ -61,6 +61,33 @@ namespace Konsole
             }
         }
 
+        public void WriteLine(Colors colors, string text)
+        {
+            var _colors = Colors;
+            try
+            {
+                Colors = colors;
+                Console.WriteLine(text);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+        public void Write(Colors colors, string text)
+        {
+            var _colors = Colors;
+            try
+            {
+                Colors = colors;
+                Console.Write(text);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
         public void Write(ConsoleColor color, string text)
         {
             var foreground = ForegroundColor;

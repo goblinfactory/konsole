@@ -89,6 +89,20 @@ namespace Konsole
             }
         }
 
+        public void WriteLine(Colors colors, string text)
+        {
+            lock (_locker)
+            {
+                _window.WriteLine(colors, text);
+            }
+        }
+        public void Write(Colors colors, string text)
+        {
+            lock (_locker)
+            {
+                _window.Write(colors, text);
+            }
+        }
         public void Write(ConsoleColor color, string text)
         {
             lock (_locker)

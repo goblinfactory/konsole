@@ -2,6 +2,15 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [7.0.0]
+
+### Added
+
+Allow you to print by setting the foreground and background color at the same time.3
+
+- new Method to `IConsole`, added `void Write(Colors colors, string text);` to `IWrite`
+- new Method to `IConsole`, added `void WriteLine(Colors colors, string text);` to `IWrite`
+
 ## [6.2.0]
 
 ### Added

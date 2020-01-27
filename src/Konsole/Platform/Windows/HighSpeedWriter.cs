@@ -258,6 +258,16 @@ namespace Konsole
         {
             throw new InvalidOperationException("Please use a window based off the writer to do any writing!");
         }
+
+        public void Write(Colors colors, string text)
+        {
+            throw new InvalidOperationException("Please use a window based off the writer to do any writing!");
+        }
+
+        public void WriteLine(Colors colors, string text)
+        {
+            throw new InvalidOperationException("Please use a window based off the writer to do any writing!");
+        }
     }
 }
 

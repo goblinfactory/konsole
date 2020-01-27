@@ -199,5 +199,13 @@ namespace Konsole
         public void WriteLine(ConsoleColor color, string text)
         {
         }
+
+        public void Write(Colors colors, string text)
+        {
+        }
+
+        public void WriteLine(Colors colors, string text)
+        {
+        }
     }
 }

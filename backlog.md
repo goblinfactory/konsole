@@ -6,7 +6,12 @@
 - simple simple list view,  basically it's a menu item that can run keyboard event, no scrolling.
 
 ## Now but paused
-
+- add "Inherited" to Colors so that when printing would convert to use inherited fore or background color.
+- add RGB colors to IWriteColor (if I'm going to be bringin out version 7!)
+- update the docs for Konsole. Move to goblinfactory website, add stats.
+- move all the controls to the top, and no detailed docs on the home page. Smallest simplest examples in each of the docs.
+  - e.g. LIstView, Edit, Form, Window, ProgressBar, boom!
+- add performance logs to Logz.io. Use Keyvault so that my logz.io password (API key) is not checked into konsole source
 - add badge to goblinfactory website.
 - faster drawbox (without this we cannot tab between active windows, just too slow)
 - OpenBOx without a border or title, so that you can quickly split Left Right.
@@ -15,6 +20,7 @@
    to blink at that windows current position. Readtext should set cursor to readtext position.
 
 ## Busy next
+- add change to IConsole to include printing in foreground and background colour simultaneously without having to set background seperately.
 - simple input, ReadLine()
 - support IObservable<T> in listView
 - create proper highspeedwriter interface that's used by the private highspeed writer, or App? so that the interface is real and not fakes.
