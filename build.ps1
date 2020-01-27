@@ -27,8 +27,8 @@ write-host "-------"
 invoke { dotnet build src/Konsole.sln --configuration Release } 
 invoke { dotnet test src/Konsole.Tests/Konsole.Tests.csproj }
 invoke { dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj }
-$dir = src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0
-invoke { & $dir/Konsole.PerformanceTests.exe -FilePath $dir -ArgumentList 10 }
+$dir = "src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0"
+invoke { & "$dir/Konsole.PerformanceTests.exe" -FilePath "$dir" -ArgumentList (,10) }
 
 Write-Host "---------------"
 Write-Host "BUild completed"

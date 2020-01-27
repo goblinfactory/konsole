@@ -128,7 +128,8 @@ namespace Konsole.PerformanceTests
         }
         public static void ListViewTests(IConsole console)
         {
-            var listView = new DirectoryListView(console, "../../..");
+            // var listView = new DirectoryListView(console, "../../..");
+            var listView = new DirectoryListView(console, "./");
 
             // let's highlight - all files > 4 Mb and make directories green
             listView.BusinessRuleColors = (o, column) =>
