@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Konsole.Platform;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -19,6 +20,9 @@ namespace Konsole.PerformanceTests
         /// </summary>
         public static FileInfo Take(string filenameAndPathWithoutExtension, bool createDirectory = false)
         {
+            // todo, add OSX screenshot implementation.
+            if (!PlatformStuff.IsWindows) return null;
+
             var handle = GetConsoleWindow();
             Image img = CaptureWindow(handle);
             var path = $"{filenameAndPathWithoutExtension}.png";
