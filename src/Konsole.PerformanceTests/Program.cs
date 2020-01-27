@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Konsole.Platform;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -46,9 +47,12 @@ namespace Konsole.PerformanceTests
                 var tester = new Tester(log);
                 Console.WriteLine($"hello from default size console  {Console.WindowWidth}x{Console.WindowHeight}");
                 Screenshot.Take(Path.Combine(logs, "screen1"));
-                Console.SetWindowSize(90, 30);
-                Console.WriteLine($"hello from 90x30");
-                Screenshot.Take(Path.Combine(logs, "screen2"));
+                if(PlatformStuff.IsWindows)
+                {
+                    Console.SetWindowSize(90, 30);
+                    Console.WriteLine($"hello from 90x30");
+                    Screenshot.Take(Path.Combine(logs, "screen2"));
+                }
 
                 // ----------------------
                 //  THE ACTUAL TESTS 
