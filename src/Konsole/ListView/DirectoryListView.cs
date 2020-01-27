@@ -36,6 +36,7 @@ namespace Konsole
             DirSearchPattern = dirSearchPattern;
             FilterFiles = filterFiles;
             FilterDirs = filterDirs;
+            //TODO: inject FileOrDirectory dependancy, create a dependencies optional last, as well as overload where the file types are passed in.
             _getData = () => FileOrDirectory.ReadDir(new DirectoryInfo(Path), FileSearchPattern, DirSearchPattern, FilterFiles, FilterDirs);
             _getRow = (i) => new[] {
                 $"{Slash(i.Item)}{i.Name}",
@@ -49,15 +50,6 @@ namespace Konsole
                 if (item.Item is DirectoryInfo) return StyleExtras.Directories;
                 return null;
             };
-        }
-
-        public string BytesToSize(long bytes)
-        {
-            if (bytes < Math.Pow(2, 10)) return $"{bytes} bytes";
-            if (bytes < Math.Pow(2, 20)) return $"{(bytes >> 10)} KB";
-            if (bytes < Math.Pow(2, 30)) return $"{(bytes >> 20)} MB";
-            if (bytes < Math.Pow(2, 40)) return $"{(bytes >> 30)} GB";
-            return $"{(bytes >> 40)} TB";
         }
 
         private static string Slash(object i)

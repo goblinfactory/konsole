@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
+using static System.ConsoleColor;
 
 namespace Konsole.PerformanceTests
 {
@@ -50,21 +49,31 @@ namespace Konsole.PerformanceTests
                 Console.SetWindowSize(90, 30);
                 Console.WriteLine($"hello from 90x30");
                 Screenshot.Take(Path.Combine(logs, "screen2"));
+
                 // ----------------------
                 //  THE ACTUAL TESTS 
                 // ----------------------
 
-                tester.TestIt(iterations, "SplitRightLeft", SplitRightLeft, TakeScreenShot);
-                tester.TestIt(iterations, "SplitColumns", SplitColumns, TakeScreenShot);
-                tester.TestIt(iterations, "SplitRows", SplitRows, TakeScreenShot);
+                tester.TestIt(ListViewTestsSetup, iterations, "ListViewTests", ListViewTests, TakeScreenShot);
+                //tester.TestIt(NoSetup, iterations, "NewWindowTest", NewWindowTest, DoNothing);
+                //tester.TestIt(NoSetup, iterations, "NewWindowConcurrent", NewWindowConcurrent, DoNothing);
+                //tester.TestIt(NewWindowSetup, iterations, "SplitRightLeft", SplitRightLeft, TakeScreenShot);
+                //tester.TestIt(NewWindowSetup, iterations, "SplitColumns", SplitColumns, TakeScreenShot);
+                //tester.TestIt(NewWindowSetup, iterations, "SplitRows", SplitRows, TakeScreenShot);
+                //tester.TestIt(NewWindowSetup, iterations, "SplitRightLeft 2", SplitRows, TakeScreenShot);
+
+                // TODO: write out test results to Logs.IO or similar, track performance over time.
+
                 // ----------------------
                 logstream.Flush();
             }
         }
 
+        private static Action<string> DoNothing = (string name) => { };
         private static Action<string> TakeScreenShot = (string name)  =>Screenshot.Take(Solution.Path("logs", name));
 
-
+        static IConsole NoSetup() => null;
+        static IConsole NewWindowSetup() => new Window();
         static void WriteHelpThenExitWithError()
         {
             Console.WriteLine(" args[0] = RUN10 or RUN{nn} or 10 or 20");
@@ -72,32 +81,65 @@ namespace Konsole.PerformanceTests
             Console.WriteLine(" otherwise it runs the test {n} iterations");
             Environment.Exit(ERRORS);
         }
-        public static void SplitRightLeft()
+
+        public static void NewWindowTest(IConsole console)
         {
             var w = new Window();
-            var left = w.SplitLeft("left");
-            var right = w.SplitRight("right");
+            w.Write(".");
         }
 
-        public static void SplitColumns()
+        public static void NewWindowConcurrent(IConsole console)
         {
-            var w = new Window();
-            var cols = w.SplitColumns(
+            var w = new Window().Concurrent();
+            w.Write(".");
+        }
+        
+        public static void SplitRightLeft(IConsole console)
+        {
+            var left = console.SplitLeft("left");
+            var right = console.SplitRight("right");
+        }
+
+        
+        public static void SplitColumns(IConsole console)
+        {
+            var cols = console.SplitColumns(
                 new Split(10, "10"),
                 new Split(0, "rest"),
                 new Split(20, "20")
                 );
         }
 
-        public static void SplitRows()
+        public static void SplitRows(IConsole console)
         {
-            var w = new Window();
-            var cols = w.SplitRows(
+            var cols = console.SplitRows(
                 new Split(10, "10"),
                 new Split(0, "rest"),
                 new Split(10, "10")
                 );
         }
+
+        private static IConsole ListViewTestsSetup()
+        {
+            var w = new Window();
+            var left = w.SplitLeft();
+            var right = w.SplitRight();
+            return left;
+        }
+        public static void ListViewTests(IConsole console)
+        {
+            var listView = new DirectoryListView(console, "../../..");
+
+            // let's highlight - all files > 4 Mb and make directories green
+            listView.BusinessRuleColors = (o, column) =>
+            {
+                if (column == 2 && o.Size > 4000000) return new Colors(White, DarkBlue);
+                if (column == 1 && o.Item is DirectoryInfo) return new Colors(Green, Black);
+                return null;
+            };
+            listView.Refresh();
+        }
+
 
         //TODO: HighSpeedWriter
 
@@ -141,7 +183,7 @@ namespace Konsole.PerformanceTests
             this.log = log;
             //Console.SetWindowSize(120, 50);
         }
-        public void TestIt(int iterations, string testName, Action testMethod, Action<string> screenshot)
+        public void TestIt(Func<IConsole> setup, int iterations, string testName, Action<IConsole> testMethod, Action<string> postTest)
         {
             Console.WriteLine($"Running test :{testName}");
             int cnt = 0;
@@ -150,8 +192,9 @@ namespace Konsole.PerformanceTests
             for (int i = 0; i < iterations; i++)
             {
                 Console.Clear();
+                var console = setup();
                 timer.Start();
-                testMethod();
+                testMethod(console);
                 cnt++;
                 timer.Stop();
             }
@@ -169,7 +212,7 @@ namespace Konsole.PerformanceTests
             double rps = (double)iterations / timer.Elapsed.TotalSeconds;
             double response = (1 / rps) * 1000;
             var successMessage = $"TEST:{testName,-20} [{rps:00000.00}] requests per second, [{response:0000}]  ms per requst. ";
-            screenshot($"{testName}-{response:0}ms");
+            postTest($"{testName}-{response:0}ms");
             Console.WriteLine(successMessage);
             log.WriteLine(successMessage);
    }
