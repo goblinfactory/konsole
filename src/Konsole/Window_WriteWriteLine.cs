@@ -142,8 +142,6 @@ namespace Konsole
             }
         }
 
-
-        //TODO: convert everything to redirect all calls to PrintAt, so that writing to parent works flawlessly!
         private void _write(string text)
         {
             if (_clipping && OverflowBottom)
@@ -154,7 +152,7 @@ namespace Konsole
                 while (overflow != null)
                 {
                     if (!_lines.ContainsKey(Cursor.Y)) return;
-                    var result = _lines[Cursor.Y].WriteToRowBufferReturnWrittenAndOverflow(ForegroundColor, BackgroundColor, Cursor.X, text);
+                    var result = _lines[Cursor.Y].Write(ForegroundColor, BackgroundColor, Cursor.X, text);
                     overflow = result.Overflow;
                     if (_echo && _echoConsole != null)
                     {

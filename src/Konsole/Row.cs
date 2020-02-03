@@ -2,28 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Konsole.Internal;
 
-namespace Konsole.Internal
+namespace Konsole
 {
     public class Row
     {
-        internal class WriteResult
-        {
-            internal WriteResult(string written, string overflow, bool atLastChar)
-            {
-                Written = written;
-                Overflow = overflow;
-                AtLastChar = atLastChar;
-            }
-            public string Written { get; }
-            public string Overflow { get; }
-            public bool AtLastChar { get; }
-        }
-
         private readonly int _width;
-        public Dictionary<int, Cell> Cells { get; private set; }
 
+        // this is dangerous to expose, needs to not make this public?
 
+        internal Dictionary<int, Cell> Cells { get; private set; }
 
         public Row(int width, char c, ConsoleColor color, ConsoleColor background)
         {
@@ -34,8 +23,23 @@ namespace Konsole.Internal
                 Cells.Add(i,new Cell(c, color, background));
             }
         }
+        public Row()
+        {
+            _width = 0;
+            Cells = new Dictionary<int, Cell>();
+        }
 
-        internal WriteResult WriteToRowBufferReturnWrittenAndOverflow(ConsoleColor color, ConsoleColor background, int x, string text)
+        public Row(Cell[] cells)
+        {
+            Cells = new Dictionary<int, Cell>();
+            int i = 0;
+            foreach(var cell in cells)
+            {
+                Cells.Add(i++, cell);
+            }
+        }
+
+        public WriteResult Write(ConsoleColor color, ConsoleColor background, int x, string text)
         {
             return WriteAndReturnOverflow(color, background, x, text);
         }
@@ -58,7 +62,7 @@ namespace Konsole.Internal
             var writeText = text.Substring(0, writeLen);
             var overflowText = overflow > 0 ? text.Substring(writeLen, overflow) : null;
             // todo; consider asignment overrides? 
-            for (int i = 0; i < writeLen; i++) Cells[i + x] = Cells[i + x].WithChar(writeText[i], color, background);
+            for (int i = 0; i < writeLen; i++) Cells[i + x] = new Cell(writeText[i], color, background);
             return new WriteResult(writeText,overflowText, atLastChar);
         }
 

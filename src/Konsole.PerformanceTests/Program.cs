@@ -58,7 +58,7 @@ namespace Konsole.PerformanceTests
                 //  THE ACTUAL TESTS 
                 // ----------------------
 
-                tester.TestIt(ListViewTestsSetup, iterations, "ListViewTests", ListViewTests, TakeScreenShot);
+                tester.TestIt(DirectoryListViewTestsSetup, iterations, "ListViewTests", DirectoryListViewTests, TakeScreenShot);
                 //tester.TestIt(NoSetup, iterations, "NewWindowTest", NewWindowTest, DoNothing);
                 //tester.TestIt(NoSetup, iterations, "NewWindowConcurrent", NewWindowConcurrent, DoNothing);
                 //tester.TestIt(NewWindowSetup, iterations, "SplitRightLeft", SplitRightLeft, TakeScreenShot);
@@ -104,7 +104,6 @@ namespace Konsole.PerformanceTests
             var right = console.SplitRight("right");
         }
 
-        
         public static void SplitColumns(IConsole console)
         {
             var cols = console.SplitColumns(
@@ -123,26 +122,26 @@ namespace Konsole.PerformanceTests
                 );
         }
 
-        private static IConsole ListViewTestsSetup()
+        private static IConsole DirectoryListViewTestsSetup()
         {
             var w = new Window();
             var left = w.SplitLeft("left");
             var right = w.SplitRight("right");
             return left;
         }
-        public static void ListViewTests(IConsole console)
+        public static void DirectoryListViewTests(IConsole console)
         {
-            // var listView = new DirectoryListView(console, "../../..");
-            var listView = new DirectoryListView(console, "./");
+            return;
+            //var listView = new DirectoryListView(console, new FileOrDirectory("./");
 
-            // let's highlight - all files > 4 Mb and make directories green
-            listView.BusinessRuleColors = (o, column) =>
-            {
-                if (column == 2 && o.Size > 4000000) return new Colors(White, DarkBlue);
-                if (column == 1 && o.Item is DirectoryInfo) return new Colors(Green, Black);
-                return null;
-            };
-            listView.Refresh();
+            //// let's highlight - all files > 4 Mb and make directories green
+            //listView.BusinessRuleColors = (o, column) =>
+            //{
+            //    if (column == 2 && o.Size > 4000000) return new Colors(White, DarkBlue);
+            //    if (column == 1 && o.Item is DirectoryInfo) return new Colors(Green, Black);
+            //    return null;
+            //};
+            //listView.Refresh();
         }
 
 

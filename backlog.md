@@ -2,11 +2,14 @@
 
 ## Busy now
 
-- add performance test artifact to build.
+- Console.Clear() resets the current Foreground and Background!
+- OpenBox to use the styling for lines.
 - simple simple list view,  basically it's a menu item that can run keyboard event, no scrolling.
 
 ## Now but paused
-
+- be able to open a window using Style and Theme (a collection of styles), same as box.
+- listview to use a HighSpeedWriter for just the view region,and refresh 'on refresh'.
+- be able to create a "new window", that is threadsafe, right off the bat, so don't have to use OpenBox, and it takes a Settings.
 - add "Inherited" to Colors so that when printing would convert to use inherited fore or background color.
 - add RGB colors to IWriteColor (if I'm going to be bringin out version 7!)
 - update the docs for Konsole. Move to goblinfactory website, add stats.
@@ -22,6 +25,7 @@
 
 ## Busy next
 
+- 1 line open ListView inline, with OpenListView(); same as OpenBox();
 - if OS !=windows, then all the Splits,Left, Right, Columns and rows should all exclude the bottom row to prevent auto scrolling. (& if not using highspeed writer.)
   - argh, this will cascade down to all child windows, so need some thought.
 - attach F1 to F12 keys to windows, allow you to attach them automatically and keep a status window with the windows,

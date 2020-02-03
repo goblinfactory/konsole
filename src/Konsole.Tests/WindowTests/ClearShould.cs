@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using FluentAssertions;
 using NUnit.Framework;
+using static System.ConsoleColor;
 
 namespace Konsole.Tests.WindowTests
 {
@@ -73,8 +74,6 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void resetting_buffer_many_times_should_not_cause_a_problem()
         {
-            var sw = new Stopwatch();
-            sw.Start();
             var con = new MockConsole(10, 4);
             for (int i = 0; i < 100; i++)
             {
@@ -100,7 +99,6 @@ namespace Konsole.Tests.WindowTests
             Assert.AreEqual(expected,con.BufferWrittenTrimmed);
         }
 
-
         [Test]
         public void reset_the_y_position()
         {
@@ -111,6 +109,16 @@ namespace Konsole.Tests.WindowTests
             Assert.AreEqual(1, con.CursorTop);
             con.Clear();
             Assert.AreEqual(0, con.CursorTop);
+        }
+
+        [Test]
+        public void should_not_change_the_current_colors()
+        {
+            var con = new MockConsole(10, 2);
+            var colors = new Colors(Red, Green);
+            con.Colors = colors;
+            con.Clear();
+            con.Colors.Should().BeEquivalentTo(colors);
         }
     }
 }

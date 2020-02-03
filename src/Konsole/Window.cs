@@ -5,7 +5,7 @@ using Konsole.Internal;
 
 namespace Konsole
 {
-    public partial class Window : IConsole
+    public partial class Window : IConsole, IPeek
     {
         internal static IConsole _hostConsole;
         public static IConsole HostConsole
@@ -62,8 +62,8 @@ namespace Konsole
             get { return _transparent; }
         }
 
-        private readonly ConsoleColor _startForeground;
-        private readonly ConsoleColor _startBackground;
+        //private readonly ConsoleColor _startForeground;
+        //private readonly ConsoleColor _startBackground;
 
         protected readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
 
@@ -189,6 +189,8 @@ namespace Konsole
         {
             lock (_staticLocker)
             {
+                ForegroundColor = foreground;
+                BackgroundColor = background;
                 _echo = echo;
                 _echoConsole = echoConsole ?? Window.HostConsole;
                 if (_echo && _echoConsole == null) _echoConsole = new Writer();
@@ -199,8 +201,8 @@ namespace Konsole
                 _absoluteY = echoConsole?.AbsoluteY ?? 0 + _y;
                 _width = GetStartWidth(_echo, width, _x, echoConsole);
                 _height = GetStartHeight(height, _y, echoConsole);
-                _startForeground = foreground;
-                _startBackground = background;
+                //_startForeground = foreground;
+                //_startBackground = background;
 
                 SetOptions(options);
                 init();
@@ -253,10 +255,8 @@ namespace Konsole
             }
         }
 
-        private void init(ConsoleColor? background = null)
+        private void init()
         {
-            ForegroundColor = _startForeground;
-            BackgroundColor = background ?? _startBackground;
             _lastLineWrittenTo = -1;
             _lines.Clear();
             for (int i = 0; i < _height; i++)
@@ -356,7 +356,8 @@ namespace Konsole
 
         public void Clear(ConsoleColor? background)
         {
-            init(background);
+            if (background.HasValue) BackgroundColor = background.Value;
+            init();
         }
 
         public virtual void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
@@ -555,5 +556,32 @@ namespace Konsole
             });
         }
 
+        public Cell Peek(int sx, int sy)
+        {
+            if (sx > WindowWidth || sy > WindowHeight) return Cell.Default;
+            return _lines[sy].Cells[sx].Clone();
+        }
+
+        public Row[] Peek(ConsoleRegion region)
+        {
+            int height = region.EndY - region.StartY;
+            if (height < 1 || region.StartY > WindowHeight) return new[] { new Row() };
+            int width = region.EndX - region.StartX;
+            var rows = Enumerable.Range(region.StartY, region.EndY)
+                .Select(y => Peek(region.StartX, region.StartY, width))
+                .ToArray();
+            return rows;
+        }
+
+        public Row Peek(int sx, int sy, int width)
+        {
+            // 
+            int len = sx + width > WindowWidth ? width - sx : width;
+            if (width < 1 || len < 1 || sx > WindowWidth) return new Row();
+            // perfect canidate for span, but only if cells were immutable, which they are not!
+            var cells = _lines[sy].Cells.Skip(sx).Take(len).Select(c => c.Value.Clone()).ToArray();
+            var row = new Row(cells);
+            return row;
+        }
     }
 }

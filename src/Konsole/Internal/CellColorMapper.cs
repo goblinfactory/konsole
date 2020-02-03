@@ -42,7 +42,7 @@ namespace Konsole.Internal
         /// </summary>
         /// <param name="cell"></param>
         /// <returns></returns>
-        public static char[] ToChars(this Cell cell)
+        internal static char[] ToChars(this Cell cell)
         {
             return new[]
             {

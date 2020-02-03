@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Konsole.Platform.Windows
+namespace Konsole
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct ConsoleRegion

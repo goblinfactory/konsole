@@ -6,9 +6,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### Added
 
-- new Methods to `IConsole`, added `void Write(Colors colors, string text);` and `void WriteLine(Colors colors, string text);` to `IWrite` 
-  - Allows you to print by setting the foreground and background color at the same time.
+- new class `WriteResults` returns the result of writing to a buffer row, including any overflow.
+- new peek commands `IPeek` interface to tell what's at a screen location, added to `Window` and `MockConsole`.
+  - `Row Peek(int sx, int sy, int width);`
+  - `Cell Peek(int sx, int sy);`
+  - `Row[] Peek(ConsoleRegion region);`
+- `Cell` is now public.
+  - `Cell` now has `Colors` property to read the foreground and background at once.
+- `Row` is now public.
+- new Methods to `IConsole`
+  - `void Write(Colors colors, string text);` 
+- new method to `IWrite`
+  - `void WriteLine(Colors colors, string text);` 
 - New controls `ListView` and `DirectoryListView`
+
+### Fixed
+
+- #57 Console.Clear() should not reset the current colors of the window. 
 
 ## [6.2.0]
 

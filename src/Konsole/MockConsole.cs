@@ -11,7 +11,7 @@ namespace Konsole
     /// MockConsole - is a default window with width of 120 and height of 60, White on Black background, that will not echo to real console
     /// that has window state, colors, cursor, text written, that will simulate (quite well) a real console.
     /// </summary>
-    public class MockConsole : Window
+    public class MockConsole : Window, IPeek
     {
         public MockConsole(int x, int y, params K[] options) 
             : base(new NullWriter(), x, y, options) { }

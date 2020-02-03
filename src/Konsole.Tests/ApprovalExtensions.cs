@@ -1,4 +1,6 @@
 ﻿
+using ApprovalTests;
+
 namespace Konsole.Tests
 {
     public static class ApprovalExtensions
@@ -12,6 +14,11 @@ namespace Konsole.Tests
                 ApprovalUtilities.SimpleLogger.Logger.Show(false, false, false, false, false, false);
                 _configured = true;
             }
+        }
+        public static void ShouldBe(this string[] src, string[] expected)
+        {
+            var actual = string.Join("\n", src);
+            Approvals.AssertText(expected, actual);
         }
     }
 }
