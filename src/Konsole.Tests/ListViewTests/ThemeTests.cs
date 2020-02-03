@@ -49,8 +49,11 @@ namespace Konsole.Tests.ListViewTests
             box.Colors = colors;
             view.Refresh();
 
-            // list items
+            // list items should be same as parent 
             console.Peek(1, 2).Colors.Should().BeEquivalentTo(colors);
+
+            // 
+            // header
 
             // selected Item
         }

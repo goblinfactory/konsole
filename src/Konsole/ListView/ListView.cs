@@ -129,7 +129,7 @@ namespace Konsole
                 else
                 {
                     _console.Write(colors, col.Name.FixCenter(item.width));
-                    _console.Write("│");
+                    _console.Write(colors, "│");
                 }
             }
 
