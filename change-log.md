@@ -19,6 +19,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 - new method to `IWrite`
   - `void WriteLine(Colors colors, string text);` 
 - New controls `ListView` and `DirectoryListView`
+- new default colors ..see `Colors.cs`
+- new Theming throughout, `IConsole` implements `ITheme` meaning that controls, like `ListView` inherit their theme from their parent window.
+- new defaultTheme and colors
+  - gray on black
+  - white on black
+  - black on white
+  - white on blue
+  - white on darkblue
+  - blue on white
+  - darkblue on white
+
+
 
 ### Fixed
 

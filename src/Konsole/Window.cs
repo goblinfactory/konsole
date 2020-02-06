@@ -12,11 +12,13 @@ namespace Konsole
         {
             get
             {
-                return _hostConsole ?? (_hostConsole = new ConcurrentWriter());
+                lock (_locker)
+                    return _hostConsole ?? (_hostConsole = new ConcurrentWriter());
             }
             set
             {
-                _hostConsole = value;
+                lock (_locker)
+                    _hostConsole = value;
             }
         }
 
@@ -24,7 +26,14 @@ namespace Konsole
         {
             return GetType().Assembly.GetName().Version.ToString();
         }
-        public bool OverflowBottom => CursorTop >= _height;
+        public bool OverflowBottom
+        {
+            get {
+                lock (_locker) return CursorTop >= _height;
+            }
+        }
+
+            
 
         // these two fields made mutable to avoid overcomplicating the constructor overloads.
         // perhaps there's a simpler way to do this?
@@ -42,28 +51,26 @@ namespace Konsole
 
 
         private bool _transparent = false;
+        internal static object _locker = new object();
 
         public bool Clipping
         {
-            get { return _clipping; }
+            get { lock (_locker) return _clipping; }
         }
 
         private bool _clipping = false;
 
         public bool Scrolling
         {
-            get { return _scrolling; }
+            get { lock (_locker) return _scrolling; }
         }
 
         private bool _scrolling = true;
 
         public bool Transparent
         {
-            get { return _transparent; }
+            get { lock (_locker) return _transparent; }
         }
-
-        //private readonly ConsoleColor _startForeground;
-        //private readonly ConsoleColor _startBackground;
 
         protected readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
 
@@ -76,9 +83,12 @@ namespace Konsole
         {
             get
             {
-                int row = y > (_height - 1) ? (_height - 1) : y;
-                int col = x > (_width - 1) ? (_width - 1) : x;
-                return _lines[row].Cells[col];
+                lock (_locker)
+                {
+                    int row = y > (_height - 1) ? (_height - 1) : y;
+                    int col = x > (_width - 1) ? (_width - 1) : x;
+                    return _lines[row].Cells[col];
+                }
             }
         }
 
@@ -87,12 +97,14 @@ namespace Konsole
             get { return _cursor; }
             set
             {
-                int x = value.X >= _width ? (_width - 1) : value.X;
-                int y = value.Y > _height ? _height : value.Y;
-                _cursor = new XY(x, y);
+                {
+                    int x = value.X >= _width ? (_width - 1) : value.X;
+                    int y = value.Y > _height ? _height : value.Y;
+                    _cursor = new XY(x, y);
 
-                if (_cursor.Y > _lastLineWrittenTo && _cursor.X != 0) _lastLineWrittenTo = _cursor.Y;
-                if (_cursor.Y > _lastLineWrittenTo && _cursor.X == 0) _lastLineWrittenTo = _cursor.Y - 1;
+                    if (_cursor.Y > _lastLineWrittenTo && _cursor.X != 0) _lastLineWrittenTo = _cursor.Y;
+                    if (_cursor.Y > _lastLineWrittenTo && _cursor.X == 0) _lastLineWrittenTo = _cursor.Y - 1;
+                }
             }
         }
 
@@ -109,112 +121,60 @@ namespace Konsole
         ///</returns>
         public static Func<(int width, int height)> GetHostWidthHeight = () =>
         {
-            if (OS.IsOSX())
+            lock (_locker)
             {
-                return (Console.WindowWidth, Console.WindowHeight - 1);
+                if (OS.IsOSX())
+                {
+                    return (Console.WindowWidth, Console.WindowHeight - 1);
+                }
+                return (Console.WindowWidth, Console.WindowHeight);
             }
-            return (Console.WindowWidth, Console.WindowHeight);
         };
 
-        internal static object _staticLocker = new object();
 
-        /// <summary>
-        /// Opens a new Threadsafe window consisting the whole screen
-        /// </summary>
-        public static IConsole Open()
+
+
+
+        //internal static IConsole _CreateFloatingWindow(int? x, int? y, int? width, int? height, ConsoleColor foreground, ConsoleColor background, bool echo = true, IConsole echoConsole = null, params K[] options)
+        //{
+        //    var theme = new Style(foreground, background).ToTheme();
+        //}
+
+        internal static IConsole _CreateFloatingWindow(IConsole console, WindowSettings settings)
         {
-            return new Window().Concurrent();
+            var w = new Window(console, settings);
+            w.SetWindowOffset(settings.SX, settings.SY ?? 0);
+            return w;
         }
 
-        /// <summary>
-        /// Opens a new Threadsafe window which as a child of parent.
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <returns></returns>
-        public static IConsole Open(IConsole parent)
+        internal static IConsole _CreateFloatingWindow(WindowSettings settings)
         {
-            return new Window(parent).Concurrent();
+            return _CreateFloatingWindow(null, settings);
         }
 
-        [Obsolete("Please use OpenBox. This will be removed in the next major release.")]
-        /// <summary>
-        /// Returns a Threadsafe ConcurrentWriter around the newly created window.
-        /// </summary>
-        public static IConsole Open(int x, int y, int width, int height, string title,
-        LineThickNess thickNess = LineThickNess.Double, ConsoleColor foregroundColor = ConsoleColor.Gray,
-        ConsoleColor backgroundColor = ConsoleColor.Black, IConsole console = null)
+        private StyleTheme _theme = null;
+
+        public StyleTheme Theme
         {
-            lock (_staticLocker)
+            get
             {
-                var echoConsole = console ?? new Writer();
-                var window = new Window(x + 1, y + 1, width - 2, height - 2, foregroundColor, backgroundColor, true,
-                    echoConsole);
-                var state = echoConsole.State;
-                try
-                {
-                    echoConsole.ForegroundColor = foregroundColor;
-                    echoConsole.BackgroundColor = backgroundColor;
-                    new Draw(echoConsole).Box(x, y, x + (width - 1), y + (height - 1), title, thickNess);
-
-                }
-                finally
-                {
-                    echoConsole.State = state;
-                }
-                return window.Concurrent();
+                lock (_locker) return _theme ?? (_theme = _echoConsole.Theme);
+            }
+            set
+            {
+                lock (_locker) _theme = value;
             }
         }
 
-        protected Window(int x, int y, int width, int height, bool echo = true, IConsole echoConsole = null,
-    params K[] options)
-    : this(x, y, width, height, ConsoleColor.White, ConsoleColor.Black, echo, echoConsole, options)
+        public Style Style
         {
-        }
-
-        internal static IConsole _CreateFloatingWindow(int? x, int? y, int? width, int? height, ConsoleColor foreground,
-            ConsoleColor background,
-            bool echo = true, IConsole echoConsole = null, params K[] options)
-        {
-            lock (_staticLocker)
+            get
             {
-                var w = new Window(x, y, width, height, foreground, background, echo, echoConsole, options);
-                w.SetWindowOffset(x ?? 0, y ?? 0);
-                return w.Concurrent();
+                lock (_locker) return Theme.GetActive(Status);
             }
         }
 
-        // This is the main constructor, all the others overload to this.
-        protected internal Window(int? x, int? y, int? width, int? height, ConsoleColor foreground, ConsoleColor background,
-            bool echo = true, IConsole echoConsole = null, params K[] options)
-        {
-            lock (_staticLocker)
-            {
-                ForegroundColor = foreground;
-                BackgroundColor = background;
-                _echo = echo;
-                _echoConsole = echoConsole ?? Window.HostConsole;
-                if (_echo && _echoConsole == null) _echoConsole = new Writer();
-
-                _y = y ?? _echoConsole?.CursorTop ?? _echoConsole.CursorTop + height ?? 0;
-                _x = x ?? 0;
-                _absoluteX = echoConsole?.AbsoluteX ?? 0 + _x;
-                _absoluteY = echoConsole?.AbsoluteY ?? 0 + _y;
-                _width = GetStartWidth(_echo, width, _x, echoConsole);
-                _height = GetStartHeight(height, _y, echoConsole);
-                //_startForeground = foreground;
-                //_startBackground = background;
-
-                SetOptions(options);
-                init();
-                // if we're creating an inline window
-                var inline = (_echoConsole != null && x == null && y == null);
-                if (inline)
-                {
-                    _echoConsole.CursorTop += _height;
-                    _echoConsole.CursorLeft = 0;
-                }
-            }
-        }
+        public ControlStatus Status { get; set; } = ControlStatus.Active;
 
         private static int GetStartHeight(int? height, int y, IConsole echoConsole)
         {
@@ -233,26 +193,6 @@ namespace Konsole
             int w = width ?? (echoConsole?.WindowWidth ?? 120);
             if (echo && w > maxWidth) w = maxWidth;
             return w;
-        }
-
-        private void SetOptions(K[] options)
-        {
-            if (options == null || options.Length == 0) return;
-            if (options.Contains(K.Transparent)) _transparent = true;
-            if (options.Contains(K.Clipping) && options.Contains(K.Scrolling))
-                throw new ArgumentOutOfRangeException(nameof(options),
-                    "Cannot specify Clipping as well as Scrolling; pick 1, or leave both out. Clipping is default.");
-            if (options.Contains(K.Clipping))
-            {
-                _clipping = true;
-                _scrolling = false;
-            }
-
-            if (options.Contains(K.Scrolling))
-            {
-                _scrolling = true;
-                _clipping = false;
-            }
         }
 
         private void init()
@@ -278,18 +218,24 @@ namespace Konsole
         /// <returns></returns>
         public string[] BufferHighlighted(ConsoleColor highliteColor, char hiChar = '#', char normal = ' ')
         {
-            var buffer = new HiliteBuffer(highliteColor, hiChar, normal);
-            var rows = _lines.Select(l => l.Value).ToArray();
-            var texts = buffer.ToApprovableText(rows);
-            return texts;
+            lock (_locker)
+            {
+                var buffer = new HiliteBuffer(highliteColor, hiChar, normal);
+                var rows = _lines.Select(l => l.Value).ToArray();
+                var texts = buffer.ToApprovableText(rows);
+                return texts;
+            }
         }
 
         public string BufferHighlightedString(ConsoleColor highliteColor, char hiChar = '#', char normal = ' ')
         {
-            var buffer = new HiliteBuffer(highliteColor, hiChar, normal);
-            var rows = _lines.Select(l => l.Value).ToArray();
-            var text = buffer.ToApprovableString(rows);
-            return text;
+            lock (_locker)
+            {
+                var buffer = new HiliteBuffer(highliteColor, hiChar, normal);
+                var rows = _lines.Select(l => l.Value).ToArray();
+                var text = buffer.ToApprovableString(rows);
+                return text;
+            }
         }
 
         /// <summary>
@@ -301,8 +247,11 @@ namespace Konsole
         {
             get
             {
-                var buffer = _lines.Select(l => l.Value.ToStringWithColorChars());
-                return buffer.ToArray();
+                lock (_locker)
+                {
+                    var buffer = _lines.Select(l => l.Value.ToStringWithColorChars());
+                    return buffer.ToArray();
+                }
             }
         }
 
@@ -316,25 +265,45 @@ namespace Konsole
         /// <summary>
         /// get the entire buffer (all the lines for the whole console) regardless of whether they have been written to or not, untrimmed.
         /// </summary>
-        public string[] Buffer => _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
-
+        public string[] Buffer
+        {
+            get
+            {
+                lock(_locker)
+                    return _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
+            }
+    }
         /// <summary>
         /// get the entire buffer (all the lines for the whole console) regardless of whether they have been written to or not, untrimmed. as a single `crln` concatenated string.
         /// </summary>
-        public string BufferString => string.Join("\r\n", Buffer);
+        public string BufferString
+        {
+            get
+            {
+                lock(_locker)
+                    return string.Join("\r\n", Buffer);
+            }
+        }
 
         /// <summary>
         /// get all the lines written to for the whole console, untrimmed
         /// </summary>
         public string[] BufferWritten // should be buffer written
         {
-            get { return _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString()).ToArray(); }
+            get { lock (_locker) return _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString()).ToArray(); }
         }
 
         /// <summary>
         /// get all the lines written to for the whole console - bufferWrittenString
         /// </summary>
-        public string BufferWrittenString => string.Join("\r\n", BufferWritten);
+        public string BufferWrittenString
+        {
+            get
+            {
+                lock (_locker)
+                    return string.Join("\r\n", BufferWritten);
+            }
+        }
 
 
         /// <summary>
@@ -344,7 +313,8 @@ namespace Konsole
         {
             get
             {
-                return
+                lock (_locker)
+                    return
                     _lines.Values.Take(_lastLineWrittenTo + 1).Select(b => b.ToString().TrimEnd(new[] { ' ' })).ToArray();
             }
         }
@@ -356,20 +326,26 @@ namespace Konsole
 
         public void Clear(ConsoleColor? background)
         {
-            if (background.HasValue) BackgroundColor = background.Value;
-            init();
+            lock (_locker)
+            {
+                if (background.HasValue) BackgroundColor = background.Value;
+                init();
+            }
         }
 
         public virtual void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
         {
-            if (!_echo) return;
-            if (_echoConsole != null)
-                _echoConsole.MoveBufferArea(sourceLeft + AbsoluteX, sourceTop + AbsoluteY, sourceWidth, sourceHeight, targetLeft + AbsoluteX, targetTop + AbsoluteY, sourceChar, sourceForeColor, sourceBackColor);
-
-            else
+            lock (_locker)
             {
-                throw new Exception("Should never get here, something gone wrong in the logic, possibly in the constructor checks?");
+                if (!_echo) return;
+                if (_echoConsole != null)
+                    _echoConsole.MoveBufferArea(sourceLeft + AbsoluteX, sourceTop + AbsoluteY, sourceWidth, sourceHeight, targetLeft + AbsoluteX, targetTop + AbsoluteY, sourceChar, sourceForeColor, sourceBackColor);
+
+                else
+                {
+                    throw new Exception("Should never get here, something gone wrong in the logic, possibly in the constructor checks?");
+                }
             }
 
         }
@@ -378,15 +354,18 @@ namespace Konsole
         //NB!Need to test if this is cross platform ?
         public void ScrollDown()
         {
-            for (int i = 0; i < (_height - 1); i++)
+            lock (_locker)
             {
-                _lines[i] = _lines[i + 1];
-            }
-            _lines[_height - 1] = new Row(_width, ' ', ForegroundColor, BackgroundColor);
-            Cursor = new XY(0, _height - 1);
-            if (_echoConsole != null)
-            {
-                _echoConsole.MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
+                for (int i = 0; i < (_height - 1); i++)
+                {
+                    _lines[i] = _lines[i + 1];
+                }
+                _lines[_height - 1] = new Row(_width, ' ', ForegroundColor, BackgroundColor);
+                Cursor = new XY(0, _height - 1);
+                if (_echoConsole != null)
+                {
+                    _echoConsole.MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
+                }
             }
         }
 
@@ -400,26 +379,29 @@ namespace Konsole
 
         public int CursorTop
         {
-            get { return Cursor.Y; }
-            set { Cursor = Cursor.WithY(value); }
+            get { lock (_locker) return Cursor.Y; }
+            set { lock (_locker) Cursor = Cursor.WithY(value); }
         }
 
         public int CursorLeft
         {
-            get { return Cursor.X; }
-            set { Cursor = Cursor.WithX(value); }
+            get { lock (_locker) return Cursor.X; }
+            set { lock (_locker) Cursor = Cursor.WithX(value); }
         }
 
         public Colors Colors
         {
             get
             {
-                return new Colors(ForegroundColor, BackgroundColor);
+                lock (_locker) return new Colors(ForegroundColor, BackgroundColor);
             }
             set
             {
-                ForegroundColor = value.Foreground;
-                BackgroundColor = value.Background;
+                lock (_locker)
+                {
+                    ForegroundColor = value.Foreground;
+                    BackgroundColor = value.Background;
+                }
             }
         }
 
@@ -439,13 +421,16 @@ namespace Konsole
 
         public bool CursorVisible
         {
-            get { return _echoConsole?.CursorVisible ?? _noEchoCursorVisible; }
+            get { lock (_locker) return _echoConsole?.CursorVisible ?? _noEchoCursorVisible; }
             set
             {
-                if (_echoConsole == null)
-                    _noEchoCursorVisible = value;
-                else
-                    _echoConsole.CursorVisible = value;
+                lock (_locker)
+                {
+                    if (_echoConsole == null)
+                        _noEchoCursorVisible = value;
+                    else
+                        _echoConsole.CursorVisible = value;
+                }
             }
         }
 
@@ -453,14 +438,33 @@ namespace Konsole
 
         public ConsoleColor ForegroundColor { get; set; }
 
+        public ConsoleState State
+        {
+            get
+            {
+                lock (_locker) return new ConsoleState(ForegroundColor, BackgroundColor, CursorTop, CursorLeft, CursorVisible);
+            }
 
-        /// <summary>
-        /// prints text at x and y location, without affecting the current window or parent state
-        /// </summary>
+            set
+            {
+                lock (_locker)
+                {
+                    CursorLeft = value.Left;
+                    CursorTop = value.Top;
+                    ForegroundColor = value.ForegroundColor;
+                    BackgroundColor = value.BackgroundColor;
+                }
+            }
+        }
+
         public void PrintAt(int x, int y, string format, params object[] args)
         {
-            var text = string.Format(format, args);
-            PrintAt(x, y, text);
+            DoCommand(this, () =>
+            {
+                var text = string.Format(format, args);
+                Cursor = new XY(x, y);
+                Write(text);
+            });
         }
 
         public void PrintAt(int x, int y, string text)
@@ -470,70 +474,101 @@ namespace Konsole
                 Cursor = new XY(x, y);
                 Write(text);
             });
-
-        }
-
-        /// <summary>
-        /// Print the text, optionally wrapping and causing any scrolling in the current window, at cursor position X,Y in foreground and background color without impacting the current window's cursor position or colours. This method is only threadsafe if you have created a window by using .ToConcurrent() after creating a new Window(), or the window was created using Window.Open(...) which returns a threadsafe window.
-        /// </summary>
-        public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background = null)
-        {
-            DoCommand(_echoConsole, () =>
-            {
-                DoCommand(this, () =>
-                {
-                    State = new ConsoleState(foreground, background ?? BackgroundColor, y, x, CursorVisible);
-                    Write(text);
-                });
-            });
-        }
-
-
-        public ConsoleState State
-        {
-            get
-            {
-                return new ConsoleState(ForegroundColor, BackgroundColor, CursorTop, CursorLeft, CursorVisible);
-            }
-
-            set
-            {
-                CursorLeft = value.Left;
-                CursorTop = value.Top;
-                ForegroundColor = value.ForegroundColor;
-                BackgroundColor = value.BackgroundColor;
-            }
-
         }
 
         public void PrintAt(int x, int y, char c)
         {
-            Cursor = new XY(x, y);
-            Write(c.ToString());
+            DoCommand(this, () =>
+            {
+                Cursor = new XY(x, y);
+                Write(c.ToString());
+            });
         }
 
+        public void PrintAt(Colors colors, int x, int y, string format, params object[] args)
+        {
+            DoCommand(this, () =>
+            {
+                Cursor = new XY(x, y);
+                Colors = colors;
+                var text = string.Format(format, args);
+                Write(text);
+            });
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, string format, params object[] args)
+        {
+            DoCommand(this, () =>
+            {
+                Cursor = new XY(x, y);
+                ForegroundColor = color;
+                var text = string.Format(format, args);
+                Write(text);
+            });
+        }
+
+        public void PrintAt(Colors colors, int x, int y, string text)
+        {
+            DoCommand(this, () =>
+            {
+                Cursor = new XY(x, y);
+                Colors = colors;
+                Write(text);
+            });
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, string text)
+        {
+            DoCommand(this, () =>
+            {
+                Cursor = new XY(x, y);
+                ForegroundColor = color;
+                Write(text);
+            });
+        }
+
+
+
+        public void PrintAt(Colors colors, int x, int y, char c)
+        {
+            DoCommand(this, () =>
+            {
+                Colors = colors;
+                PrintAt(x, y, c);
+            });
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, char c)
+        {
+            DoCommand(this, () =>
+            {
+                ForegroundColor = color;
+                PrintAt(x, y, c);
+            });
+        }
 
         /// <summary>
         /// Run command and preserve the state, i.e. restore the console state after running command.
         /// </summary>
         public void DoCommand(IConsole console, Action action)
         {
-            //TODO write test that proves we need to lock right here!
-            //lock(_staticLocker)
-            if (console == null)
+            lock(_locker)
             {
-                action();
-                return;
-            }
-            var state = console.State;
-            try
-            {
-                GotoEchoCursor(console);
-                action();
-            }
-            finally
-            {
-                console.State = state;
+                if (console == null)
+                {
+                    action();
+                    return;
+                }
+                var state = console.State;
+                try
+                {
+                    GotoEchoCursor(console);
+                    action();
+                }
+                finally
+                {
+                    console.State = state;
+                }
             }
         }
 
@@ -558,30 +593,38 @@ namespace Konsole
 
         public Cell Peek(int sx, int sy)
         {
-            if (sx > WindowWidth || sy > WindowHeight) return Cell.Default;
-            return _lines[sy].Cells[sx].Clone();
+            lock(_locker)
+            {
+                if (sx > WindowWidth || sy > WindowHeight) return Cell.Default;
+                return _lines[sy].Cells[sx].Clone();
+            }
         }
 
         public Row[] Peek(ConsoleRegion region)
         {
-            int height = region.EndY - region.StartY;
-            if (height < 1 || region.StartY > WindowHeight) return new[] { new Row() };
-            int width = region.EndX - region.StartX;
-            var rows = Enumerable.Range(region.StartY, region.EndY)
-                .Select(y => Peek(region.StartX, region.StartY, width))
-                .ToArray();
-            return rows;
+            lock (_locker)
+            {
+                int height = region.EndY - region.StartY;
+                if (height < 1 || region.StartY > WindowHeight) return new[] { new Row() };
+                int width = region.EndX - region.StartX;
+                var rows = Enumerable.Range(region.StartY, region.EndY)
+                    .Select(y => Peek(region.StartX, region.StartY, width))
+                    .ToArray();
+                return rows;
+            }
         }
 
         public Row Peek(int sx, int sy, int width)
         {
-            // 
-            int len = sx + width > WindowWidth ? width - sx : width;
-            if (width < 1 || len < 1 || sx > WindowWidth) return new Row();
-            // perfect canidate for span, but only if cells were immutable, which they are not!
-            var cells = _lines[sy].Cells.Skip(sx).Take(len).Select(c => c.Value.Clone()).ToArray();
-            var row = new Row(cells);
-            return row;
+            lock (_locker)
+            {
+                int len = sx + width > WindowWidth ? width - sx : width;
+                if (width < 1 || len < 1 || sx > WindowWidth) return new Row();
+                // perfect canidate for span, but only if cells were immutable, which they are not!
+                var cells = _lines[sy].Cells.Skip(sx).Take(len).Select(c => c.Value.Clone()).ToArray();
+                var row = new Row(cells);
+                return row;
+            }
         }
     }
 }

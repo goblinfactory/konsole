@@ -129,10 +129,11 @@ namespace Konsole
             return _LeftRight(c, title, true, true, thickness, foreground);
         }
 
-        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor? foreground, ConsoleColor? background = null)
+        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
         {
-            lock (Window._staticLocker)
+            lock (Window._locker)
             {
+                var theme = c.Theme.WithForeground(foreground);
                 if (showBorder && thickness == null) throw new ArgumentOutOfRangeException(nameof(showBorder), "cannot be false while thickness is none.");
                 int h = c.WindowHeight;
                 int w = c.WindowWidth / 2 + (right ? c.WindowWidth % 2 : 0);
@@ -140,22 +141,23 @@ namespace Konsole
 
                 if (showBorder)
                 {
+                    // DoCommand is no longer required here? Draw.Box uses DoCommand
                     c.DoCommand(c, () =>
                     {
                         new Draw(c).Box(offset, 0, w - 1 + offset, h - 1, title, thickness);
                     });
-                    return Window._CreateFloatingWindow(1 + offset, 1, w - 2, h - 2, foreground ?? c.ForegroundColor, background ?? c.BackgroundColor, true, c, null);
+                    return Window._CreateFloatingWindow(c, new WindowSettings { SX = 1 + offset, SY = 1, Width = w - 2, Height = h - 2, Theme = theme });
                 }
-                return Window._CreateFloatingWindow(offset, 0, w, h, foreground ?? c.ForegroundColor, background ?? c.BackgroundColor, true, c, null);
+                return Window._CreateFloatingWindow(c, new WindowSettings { SX = offset, SY = 0, Width = w, Height = h, Theme = theme });
             }
         }
 
 
         internal static IConsole _TopBot(IConsole c, string title, bool bottom, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
         {
-            lock (Window._staticLocker)
+            lock (Window._locker)
             {
-                if (showBorder && thickness == null) throw new ArgumentOutOfRangeException(nameof(showBorder), "cannot be false while thickness is none.");
+                var theme = c.Theme.WithForeground(foreground);
                 int h = (c.WindowHeight / 2) + (bottom ? 0 : c.WindowHeight % 2);
                 int w = c.WindowWidth;
                 int offset = bottom ? c.WindowHeight - h : 0;
@@ -164,17 +166,18 @@ namespace Konsole
                 {
                     c.DoCommand(c, () =>
                     {
-                        new Draw(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness);
+                        new Draw(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness  ?? theme.Active.ThickNess);
                     });
-                    return Window._CreateFloatingWindow(1, 1 + offset, w - 2, h - 2, foreground, c.BackgroundColor, true, c, null);
+                    return Window._CreateFloatingWindow(c, new WindowSettings { SX = 1, SY = 1 + offset, Width = w - 2, Height = h - 2, Theme = theme });
                 }
-                return Window._CreateFloatingWindow(0, 0 + offset, w, h, foreground, c.BackgroundColor, true, c, null);
+                return Window._CreateFloatingWindow(c, new WindowSettings { SX = 0, SY = 0 + offset, Width = w, Height = h, Theme = theme });
             }
         }
         internal static IConsole _RowSlice(IConsole c, string title, int rowStart, int size, bool showBorder, LineThickNess? thickness, ConsoleColor foreground, ConsoleColor background)
         {
-            lock (Window._staticLocker)
+            lock (Window._locker)
             {
+                var theme = c.Theme.WithColor(new Colors(foreground, background));
                 if (showBorder && thickness == null) throw new ArgumentOutOfRangeException(nameof(showBorder), "cannot be false while thickness is none.");
                 int h = size;
                 int w = c.WindowWidth;
@@ -186,15 +189,16 @@ namespace Konsole
                     {
                         new Draw(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness);
                     });
-                    return Window._CreateFloatingWindow(1, 1 + offset, w - 2, h - 2, foreground, background, true, c, null);
+                    return Window._CreateFloatingWindow(c, new WindowSettings { SX = 1, SY = 1 + offset, Width = w - 2, Height = h - 2, Theme = theme });
                 }
-                return Window._CreateFloatingWindow(0, 0 + offset, w, h, foreground, background, true, c, null);
+                return Window._CreateFloatingWindow(c, new WindowSettings { SX = 0, SY = 0 + offset, Width = w, Height = h, Theme = theme });
             }
         }
         internal static IConsole _ColumnSlice(IConsole c, string title, int colStart, int width, bool showBorder, LineThickNess? thickness, ConsoleColor foreground, ConsoleColor background)
         {
-            lock (Window._staticLocker)
+            lock (Window._locker)
             {
+                var theme = c.Theme.WithColor(new Colors(foreground, background));
                 if (showBorder && thickness == null) throw new ArgumentOutOfRangeException(nameof(showBorder), "cannot be false while thickness is none.");
                 int height = c.WindowHeight;
                 int offset = colStart;
@@ -205,9 +209,9 @@ namespace Konsole
                     {
                         new Draw(c).Box(offset, 0, offset + width - 1, height - 1, title, thickness);
                     });
-                    return Window._CreateFloatingWindow(offset + 1, 1, width - 2, height - 2, foreground, background, true, c, null);
+                    return Window._CreateFloatingWindow(c,  new WindowSettings { SX = offset + 1, SY = 1, Width = width - 2, Height = height - 2, Theme = theme });
                 }
-                return Window._CreateFloatingWindow(offset + 0 , 0, width, height, foreground, background, true, c, null);
+                return Window._CreateFloatingWindow(c, new WindowSettings { SX = offset + 0, SY = 0, Width = width, Height = height, Theme = theme });
             }
         }
     }

@@ -28,19 +28,18 @@ namespace Konsole
         public bool AutoFlush { get; set; } = false;
         public char ClearScreenChar { get; set; }
 
-        public HighSpeedWriter() : this((short)Console.WindowWidth, (short)Console.WindowHeight)
+        public HighSpeedWriter(StyleTheme theme) : this((short)Console.WindowWidth, (short)Console.WindowHeight, theme)
         {
 
         }
 
-        public HighSpeedWriter(short width, short height, Colors defaultColors = null, char clearScreenChar = ' ')
+        public HighSpeedWriter(short width, short height, StyleTheme theme, char clearScreenChar = ' ')
         {
             PlatformStuff.EnsureRunningWindows();
             new PlatformStuff().LockResizing(width, height);
             _consoleFileHandle = OpenConsole();
             _height = height;
             _width = width;
-            Colors = defaultColors ?? new Colors(ConsoleColor.Gray, ConsoleColor.Black);
             _buffer = new CharAndColor[_width * _height];
             _scroller = new Scroller(_buffer, _width, _height, clearScreenChar, Colors);
             _consoleWriteArea = new ConsoleRegion(0, 0, (short)(_width - 1), (short)(_height - 1));
@@ -194,10 +193,90 @@ namespace Konsole
             _buffer[x + y * _width] = ToCell(c);
         }
 
-        public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background)
+        public void PrintAt(ConsoleColor color, int x, int y, string format, params object[] args)
         {
-            throw new InvalidOperationException("Please use a window based off the writer to do any writing!");
+            var _colors = Colors;
+            try
+            {
+                ForegroundColor = color;
+                PrintAt(x, y, format, args);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
         }
+
+        public void PrintAt(Colors colors, int x, int y, string format, params object[] args)
+        {
+            var _colors = Colors;
+            try
+            {
+                Colors = colors;
+                PrintAt(x, y, format, args);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, string text)
+        {
+            var _colors = Colors;
+            try
+            {
+                ForegroundColor = color;
+                PrintAt(x, y, text);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
+        public void PrintAt(Colors colors, int x, int y, string text)
+        {
+            var _colors = Colors;
+            try
+            {
+                Colors = colors;
+                PrintAt(x, y, text);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+        public void PrintAt(ConsoleColor color, int x, int y, char c)
+        {
+            var _colors = Colors;
+            try
+            {
+                ForegroundColor = color;
+                PrintAt(x, y, c);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
+
+        public void PrintAt(Colors colors, int x, int y, char c)
+        {
+            var _colors = Colors;
+            try
+            {
+                Colors = colors;
+                PrintAt(x, y, c);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
 
         public void ScrollDown()
         {
@@ -267,6 +346,23 @@ namespace Konsole
         public void WriteLine(Colors colors, string text)
         {
             throw new InvalidOperationException("Please use a window based off the writer to do any writing!");
+        }
+
+        // HighSpeed writer can definitely be themed, booyaa!
+        public StyleTheme Theme { get; set; } = StyleTheme.Default;
+
+        public ControlStatus Status { get; set; } = ControlStatus.Active;
+
+
+        /// <summary>
+        /// Until we update HighSpeedWriter to be able to work with a region of screen, HighSpeedWriter will always be active. 
+        /// </summary>
+        public Style Style
+        {
+            get
+            {
+                return Theme.GetActive(Status);
+            }
         }
     }
 }

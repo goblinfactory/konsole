@@ -1,6 +1,6 @@
 ﻿using System;
 using static System.ConsoleColor;
-using Bogus;
+using static Konsole.ControlStatus;
 
 namespace Konsole.Samples
 {
@@ -13,28 +13,19 @@ namespace Konsole.Samples
             Console.ForegroundColor = White;
             Console.BackgroundColor = DarkBlue;
 
-            var normal = new BoxStyle(
-                LineThickNess.Single,
-                body: new Colors(Gray, DarkBlue),
-                line: new Colors(Gray, Black),
-                title: new Colors(Gray, Black)
-            );
-
-            var active = new BoxStyle(
-                LineThickNess.Single,
-                body: new Colors(White, DarkBlue),
-                line: new Colors(White, DarkBlue),
-                title: new Colors(White, DarkBlue)
+            var theme = new StyleTheme(
+                 Style.BlueOnWhite.WithThickness(LineThickNess.Double),
+                 Style.BlueOnWhite
             );
 
             while (true)
             {
-                RenderGames(y + 2, active);
-                RenderUsers(y + 2, normal);
+                RenderGames(y + 2, theme, Active);
+                RenderUsers(y + 2, theme, Inactive);
                 Console.ReadKey(true);
                 
-                RenderGames(y + 2, normal);
-                RenderUsers(y + 2, active);
+                RenderGames(y + 2, theme, Inactive);
+                RenderUsers(y + 2, theme, Active);
                 Console.ReadKey(true);
             }
             
@@ -42,7 +33,7 @@ namespace Konsole.Samples
 
         }
 
-        static void RenderUsers(int sy, BoxStyle style)
+        static void RenderUsers(IConsole parent, int sy, StyleTheme theme, ControlStatus status)
         {
             var window = Window.OpenBox("players", 7, sy,  35, 7, style);
             var view = new ListView<(string Name, int Credits, string IPAddress)>(
@@ -60,10 +51,10 @@ namespace Konsole.Samples
                 new Column("Credits", 0),
                 new Column("IP Address", 0)
             );
-            view.Refresh();
+            view.Refresh(status);
         }
 
-        static void RenderGames(int sy, BoxStyle style)
+        static void RenderGames(int sy, StyleTheme theme, ControlStatus status)
         {
             var window = Window.OpenBox("openings", 50, sy, 35, 12, style);
             var view = new ListView<(string opening, int moves, string result)>(
@@ -84,7 +75,12 @@ namespace Konsole.Samples
                 new Column("Moves", 7),
                 new Column("Result", 7)
             );
-            view.Refresh();
+            view.BusinessRuleColors = (i, col) =>
+            {
+                if (col == 3 && i.result == "lose") return new Colors(White, Red);
+                return null;
+            };
+            view.Refresh(status);
         }
 
     }

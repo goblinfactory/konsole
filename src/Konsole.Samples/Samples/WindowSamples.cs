@@ -27,12 +27,13 @@ namespace Konsole.Samples
 
             // full screen with style
             // ----------------------
-            win = Window.OpenBox("full screen", new BoxStyle() { 
-                Body  = new Colors(Yellow, DarkBlue),
-                Line = new Colors(Yellow, Black),
-                ThickNess = LineThickNess.Double,
-                Title = new Colors(White, DarkRed),
-            });
+            win = Window.OpenBox("full screen", new Style(
+                body  : new Colors(Yellow, DarkBlue),
+                line : new Colors(Yellow, Black),
+                thickNess : LineThickNess.Double,
+                title : new Colors(White, DarkRed)
+            ));
+            
             Fill(win);
 
             wait();
@@ -45,13 +46,12 @@ namespace Konsole.Samples
             Console.WriteLine("line 1");
             Console.WriteLine("line 2");
             // should continue at current line 3!! ie Inline.
-            win = Window.OpenBox("full screen", 60, 10, new BoxStyle()
-            {
-                Body = new Colors(Yellow, Black),
-                Line = new Colors(Red, Black),
-                ThickNess = LineThickNess.Double,
-                Title = new Colors(White, Red),
-            });
+            win = Window.OpenBox("full screen", 60, 10, new Style(
+                body : new Colors(Yellow, Black),
+                line : new Colors(Red, Black),
+                thickNess : LineThickNess.Double,
+                title : new Colors(White, Red)
+            ));
             Fill(win);
 
             throw new Exception("manual test above does not start the window at the current inline line, expect line 3! expect to preserve existing console CursorTop!");

@@ -15,83 +15,93 @@ namespace Konsole
         private IBoxStyle _thick = new ThickBoxStyle();
         private IBoxStyle _thin = new ThinBoxStyle();
 
-        public LineThickNess Thickness { get; private set; }
+        private Style _style;
 
-        public Draw(IConsole console, LineThickNess thickness = LineThickNess.Single, MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)
+        public Draw(IConsole console) : this(console, Style.Default, MergeOrOverlap.Merge)
+        {
+
+        }
+
+        public Draw(IConsole console, Style style, MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)
         {
             _console = console;
+            _style = style;
             _mergeOrOverlap = mergeOrOverlap;
             _lineMerger = new LineMerger();
-            Thickness = thickness;
         }
 
         public static IBoxStyle ThickBox = new ThickBoxStyle();
         public static IBoxStyle ThinBox = new ThinBoxStyle();
 
-        public Draw Box(int sx, int sy, int ex, int ey, LineThickNess? thickness = null)
+        public Draw Box(int sx, int sy, int ex, int ey)
         {
-            Box(sx, sy, ex, ey, "", thickness ?? Thickness);
+            Box(sx, sy, ex, ey, "");
             return this;
         }
 
+
+        //public Draw Box(int sx, int sy, int ex, int ey, string title, LineThickNess? thicknessOverride = null)
+        //{
+        //    // TODO : remove duplication!
+
+        //    var thickness = thicknessOverride ?? _style.ThickNess;
+        //    int width = ex - sx + 1;
+        //    int height = ey - sy + 1;
+        //    // if box is not visible, return.
+        //    if (ex - sx < 0) return this;
+        //    if (ey - sy < 0) return this;
+
+        //    // if box is 1 character hight and wide render square and return
+        //    if (height == 1 && width == 1)
+        //    {
+        //        _console.PrintAt(sx, sy, '☐');
+        //        return this;
+        //    }
+        //    var line = thickness == LineThickNess.Single ? ThinBox : ThickBox;
+        //    DrawCorners(sx, sy, ex, ey, line);
+        //    // top edge
+        //    //Line(sx + 1, sy, ex - 1, sy, thickness);
+        //    DrawHorizontal(sx + 1, sy, ex - 1, line);
+
+        //    // left edge
+        //    //Line(sx, sy + 1, sx, ey - 1, thickness);
+        //    DrawVertical(sx, sy + 1, ey - 1, line);
+
+        //    // right edge
+        //    //Line(ex, sy + 1, ex, ey - 1, thickness);
+        //    DrawVertical(ex, sy + 1, ey - 1, line);
+
+        //    // bottom edge
+        //    //Line(sx + 1, ey, ex - 1, ey, thickness);
+        //    DrawHorizontal(sx + 1, ey, ex - 1, line);
+
+        //    // print centered title
+        //    var titleText = $" {title} ";
+        //    int len = titleText.Length;
+        //    int maxLen = width - 2;
+        //    if (len > maxLen)
+        //    {
+        //        titleText = maxLen > 0 ? titleText.Substring(0, maxLen) : "";
+        //    }
+        //    if (!string.IsNullOrWhiteSpace(titleText))
+        //    {
+        //        _console.PrintAt(sx + width / 2 - titleText.Length / 2, sy, titleText);
+        //    }
+
+        //    return this;
+        //}
+
+        public Draw Box(int sx, int sy, int ex, int ey, string title)
+        {
+            return Box(sx, sy, ex, ey, title, null);
+        }
 
         public Draw Box(int sx, int sy, int ex, int ey, string title, LineThickNess? thicknessOverride = null)
         {
-            // TODO : remove duplication!
-
-            var thickness = thicknessOverride ?? Thickness;
-            int width = ex - sx + 1;
-            int height = ey - sy + 1;
-            // if box is not visible, return.
-            if (ex - sx < 0) return this;
-            if (ey - sy < 0) return this;
-
-            // if box is 1 character hight and wide render square and return
-            if (height == 1 && width == 1)
-            {
-                _console.PrintAt(sx, sy, '☐');
-                return this;
-            }
-            var line = thickness == LineThickNess.Single ? ThinBox : ThickBox;
-            DrawCorners(sx, sy, ex, ey, line);
-            // top edge
-            //Line(sx + 1, sy, ex - 1, sy, thickness);
-            DrawHorizontal(sx + 1, sy, ex - 1, line);
-
-            // left edge
-            //Line(sx, sy + 1, sx, ey - 1, thickness);
-            DrawVertical(sx, sy + 1, ey - 1, line);
-
-            // right edge
-            //Line(ex, sy + 1, ex, ey - 1, thickness);
-            DrawVertical(ex, sy + 1, ey - 1, line);
-
-            // bottom edge
-            //Line(sx + 1, ey, ex - 1, ey, thickness);
-            DrawHorizontal(sx + 1, ey, ex - 1, line);
-
-            // print centered title
-            var titleText = $" {title} ";
-            int len = titleText.Length;
-            int maxLen = width - 2;
-            if (len > maxLen)
-            {
-                titleText = maxLen > 0 ? titleText.Substring(0, maxLen) : "";
-            }
-            if (!string.IsNullOrWhiteSpace(titleText))
-            {
-                _console.PrintAt(sx + width / 2 - titleText.Length / 2, sy, titleText);
-            }
-
-            return this;
-        }
-
-        public Draw Box(int sx, int sy, int ex, int ey, string title, Colors lineColor, Colors titleColor, LineThickNess? thicknessOverride = null)
-        {
             _console.DoCommand(_console, () =>
             {
-                _console.Colors = lineColor;
-                var thickness = thicknessOverride ?? Thickness;
+                _console.Colors = _style.Line;
+                var thickness = thicknessOverride ?? _style.ThickNess;
                 int width = ex - sx + 1;
                 int height = ey - sy + 1;
                 // if box is not visible, return.
@@ -113,9 +123,8 @@ namespace Konsole
                 }
                 if (!string.IsNullOrWhiteSpace(titleText))
                 {
-                    _console.Colors = titleColor;
                     int titleX = sx + (width / 2) - (titleText.Length / 2);
-                    _console.PrintAt(titleX, sy, titleText);
+                    _console.PrintAt(_style.Title, titleX, sy, titleText);
                 }
             });
             return this;
@@ -150,7 +159,7 @@ namespace Konsole
 
         private Draw _Line(int sx, int sy, int ex, int ey, LineThickNess? _thicknessOverride, HV hvHint)
         {
-            var thickness = _thicknessOverride ?? Thickness;
+            var thickness = _thicknessOverride ?? _style.ThickNess;
             IBoxStyle line = thickness == LineThickNess.Single ? _thin : _thick;
 
             // hv hint is only required when sx, sy and ex, ey are all the same 

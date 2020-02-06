@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
-
-namespace Konsole
+﻿namespace Konsole
 {
     // begin-snippet: IPrintAt
     public interface IPrintAt

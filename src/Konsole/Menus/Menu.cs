@@ -215,10 +215,10 @@ namespace Konsole
 
         private static void PrintTitleAndBorder(MenuModel model, IConsole con, int len)
         {
-            con.PrintAtColor(model.Theme.Foreground, 0, 0, " ".FixLeft(len + 4), model.Theme.Background);
-            con.PrintAtColor(model.Theme.Foreground, 2, 1, model.Title.FixLeft(len), model.Theme.Background);
-            con.PrintAtColor(model.Theme.Foreground, 2, 2, new string('-', len), model.Theme.Background);
-            con.PrintAtColor(model.Theme.Foreground, 0, model.Height + 1, " ".FixLeft(len + 4), model.Theme.Background);
+            con.PrintAt(model.Theme.Foreground, 0, 0, " ".FixLeft(len + 4), model.Theme.Background);
+            con.PrintAt(model.Theme.Foreground, 2, 1, model.Title.FixLeft(len), model.Theme.Background);
+            con.PrintAt(model.Theme.Foreground, 2, 2, new string('-', len), model.Theme.Background);
+            con.PrintAt(model.Theme.Foreground, 0, model.Height + 1, " ".FixLeft(len + 4), model.Theme.Background);
         }
 
         private MenuItem this[int i]

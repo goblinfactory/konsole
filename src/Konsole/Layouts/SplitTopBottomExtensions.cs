@@ -50,7 +50,7 @@ namespace Konsole
                 return (top, bottom);
             }
 
-            lock (Window._staticLocker)
+            lock (Window._locker)
             {
                 int h = c.WindowHeight;
                 int width = c.WindowWidth;
@@ -70,8 +70,9 @@ namespace Konsole
                     c.PrintAt(width, topHeight + 1,rightChar);
                 });
 
-                var topWin = Window._CreateFloatingWindow(1, 1, width-2, topHeight, foreground, background, true, c, null);
-                var bottomWin = Window._CreateFloatingWindow(1, topHeight + 2, width - 2, bottomHeight, foreground, background, true, c, null);
+                var theme = c.Theme.WithColor(new Colors(foreground, background));
+                var topWin = Window._CreateFloatingWindow(c, new WindowSettings { SX = 1, SY = 1, Width = width - 2, Height = topHeight, Theme = theme });
+                var bottomWin = Window._CreateFloatingWindow(c, new WindowSettings { SX = 1, SY = topHeight + 2, Width = width - 2, Height = bottomHeight, Theme = theme });
                 return (topWin, bottomWin);
             }
         }

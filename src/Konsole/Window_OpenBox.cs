@@ -7,168 +7,96 @@ namespace Konsole
 {
     public static class OpenBoxExtensions
     {
-        /// <summary>
-        /// Open a full screen (fills the parent, either another window or the system console) window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
         public static IConsole OpenBox(this IConsole c, string title)
         {
-            return Window._OpenBox(c, title, null, null, null, null, new BoxStyle());
+            var _settings = new WindowSettings { Title = title };
+            return Window._OpenBox(c, _settings);
         }
 
-        /// <summary>
-        /// Open a full screen (fills the parent, either another window or the system console) window with a lined box border with a title. Returns a window instance representing the window inside the box. The returned instance is threadsafe.
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <param name="style">Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double. </param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
-        public static IConsole OpenBox(this IConsole c, string title, BoxStyle style)
+        public static IConsole OpenBox(this IConsole c, WindowSettings settings)
         {
-            return Window._OpenBox(c, title, null, null, null, null, style);
+            return Window._OpenBox(c, settings);
         }
 
-        /// <summary>
-        /// Open a styled inline window with a lined box border with a title. The new Window starts at the current CursorTop + 1 and is width x height in size. The parent window cursor is moved to underneath the newly created window. Returns a window instance representing the window inside the box. The returned instance is threadsafe.
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <param name="width">width (columns)</param>
-        /// <param name="height">height (rows)</param>
-        /// <param name="style">Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double. </param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
-        public static IConsole OpenBox(this IConsole c, string title, int width, int height, BoxStyle style)
-        {
-            return Window._OpenBox(c, title, null, null, width, height, style);
-        }
-
-        /// <summary>
-        /// Open a styled floating window with a lined box border with a title. Returns a window instance representing the window inside the box. The returned instance is threadsafe. Default style is White on black with single thickness lines.
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <param name="width">width (columns)</param>
-        /// <param name="height">height (rows)</param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
-        public static IConsole OpenBox(this IConsole c, string title, int sx, int sy, int width, int height)
-        {
-            return Window._OpenBox(c, title, sx, sy, width, height, new BoxStyle());
-        }
-
-        /// <summary>
-        /// Open a styled floating window with a lined box border with a title. Returns a window instance representing the window inside the box. The returned instance is threadsafe. Default style is White on black with single thickness lines.
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <param name="width">width (columns)</param>
-        /// <param name="height">height (rows)</param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
         public static IConsole OpenBox(this IConsole c, string title, int width, int height)
         {
-            return Window._OpenBox(c, title, null, null, width, height, new BoxStyle());
-        }
-
-        /// <summary>
-        /// Open a styled floating or inline window with a lined box border with a title. Returns a window instance representing the window inside the box. The returned instance is threadsafe.
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <param name="width">width (columns)</param>
-        /// <param name="height">height (rows)</param>
-        /// <param name="style">Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double. </param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
-        public static IConsole OpenBox(this IConsole c, string title, int sx, int sy, int width, int height, BoxStyle style)
-        {
-            return Window._OpenBox(c, title, sx, sy, width, height, style);
+            var _settings = new WindowSettings()
+            {
+                Title = title,
+                Width = width,
+                Height = height
+            };
+            return Window._OpenBox(c, _settings);
         }
     }
 
     public partial class Window
     {
-        /// <summary>
-        /// Open a full screen styled window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
         public static IConsole OpenBox(string title)
         {
-            return _OpenBox(Window.HostConsole, title, null, null, null, null, new BoxStyle());
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title });
         }
 
-        /// <summary>
-        /// Open a fullscreen boxed window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <param name="style">Line colors, Line thickness, content colors, Title colors</param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
-        public static IConsole OpenBox(string title, BoxStyle style)
+        public static IConsole OpenBox(string title, int width, int height)
         {
-            return _OpenBox(Window.HostConsole, title, null, null, null, null, style);
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Width = width, Height = height });
         }
 
-        /// <summary>
-        /// Open a styled floating or inline window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <param name="width">width (columns)</param>
-        /// <param name="height">height (rows)</param>
-        /// <param name="style">Line colors, Line thickness, content colors, Title colors</param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
-        public static IConsole OpenBox(string title, int width, int height, BoxStyle style = null)
+        public static IConsole OpenBox(WindowSettings settings)
         {
-            return _OpenBox(Window.HostConsole, title, null, null, width, height, style ?? new BoxStyle());
+            return _OpenBox(Window.HostConsole, settings);
         }
 
-        /// <summary>
-        /// Open a styled floating or inline window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <param name="width">width (columns)</param>
-        /// <param name="height">height (rows)</param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
-        public static IConsole OpenBox(string title, int sx, int sy, int width, int height)
+        public static IConsole OpenBox(IConsole console, string title)
         {
-            return _OpenBox(Window.HostConsole, title, sx, sy, width, height, new BoxStyle());
+            return _OpenBox(console, new WindowSettings { Title = title });
         }
 
-        /// <summary>
-        /// Open a styled floating or inline window with a lined box border with a title. Returns a window instance representing the window inside the box. The returned instance is threadsafe.
-        /// </summary>
-        /// <param name="title">title text centered on the top line</param>
-        /// <param name="width">width (columns)</param>
-        /// <param name="height">height (rows)</param>
-        /// <param name="style">Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double. </param>
-        /// <returns>threadsafe concurrentWriter wrapping the inside scrollable window inside the box.</returns>
-        public static IConsole OpenBox(string title, int sx, int sy, int width, int height, BoxStyle style)
+        public static IConsole OpenBox(IConsole console, string title, int width, int height)
         {
-            return _OpenBox(Window.HostConsole, title, sx, sy, width, height, style ?? new BoxStyle());
+            return _OpenBox(console, new WindowSettings { Title = title, Width = width, Height = height });
         }
 
-        internal static IConsole _OpenBox(IConsole _parent, string title, int? _sx, int? _sy, int? _width, int? _height, BoxStyle style)
+        public static IConsole OpenBox(IConsole console, WindowSettings settings)
         {
-            IConsole parent = _parent ?? new ConcurrentWriter();
-            lock (Window._staticLocker)
+            return _OpenBox(console, settings);
+        }
+
+        internal static IConsole _OpenBox(IConsole console, WindowSettings settings)
+        {
+            var status = settings.Status;
+            var title = settings.Title;
+            var _sx = settings.SX;
+            var _sy = settings.SY;
+            var _width = settings.Width;
+            var _height = settings.Height;
+            var theme = settings.Theme;
+
+            IConsole _console = console ??  HostConsole;
+            theme = theme ?? console.Theme;
+
+
+            lock (Window._locker)
             {
-                int width = _width ?? parent.WindowWidth;
-                int height = _height ?? parent.WindowHeight;
-                var inline = _sx == null && _sy == null;
-                int sx = _sx ?? 0;
-                int sy = _sy ?? parent.CursorTop;
+                int width = _width ?? _console.WindowWidth;
+                int height = _height ?? _console.WindowHeight;
+                var inline = _sx == 0 && _sy == null;
+                int sx = _sx;
+                int sy = _sy ?? _console.CursorTop;
                 int ex = sx + width - 1;
                 int ey = sy + height - 1;
 
-                parent.DoCommand( parent, () => {
-                    // draw commands are all relative to the Draw() console host.
-                    var draw = new Draw(parent, style.ThickNess, Drawing.MergeOrOverlap.Overlap);
-                    draw.Box(sx, sy, ex, ey, title, style.Line, style.Title, style.ThickNess);
-                });
-                {
-                    // returns a concurrentWindow
-                    var window = _CreateFloatingWindow(sx + 1, sy + 1, width - 2, height - 2, style.Body.Foreground, style.Body.Background, true, parent, null);
-                    if (inline)
-                    {
-                        parent.CursorTop = parent.CursorTop + height;
-                        parent.CursorLeft = 0;
-                    }
-                    return window;
-                }
+                var style = theme.Active;
+                var draw = new Draw(_console, style, Drawing.MergeOrOverlap.Fast);
+                draw.Box(sx, sy, ex, ey, title);
 
+                var window = _CreateFloatingWindow(_console, new WindowSettings { SX = sx + 1, SY = sy + 1, Width = width - 2, Height = height - 2, Status = status, Theme = theme });
+                if (inline)
+                {
+                    _console.CursorTop = _console.CursorTop + height;
+                    _console.CursorLeft = 0;
+                }
+                return window;
             }
         }
     }

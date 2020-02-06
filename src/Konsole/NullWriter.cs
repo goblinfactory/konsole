@@ -207,5 +207,67 @@ namespace Konsole
         public void WriteLine(Colors colors, string text)
         {
         }
+
+        public void PrintAt(Colors colors, int x, int y, string format, params object[] args)
+        {
+            
+        }
+
+        public void PrintAt(Colors colors, int x, int y, string text)
+        {
+            
+        }
+
+        public void PrintAt(Colors colors, int x, int y, char c)
+        {
+            
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, string format, params object[] args)
+        {
+
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, string text)
+        {
+
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, char c)
+        {
+
+        }
+
+        public Style Style
+        {
+            get
+            {
+                return Style.BlackOnWhite;
+            }
+        }
+
+        public StyleTheme Theme
+        {
+            get
+            {
+                return StyleTheme.Default;
+            }
+            set
+            {
+                
+            }
+        }
+
+        public ControlStatus Status
+        {
+            get
+            {
+                return ControlStatus.Active;
+            }
+            set
+            {
+                
+            }
+        }
     }
 }

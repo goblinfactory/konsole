@@ -175,28 +175,28 @@ namespace Konsole
             set { Console.CursorTop = value;  }
         }
 
-        public XY XY
-        {
-            get { return new XY(Console.CursorLeft, Console.CursorTop); }
+        //public XY XY
+        //{
+        //    get { return new XY(Console.CursorLeft, Console.CursorTop); }
 
-            set
-            {
-                Console.CursorLeft = CheckWidth(value.X);
-                Console.CursorTop = value.Y;
-            }
-        }
+        //    set
+        //    {
+        //        Console.CursorLeft = CheckWidth(value.X);
+        //        Console.CursorTop = value.Y;
+        //    }
+        //}
         
-        public int Y
-        {
-            get { return Console.CursorTop; } 
-            set { Console.CursorTop = value; }
-        }
+        //public int Y
+        //{
+        //    get { return Console.CursorTop; } 
+        //    set { Console.CursorTop = value; }
+        //}
 
-        public int X
-        {
-            get { return Console.CursorLeft; } 
-            set { Console.CursorLeft= CheckWidth(value); }
-        }
+        //public int X
+        //{
+        //    get { return Console.CursorLeft; } 
+        //    set { Console.CursorLeft= CheckWidth(value); }
+        //}
 
         /// <summary>
         /// Run command and preserve the state, i.e. restore the console state after running command.
@@ -269,6 +269,90 @@ namespace Konsole
             Console.Write(c);
         }
 
+        public void PrintAt(Colors colors, int x, int y, char c)
+        {
+            var _colors = Colors;
+            try
+            {
+                Colors = colors;
+                PrintAt(x, y, c);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, char c)
+        {
+            var _colors = Colors;
+            try
+            {
+                ForegroundColor = color;
+                PrintAt(x, y, c);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
+        public void PrintAt(Colors colors, int x, int y, string text)
+        {
+            var _colors = Colors;
+            try
+            {
+                Colors = colors;
+                PrintAt(x, y, text);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, string text)
+        {
+            var _colors = Colors;
+            try
+            {
+                ForegroundColor = color;
+                PrintAt(x, y, text);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
+        public void PrintAt(Colors colors, int x, int y, string format, params object[] args)
+        {
+            var _colors = Colors;
+            try
+            {
+                Colors = colors;
+                PrintAt(x, y, format, args);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, string format, params object[] args)
+        {
+            var _colors = Colors;
+            try
+            {
+                ForegroundColor = color;
+                PrintAt(x, y, format, args);
+            }
+            finally
+            {
+                Colors = _colors;
+            }
+        }
+
         public void ScrollDown()
         {
             // do nothing?? mmm.
@@ -282,36 +366,6 @@ namespace Konsole
         public void Clear(ConsoleColor? background)
         {
             Console.Clear();
-        }
-
-        public IConsole BottomHalf(string title = "bottom", WindowTheme border = null, WindowTheme window = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IConsole TopHalf(WindowTheme theme = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IConsole BottomHalf(WindowTheme theme = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IConsole LeftHalf(WindowTheme theme = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IConsole RightHalf(WindowTheme theme = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IConsole TopHalf(string title = "top", WindowTheme border = null, WindowTheme window = null)
-        {
-            throw new NotImplementedException();
         }
 
         public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background = null)
@@ -338,5 +392,17 @@ namespace Konsole
             }
             catch (ArgumentOutOfRangeException) { }
         }
+
+        public Style Style
+        {
+            get
+            {
+                return Theme.GetActive(Status);
+            }
+        }
+
+        public StyleTheme Theme { get; set; } = StyleTheme.Default;
+
+        public ControlStatus Status { get; set; } = ControlStatus.Active;
     }
 }

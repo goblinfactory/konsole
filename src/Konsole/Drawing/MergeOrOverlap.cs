@@ -3,6 +3,6 @@
     public enum MergeOrOverlap
     {
         Merge, 
-        Overlap
+        Fast
     }
 }

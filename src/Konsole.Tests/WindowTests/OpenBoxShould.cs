@@ -92,7 +92,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void open_a_window_that_can_be_scrolled()
         {
-            var win = Window.OpenBox("title", new BoxStyle() { ThickNess = LineThickNess.Double });
+            var win = Window.OpenBox("title", new Style( thickNess : LineThickNess.Double ));
             Fill(win);
             var expected = new[]
             {
@@ -218,10 +218,10 @@ namespace Konsole.Tests.WindowTests
         {
             var con = new MockConsole(20, 9);
             Window.HostConsole = con;
-            var parent = Window.OpenBox("parent", 0, 0, 20, 8, new BoxStyle() { ThickNess = LineThickNess.Double });
+            var parent = Window.OpenBox("parent", 0, 0, 20, 8, new Style(thickNess : LineThickNess.Double ));
             // write the child, and then check if parent cursor still 
             // at 0,0 by writing two lines to parent
-            var child = parent.OpenBox("c1", 7, 2, 8, 4, new BoxStyle() { ThickNess = LineThickNess.Single });
+            var child = parent.OpenBox("c1", 7, 2, 8, 4, new Style( thickNess : LineThickNess.Single ));
             parent.WriteLine("line1");
             parent.WriteLine("line2");
 
@@ -246,7 +246,7 @@ namespace Konsole.Tests.WindowTests
         {
             var con = new MockConsole(20, 9);
             Window.HostConsole = con;
-            var parent = Window.OpenBox("parent", 0, 0, 20, 8, new BoxStyle() { ThickNess = LineThickNess.Double });
+            var parent = Window.OpenBox("parent", 0, 0, 20, 8, new Style(thickNess : LineThickNess.Double));
             var child = parent.OpenBox("c1", 7, 2, 8, 4);
             parent.WindowWidth.Should().Be(18);
             parent.WindowHeight.Should().Be(6);

@@ -6,7 +6,7 @@ using static System.ConsoleColor;
 
 namespace Konsole
 {
-    public class ListView<T>
+    public class ListView<T> : ITheme
     {
         public int selectedItemIndex { get; set; }
         public Column[] Columns { get; set; }
@@ -16,16 +16,15 @@ namespace Konsole
         private readonly IConsole _console;
         protected Func<IEnumerable<T>> _getData;
 
-        public class Theme
+        public ControlStatus Status { get; set; } = ControlStatus.Active;
+        public StyleTheme Theme { get; set; } = StyleTheme.Default;
+        public Style Style
         {
-            public Colors Header { get; set; } = null;
-            public Colors Col1 { get; set; } = null;
-            public Colors Col2 { get; set; } = null;
-            public Colors Col3 { get; set; } = null;
-            public Colors Col4 { get; set; } = null;
-
+            get
+            {
+                return Theme.GetActive(Status);
+            }
         }
-        public Theme Style { get; set; } = new Theme();
 
         /// <summary>
         /// /// set this to a function that will override the default theme for a column
@@ -45,8 +44,9 @@ namespace Konsole
 
         public void Refresh()
         {
+            // can later add in overloads to the refesh to decide how much to refresh, e.g. just refresh the border(box) etc.
             // TODO: write concurrency test that proves that we need this lock here! Test must fail if I take it out !
-            lock (Window._staticLocker)
+            lock (Window._locker)
             {
                 int cnt = Columns.Count();
                 var columns = Columns.ResizeColumns(_console.WindowWidth);
@@ -103,21 +103,14 @@ namespace Konsole
                 var colors = rules(item, column);
                 if (colors != null) return colors;
             }
-
-            switch (column)
-            {
-                case 1: return Style.Col1 ?? _console.Colors;
-                case 2: return Style.Col2 ?? _console.Colors;
-                case 3: return Style.Col3 ?? _console.Colors;
-                default: return Style.Col3 ?? _console.Colors;
-            }
+            return Style.Body;
         }
 
         private void PrintColumnHeadings((Column column, int width)[] resized)
         {
             int i = 0;
             int len = resized.Length;
-            var colors = Style.Header ?? new Colors(Yellow, Black);
+            var colors = Style.Title ?? new Colors(Yellow, Black);
             foreach (var item in resized)
             {
                 var col = item.column;

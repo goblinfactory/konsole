@@ -33,10 +33,9 @@ namespace Konsole.Samples
                  .ForEach(n => names.WriteLine(n));
 
             con.WriteLine("starting numbers demo");
-            var numbers = Window.OpenBox("{numbers", 50, 15, 40, 10, new BoxStyle() { ThickNess = LineThickNess.Double, Body = new Colors(White, Blue) });
+            var numbers = Window.OpenBox("{numbers", 50, 15, 40, 10, new Style( thickNess : LineThickNess.Double, body : new Colors(White, Blue)));
             Enumerable.Range(1, 200).ToList()
                  .ForEach(i => numbers.WriteLine(i.ToString())); // shows scrolling
-
             Console.ReadKey(true);
         }
     }

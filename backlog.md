@@ -2,13 +2,36 @@
 
 ## Busy now
 
+- remove IConsole as a parameter in the constructors, put it into the settings and have the extension method set it. This will reduce the number of overloads!!  move them all to static Open( ..foo)
+- get everything running again,before refactoring further.
+- get tests passing.
+
+- simplify ways to open a window 
+ - with a box and title
+ - without a box
+ - inline
+ - floating
+ - padded
+ 
+- add test, openbox takes a style, and creates a theme from the style.
+- add test, if a window does not have a theme set, then asking for theme must return parent.
+- add test, if a window does have a theme, then asking for theme must return configured theme, except for any 'wildcard' null, properties.  (this means that we have to think carefully about cascading theme changes?) leave that till later
+  - for now, setting a root window theme will cause new windows to inherit. But changing the theme will not change what gets inherited. the inheritance is once off, at time of creation. Will need to a write a method later
+    - to cascade a change down to all children, and optionally call refresh, passing in optional 'refreshdata' or use cached. e.g. calling refresh on 
+- add theme tests  when colors set to null 'controls' to inherit that items color;
+- add assignment overload to allow setting a 'colors' property to only foreground or background, other prop = null, indicating it inherits from parent.
+- root window cannot implement any inherited colors.
 - Console.Clear() resets the current Foreground and Background!
 - OpenBox to use the styling for lines.
 - simple simple list view,  basically it's a menu item that can run keyboard event, no scrolling.
 
 ## Now but paused
+- fast boxes! (after I've compared speed improvement.)
+- can  I remove all the overloads to simplify the API? so that there's only 1 way to construct something, passing in theme, or default, or null to inherit.
+- replace all constructors taking foreground and background with either Colors, or Style or Theme.
 - be able to open a window using Style and Theme (a collection of styles), same as box.
 - listview to use a HighSpeedWriter for just the view region,and refresh 'on refresh'.
+- why does DoCommand take IConsole twice?
 - be able to create a "new window", that is threadsafe, right off the bat, so don't have to use OpenBox, and it takes a Settings.
 - add "Inherited" to Colors so that when printing would convert to use inherited fore or background color.
 - add RGB colors to IWriteColor (if I'm going to be bringin out version 7!)
@@ -24,7 +47,7 @@
    to blink at that windows current position. Readtext should set cursor to readtext position.
 
 ## Busy next
-
+- mini highspeed writer, to be used exclusively for small inline windows, when on windows, this is important because it will work with mac as well and open up a lot of possibilities.
 - 1 line open ListView inline, with OpenListView(); same as OpenBox();
 - if OS !=windows, then all the Splits,Left, Right, Columns and rows should all exclude the bottom row to prevent auto scrolling. (& if not using highspeed writer.)
   - argh, this will cascade down to all child windows, so need some thought.

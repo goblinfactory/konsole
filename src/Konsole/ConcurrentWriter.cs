@@ -3,14 +3,6 @@
 
 namespace Konsole
 {
-    public static class ConcurrentWriterExtensions
-    {
-        public static ConcurrentWriter Concurrent(this Window window)
-        {
-            return new ConcurrentWriter(window);
-        }
-    }
-
     public class ConcurrentWriter  : IConsole
     {
         public static object _locker = new object();
@@ -22,12 +14,6 @@ namespace Konsole
             _window = window;
         }
 
-        /// <summary>
-        /// returns a thread safe concurrent writer that writes to the current console as if it were the actual Console. Keeps the existing operating system CursorTop position. Use this class in conjunction with inline windows for maximum simplicity.
-        /// </summary>
-        /// <remarks>
-        /// Previously the concurrentwriter required a window instance and would only write concurrently to a new Window. That still exists but you can now create a `ConcurrentWriter` without needing to first create a window. This allows for thread safe writing to the console without needing a window. See the new section in the readme under `Threading` for more information and for examples.
-        /// </remarks>
         public ConcurrentWriter()
         {
             _window = new Writer();
@@ -251,12 +237,29 @@ namespace Konsole
 
         }
 
-        public void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background)
+        public void PrintAt(Colors colors, int x, int y, string format, params object[] args)
         {
             lock (_locker)
             {
-                _window.PrintAtColor(foreground,x,y,text,background);
+                _window.PrintAt(colors, x, y, format, args);
             }
+        }
+
+        public void PrintAt(Colors colors, int x, int y, string text)
+        {
+            lock (_locker)
+            {
+                _window.PrintAt(colors, x, y, text);
+            }
+        }
+
+        public void PrintAt(Colors colors, int x, int y, char c)
+        {
+            lock (_locker)
+            {
+                _window.PrintAt(colors, x, y, c);
+            }
+
         }
 
         public void ScrollDown()
@@ -289,5 +292,45 @@ namespace Konsole
                 _window.MoveBufferArea(sourceLeft,sourceTop,sourceWidth,sourceHeight,targetLeft,targetTop,sourceChar,sourceForeColor,sourceBackColor);
             }
         }
+
+        public StyleTheme Theme
+        {
+            get
+            {
+                lock (_locker) return _window.Theme;
+            }
+            set
+            {
+                lock (_locker) _window.Theme = value;
+            }
+        }
+
+        public ControlStatus Status
+        {
+            get
+            {
+                lock (_locker) return _window.Status;
+            }
+            set
+            {
+                lock (_locker) _window.Status = value;
+            }
+        }
+
+        /// <summary>
+        /// Until we update HighSpeedWriter to be able to work with a region of screen, HighSpeedWriter will always be active. 
+        /// </summary>
+        public Style Style
+        {
+            get
+            {
+                lock (_locker)
+                {
+                    return _window.Style;
+                }
+            }
+        }
+
+
     }
 }

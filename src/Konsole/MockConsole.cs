@@ -13,18 +13,15 @@ namespace Konsole
     /// </summary>
     public class MockConsole : Window, IPeek
     {
-        public MockConsole(int x, int y, params K[] options) 
-            : base(new NullWriter(), x, y, options) { }
+        public MockConsole()
+    : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = 120, Height = 60, Theme = StyleTheme.Default, _echo = false }) { }
 
-        public MockConsole(int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options) 
-            : base(0,0, width, height, foreground, background, false, new NullWriter(), options) { }
+        public MockConsole(int width, int height)
+    : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = width, Height = height, Theme = StyleTheme.Default, _echo = false }) { }
 
-        public MockConsole() 
-            : base(0,0, 120, 60, ConsoleColor.White, ConsoleColor.Black, false, new NullWriter()) { }
-
-        public MockConsole(int width, int height) 
-            : base(0, 0, width, height, ConsoleColor.White, ConsoleColor.Black, false, new NullWriter()) { }
-
+        public MockConsole(int width, int height, StyleTheme theme)
+            : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = width, Height = height, Theme = theme, _echo = false })
+        { }
 
         public override void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
