@@ -218,10 +218,17 @@ namespace Konsole.Tests.WindowTests
         {
             var con = new MockConsole(20, 9);
             Window.HostConsole = con;
-            var parent = Window.OpenBox("parent", 0, 0, 20, 8, new Style(thickNess : LineThickNess.Double ));
+            var parent = con.OpenBox("parent", new WindowSettings
+            {
+                SX = 0,
+                SY = 0,
+                Width = 20,
+                Height = 8,
+                Theme = new Style(thickNess: LineThickNess.Double).ToTheme()
+            });
             // write the child, and then check if parent cursor still 
             // at 0,0 by writing two lines to parent
-            var child = parent.OpenBox("c1", 7, 2, 8, 4, new Style( thickNess : LineThickNess.Single ));
+            var child = parent.OpenBox("c1", 7, 2, 8, 4, LineThickNess.Single);
             parent.WriteLine("line1");
             parent.WriteLine("line2");
 
@@ -246,7 +253,7 @@ namespace Konsole.Tests.WindowTests
         {
             var con = new MockConsole(20, 9);
             Window.HostConsole = con;
-            var parent = Window.OpenBox("parent", 0, 0, 20, 8, new Style(thickNess : LineThickNess.Double));
+            var parent = Window.OpenBox("parent", 0, 0, 20, 8, LineThickNess.Double);
             var child = parent.OpenBox("c1", 7, 2, 8, 4);
             parent.WindowWidth.Should().Be(18);
             parent.WindowHeight.Should().Be(6);

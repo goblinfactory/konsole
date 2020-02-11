@@ -58,7 +58,8 @@ namespace Konsole.Tests.WindowTests
         {
             // need to test PrintAt, Write, WriteLine
             var c = new MockConsole(6, 4);
-            var w = new Window(c, 6, 4, K.Clipping);
+            var w = c.Open( new WindowSettings { Width = 6, Height = 4, Clipping = true });
+            Assert.Fail("This test is actually incorrect, needs to clip text off right hand side of screen, i.e. no overflow");
             w.WriteLine("one");
             w.WriteLine("two");
             w.WriteLine("three");
@@ -77,9 +78,8 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void when_clipping_is_enabled_Write_SHOULD_clip_all_text_that_overflows_the_bottom_of_the_screen_and_not_scroll_the_screen()
         {
-            // need to test PrintAt, Write, WriteLine
             var c = new MockConsole(6, 4);
-            var w = new Window(c, 6, 4, K.Clipping);
+            var w = c.Open( new WindowSettings { Width = 6, Height = 4, Clipping = true });
             Assert.True(w.Clipping);
             w.WriteLine("one");
             w.WriteLine("two");
@@ -100,7 +100,7 @@ namespace Konsole.Tests.WindowTests
         public void When_scrolling_is_enabled_WriteLine_when_on_bottom_line_SHOULD_Scroll_screen_up_1_line_for_each_line_that_overflows()
         {
             var c = new MockConsole(6, 2);
-            var w = new Window(c, 6, 2, K.Scrolling);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });
             w.WriteLine("cat");
             w.WriteLine("dog");
             var expected = new[]
@@ -115,7 +115,7 @@ namespace Konsole.Tests.WindowTests
         public void When_scrolling_is_enabled_Write_then_WriteLine_without_overflowing_width_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
         {
             var c = new MockConsole(6, 2);
-            var w = new Window(c, 6, 2, K.Scrolling);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });
             w.WriteLine("cat");
             w.WriteLine("dog");
             w.Write("mouse");
@@ -131,7 +131,7 @@ namespace Konsole.Tests.WindowTests
         public void When_scrolling_is_enabled_And_on_last_line_and_overflowing_width_Write_SHOULD_cause_a_scroll()
         {
             var c = new MockConsole(6, 2);
-            var w = new Window(c, 6, 2, K.Scrolling);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });
             w.CursorLeft = 0;
             w.CursorTop = 1;
             w.Write("abcdefg");
@@ -147,7 +147,7 @@ namespace Konsole.Tests.WindowTests
         public void When_scrolling_is_enabled_And_on_last_line_and_overflowing_width_Write_and_WriteLine_SHOULD_cause_a_scroll()
         {
             var c = new MockConsole(6, 3);
-            var w = new Window(c, 6, 3, K.Scrolling);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 3, Scrolling = true });
             w.CursorLeft = 0;
             w.CursorTop = 1;
             w.Write("abcd");
@@ -165,7 +165,7 @@ namespace Konsole.Tests.WindowTests
         public void When_scrolling_is_enabled_And_on_last_line_and_not_overflowing_width_Write_SHOULD_not_cause_a_scroll()
         {
             var c = new MockConsole(6, 2);
-            var w = new Window(c, 6, 2, K.Scrolling);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });
             w.CursorLeft = 0;
             w.CursorTop = 1;
             w.Write("abcdef");
@@ -181,7 +181,7 @@ namespace Konsole.Tests.WindowTests
         public void When_scrolling_is_enabled_And_on_last_line_Write_SHOULD_not_cause_a_scroll()
         {
             var c = new MockConsole(6, 2);
-            var w = new Window(c, 6, 2, K.Scrolling);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });
             w.CursorLeft = 0;
             w.CursorTop = 1;
             w.Write("abc");
@@ -197,7 +197,7 @@ namespace Konsole.Tests.WindowTests
         public void When_scrolling_is_enabled_Write_then_WriteLine_and_overflowing_width_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
         {
             var c = new MockConsole(6, 4);
-            var w = new Window(c, 6, 4, K.Scrolling);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 4, Scrolling = true });
             Assert.True(w.Scrolling);
             w.Write("111");
             w.WriteLine("aaaa");
@@ -222,7 +222,7 @@ namespace Konsole.Tests.WindowTests
         public void When_scrolling_is_enabled_WriteLine_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
         {
             var c = new MockConsole(6, 4);
-            var w = new Window(c, 6, 4, K.Scrolling);
+            var w = c.Open( new WindowSettings { Width = 6, Height = 4, Scrolling = true });
             Assert.True(w.Scrolling);
             w.WriteLine("one");
             w.WriteLine("two");
@@ -243,7 +243,7 @@ namespace Konsole.Tests.WindowTests
         public void When_scrolling_is_enabled_Write_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
         {
             var c = new MockConsole(6, 4);
-            var w = new Window(c, 6, 4, K.Scrolling);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 4, Scrolling = true });
             Assert.True(w.Scrolling);
             w.WriteLine("one");
             w.WriteLine("two");

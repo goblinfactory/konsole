@@ -13,19 +13,16 @@ namespace Konsole.Samples
             Console.ForegroundColor = White;
             Console.BackgroundColor = DarkBlue;
 
-            var theme = new StyleTheme(
-                 Style.BlueOnWhite.WithThickness(LineThickNess.Double),
-                 Style.BlueOnWhite
-            );
+            var window = new Window(100, 8, Style.BlueOnWhite);
 
             while (true)
             {
-                RenderGames(y + 2, theme, Active);
-                RenderUsers(y + 2, theme, Inactive);
+                RenderGames(window, y + 2, Active);
+                RenderUsers(window, y + 2, Inactive);
                 Console.ReadKey(true);
                 
-                RenderGames(y + 2, theme, Inactive);
-                RenderUsers(y + 2, theme, Active);
+                RenderGames(window, y + 2, Inactive);
+                RenderUsers(window, y + 2, Active);
                 Console.ReadKey(true);
             }
             
@@ -33,9 +30,10 @@ namespace Konsole.Samples
 
         }
 
-        static void RenderUsers(IConsole parent, int sy, StyleTheme theme, ControlStatus status)
+        static void RenderUsers(IConsole console, int sy, ControlStatus status)
         {
-            var window = Window.OpenBox("players", 7, sy,  35, 7, style);
+
+            var window = console.OpenBox("players", new WindowSettings { SX = 7, SY = sy, Width = 35, Height = 7 } );
             var view = new ListView<(string Name, int Credits, string IPAddress)>(
                 window,
                 () => new[] { 
@@ -51,12 +49,13 @@ namespace Konsole.Samples
                 new Column("Credits", 0),
                 new Column("IP Address", 0)
             );
-            view.Refresh(status);
+            view.Status = status;
+            view.Refresh();
         }
 
-        static void RenderGames(int sy, StyleTheme theme, ControlStatus status)
+        static void RenderGames(IConsole console, int sy, ControlStatus status)
         {
-            var window = Window.OpenBox("openings", 50, sy, 35, 12, style);
+            var window = console.OpenBox("openings", 50, sy, 35, 12);
             var view = new ListView<(string opening, int moves, string result)>(
                 window,
                 () => new[] {
@@ -80,7 +79,8 @@ namespace Konsole.Samples
                 if (col == 3 && i.result == "lose") return new Colors(White, Red);
                 return null;
             };
-            view.Refresh(status);
+            view.Status = status;
+            view.Refresh();
         }
 
     }

@@ -73,7 +73,7 @@ namespace Konsole.Samples
             console.WriteLine("build task 1");
             console.WriteLine("build task 2");
             console.WriteLine("build task 3");
-            var window = new Window(console, 40, 7, White, Black);
+            var window = console.Open(40, 7, White, Black);
             var processing = window.SplitTop("processing");
             var status = window.SplitBottom("status");
             var compressProgress = new ProgressBar(processing, 100);
@@ -108,8 +108,8 @@ namespace Konsole.Samples
         {
             var files = Interlocked.Increment(ref _files);
             var kb = (Interlocked.Add(ref _bytes, _rnd.Next(5000)) / 1000);
-            status.PrintAtColor(Black, 16, 0, $" {_bytes} Kb  ", Red);
-            status.PrintAtColor(Black, 0, 0, $" {files++} files ", White);
+            status.PrintAt(Black, 16, 0, $" {_bytes} Kb  ", Red);
+            status.PrintAt(Black, 0, 0, $" {files++} files ", White);
         }
 
         static Task DoStuff(string prefix, ProgressBar progress, IConsole status, int speed)

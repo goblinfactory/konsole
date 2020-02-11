@@ -1,12 +1,12 @@
 ﻿using System;
 using FluentAssertions;
+using Konsole.Tests.Internal;
 using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
 {
     class ConstructorsShould
     {
-
         [Test]
         /// <summary>
         /// An "INLINE" (non floating window) is a window that does not have a top and left property set
@@ -15,19 +15,19 @@ namespace Konsole.Tests.WindowTests
         /// </summary>
         public void WhenCreatingInlineWindows_cursor_should_be_moved_to_below_the_newly_created_window1()
         {
-            IConsole _window;
-            IConsole _inline;
+            IConsole window;
+            IConsole inline;
 
-            _window = new MockConsole(20, 6);
-            _window.WriteLine("line1");
-            _window.Write("1234");
-            Assert.AreEqual(1, _window.CursorTop);
-            Assert.AreEqual(4, _window.CursorLeft);
+            window = new MockConsole(20, 6);
+            window.WriteLine("line1");
+            window.Write("1234");
+            Assert.AreEqual(1, window.CursorTop);
+            Assert.AreEqual(4, window.CursorLeft);
             // create an inline window by only specifying a width and a height.
-            _inline = new Window(_window, 5, 2);
-            Assert.AreEqual(3, _window.CursorTop);
-            Assert.AreEqual(0, _window.CursorLeft);
-            _window.WriteLine("foo");
+            inline = window.Open(5, 2);
+            Assert.AreEqual(3, window.CursorTop);
+            Assert.AreEqual(0, window.CursorLeft);
+            window.WriteLine("foo");
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace Konsole.Tests.WindowTests
             Assert.Inconclusive("Not yet implemented.");
             
             var c = new MockConsole(20, 10);
-            var w2 = new Window(c, 10, 5, 20, 10, ConsoleColor.Red, ConsoleColor.White);
+            var w2 = c.Open( new WindowSettings { SX = 10, SY = 5, Width = 20, Height = 10, Theme = new StyleTheme(ConsoleColor.Red, ConsoleColor.White) });
             Assert.AreEqual(10, w2.WindowWidth);
             //Assert.AreEqual(5, w2.WindowHeight);
         }
@@ -90,17 +90,17 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void Not_change_parent_state()
         {
-            var c = new MockConsole();
-            var state = c.State;
+            var console = new MockConsole();
+            var state = console.State;
 
-            var w1 = new Window(c);
-            state.Should().BeEquivalentTo(c.State);
+            var w1 = console.Open();
+            state.Should().BeEquivalentTo(console.State);
 
-            var w2 = new Window(c, 0, 0);
-            state.Should().BeEquivalentTo(c.State);
+            var w2 = console.Open(0, 0);
+            state.Should().BeEquivalentTo(console.State);
 
-            var w3 = new Window(0, 0, 10, 10, c);
-            state.Should().BeEquivalentTo(c.State);
+            var w3 = console.Open(0, 0, 10, 10);
+            state.Should().BeEquivalentTo(console.State);
         }
 
         [Test]
@@ -124,25 +124,25 @@ namespace Konsole.Tests.WindowTests
         public void set_scrolling_if_specified()
         {
             var c = new MockConsole();
-            var w = new Window(c, 10, 10, K.Scrolling);
-            Assert.True(w.Scrolling);
-            Assert.False(w.Clipping);
+            Window.HostConsole = c;
+            var w = new Window( new WindowSettings { Height = 3, Width = 3, Scrolling = false } );
+            Assert.Fail("need to finish the test, make something scroll then ..not scroll");
         }
 
         [Test]
         public void set_clipping_if_specified()
         {
             var c = new MockConsole();
-            var w = new Window(c, 10, 10, K.Clipping);
-            Assert.True(w.Clipping);
-            Assert.False(w.Scrolling);
+            Window.HostConsole = c;
+            var w = new Window(new WindowSettings { Height = 10, Width = 10, Clipping = true });
+            Assert.Fail("need to finish the test, make something clip then ..not  clip");
         }
 
         [Test]
         public void set_scrolling_as_default_if_nothing_specified()
         {
             var c = new MockConsole();
-            var w = new Window(c, 10, 10);
+            var w = c.Open(10, 10);
             Assert.True(w.Scrolling);
             Assert.False(w.Clipping);
         }
@@ -150,8 +150,8 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void set_correct_height_and_width()
         {
-            var c = new MockConsole(20, 20);
-            var w = new Window(c, 10, 8, 6, 4);
+            var c = new MockConsole();
+            var w = c.Open(10, 8, 6, 4);
             w.WindowWidth.Should().Be(6);
             w.WindowHeight.Should().Be(4);
         }
@@ -160,7 +160,7 @@ namespace Konsole.Tests.WindowTests
         public void not_change_host_cursor_position()
         {
             var c = new MockConsole(20, 20);
-            var w = new Window(c, 10, 8, 6, 4);
+            c.Open(10, 8, 6, 4);
             c.CursorLeft.Should().Be(0);
             c.CursorTop.Should().Be(0);
         }
@@ -187,7 +187,7 @@ namespace Konsole.Tests.WindowTests
             var con = new MockConsole(10, 10);
             con.CursorLeft = parentCurrentX;
             con.CursorTop = parentCurrentY;
-            var win = new Window(con);
+            var win = con.Open();
             win.WindowWidth.Should().Be(expectedWidth);
             win.WindowHeight.Should().Be(expectedHeight);
             win.CursorLeft.Should().Be(0);

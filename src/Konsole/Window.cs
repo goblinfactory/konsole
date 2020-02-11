@@ -47,7 +47,7 @@ namespace Konsole
         private readonly bool _echo;
 
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
-        private IConsole _echoConsole { get; set; }
+        private IConsole _console { get; set; }
 
 
         private bool _transparent = false;
@@ -158,7 +158,7 @@ namespace Konsole
         {
             get
             {
-                lock (_locker) return _theme ?? (_theme = _echoConsole.Theme);
+                lock (_locker) return _theme ?? (_theme = _console.Theme);
             }
             set
             {
@@ -197,13 +197,17 @@ namespace Konsole
 
         private void init()
         {
+            if (HasTitle)
+            {
+                new Draw(_console, Style, Drawing.MergeOrOverlap.Fast).Box(_x + 1, _y + 1, _x + _width - 1, _y + _height - 1, _title);
+            }
+
             _lastLineWrittenTo = -1;
             _lines.Clear();
             for (int i = 0; i < _height; i++)
             {
-                // TODO optimise this #performance Wrapping every call in a setState restore state is very very inneficient.
                 _lines.Add(i, new Row(_width, ' ', ForegroundColor, BackgroundColor));
-                if (!_transparent) PrintAt(0, i, new string(' ', _width));
+                if (!_transparent) _printAt(0, i, new string(' ', _width));
             }
             Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
@@ -339,8 +343,8 @@ namespace Konsole
             lock (_locker)
             {
                 if (!_echo) return;
-                if (_echoConsole != null)
-                    _echoConsole.MoveBufferArea(sourceLeft + AbsoluteX, sourceTop + AbsoluteY, sourceWidth, sourceHeight, targetLeft + AbsoluteX, targetTop + AbsoluteY, sourceChar, sourceForeColor, sourceBackColor);
+                if (_console != null)
+                    _console.MoveBufferArea(sourceLeft + AbsoluteX, sourceTop + AbsoluteY, sourceWidth, sourceHeight, targetLeft + AbsoluteX, targetTop + AbsoluteY, sourceChar, sourceForeColor, sourceBackColor);
 
                 else
                 {
@@ -362,9 +366,9 @@ namespace Konsole
                 }
                 _lines[_height - 1] = new Row(_width, ' ', ForegroundColor, BackgroundColor);
                 Cursor = new XY(0, _height - 1);
-                if (_echoConsole != null)
+                if (_console != null)
                 {
-                    _echoConsole.MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
+                    _console.MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
                 }
             }
         }
@@ -421,15 +425,15 @@ namespace Konsole
 
         public bool CursorVisible
         {
-            get { lock (_locker) return _echoConsole?.CursorVisible ?? _noEchoCursorVisible; }
+            get { lock (_locker) return _console?.CursorVisible ?? _noEchoCursorVisible; }
             set
             {
                 lock (_locker)
                 {
-                    if (_echoConsole == null)
+                    if (_console == null)
                         _noEchoCursorVisible = value;
                     else
-                        _echoConsole.CursorVisible = value;
+                        _console.CursorVisible = value;
                 }
             }
         }
@@ -465,6 +469,12 @@ namespace Konsole
                 Cursor = new XY(x, y);
                 Write(text);
             });
+        }
+
+        private void _printAt(int x, int y, string text)
+        {
+            Cursor = new XY(x, y);
+            Write(text);
         }
 
         public void PrintAt(int x, int y, string text)

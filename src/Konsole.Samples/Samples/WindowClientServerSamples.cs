@@ -15,8 +15,8 @@ namespace Konsole.Samples
             var con = Window.OpenBox("client server demo", 110, 30);
 
             con.WriteLine("starting client server demo");
-            var client = new Window(1, 4, 20, 20, ConsoleColor.Gray, ConsoleColor.DarkBlue, con).Concurrent();
-            var server = new Window(25, 4, 20, 20, con).Concurrent();
+            var client = con.Open(new WindowSettings { SX = 1, SY = 4, Height = 20, Width = 20, Theme = new StyleTheme(Gray, DarkBlue) });
+            var server = con.Open(25, 4, 20, 20);
             client.WriteLine("CLIENT");
             client.WriteLine("------");
             server.WriteLine("SERVER");
@@ -33,7 +33,15 @@ namespace Konsole.Samples
                  .ForEach(n => names.WriteLine(n));
 
             con.WriteLine("starting numbers demo");
-            var numbers = Window.OpenBox("{numbers", 50, 15, 40, 10, new Style( thickNess : LineThickNess.Double, body : new Colors(White, Blue)));
+            var numbers = Window.OpenBox("numbers", new WindowSettings
+            {
+                SX = 50,
+                SY = 15,
+                Width = 40,
+                Height = 10,
+                Theme = new Style(thickNess: LineThickNess.Double, body: new Colors(White, Blue)).ToTheme()
+            });
+            
             Enumerable.Range(1, 200).ToList()
                  .ForEach(i => numbers.WriteLine(i.ToString())); // shows scrolling
             Console.ReadKey(true);

@@ -118,8 +118,7 @@ namespace Konsole
                 if (menuActions == null || menuActions.Length == 0)
                     throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
                 _height = menuActions.Length + 4;
-                _window = Window.OpenInline(_menuConsole, 2, _width, _height, Theme.Foreground, Theme.Background,
-                    K.Clipping);
+                _window = new Window(_menuConsole, new WindowSettings { SX = 2, Width = _width, Height = _height, Theme = new StyleTheme(Theme.Foreground, Theme.Background), Clipping = true });
             }
         }
 
@@ -177,7 +176,7 @@ namespace Konsole
 
                 if (i == model.Current)
                 {
-                    con.PrintAtColor(model.Theme.SelectedItemForeground, left, i + 3, text,
+                    con.PrintAt(model.Theme.SelectedItemForeground, left, i + 3, text,
                         model.Theme.SelectedItemBackground);
                     if (item.Key != null)
                     {
@@ -187,7 +186,7 @@ namespace Konsole
                         if (sub != -1)
                         {
                             string shortcut = text.Substring(sub, 1);
-                            con.PrintAtColor(model.Theme.ShortcutKeyHiliteSelected, left + sub, i + 3, shortcut,
+                            con.PrintAt(model.Theme.ShortcutKeyHiliteSelected, left + sub, i + 3, shortcut,
                                 model.Theme.SelectedItemBackground);
                         }
                     }
@@ -195,7 +194,7 @@ namespace Konsole
                 }
                 else
                 {
-                    con.PrintAtColor(model.Theme.Foreground, left, i + 3, text, model.Theme.Background);
+                    con.PrintAt(model.Theme.Foreground, left, i + 3, text, model.Theme.Background);
                     if (item.Key != null)
                     {
                         var key = item.Key.Value;
@@ -204,7 +203,7 @@ namespace Konsole
                         if (sub != -1)
                         {
                             string shortcut = text.Substring(sub, 1);
-                            con.PrintAtColor(model.Theme.ShortcutKeyHilite, left + sub, i + 3, shortcut,
+                            con.PrintAt(model.Theme.ShortcutKeyHilite, left + sub, i + 3, shortcut,
                                 model.Theme.Background);
                         }
                     }
@@ -229,7 +228,7 @@ namespace Konsole
 
         public Action<Exception, Window> OnError = (e, w) =>
         {
-            w.PrintAtColor(ConsoleColor.White, 0, 0, $"Error :{e.Message}", ConsoleColor.Red);
+            w.PrintAt(ConsoleColor.White, 0, 0, $"Error :{e.Message}", ConsoleColor.Red);
         };
 
 

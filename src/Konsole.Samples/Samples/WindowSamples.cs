@@ -27,12 +27,16 @@ namespace Konsole.Samples
 
             // full screen with style
             // ----------------------
-            win = Window.OpenBox("full screen", new Style(
-                body  : new Colors(Yellow, DarkBlue),
-                line : new Colors(Yellow, Black),
-                thickNess : LineThickNess.Double,
-                title : new Colors(White, DarkRed)
-            ));
+            win = Window.OpenBox("full screen", new WindowSettings
+            {
+                Theme = new Style(
+                body: new Colors(Yellow, DarkBlue),
+                line: new Colors(Yellow, Black),
+                thickNess: LineThickNess.Double,
+                title: new Colors(White, DarkRed)
+            ).ToTheme()
+            }
+            );
             
             Fill(win);
 

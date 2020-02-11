@@ -7,15 +7,28 @@ namespace Konsole
 {
     public static class OpenBoxExtensions
     {
+
         public static IConsole OpenBox(this IConsole c, string title)
         {
             var _settings = new WindowSettings { Title = title };
             return Window._OpenBox(c, _settings);
         }
 
-        public static IConsole OpenBox(this IConsole c, WindowSettings settings)
+        public static IConsole OpenBox(this IConsole c, string title, WindowSettings settings)
         {
-            return Window._OpenBox(c, settings);
+            return Window._OpenBox(c, new WindowSettings(settings) { Title = title });
+        }
+
+        public static IConsole OpenBox(this IConsole c, string title, int sx, int sy, int width, int height, LineThickNess thickness)
+        {
+            return Window._OpenBox(c, new WindowSettings() { 
+                SX = sx,
+                SY = sy,
+                Height = height,
+                Width = width,
+                Theme = c.Style.WithThickness(thickness).ToTheme(),
+                Title = title 
+            });
         }
 
         public static IConsole OpenBox(this IConsole c, string title, int width, int height)
@@ -28,6 +41,54 @@ namespace Konsole
             };
             return Window._OpenBox(c, _settings);
         }
+
+        public static IConsole OpenBox(this IConsole c, string title, int sx, int sy, int width, int height)
+        {
+            var _settings = new WindowSettings()
+            {
+                SX = sx,
+                SY = sy,
+                Title = title,
+                Width = width,
+                Height = height
+            };
+            return Window._OpenBox(c, _settings);
+        }
+
+        public static IConsole OpenBox(this IConsole c, string title, int width, int height, ConsoleColor foreground, ConsoleColor background)
+        {
+            var _settings = new WindowSettings()
+            {
+                Title = title,
+                Width = width,
+                Height = height,
+                Theme = new StyleTheme(foreground, background)
+            };
+            return Window._OpenBox(c, _settings);
+        }
+        public static IConsole OpenBox(this IConsole c, string title, int width, int height, Style style)
+        {
+            var _settings = new WindowSettings()
+            {
+                Title = title,
+                Width = width,
+                Height = height,
+                Theme = style.ToTheme()
+            };
+            return Window._OpenBox(c, _settings);
+        }
+
+        public static IConsole OpenBox(this IConsole c, string title, int width, int height, StyleTheme theme)
+        {
+            var _settings = new WindowSettings()
+            {
+                Title = title,
+                Width = width,
+                Height = height,
+                Theme = theme
+            };
+            return Window._OpenBox(c, _settings);
+        }
     }
 
     public partial class Window
@@ -37,29 +98,59 @@ namespace Konsole
             return _OpenBox(Window.HostConsole, new WindowSettings { Title = title });
         }
 
+        public static IConsole OpenBox(string title, WindowSettings settings)
+        {
+            return _OpenBox(Window.HostConsole, new WindowSettings(settings) { Title = title } );
+        }
+
+        public static IConsole OpenBox(string title, int sx, int sy, int width, int height, LineThickNess thickness)
+        {
+            return _OpenBox(Window.HostConsole, new WindowSettings {
+                Title = title,
+                SX = sx,
+                SY = sy,
+                Width = width,
+                Height = height,
+                Theme = Style.Default.WithThickness(thickness).ToTheme()
+            }) ;
+        }
+
         public static IConsole OpenBox(string title, int width, int height)
         {
             return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Width = width, Height = height });
         }
 
-        public static IConsole OpenBox(WindowSettings settings)
+        public static IConsole OpenBox(string title, int sx, int sy, int width, int height)
         {
-            return _OpenBox(Window.HostConsole, settings);
+            return _OpenBox(Window.HostConsole, new WindowSettings { SX = sx, SY = sy, Title = title, Width = width, Height = height });
         }
 
-        public static IConsole OpenBox(IConsole console, string title)
+        public static IConsole OpenBox(string title, int width, int height, ConsoleColor foreground, ConsoleColor background)
         {
-            return _OpenBox(console, new WindowSettings { Title = title });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Width = width, Height = height, Theme = new StyleTheme(foreground, background) });
         }
 
-        public static IConsole OpenBox(IConsole console, string title, int width, int height)
+        public static IConsole OpenBox(string title, ConsoleColor foreground, ConsoleColor background)
         {
-            return _OpenBox(console, new WindowSettings { Title = title, Width = width, Height = height });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Theme = new StyleTheme(foreground, background) });
+        }
+        public static IConsole OpenBox(string title, Style style)
+        {
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Theme = style.ToTheme() });
         }
 
-        public static IConsole OpenBox(IConsole console, WindowSettings settings)
+        public static IConsole OpenBox(string title, int width, int height, Style style)
         {
-            return _OpenBox(console, settings);
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Width = width, Height = height, Theme = style.ToTheme() });
+        }
+        public static IConsole OpenBox(string title, StyleTheme theme)
+        {
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Theme = theme });
+        }
+
+        public static IConsole OpenBox(string title, int width, int height, StyleTheme theme)
+        {
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Width = width, Height = height, Theme = theme });
         }
 
         internal static IConsole _OpenBox(IConsole console, WindowSettings settings)

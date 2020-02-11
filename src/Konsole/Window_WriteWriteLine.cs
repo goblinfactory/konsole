@@ -146,7 +146,7 @@ namespace Konsole
         {
             if (_clipping && OverflowBottom)
                 return;
-            DoCommand(_echoConsole, () =>
+            DoCommand(_console, () =>
             {
                 var overflow = "";
                 while (overflow != null)
@@ -154,11 +154,11 @@ namespace Konsole
                     if (!_lines.ContainsKey(Cursor.Y)) return;
                     var result = _lines[Cursor.Y].Write(ForegroundColor, BackgroundColor, Cursor.X, text);
                     overflow = result.Overflow;
-                    if (_echo && _echoConsole != null)
+                    if (_echo && _console != null)
                     {
-                        _echoConsole.ForegroundColor = ForegroundColor;
-                        _echoConsole.BackgroundColor = BackgroundColor;
-                        _echoConsole.PrintAt(CursorLeft + _x, CursorTop + _y, result.Written);
+                        _console.ForegroundColor = ForegroundColor;
+                        _console.BackgroundColor = BackgroundColor;
+                        _console.PrintAt(CursorLeft + _x, CursorTop + _y, result.Written);
                     }
                     if (overflow == null)
                     {
