@@ -110,7 +110,7 @@ namespace Konsole
         {
             int i = 0;
             int len = resized.Length;
-            var colors = Style.Title ?? new Colors(Yellow, Black);
+            var colors = Style?.Title ?? new Colors(Yellow, Black);
             foreach (var item in resized)
             {
                 var col = item.column;

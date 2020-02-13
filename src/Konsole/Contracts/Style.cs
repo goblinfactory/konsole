@@ -80,6 +80,16 @@ namespace Konsole
             );
         }
 
+        public Style(ConsoleColor foreground, ConsoleColor background, LineThickNess thickness)
+        {
+            var color = new Colors(foreground, background);
+            ThickNess = thickness;
+            Title = new Colors(background.ToHeading(), background);
+            Line = color;
+            Body = color;
+            SelectedItem = new Colors(foreground, background.ToSelectedItemBackground());
+        }
+
         public Style(ConsoleColor foreground, ConsoleColor background)
         {
             var color = new Colors(foreground, background);

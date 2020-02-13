@@ -76,7 +76,14 @@ namespace Konsole.Tests.WindowTests
             c.WriteLine("------");
             c.WriteLine("------");
             c.Write("------");
-            var w = new Window(1, 1, 4, 2, c, K.Transparent);
+            var w = c.Open(new WindowSettings
+            {
+                SX = 1,
+                SY = 1,
+                Width = 4,
+                Height = 2,
+                Transparent = true
+            });
             w.Write("X");
             w.Write(" Y");
             var expected = new[]

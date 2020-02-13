@@ -5,17 +5,24 @@ using static System.ConsoleColor;
 
 namespace Konsole.Tests.WindowTests
 {
-    public class OpenShould
+    public class ConstructorShould
     {
+        private MockConsole console;
+        [SetUp]
+        public void Setup()
+        {
+            console = new MockConsole(10, 5);
+            Window.HostConsole = console;
+        }
+
         [Test]
         public void open_a_window_with_border_using_default_values()
         {
-            var c = new MockConsole(10,5);
-            var w = Window.Open(0, 0, 10, 5,"title", LineThickNess.Double, ConsoleColor.White, ConsoleColor.Black, c);
+
+            var w = new Window(0, 0, 10, 5,"title", LineThickNess.Double, White, Black);
             w.WriteLine("one");
             w.WriteLine("two");
             w.Write("three");
-            Console.WriteLine(c.BufferString);
             var expected = new[]
             {
                 "╔═ title ╗",
@@ -24,14 +31,13 @@ namespace Konsole.Tests.WindowTests
                 "║three   ║",
                 "╚════════╝"
             };
-            c.BufferWritten.Should().BeEquivalentTo(expected);
+            console.BufferWritten.Should().BeEquivalentTo(expected);
         }
 
         [Test]
         public void return_an_inside_scrollable_window_that_exactly_fits_inside_the_box_with_the_title()
         {
-            var c = new MockConsole(10, 8);
-            var w = Window.Open(0, 0, 8, 6, "title", LineThickNess.Double, White, Black, c);
+            var w = new Window(0, 0, 8, 6, "title", LineThickNess.Double, White, Black);
             w.WindowHeight.Should().Be(4);
             w.WindowWidth.Should().Be(6);
         }
@@ -39,8 +45,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void open_a_window_that_can_be_scrolled()
         {
-            var c = new MockConsole(10, 8);
-            var w = Window.Open(0, 0, 10, 5, "title", LineThickNess.Double, ConsoleColor.White, ConsoleColor.Black, c);
+            var w = new Window(0, 0, 10, 5, "title", LineThickNess.Double, White, Black);
             w.WriteLine("one");
             w.WriteLine("two");
             w.WriteLine("three");
@@ -53,15 +58,13 @@ namespace Konsole.Tests.WindowTests
                 "║        ║",
                 "╚════════╝"
             };
-
-            c.BufferWritten.Should().BeEquivalentTo(expected);
+            console.BufferWritten.Should().BeEquivalentTo(expected);
         }
 
         [Test]
         public void draw_a_box_around_the_scrollable_window_with_a_centered_title_()
         {
-            var c = new MockConsole(10, 8);
-            var w = Window.Open(0, 0, 10, 5, "title", LineThickNess.Double, White, Black, c);
+            var w = new Window(0, 0, 10, 5, "title", LineThickNess.Double, White, Black);
             var expected = new[]
             {
                 "╔═ title ╗",
@@ -70,7 +73,7 @@ namespace Konsole.Tests.WindowTests
                 "║        ║",
                 "╚════════╝"
             };
-            c.BufferWritten.Should().BeEquivalentTo(expected);
+            console.BufferWritten.Should().BeEquivalentTo(expected);
         }
 
         [Test]
@@ -78,8 +81,7 @@ namespace Konsole.Tests.WindowTests
         [TestCase(LineThickNess.Single)]
         public void draw_a_box_around_the_scrollable_window(LineThickNess thickness)
         {
-            var c = new MockConsole(10, 8);
-            var w = Window.Open(0, 0, 10, 5, "title", thickness, White, Black, c);
+            var w = new Window(0, 0, 10, 5, "title", thickness, White, Black);
             var expected = new string[0];
             switch (thickness)
             {
@@ -105,15 +107,16 @@ namespace Konsole.Tests.WindowTests
                     break;
 
             }
-            c.BufferWritten.Should().BeEquivalentTo(expected);
+            console.BufferWritten.Should().BeEquivalentTo(expected);
         }
 
         [Test]
         public void clip_child_window_to_not_exceed_parent_boundaries_test1()
         {
             var con = new MockConsole(40, 10);
-            var win = Window.Open(0, 0, 40, 10, "test", LineThickNess.Double, White, Black, con);
-            var child = Window.Open(20, 0, 30, 6, "child", LineThickNess.Double, White, Black, win);
+            Window.HostConsole = con;
+            var win = new Window(0, 0, 40, 10, "test", LineThickNess.Double, White, Black);
+            var child = win.Open(20, 0, 30, 6, "child", LineThickNess.Double, White, Black);
             child.WriteLine("test");
 
             // this is the current behaviour, not ideal, but test needs to be this until
@@ -139,7 +142,8 @@ namespace Konsole.Tests.WindowTests
         public void clip_child_window_to_not_exceed_parent_boundaries_test2()
         {
             var con = new MockConsole(40, 10);
-            var win = Window.Open(20, 5, 30, 20, "test", LineThickNess.Double, White, Black, con);
+            Window.HostConsole = con;
+            var win = new Window(20, 5, 30, 20, "test", LineThickNess.Double, White, Black);
             win.WriteLine("cats and dogs");
 
             // this is the current behaviour, not ideal, but test needs to be this until
@@ -170,7 +174,8 @@ namespace Konsole.Tests.WindowTests
         public void text_should_be_centered_or_clipped(string title)
         {
             var c = new MockConsole(10, 4);
-            var w = Window.Open(0, 0, 10, 4, title, LineThickNess.Double, White, Black, c);
+            Window.HostConsole = c;
+            var w = new Window(0, 0, 10, 4, title, LineThickNess.Double, White, Black);
 
             string[] expected = new string[0];
             switch (title)
@@ -230,10 +235,11 @@ namespace Konsole.Tests.WindowTests
         public void WhenNested_draw_a_box_around_the_scrollable_window_with_a_centered_title_and_return_a_live_window_at_the_correct_screen_location()
         {
             var con = new MockConsole(20, 8);
-            var w = Window.Open(0, 0, 20, 8, "title", LineThickNess.Double, White, Black, con);
+            Window.HostConsole = con;
+            var w = new Window(0, 0, 20, 8, "title", LineThickNess.Double, White, Black);
             w.WriteLine("line1");
             w.WriteLine("line2");
-            var child = Window.Open(7, 2, 8, 4, "c1", LineThickNess.Single, White, Black, w);
+            var child = w.Open(7, 2, 8, 4, "c1", LineThickNess.Single, White, Black);
             var expected = new[]
             {
                 "╔══════ title ═════╗",

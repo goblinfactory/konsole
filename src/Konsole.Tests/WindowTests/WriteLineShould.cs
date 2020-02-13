@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
+using static System.ConsoleColor;
 
 namespace Konsole.Tests.WindowTests
 {
@@ -46,7 +47,7 @@ namespace Konsole.Tests.WindowTests
             c.WriteLine("------");
             c.WriteLine("------");
             c.Write("------");
-            var w = new Window(1, 1, 4, 2, c, K.Transparent);
+            var w = c.Open(new WindowSettings { SX = 1, SY = 1, Width = 4, Height = 2, Transparent = true });
             w.WriteLine("X");
             w.Write("Y");
             var expected = new[]
@@ -65,8 +66,8 @@ namespace Konsole.Tests.WindowTests
         public void write_using_the_currently_set_fore_and_background_colors()
         {
             var console = new MockConsole(3, 3);
-            console.ForegroundColor = ConsoleColor.Red;
-            console.BackgroundColor = ConsoleColor.White;
+            console.ForegroundColor = Red;
+            console.BackgroundColor = White;
             console.PrintAt(0, 0, "X");
 
             var expectedBefore = new[]
@@ -78,9 +79,17 @@ namespace Konsole.Tests.WindowTests
 
             Assert.AreEqual(expectedBefore, console.BufferWithColor);
 
-            var w = new Window(1, 1, 2, 2, ConsoleColor.Black, ConsoleColor.White, console, K.Transparent);
-            w.ForegroundColor = ConsoleColor.Yellow;
-            w.BackgroundColor = ConsoleColor.Black;
+            var w = new Window(new WindowSettings
+            {
+                SX = 1,
+                SY = 1,
+                Width = 2,
+                Height = 2,
+                Theme = new StyleTheme(Black, White),
+                Transparent = true
+            });
+            w.ForegroundColor = Yellow;
+            w.BackgroundColor = Black;
             w.WriteLine("Y");
             w.Write("Z");
 

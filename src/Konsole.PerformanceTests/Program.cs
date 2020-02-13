@@ -91,12 +91,6 @@ namespace Konsole.PerformanceTests
             var w = new Window();
             w.Write(".");
         }
-
-        public static void NewWindowConcurrent(IConsole console)
-        {
-            var w = new Window().Concurrent();
-            w.Write(".");
-        }
         
         public static void SplitRightLeft(IConsole console)
         {

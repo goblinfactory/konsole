@@ -1,11 +1,12 @@
 ﻿using System;
+using static System.ConsoleColor;
 
 namespace Konsole
 {
     public class StyleTheme
     {
         // can globally override the default theme.
-        public static Func<StyleTheme> GlobalDefault = () => new StyleTheme();
+        public static Func<StyleTheme> GlobalDefault = () => new StyleTheme(White,Black);
         public static StyleTheme Default
         {
             get { return GlobalDefault(); }
@@ -21,6 +22,12 @@ namespace Konsole
         public StyleTheme(ConsoleColor foreground, ConsoleColor background)
         {
             Active = new Style(foreground, background);
+            Inactive = Active;
+            Disabled = Active;
+        }
+        public StyleTheme(ConsoleColor foreground, ConsoleColor background, LineThickNess thickness)
+        {
+            Active = new Style(foreground, background, thickness);
             Inactive = Active;
             Disabled = Active;
         }

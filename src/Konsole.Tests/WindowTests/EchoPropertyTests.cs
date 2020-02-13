@@ -10,7 +10,7 @@ namespace Konsole.Tests.WindowTests
             public void When_WriteLine_SHOULD_translate_wrapped_lines_to_parent()
             {
                 var parent = new MockConsole(4, 5);
-                var window = new Window(1, 1, 2, 3, parent);
+                var window = parent.Open(1, 1, 2, 3);
                 window.WriteLine("12345");
 
                 var expected = new[]
@@ -28,7 +28,7 @@ namespace Konsole.Tests.WindowTests
             public void When_Write_SHOULD_translate_wrapped_lines_to_parent()
             {
                 var parent = new MockConsole(4, 5);
-                var window = new Window(1, 1, 2, 3, parent);
+                var window = parent.Open(1, 1, 2, 3);
                 window.Write("12345");
 
                 var expected = new[]
@@ -48,7 +48,7 @@ namespace Konsole.Tests.WindowTests
             {
                 // the only reason this test is so important, because it's how we simulate writing to the real Console.
                 var parent = new MockConsole(4, 4);
-                var window = new Window(1, 1, 2, 2, parent);
+                var window = parent.Open(1, 1, 2, 2);
                 window.WriteLine("12");
                 window.Write("34");
 
@@ -70,7 +70,7 @@ namespace Konsole.Tests.WindowTests
             {
                 // the only reason this test is so important, because it's how we simulate writing to the real Console.
                 var parent = new MockConsole( 4, 4);
-                var window = new Window(1, 1, 2, 2, parent);
+                var window = parent.Open(1, 1, 2, 2);
                 window.WriteLine("12");
                 window.Write("34");
 

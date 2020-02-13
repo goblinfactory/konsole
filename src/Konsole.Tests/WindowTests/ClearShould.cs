@@ -19,7 +19,7 @@ namespace Konsole.Tests.WindowTests
             {
                 _con = new MockConsole(5, 3);
                 _state = _con.State;
-                _window = new Window(3, 0, 2, 2, ConsoleColor.White, ConsoleColor.DarkCyan, _con);
+                _window = _con.Open(3, 0, 2, 2, White, DarkCyan);
                 _window.Clear();
             }
 
@@ -53,7 +53,8 @@ namespace Konsole.Tests.WindowTests
         public void clear_the_window_and_buffer_of_any_written_lines()
         {
             var con = new MockConsole(10,4);
-            var w1 = new Window(con, 7, 2);
+            Window.HostConsole = con;
+            var w1 = new Window(7, 2);
             w1.WriteLine("one");
             w1.Write("two");
             Assert.AreEqual(new[] { "one", "two" }, w1.BufferWrittenTrimmed);

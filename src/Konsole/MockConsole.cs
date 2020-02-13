@@ -16,8 +16,11 @@ namespace Konsole
         public MockConsole()
     : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = 120, Height = 60, Theme = StyleTheme.Default, _echo = false }) { }
 
+        public MockConsole(int width, int height, ConsoleColor foreground, ConsoleColor background)
+            : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = width, Height = height, Theme = new StyleTheme(foreground, background), _echo = false }) { }
+
         public MockConsole(int width, int height)
-    : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = width, Height = height, Theme = StyleTheme.Default, _echo = false }) { }
+            : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = width, Height = height, Theme = StyleTheme.Default, _echo = false }) { }
 
         public MockConsole(int width, int height, StyleTheme theme)
             : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = width, Height = height, Theme = theme, _echo = false })

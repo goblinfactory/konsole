@@ -20,8 +20,8 @@ namespace Konsole.Samples
             {
                 var files = Interlocked.Increment(ref _files);
                 var kb = (Interlocked.Add(ref _bytes, _rnd.Next(5000)) / 1000);
-                status.PrintAtColor(Black, 16, 0, $" {_bytes} Kb  ", Red);
-                status.PrintAtColor(Black, 0, 0, $" {files++} files ", White);
+                status.PrintAt(Black, 16, 0, $" {_bytes} Kb  ", Red);
+                status.PrintAt(Black, 0, 0, $" {files++} files ", White);
             }
 
 
@@ -45,7 +45,7 @@ namespace Konsole.Samples
             Console.WriteLine("build task 3");
 
             Console.CursorVisible = false;
-            var window = new Window(40, 7).Concurrent();
+            var window = new Window(40, 7);
             var console = new ConcurrentWriter();
             var processing = window.SplitTop("processing");
             var status = window.SplitBottom("status");

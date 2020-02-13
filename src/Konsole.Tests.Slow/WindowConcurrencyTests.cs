@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using static System.ConsoleColor;
 
 namespace Konsole.Tests.Slow
 {
@@ -12,7 +13,8 @@ namespace Konsole.Tests.Slow
         public void WindowsAndSingleBackgroundThread()
         {
             var console = new MockConsole(80,20);
-            var w1 = Window.Open(0, 0, 20, 20, "w1", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkBlue, console);
+            Window.HostConsole = console;
+            var w1 = new Window(0, 0, 20, 20, "w1", LineThickNess.Single, White, DarkBlue);
             int max = 80000;
             Task.Run(() =>
             {
@@ -52,10 +54,11 @@ namespace Konsole.Tests.Slow
         {
             int max = 8000;
             var console = new MockConsole(80, 20);
-            var w1 = Window.Open(0, 0, 20, 20, "w1", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkBlue, console);
-            var w2 = Window.Open(20, 0, 20, 20, "w2", LineThickNess.Single, ConsoleColor.Red, ConsoleColor.DarkYellow, console);
-            var w3 = Window.Open(40, 0, 20, 20, "w3", LineThickNess.Single, ConsoleColor.White, ConsoleColor.DarkYellow, console);
-            var w4 = Window.Open(60, 0, 20, 20, "w4", LineThickNess.Single, ConsoleColor.Black, ConsoleColor.White, console);
+            Window.HostConsole = console;
+            var w1 = new Window(0, 0, 20, 20, "w1", LineThickNess.Single, White, DarkBlue);
+            var w2 = new Window(20, 0, 20, 20, "w2", LineThickNess.Single, Red, DarkYellow);
+            var w3 = new Window(40, 0, 20, 20, "w3", LineThickNess.Single, White, DarkYellow);
+            var w4 = new Window(60, 0, 20, 20, "w4", LineThickNess.Single, Black, White);
             Task t1 = Task.Run(() =>
             {
                 for (int i = 0; i < max; i++) w1.Write(" {0} ", i.ToString());

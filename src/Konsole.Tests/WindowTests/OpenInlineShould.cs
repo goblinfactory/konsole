@@ -15,17 +15,16 @@ namespace Konsole.Tests.WindowTests
         {
             var c = new MockConsole(10, 4);
             c.WriteLine("line1");
-            var w = Window.OpenInline(c, 2);
+            var w = c.Open(2);
             w.WriteLine("cats");
-            w.WriteLine("dogs");
-            w.Write("fruit");
-            c.Write("line2");
+            w.Write("dogs");
+            c.Write("fruit1");
             var expected = new[]
             {
                 "line1     ",
+                "cats      ",
                 "dogs      ",
-                "fruit     ",
-                "line2     "
+                "fruit1    "
             };
             c.Buffer.Should().BeEquivalentTo(expected);
         }
@@ -47,7 +46,7 @@ namespace Konsole.Tests.WindowTests
             var c = new MockConsole(12, 10);
             c.CursorLeft = 5;
             c.CursorTop = 5;
-            var w = Window.OpenInline(c, 2);
+            var w = c.Open(2);
             w.WindowWidth.Should().Be(12);
             c.CursorTop.Should().Be(8);
             c.CursorLeft.Should().Be(0);
@@ -63,7 +62,7 @@ namespace Konsole.Tests.WindowTests
             var c = new MockConsole(10, 10);
             c.CursorLeft = parentCurrentX;
             c.CursorTop = parentCurrentY;
-            var w = Window.OpenInline(c, heightRows);
+            var w = c.Open(heightRows);
             w.WindowWidth.Should().Be(10);
             w.WindowHeight.Should().Be(expectedHeight);
         }

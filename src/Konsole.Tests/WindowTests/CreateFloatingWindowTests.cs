@@ -12,7 +12,14 @@ namespace Konsole.Tests.WindowTests
         {
             var con = new MockConsole(20, 8);
             var win = new Window(con);
-            var float1 = Window._CreateFloatingWindow(5, 1, 7, 5, White, Black, true, win);
+            var float1 = Window._CreateFloatingWindow(win, new WindowSettings
+            {
+                SX = 5,
+                SY = 1,
+                Width = 7,
+                Height = 5,
+                Theme = new StyleTheme(White, Black)
+            });
             float1.Write("00000001111111222222233333334444444");
 
             var expected = new[] {
@@ -36,7 +43,14 @@ namespace Konsole.Tests.WindowTests
 
             var con = new MockConsole(20, 8);
             var win = new Window(con);
-            var float1 = Window._CreateFloatingWindow(5, 1, 7, 5, White, Black, true, win);
+            var float1 = Window._CreateFloatingWindow(win, new WindowSettings
+            {
+                SX = 5,
+                SY = 1,
+                Width = 7,
+                Height = 5,
+                Theme = new StyleTheme(White, Black)
+            });
             float1.Write("00000001111111222222233333334444444");
             var expected = new[] {
                 "                    ",
@@ -52,7 +66,14 @@ namespace Konsole.Tests.WindowTests
             con.Buffer.Should().BeEquivalentTo(expected);
 
             // now test creating a nested window
-            var float2 = Window._CreateFloatingWindow(3, 2, 3, 2, White, Black, true, float1);
+            var float2 = Window._CreateFloatingWindow(float1, new WindowSettings
+            {
+                SX = 3,
+                SY = 2,
+                Width = 3,
+                Height = 2,
+                Theme = new StyleTheme(White, Black)
+            });
             float2.CursorLeft = 0;
             float2.CursorTop = 0;
             float2.Write(@"===...");

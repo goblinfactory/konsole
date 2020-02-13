@@ -141,39 +141,39 @@ namespace Konsole
                 ScrollDown();
             }
         }
+        private void __write(IConsole console, string text)
+        {
+            var overflow = "";
+            while (overflow != null)
+            {
+                if (!_lines.ContainsKey(Cursor.Y)) return;
+                var result = _lines[Cursor.Y].Write(ForegroundColor, BackgroundColor, Cursor.X, text);
+                overflow = result.Overflow;
+                if (_echo && _console != null)
+                {
+                    _console.ForegroundColor = ForegroundColor;
+                    _console.BackgroundColor = BackgroundColor;
+                    _console.PrintAt(CursorLeft + _x, CursorTop + _y, result.Written);
+                }
+                if (overflow == null)
+                {
+                    Cursor = Cursor.IncX(text.Length);
+                }
+                else
+                {
+                    Cursor = new XY(0, Cursor.Y + 1);
+                    if (_clipping && OverflowBottom) break;
+                    if (OverflowBottom)
+                        ScrollDown();
+                }
+                text = overflow;
+            }
 
+        }
         private void _write(string text)
         {
-            if (_clipping && OverflowBottom)
-                return;
-            DoCommand(_console, () =>
-            {
-                var overflow = "";
-                while (overflow != null)
-                {
-                    if (!_lines.ContainsKey(Cursor.Y)) return;
-                    var result = _lines[Cursor.Y].Write(ForegroundColor, BackgroundColor, Cursor.X, text);
-                    overflow = result.Overflow;
-                    if (_echo && _console != null)
-                    {
-                        _console.ForegroundColor = ForegroundColor;
-                        _console.BackgroundColor = BackgroundColor;
-                        _console.PrintAt(CursorLeft + _x, CursorTop + _y, result.Written);
-                    }
-                    if (overflow == null)
-                    {
-                        Cursor = Cursor.IncX(text.Length);
-                    }
-                    else
-                    {
-                        Cursor = new XY(0, Cursor.Y + 1);
-                        if (_clipping && OverflowBottom) break;
-                        if (OverflowBottom)
-                            ScrollDown();
-                    }
-                    text = overflow;
-                }
-            });
+            if (_clipping && OverflowBottom) return;
+            DoCommand(_console, () => __write(_console, text));
         }
 
     }

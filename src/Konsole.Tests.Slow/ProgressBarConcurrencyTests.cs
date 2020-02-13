@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using static System.ConsoleColor;
 
 namespace Konsole.Tests.Slow
 {
@@ -16,10 +17,9 @@ namespace Konsole.Tests.Slow
         public void menu_plus_two_windows_full_of_progress_bars_each_window_on_seperate_thread_no_scrolling_of_pbars()
         {
             var console = new MockConsole();
-            var client = Window.Open(35, 0, 40, 25, "client", LineThickNess.Single, ConsoleColor.White,
-                ConsoleColor.DarkBlue, console);
-            var server = Window.Open(77, 0, 40, 25, "server", LineThickNess.Single, ConsoleColor.White,
-                ConsoleColor.DarkYellow, console);
+            Window.HostConsole = console;
+            var client = new Window(35, 0, 40, 25, "client", LineThickNess.Single, White, DarkBlue);
+            var server = new Window(77, 0, 40, 25, "server", LineThickNess.Single, White, DarkYellow);
             console.WriteLine("one");
             console.WriteLine("two");
             var menu = new Menu(console, "Progress Bars", ConsoleKey.Escape, 30,

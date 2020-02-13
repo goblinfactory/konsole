@@ -11,12 +11,13 @@ namespace Konsole.Tests.WindowTests
         public void WhenNestedShould_print_relative_to_the_window_being_printed_to_not_the_parent()
         {
             var c = new MockConsole(6, 6);
-            var parent = new Window(1, 1, 4, 4, c); // create a child window 4 x 4
+            Window.HostConsole = c;
+            var parent = new Window(1, 1, 4, 4); // create a child window 4 x 4
             parent.WriteLine("....");
             parent.WriteLine("....");
             parent.WriteLine("....");
             parent.Write("....");
-            var nested = new Window(1, 1, 2, 2, parent);
+            var nested = parent.Open(1, 1, 2, 2);
             var expected = new[]
             {
                 "      ",
@@ -46,7 +47,8 @@ namespace Konsole.Tests.WindowTests
     public void print_relative_to_the_window_being_printed_to_not_the_parent()
     {
         var c = new MockConsole(6, 4);
-        var w = new Window(1, 1, 4, 2, c);
+        Window.HostConsole = c;
+        var w = new Window(1, 1, 4, 2);
         w.WriteLine("....");
         w.Write("....");
         w.PrintAt(0, 0, "X");
@@ -58,7 +60,6 @@ namespace Konsole.Tests.WindowTests
                 " .Y.. ",
                 "      "
             };
-        Console.WriteLine(c.BufferWrittenString);
         c.Buffer.Should().BeEquivalentTo(expected);
     }
 
@@ -135,8 +136,7 @@ namespace Konsole.Tests.WindowTests
         console.PrintAt(0, 0, "X");
         // if the window was not transparent, then this window would overwrite (blank out) the 'X' just printed above, and test would fail.
         // setting the window to transparent, keeps the underlying text visible. (showing through all non printed areas).
-        var w = new Window(console, K.Transparent);
-
+        var w = console.Open(new WindowSettings { Transparent = true });
         w.PrintAt(3, 1, "123");
 
         var expectedAfter = new[]
@@ -167,7 +167,7 @@ namespace Konsole.Tests.WindowTests
 
         Precondition.Check(() => expectedBefore.Should().BeEquivalentTo(console.BufferWithColor));
 
-        var w = new Window(console, K.Transparent);
+        var w = console.Open( new WindowSettings { Transparent = true });
         w.ForegroundColor = ConsoleColor.DarkGreen;
         w.BackgroundColor = ConsoleColor.DarkCyan;
         w.PrintAt(1, 1, "YY");

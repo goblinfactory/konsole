@@ -33,6 +33,11 @@ namespace Konsole
 
         }
 
+        public HighSpeedWriter() : this((short) Window.HostConsole.WindowWidth, (short)Window.HostConsole.WindowHeight, StyleTheme.Default)
+        {
+
+        }
+
         public HighSpeedWriter(short width, short height, StyleTheme theme, char clearScreenChar = ' ')
         {
             PlatformStuff.EnsureRunningWindows();

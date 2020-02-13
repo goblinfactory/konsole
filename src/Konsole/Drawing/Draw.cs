@@ -22,6 +22,10 @@ namespace Konsole
 
         }
 
+        public Draw(IConsole console, LineThickNess thickness, MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge) : this(console, console.Style.WithThickness(thickness), mergeOrOverlap)
+        {
+        }
+
         public Draw(IConsole console, Style style, MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)
         {
             _console = console;
@@ -32,6 +36,12 @@ namespace Konsole
 
         public static IBoxStyle ThickBox = new ThickBoxStyle();
         public static IBoxStyle ThinBox = new ThinBoxStyle();
+
+        public Draw Box(int sx, int sy, int ex, int ey, LineThickNess thickness)
+        {
+            Box(sx, sy, ex, ey, "", thickness);
+            return this;
+        }
 
         public Draw Box(int sx, int sy, int ex, int ey)
         {

@@ -31,11 +31,12 @@ namespace Konsole.Tests.WindowTests
         public void When_child_offset_is_none_zero_scroll_only_the_offset_region()
         {
             var con = new MockConsole(8, 4);
+            Window.HostConsole = con;
             con.WriteLine("aaaaaaaa");
             con.WriteLine("bbbbbbbb");
             con.WriteLine("cccccccc");
             con.Write("dddddddd");
-            var window = new Window(con, 1, 1, 6, 2);
+            var window = new Window(1, 1, 6, 2);
 
             // are we good at this point?
             var expected = new[]

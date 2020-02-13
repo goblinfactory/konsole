@@ -236,6 +236,29 @@ namespace Konsole
             }
 
         }
+        public void PrintAt(ConsoleColor color, int x, int y, string text)
+        {
+            lock (_locker)
+            {
+                _window.PrintAt(color, x, y, text);
+            }
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, char c)
+        {
+            lock (_locker)
+            {
+                _window.PrintAt(color, x, y, c);
+            }
+        }
+
+        public void PrintAt(ConsoleColor color, int x, int y, string format, params object[] args)
+        {
+            lock (_locker)
+            {
+                _window.PrintAt(color, x, y, format, args);
+            }
+        }
 
         public void PrintAt(Colors colors, int x, int y, string format, params object[] args)
         {
