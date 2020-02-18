@@ -6,7 +6,42 @@ namespace Konsole.Samples
 {
     public class Foo
     {
-        public static void Bar()
+
+        public static void MenuWithoutHotKeys()
+        {
+            //var output = new Window(40, 8, "output");
+            var output = new Window(40, 8);
+            Console.WriteLine("am I below the window?");
+            // menu should appear below the 8 line "output" window which should be inline!
+            // there's a bug here! need to fix...
+            int x = 0;
+            var menu = new Menu("TITLE", ConsoleKey.Escape, 20, MenuLine.none,
+                new MenuItem('1', "ONE", () => output.WriteLine("cats")),
+                new MenuItem('2', "TWO", () => output.WriteLine($"dogs {x--}")),
+                new MenuItem('3', "THREE", () => output.WriteLine($"mice {x++}")),
+                MenuItem.Quit("QUIT")
+            );
+            menu.Run();
+        }
+
+        public static void ListViewThemeTest()
+        {
+            var console = new Window(50, 10, Yellow, DarkMagenta);
+            console.Theme = console.Theme.WithTitle(White, Red);
+            var incoming = console.SplitLeft("INCOMING");
+            var outgoing = console.SplitRight("OUTGOING");
+
+            var view = new ListView<(string Name, int Credits)>(incoming, 
+                () => new[] { ("Graham", 100), ("Kendall", 250) }, 
+                (u) => new[] { u.Name, u.Credits.ToString("00000") },
+                new Column("Name", 0),
+                new Column("Credits", 0)
+            );
+            view.Refresh();
+            Console.ReadKey(true);
+        }
+        
+        public static void MenuTest()
         {
             Console.WriteLine();
             var m = new Menu("Accounts", ConsoleKey.Q, 20, MenuLine.naked,
@@ -25,7 +60,8 @@ namespace Konsole.Samples
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
-            Foo.Bar();
+            Foo.MenuWithoutHotKeys();
+            
             return;
 
             AllTheDifferentConstructors.Demo();

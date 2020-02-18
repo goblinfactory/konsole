@@ -94,6 +94,7 @@ namespace Konsole.Tests.WindowTests
         {
             var win = Window.OpenBox("title", new Style( thickNess : LineThickNess.Double ));
             Fill(win);
+
             var expected = new[]
             {
                         "╔═ title ╗",
@@ -254,10 +255,9 @@ namespace Konsole.Tests.WindowTests
             var con = new MockConsole(20, 9);
             Window.HostConsole = con;
             var parent = Window.OpenBox("parent", 0, 0, 20, 8, LineThickNess.Double);
-            var child = parent.OpenBox("c1", 7, 2, 8, 4);
+            var child = parent.OpenBox("c1", 7, 2, 8, 4, LineThickNess.Single);
             parent.WindowWidth.Should().Be(18);
             parent.WindowHeight.Should().Be(6);
-            //var child = parent.OpenBox("c1", 7, 2, 8, 4);
 
             parent.WriteLine("line1");
             parent.WriteLine("line2");
@@ -275,7 +275,7 @@ namespace Konsole.Tests.WindowTests
                         "                    "
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
 
             child.WriteLine("cats");
             child.Write("dogs");
@@ -293,7 +293,7 @@ namespace Konsole.Tests.WindowTests
                         "                    "
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
 
             // should not interfere with original window cursor position so should still be able to continue writing as 
             // if no new child window had been created.
@@ -314,7 +314,7 @@ namespace Konsole.Tests.WindowTests
                         "                    "
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
     }
 }

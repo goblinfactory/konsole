@@ -136,7 +136,6 @@ namespace Konsole
                     var key = item.Key;
                     if (key.HasValue) _keyBindings.Add(key.Value, i);
                     _menuItems.Add(i, item);
-
                 }
                 if (menuActions == null || menuActions.Length == 0)
                     throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
@@ -193,8 +192,8 @@ namespace Konsole
             var con = model.Window;
             // redraw the bounding box (menu border) nb, check what the default is...x then y? or y then x?
             int cnt = model.MenuItems.Length;
-            int left = 4;
-            int len = model.Width - 6;
+            int left = model.NoHotKeys ? 1 : 4;
+            int len = model.Width - (model.NoHotKeys ? 2 : 6);
             if(printBorder)
             {
                 PrintTitleAndBorder(model, con);
@@ -205,15 +204,20 @@ namespace Konsole
                 var text = $"{item.Title.FixLeft(len)}";
                 int row = model.Naked ? i + 1 : i + 2;
 
-                var key = item.Key.Value;
-                con.PrintAt(bodyColor, 1, row, key.KeyChar);
-                con.PrintAt(bodyColor, 2, row, '.');
+                var keyInfo = item.Key;
+
+                if(keyInfo!=null)
+                {
+                    con.PrintAt(bodyColor, 1, row, keyInfo.Value.KeyChar);
+                    con.PrintAt(bodyColor, 2, row, '.');
+                }
 
                 if (i == model.Current)
                 {
                     con.PrintAt(selectedColor, left, row, text);
                     if (item.Key != null)
                     {
+                        var key = keyInfo.Value;
                         //int sub = text.IndexOfAny(new[] {char.ToLower(key.KeyChar), char.ToUpper(key.KeyChar)});
                         //if (sub != -1)
                         //{
@@ -227,7 +231,8 @@ namespace Konsole
                     con.PrintAt(bodyColor, left, row, text);
                     if (item.Key != null)
                     {
-                        int sub = text.IndexOfAny(new[] {char.ToLower(key.KeyChar), char.ToUpper(key.KeyChar)});
+                        var key = keyInfo.Value.KeyChar;
+                        int sub = text.IndexOfAny(new[] {char.ToLower(key), char.ToUpper(key)});
                         if (sub != -1)
                         {
                             string shortcut = text.Substring(sub, 1);

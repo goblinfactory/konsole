@@ -24,20 +24,29 @@ namespace Konsole.Tests.MenuTests
             m.Keyboard = new MockKeyboard(ConsoleKey.Escape);
             m.Run();
 
-            var expected = new[]
-            {
+            var expected = new[]{
+                "     MENU      ",
                 "               ",
-                "    MENU       ",
-                "    ------     ",
-                "    item 1     ",
-                "    item 2     ",
-                "    item 3     ",
-                "               "
-            };
+                "   a. item     ",
+                "   b. item     ",
+                "   c. item     ",
+                "               ",
+                "               ",
+                };
 
-            Console.WriteLine(con.BufferString);
             con.Buffer.ShouldBe(expected);
-            Approvals.VerifyAll(con.BufferWithColor.AsEnumerable(),"label");
+
+            expected = new[]{
+                " wk wk yr yr yrMyrEyrNyrUyr yr yr yr wk wk wk",
+                " wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " wk wk wBawB.wB wBiBatBaeBamBa wB wB wk wk wk",
+                " wk wk wBbwB.wB wBiwBtwBewBmwB wB wB wk wk wk",
+                " wk wk wBcwB.wB wBiwBtwBewBmwB wB wB wk wk wk",
+                " wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " wk wk wk wk wk wk wk wk wk wk wk wk wk wk wk",
+                };
+
+            con.BufferWithColor.ShouldBe(expected);
         }
 
 
@@ -54,20 +63,16 @@ namespace Konsole.Tests.MenuTests
             m.Keyboard = new MockKeyboard(ConsoleKey.Escape);
             m.Run();
 
-            // text below looks funny, that's because I've encoded the color of each character in the strings
-            // so that I can verify that the foreground and background colors are correct. 
-            // which i cannot do using standard C# strings.
-            var expected = new[]
-            {
-                 " wk wk aB aB aB aB aB aB aB aB aB aB wk wk wk",
-                 " wk wk aB aBMaBEaBNaBUaB aB aB aB aB wk wk wk",
-                 " wk wk aB aB-aB-aB-aB-aB-aB-aB aB aB wk wk wk",
-                 " wk wk aB aBiBatBaeBamBa Baara aB aB wk wk wk",
-                 " wk wk aB aBiaBtaBeaBmaB aBbwB aB aB wk wk wk",
-                 " wk wk aB aBiaBtaBeaBmaB aBcaB aB aB wk wk wk",
-                 " wk wk aB aB aB aB aB aB aB aB aB aB wk wk wk"
-            };
-            
+            var expected = new[]{
+                " wk wk yr yr yrMyrEyrNyrUyr yr yr yr wk wk wk",
+                " wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " wk wk wBawB.wB wBiBatBaeBamBa wB wB wk wk wk",
+                " wk wk wBbwB.wB wBiwBtwBewBmwB wB wB wk wk wk",
+                " wk wk wBqwB.wB wBiwBtwBewBmwB wB wB wk wk wk",
+                " wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " wk wk wk wk wk wk wk wk wk wk wk wk wk wk wk",
+                };
+
             con.BufferWithColor.ShouldBe(expected);
         }
 

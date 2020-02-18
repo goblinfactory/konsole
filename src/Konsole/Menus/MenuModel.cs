@@ -1,4 +1,6 @@
-﻿namespace Konsole
+﻿using System.Linq;
+
+namespace Konsole
 {
     public class MenuModel
     {
@@ -15,6 +17,14 @@
         internal bool Naked
         {
             get { return Separator == MenuLine.naked; }
+        }
+
+        public bool NoHotKeys
+        {
+            get
+            {
+                return MenuItems.All(m => !m.Key.HasValue);
+            }
         }
 
         public MenuModel(IConsole window, string title, int current, int height, int width, MenuLine separator, MenuItem[] menuItems, Style style)

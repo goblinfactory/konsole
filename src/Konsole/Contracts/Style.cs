@@ -62,7 +62,7 @@ namespace Konsole
             Title = title;
             Line = line;
             Body = body;
-            SelectedItem = selectedItem ?? body.ToSelectedItem();
+            SelectedItem = selectedItem ?? body?.ToSelectedItem();
         }
 
         public Style()
@@ -76,16 +76,16 @@ namespace Konsole
 
             var style = ReplaceInheritFromParentNullsWithColors(this);
             return new StyleTheme(
-                style,
-                style.WithThickness(altThickness),
-                style
+                active : style,
+                inactive : style.WithThickness(altThickness),
+                disabled : style
             );
         }
 
         private Style ReplaceInheritFromParentNullsWithColors(Style style)
         {
             var colors = style.Body ?? style.Title ?? style.Line;
-            if (colors == null) return Style.Default;
+            if (colors == null) return Style.Default.WithThickness(style.ThickNess);
 
             return new Style(
                 style.ThickNess,

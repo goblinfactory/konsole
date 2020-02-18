@@ -58,7 +58,7 @@ namespace Konsole
         /// The title of the screen. Will be centered and at the top of the window.
         /// </summary>
         public string Title { get; set; } = null;
-        public bool hasTitle => !string.IsNullOrEmpty(Title);
+        public bool hasTitle => Title != null;
 
         /// <summary>
         /// The width of the screen. Leave black to use whole width.

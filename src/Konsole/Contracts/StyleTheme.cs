@@ -40,6 +40,29 @@ namespace Konsole
         public Style Active { get; }
         public Style Inactive { get; }
         public Style Disabled { get; }
+
+        public StyleTheme WithTitle(ConsoleColor foreground, ConsoleColor background)
+        {
+            return WithTitle(new Colors(foreground, background));
+        }
+        public StyleTheme WithTitle(Colors activeColors)
+        {
+            return new StyleTheme(
+                Active.WithTitle(activeColors),
+                Inactive.WithTitle(activeColors),
+                Disabled.WithTitle(activeColors.ToSelectedItem())
+            );
+        }
+
+        public StyleTheme WithTitle(Colors active, Colors inactive, Colors disabled)
+        {
+            return new StyleTheme(
+                Active.WithTitle(active),
+                Inactive.WithTitle(inactive), 
+                Disabled.WithTitle(disabled)
+            );
+        }
+
         public StyleTheme WithActive(Style active)
         {
             return new StyleTheme(active, Inactive, Disabled);

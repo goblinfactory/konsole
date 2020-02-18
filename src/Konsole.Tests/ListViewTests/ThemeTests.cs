@@ -11,16 +11,15 @@ namespace Konsole.Tests.ListViewTests
     [TestFixture]
     public class ThemeTests
     {
-        MockConsole console;
-        ListView<User> view;
-        IConsole box;
-
-        [SetUp]
-        public void Setup()
+        [Test]
+        [TestCase(Red, Blue)]
+        [TestCase(Yellow, DarkMagenta)]
+        public void WhenThemeNotOverridden_ShouldUse_ParentConsoleTheme(ConsoleColor foreground, ConsoleColor background)
         {
-            console = new MockConsole(20, 5);
-            box = console.OpenBox("users", 20, 5);
-            view = new ListView<User>(box, () => TestUsers.CreateUsers(2), (u) => new[] { u.Name, u.Credits.ToString("00000") },
+
+            var console = new MockConsole(20, 5, foreground, background);
+            var box = console.OpenBox("users", 20, 5);
+            var view = new ListView<User>(box, () => TestUsers.CreateUsers(2), (u) => new[] { u.Name, u.Credits.ToString("00000") },
                 new Column("Name", 0),
                 new Column("Credits", 0)
             );
@@ -34,28 +33,7 @@ namespace Konsole.Tests.ListViewTests
                 };
 
             console.Buffer.ShouldBe(expected);
-        }
-
-        // changing parent window theme should result in children being updated when they refresh.
-        // might need window to register controls, and call refresh on children, that recursively call refresh on their children.
-
-        [Test]
-        [TestCase(Red, Blue)]
-        [TestCase(Yellow, DarkMagenta)]
-        public void WhenThemeNotOverridden_ShouldUse_ParentConsoleTheme(ConsoleColor foreground, ConsoleColor background)
-        {
-            console.Peek(1, 2).Colors.Should().BeEquivalentTo(new Colors(White, Black));
-            var colors = new Colors(foreground, background);
-            box.Colors = colors;
-            view.Refresh();
-
-            // list items should be same as parent 
-            console.Peek(1, 2).Colors.Should().BeEquivalentTo(colors);
-
-            // 
-            // header
-
-            // selected Item
+            console.Peek(1, 2).Colors.Should().BeEquivalentTo(new Colors(foreground, background));
         }
     }
 }

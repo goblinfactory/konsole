@@ -124,6 +124,10 @@ namespace Konsole
         {
         }
 
+        public Window(int width, int height, string title) : this(new WindowSettings { Width = width, Height = height, Title = title })
+        {
+        }
+
         public Window (int width, int height) : this(new WindowSettings { Width = width, Height = height })
         { 
         }
@@ -188,7 +192,8 @@ namespace Konsole
 
                 init();
                 // if we're creating an inline window
-                bool inline = (this._console != null && x == null && y == null);
+                //bool inline = (this._console != null && x == null && y == null);
+                bool inline = (this._console != null && y == null);
                 if (inline)
                 {
                     this._console.CursorTop += _height;

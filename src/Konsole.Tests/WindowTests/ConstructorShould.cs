@@ -205,12 +205,11 @@ namespace Konsole.Tests.WindowTests
                     };
                     break;
                 case null:
-                    expected = new[]
-                    {
-                        "╔════════╗",
-                        "║        ║",
-                        "║        ║",
-                        "╚════════╝"
+                    expected = new[]{
+                    "          ",
+                    "          ",
+                    "          ",
+                    "          ",
                     };
                     break;
 
@@ -224,7 +223,7 @@ namespace Konsole.Tests.WindowTests
                     };
                     break;
             }
-            c.BufferWritten.Should().BeEquivalentTo(expected);
+            c.BufferWritten.ShouldBe(expected);
         }
 
         [Test]

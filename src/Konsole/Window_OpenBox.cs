@@ -50,7 +50,7 @@ namespace Konsole
                 SY = sy,
                 Title = title,
                 Width = width,
-                Height = height
+                Height = height,
             };
             return Window._OpenBox(c, _settings);
         }

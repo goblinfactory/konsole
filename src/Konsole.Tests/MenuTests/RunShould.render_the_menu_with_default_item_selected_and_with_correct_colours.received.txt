@@ -1,0 +1,7 @@
+﻿label[0] =  wk wk yr yr yrMyrEyrNyrUyr yr yr yr wk wk wk
+label[1] =  wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk
+label[2] =  wk wk wBawB.wB wBiBatBaeBamBa wB wB wk wk wk
+label[3] =  wk wk wBbwB.wB wBiwBtwBewBmwB wB wB wk wk wk
+label[4] =  wk wk wBcwB.wB wBiwBtwBewBmwB wB wB wk wk wk
+label[5] =  wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk
+label[6] =  wk wk wk wk wk wk wk wk wk wk wk wk wk wk wk

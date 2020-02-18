@@ -8,18 +8,21 @@ namespace Konsole.Tests.WindowTests
     class WriteLineShould
     {
         [Test]
-        public void when_writing_to_last_char_on_screen_move_cursor_forward_two_lines()
+        public void when_writeLine_ends_on_last_char_on_screen_move_cursor_forward_one_line_only()
         {
+            // so that we can support writing neatly to fill a small window exactly without
+            // causing scrolling. Otherwise we can't fill windows, required for creating controls!
+
             var con = new MockConsole(6, 4);
             con.WriteLine("123456");
             con.WriteLine("XY");
-            var expected = new[]
-            {
+
+            var expected = new[]{
                 "123456",
-                "      ",
                 "XY    ",
-                "      "
-            };
+                "      ",
+                "      ",
+                };
             con.Buffer.ShouldBe(expected);
         }
         [Test]

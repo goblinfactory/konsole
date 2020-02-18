@@ -17,12 +17,12 @@ namespace Konsole
         protected Func<IEnumerable<T>> _getData;
 
         public ControlStatus Status { get; set; } = ControlStatus.Active;
-        public StyleTheme Theme { get; set; } = StyleTheme.Default;
+        public StyleTheme Theme { get; set; } = null;
         public Style Style
         {
             get
             {
-                return Theme.GetActive(Status);
+                return Theme?.GetActive(Status) ?? _console?.Theme.GetActive(Status) ?? Style.Default;
             }
         }
 

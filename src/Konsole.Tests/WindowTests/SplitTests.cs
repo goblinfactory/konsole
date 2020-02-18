@@ -201,14 +201,15 @@ namespace Konsole.Tests.WindowTests
                 "│one     │",
                 "│two     │",
                 "│three   │",
+                "│        │",
                 "└────────┘",
                 "┌── bot ─┐",
                 "│four    │",
                 "│five    │",
                 "│six     │",
-                "│        │",
-                "└────────┘"
+                "└────────┘",
             };
+
 
                 var _12Rows = new[]
     {
