@@ -58,7 +58,7 @@ namespace Konsole.Tests.WindowTests
                 "ccccc     ",
                 "Under B   "
             };
-            console.Buffer.Should().BeEquivalentTo(expected);
+            console.Buffer.ShouldBe(expected);
         }
 
 

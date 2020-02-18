@@ -20,7 +20,7 @@ namespace Konsole.Tests.WindowTests
                 "XY    ",
                 "      "
             };
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
         [Test]
         public void allow_embedded_interpolations_without_exception()
@@ -36,7 +36,7 @@ namespace Konsole.Tests.WindowTests
                 "{json}",
                 "      "
             };
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Konsole.Tests.WindowTests
                 "------"
             };
             Console.WriteLine(c.BufferWrittenString);
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
 
@@ -66,10 +66,12 @@ namespace Konsole.Tests.WindowTests
         public void write_using_the_currently_set_fore_and_background_colors()
         {
             var console = new MockConsole(3, 3);
+            Window.HostConsole = console;
             console.ForegroundColor = Red;
             console.BackgroundColor = White;
             console.PrintAt(0, 0, "X");
-
+     
+            console.Peek(0, 0).Colors.Should().BeEquivalentTo(new Colors(Red, White));
             var expectedBefore = new[]
             {
                 "Xrw wk wk",

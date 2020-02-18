@@ -141,11 +141,7 @@ namespace Konsole
 
                 if (showBorder)
                 {
-                    // DoCommand is no longer required here? Draw.Box uses DoCommand
-                    c.DoCommand(c, () =>
-                    {
-                        new Draw(c).Box(offset, 0, w - 1 + offset, h - 1, title, thickness);
-                    });
+                    new Draw(c).Box(offset, 0, w - 1 + offset, h - 1, title, thickness);
                     return Window._CreateFloatingWindow(c, new WindowSettings { SX = 1 + offset, SY = 1, Width = w - 2, Height = h - 2, Theme = theme });
                 }
                 return Window._CreateFloatingWindow(c, new WindowSettings { SX = offset, SY = 0, Width = w, Height = h, Theme = theme });

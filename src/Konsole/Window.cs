@@ -199,7 +199,7 @@ namespace Konsole
         {
             if (HasTitle)
             {
-                new Draw(_console, Style, Drawing.MergeOrOverlap.Fast).Box(_x + 1, _y + 1, _x + _width - 1, _y + _height - 1, _title);
+                new Draw(_console, Style, Drawing.MergeOrOverlap.Fast).Box(_x - 1, _y - 1, _x + _width, _y + _height, _title);
             }
 
             _lastLineWrittenTo = -1;

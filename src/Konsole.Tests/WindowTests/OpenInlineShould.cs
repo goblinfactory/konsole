@@ -26,7 +26,7 @@ namespace Konsole.Tests.WindowTests
                 "dogs      ",
                 "fruit1    "
             };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]

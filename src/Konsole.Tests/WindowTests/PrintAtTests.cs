@@ -27,7 +27,7 @@ namespace Konsole.Tests.WindowTests
                 " .... ",
                 "      "
             };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
             nested.PrintAt(0, 0, 'X');
             nested.PrintAt(1, 1, 'Y');
 
@@ -40,7 +40,7 @@ namespace Konsole.Tests.WindowTests
                 " .... ",
                 "      "
             };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace Konsole.Tests.WindowTests
                 " .Y.. ",
                 "      "
             };
-        c.Buffer.Should().BeEquivalentTo(expected);
+        c.Buffer.ShouldBe(expected);
     }
 
     [Test]
@@ -165,7 +165,7 @@ namespace Konsole.Tests.WindowTests
                 " wk wk wk"
             };
 
-        Precondition.Check(() => expectedBefore.Should().BeEquivalentTo(console.BufferWithColor));
+        Precondition.Check(() => expectedBefore.ShouldBe(console.BufferWithColor));
 
         var w = console.Open( new WindowSettings { Transparent = true });
         w.ForegroundColor = ConsoleColor.DarkGreen;

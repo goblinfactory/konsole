@@ -2,6 +2,15 @@
 
 ## Busy now
 
+- fix dimensions so that I can "make it faster" (otherwise dimensions will be wrong) [lets see if I can simply start with a parent window being correct? then stuff can start moving really quickly!]
+- make it faster, each root window to automatically return a high speed writer if (OSX = windows) and highspeed writer if (OSX = mac)
+- then make it set focus to current window
+  - open one floating window, 
+  - splitLeft and right, and assign hot keys, 
+  - press tab to switch focus, 
+  - each window to capture input via ReadLine() 
+
+
 - remove IConsole as a parameter in the constructors, put it into the settings and have the extension method set it. This will reduce the number of overloads!!  move them all to static Open( ..foo)
 - get everything running again,before refactoring further.
 - get tests passing.

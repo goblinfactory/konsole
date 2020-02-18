@@ -49,10 +49,10 @@ namespace Konsole
             get { return new Style(LineThickNess.Single, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite, Colors.GrayOnDarkBlue); }
         }
 
-        public Style(LineThickNess thickNess, Colors title)
+        public Style(LineThickNess thickNess, Colors body)
         {
             ThickNess = thickNess;
-            Title = title;
+            Body = body;
         }
 
 
@@ -62,7 +62,7 @@ namespace Konsole
             Title = title;
             Line = line;
             Body = body;
-            SelectedItem = selectedItem;
+            SelectedItem = selectedItem ?? body.ToSelectedItem();
         }
 
         public Style()
@@ -73,10 +73,26 @@ namespace Konsole
         public StyleTheme ToTheme()
         {
             var altThickness = ThickNess == LineThickNess.Double ? LineThickNess.Single : LineThickNess.Double;
+
+            var style = ReplaceInheritFromParentNullsWithColors(this);
             return new StyleTheme(
-                this, 
-                this.WithThickness(altThickness), 
-                this
+                style,
+                style.WithThickness(altThickness),
+                style
+            );
+        }
+
+        private Style ReplaceInheritFromParentNullsWithColors(Style style)
+        {
+            var colors = style.Body ?? style.Title ?? style.Line;
+            if (colors == null) return Style.Default;
+
+            return new Style(
+                style.ThickNess,
+                style.Title ?? colors,
+                style.Line ?? colors,
+                style.Body ?? colors,
+                style.SelectedItem ?? colors.ToSelectedItem()
             );
         }
 
@@ -87,7 +103,7 @@ namespace Konsole
             Title = new Colors(background.ToHeading(), background);
             Line = color;
             Body = color;
-            SelectedItem = new Colors(foreground, background.ToSelectedItemBackground());
+            SelectedItem = color.ToSelectedItem();
         }
 
         public Style(ConsoleColor foreground, ConsoleColor background)
@@ -125,6 +141,28 @@ namespace Konsole
                 new Colors(Title.Foreground, Title.Background),
                 new Colors(Line.Foreground, Line.Background),
                 new Colors(foreground, Body.Background),
+                SelectedItem
+                );
+        }
+
+        public Style WithTitle(Colors title)
+        {
+            return new Style(
+                ThickNess,
+                title,
+                Line,
+                Body,
+                SelectedItem
+                );
+        }
+
+        public Style WithLine(Colors line)
+        {
+            return new Style(
+                ThickNess,
+                Title,
+                line,
+                Body,
                 SelectedItem
                 );
         }

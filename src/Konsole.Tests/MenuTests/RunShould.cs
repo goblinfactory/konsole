@@ -36,7 +36,7 @@ namespace Konsole.Tests.MenuTests
             };
 
             Console.WriteLine(con.BufferString);
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
             Approvals.VerifyAll(con.BufferWithColor.AsEnumerable(),"label");
         }
 
@@ -68,8 +68,7 @@ namespace Konsole.Tests.MenuTests
                  " wk wk aB aB aB aB aB aB aB aB aB aB wk wk wk"
             };
             
-            foreach(var line in con.BufferWithColor) Console.WriteLine(line);
-            con.BufferWithColor.Should().BeEquivalentTo(expected);
+            con.BufferWithColor.ShouldBe(expected);
         }
 
     }

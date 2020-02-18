@@ -10,7 +10,7 @@ namespace Konsole.Tests.Lines
         {
             var console = new MockConsole(2, 2);
             new Draw(console).Box(10, 1, 8, 2, "my test box");
-            console.Buffer.Should().BeEquivalentTo(new[] { 
+            console.Buffer.ShouldBe(new[] { 
                 "  ", 
                 "  " });
         }
@@ -21,7 +21,7 @@ namespace Konsole.Tests.Lines
             var console = new MockConsole(2, 2);
             new Draw(console)
                 .Box(0, 1, 0, 1, "my test box", LineThickNess.Single);
-            console.Buffer.Should().BeEquivalentTo(new[] { 
+            console.Buffer.ShouldBe(new[] { 
                 "  ",
                 "☐ "
             });
@@ -33,7 +33,7 @@ namespace Konsole.Tests.Lines
             var console = new MockConsole(11, 2);
             new Draw(console).Box(0, 1, 9, 1, "my test box", LineThickNess.Double);
             
-            console.Buffer.Should().BeEquivalentTo(new[] {
+            console.Buffer.ShouldBe(new[] {
                 "           ",
                 "╚ my test╝ "
             });
@@ -52,7 +52,7 @@ namespace Konsole.Tests.Lines
                 "└────────┘",
             };
 
-            console.Buffer.Should().BeEquivalentTo(expected);
+            console.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Konsole.Tests.Lines
                 "╚════════╝",
             };
 
-            console.Buffer.Should().BeEquivalentTo(expected);
+            console.Buffer.ShouldBe(expected);
         }
 
 
@@ -133,7 +133,7 @@ namespace Konsole.Tests.Lines
             };
 
             //
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBe(expected);
         }
 
     }

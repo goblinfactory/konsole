@@ -28,7 +28,7 @@ namespace Konsole.Tests.Lines
                 "  └───────────────────────────────────────┘  ",
                 "                                             "
             };
-            console.Buffer.Should().BeEquivalentTo(expected);
+            console.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Konsole.Tests.Lines
                 "  ╚═══════════════════════════════════════════════════════════╝",
             };
 
-            console.Buffer.Should().BeEquivalentTo(expected);
+            console.Buffer.ShouldBe(expected);
         }
     }
 }

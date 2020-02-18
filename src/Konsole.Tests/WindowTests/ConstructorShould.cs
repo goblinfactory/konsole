@@ -121,21 +121,20 @@ namespace Konsole.Tests.WindowTests
 
             // this is the current behaviour, not ideal, but test needs to be this until
             // the change is made.
-            var expected = new[]
-            {
-            "╔════════════════ test ════════════════╗",
-            "║                    ╔═══════════ child║",
-            "║                    ║test            ║║",
-            "║                    ║                ║║",
-            "║                    ║                ║║",
-            "║                    ║                ║║",
-            "║                    ╚═════════════════║",
-            "║                                      ║",
-            "║                                      ║",
-            "╚══════════════════════════════════════╝"
-            };
+            var expected = new[]{
+                "╔════════════════ test ════════════════╗",
+                "║                    ╔═══════════ child║",
+                "║                    ║test             ║",
+                "║                    ║                 ║",
+                "║                    ║                 ║",
+                "║                    ║                 ║",
+                "║                    ╚═════════════════║",
+                "║                                      ║",
+                "║                                      ║",
+                "╚══════════════════════════════════════╝",
+                };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -146,23 +145,20 @@ namespace Konsole.Tests.WindowTests
             var win = new Window(20, 5, 30, 20, "test", LineThickNess.Double, White, Black);
             win.WriteLine("cats and dogs");
 
-            // this is the current behaviour, not ideal, but test needs to be this until
-            // the change is made.
-            var expected = new[]
-            {
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "                    ╔═══════════ test ══",
-            "                    ║cats and dogs     ║",
-            "                    ║                  ║",
-            "                    ║                  ║",
-            "                    ║                  ║"
-            };
+            var expected = new[]{
+                "                                        ",
+                "                                        ",
+                "                                        ",
+                "                                        ",
+                "                    ╔═══════════ test ══",
+                "                    ║                   ",
+                "                    ║cats and dogs      ",
+                "                    ║                   ",
+                "                    ║                   ",
+                "                                        ",
+                };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]

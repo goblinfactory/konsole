@@ -22,7 +22,7 @@ namespace Konsole.Tests.WindowTests
                 "XY    ",
                 "      "
             };
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Ignore("fix later after refactoring write and writeline to seperate partial")]
@@ -41,7 +41,7 @@ namespace Konsole.Tests.WindowTests
                 "789012"
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
             con.Write(".");
             expected = new[]
             {
@@ -49,7 +49,7 @@ namespace Konsole.Tests.WindowTests
                 "789012",
                 ".     "
             };
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace Konsole.Tests.WindowTests
                 "json}  ",
                 "       "
             };
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Konsole.Tests.WindowTests
                 "------"
             };
             Console.WriteLine(c.BufferWrittenString);
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]

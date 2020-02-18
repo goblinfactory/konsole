@@ -33,7 +33,7 @@ namespace Konsole.Tests.WindowTests
                 "                    "
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace Konsole.Tests.WindowTests
                 "                    "
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
 
             // now test creating a nested window
             var float2 = Window._CreateFloatingWindow(float1, new WindowSettings
@@ -89,7 +89,7 @@ namespace Konsole.Tests.WindowTests
                 "                    "
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
     }
 }

@@ -84,7 +84,8 @@ namespace Konsole.Tests.ListViewTests
             var console = new MockConsole(20, 5);
             Window.HostConsole = console;
             var window = Window.OpenBox("users", 20, 5);
-            var view = new ListView<User>(window, TestUsers.Users, (u) => new[] { u.Name, u.Credits.ToString("00000") },
+            var view = new ListView<User>(window, TestUsers.Users, 
+                (u) => new[] { u.Name, u.Credits.ToString("00000") },
                 new Column("Name", 0),
                 new Column("Credits", 0)
             );

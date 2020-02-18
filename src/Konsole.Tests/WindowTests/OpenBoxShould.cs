@@ -102,7 +102,7 @@ namespace Konsole.Tests.WindowTests
                         "║five    ║",
                         "╚════════╝"
             };
-            _console.Buffer.Should().BeEquivalentTo(expected);
+            _console.Buffer.ShouldBe(expected);
         }
 
         [Test]

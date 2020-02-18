@@ -31,7 +31,7 @@ namespace Konsole.Tests.WindowTests
                 "└───────┴────────┘"
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Konsole.Tests.WindowTests
                 "└────────┴────────┘"
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace Konsole.Tests.WindowTests
                 "└────────┴─────────┘"
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         // tests to show how uneven lines are split between left and right windows.
@@ -93,7 +93,7 @@ namespace Konsole.Tests.WindowTests
                     "four     four      ",
                     "                   ",
             };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace Konsole.Tests.WindowTests
                     "four      four      ",
                     "                    ",
             };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace Konsole.Tests.WindowTests
                     "four      four       ",
                     "                     ",
             };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
     }

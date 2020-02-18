@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Konsole.Internal;
+using static System.ConsoleColor;
 
 namespace Konsole
 {
+    public enum MenuLine { naked, box, none, top, topAndBottom }
+
     // throw at any time to exit the menu.
 
     // Requirements 
@@ -28,7 +31,6 @@ namespace Konsole
 
         //private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
         private Dictionary<int, MenuItem> _menuItems = new Dictionary<int, MenuItem>();
-
 
         private Dictionary<ConsoleKeyInfo, int> _keyBindings = new Dictionary<ConsoleKeyInfo, int>();
 
@@ -57,16 +59,18 @@ namespace Konsole
         /// </summary>
         public Action<Menu> OnBeforeMenu = (m) => { };
 
-
+        public MenuLine Separator { get; set; } = MenuLine.none;
 
         /// <summary>
         /// Enable to display the shortcut key for the menu
         /// </summary>
         public bool EnableShortCut { get; set; } = true;
 
-        public MenuTheme Theme { get; set; } = new MenuTheme();
+        public Style Style { get; set; } = Style
+            .WhiteOnDarkBlue
+            .WithThickness(LineThickNess.Single)
+            .WithTitle(new Colors(Yellow, Red));
         public string Title { get; set; } = "";
-
 
 
         private int _current = 0;
@@ -85,21 +89,40 @@ namespace Konsole
 
         public IKeyboard Keyboard { get; set; }
 
+        private bool Naked
+        {
+            get
+            {
+                return Separator == MenuLine.naked;
+            }
+        }
 
         public Menu(string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
-            : this(new Writer(), title, quit, width, menuActions)
+            : this(new Writer(), title, quit, width, MenuLine.none, menuActions)
         {
 
         }
 
+        public Menu(string title, ConsoleKey quit, int width, MenuLine separator, params MenuItem[] menuActions)
+            : this(new Writer(), title, quit, width, separator, menuActions)
+        {
+
+        }
+
+        public Menu(IConsole menuConsole, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
+            : this(menuConsole, title, quit, width, MenuLine.none, menuActions)
+        {
+
+        }
 
         /// <summary>
         /// if we have any menu items with menu keys that differ only by case, then this is a case sensitive menu, otherwise the menu items will be case insensitive.
         /// </summary>
-        public Menu(IConsole menuConsole, string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
+        public Menu(IConsole menuConsole, string title, ConsoleKey quit, int width, MenuLine separator, params MenuItem[] menuActions)
         {
             lock (_locker)
             {
+                Separator = separator;
                 CaseSensitive = CaseForMenuItems(menuActions) == Case.Sensitive;
                 Title = title;
                 Keyboard = Keyboard ?? new Keyboard();
@@ -117,8 +140,9 @@ namespace Konsole
                 }
                 if (menuActions == null || menuActions.Length == 0)
                     throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
-                _height = menuActions.Length + 4;
-                _window = new Window(_menuConsole, new WindowSettings { SX = 2, Width = _width, Height = _height, Theme = new StyleTheme(Theme.Foreground, Theme.Background), Clipping = true });
+                _height = Naked ? menuActions.Length + 2 : menuActions.Length + 3;
+                //new Draw(menuConsole).Box()
+                _window = new Window(_menuConsole, new WindowSettings { SX = 2, Width = _width, Height = _height, Theme = Style.ToTheme(), Clipping = true });
             }
         }
 
@@ -148,63 +172,66 @@ namespace Konsole
 
         private IConsole _window;
 
-        public Action<MenuModel> Render = (model) => { _refresh(model); };
-
+        public Action<MenuModel, bool> Render = (model, printBorder) => { _refresh(model, printBorder); };
+        private bool _printMenu = true;
         public void Refresh()
         {
             lock (_locker)
             {
                 var items = _menuItems.Values.ToArray();
-                var model = new MenuModel(_window, Title, Current, Height, _width, items, Theme);
-                _refresh(model);
+                var model = new MenuModel(_window, Title, Current, Height, _width, Separator, items, Style);
+                _refresh(model, _printMenu);
+                _printMenu = false;
             }
         }
 
-        private static void _refresh(MenuModel model)
+        private static void _refresh(MenuModel model, bool printBorder)
         {
+            var selectedColor = model.Style.SelectedItem;
+            var shortCutColor = model.Style.Body.Foreground.ToSelectedItemForeground();
+            var bodyColor = model.Style.Body;
             var con = model.Window;
             // redraw the bounding box (menu border) nb, check what the default is...x then y? or y then x?
             int cnt = model.MenuItems.Length;
-            int left = 2;
-            int len = model.Width - 4;
-            PrintTitleAndBorder(model, con, len);
+            int left = 4;
+            int len = model.Width - 6;
+            if(printBorder)
+            {
+                PrintTitleAndBorder(model, con);
+            }
             for (int i = 0; i < cnt; i++)
             {
                 var item = model.MenuItems[i];
-                var text = item.Title.FixLeft(len);
+                var text = $"{item.Title.FixLeft(len)}";
+                int row = model.Naked ? i + 1 : i + 2;
 
+                var key = item.Key.Value;
+                con.PrintAt(bodyColor, 1, row, key.KeyChar);
+                con.PrintAt(bodyColor, 2, row, '.');
 
                 if (i == model.Current)
                 {
-                    con.PrintAt(model.Theme.SelectedItemForeground, left, i + 3, text,
-                        model.Theme.SelectedItemBackground);
+                    con.PrintAt(selectedColor, left, row, text);
                     if (item.Key != null)
                     {
-                        var key = item.Key.Value;
-
-                        int sub = text.IndexOfAny(new[] {char.ToLower(key.KeyChar), char.ToUpper(key.KeyChar)});
-                        if (sub != -1)
-                        {
-                            string shortcut = text.Substring(sub, 1);
-                            con.PrintAt(model.Theme.ShortcutKeyHiliteSelected, left + sub, i + 3, shortcut,
-                                model.Theme.SelectedItemBackground);
-                        }
+                        //int sub = text.IndexOfAny(new[] {char.ToLower(key.KeyChar), char.ToUpper(key.KeyChar)});
+                        //if (sub != -1)
+                        //{
+                        //    string shortcut = text.Substring(sub, 1);
+                        //    con.PrintAt(selectedColor, left + sub, row, shortcut);
+                        //}
                     }
-
                 }
                 else
                 {
-                    con.PrintAt(model.Theme.Foreground, left, i + 3, text, model.Theme.Background);
+                    con.PrintAt(bodyColor, left, row, text);
                     if (item.Key != null)
                     {
-                        var key = item.Key.Value;
-
                         int sub = text.IndexOfAny(new[] {char.ToLower(key.KeyChar), char.ToUpper(key.KeyChar)});
                         if (sub != -1)
                         {
                             string shortcut = text.Substring(sub, 1);
-                            con.PrintAt(model.Theme.ShortcutKeyHilite, left + sub, i + 3, shortcut,
-                                model.Theme.Background);
+                            con.PrintAt(shortCutColor, left + sub, row, shortcut);
                         }
                     }
 
@@ -212,12 +239,29 @@ namespace Konsole
             }
         }
 
-        private static void PrintTitleAndBorder(MenuModel model, IConsole con, int len)
+        private static void PrintTitleAndBorder(MenuModel model, IConsole con)
         {
-            con.PrintAt(model.Theme.Foreground, 0, 0, " ".FixLeft(len + 4), model.Theme.Background);
-            con.PrintAt(model.Theme.Foreground, 2, 1, model.Title.FixLeft(len), model.Theme.Background);
-            con.PrintAt(model.Theme.Foreground, 2, 2, new string('-', len), model.Theme.Background);
-            con.PrintAt(model.Theme.Foreground, 0, model.Height + 1, " ".FixLeft(len + 4), model.Theme.Background);
+            if (model.Separator == MenuLine.naked) return;
+            con.PrintAt(model.Style.Title, 0, 0, model.Title.FixCenter(model.Width));
+            var draw = new Draw(con, model.Style);
+
+            switch (model.Separator)
+            {
+                case MenuLine.box:
+                    draw.Box(0, 1, model.Width - 1, model.Height - 1);
+                    break;
+                case MenuLine.none:
+                    break;
+                case MenuLine.top:
+                    draw.Line(0, 1, model.Width - 1, 1);
+                    break;
+                case MenuLine.topAndBottom:
+                    draw.Line(0, 1, model.Width - 1, 1);
+                    draw.Line(0, model.Height - 1, model.Width - 1, model.Height - 1);
+                    break;
+            }
+
+
         }
 
         private MenuItem this[int i]
@@ -228,7 +272,7 @@ namespace Konsole
 
         public Action<Exception, Window> OnError = (e, w) =>
         {
-            w.PrintAt(ConsoleColor.White, 0, 0, $"Error :{e.Message}", ConsoleColor.Red);
+            w.PrintAt(new Colors(ConsoleColor.White, ConsoleColor.Red), 0, 0, $"Error :{e.Message}");
         };
 
 
@@ -271,7 +315,7 @@ namespace Konsole
             }
             Refresh();
 
-            while (!IsMatching(cmd = Keyboard.ReadKey(), QuitKey))
+            while (!IsMatching(cmd = Keyboard.ReadKey(true), QuitKey))
             {
                 int move = isMoveMenuKey(cmd);
                 if (move != 0)

@@ -26,7 +26,7 @@ namespace Konsole.Tests.WindowTests
             [Test]
             public void set_the_background_color_of_the_window()
             {
-                _con.BufferWithColor.Should().BeEquivalentTo(new [] {
+                _con.BufferWithColor.ShouldBe(new [] {
                     " wk wk wk wC wC",
                     " wk wk wk wC wC",
                     " wk wk wk wk wk"

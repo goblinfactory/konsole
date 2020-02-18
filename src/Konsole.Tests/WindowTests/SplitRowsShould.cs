@@ -40,7 +40,7 @@ namespace Konsole.Tests.WindowTests
                     "└──────────────────┘"
             };
 
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Konsole.Tests.WindowTests
                     "└──────────────────┘"
             };
 
-            con.Buffer.Take(11).Should().BeEquivalentTo(expected);
+            con.Buffer.Take(11).ToArray().ShouldBe(expected);
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace Konsole.Tests.WindowTests
                     "└──────────────────┘"
             };
 
-            _ = con.Buffer.Select(row => row.Substring(0, 20)).ToArray().Should().BeEquivalentTo(expected);
+            con.Buffer.Select(row => row.Substring(0, 20)).ToArray().ShouldBe(expected);
         }
 
 

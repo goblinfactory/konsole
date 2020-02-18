@@ -13,6 +13,11 @@ namespace Konsole
             
         }
 
+        public Colors ToSelectedItem()
+        {
+            return new Colors(Background, Background.ToSelectedItemBackground());
+        }
+
         public Colors(ConsoleColor foreground, ConsoleColor background)
         {
             Foreground = foreground;
@@ -63,7 +68,7 @@ namespace Konsole
         {
             get
             {
-                return new Colors(Gray, DarkBlue);
+                return new Colors(White, DarkBlue);
             }
         }
 

@@ -162,7 +162,11 @@ namespace Konsole
         /// <remarks>Lines do not need to be connected. If the two coordinates for start and end are the same, then this will draw a horizontal line. If you need to draw a single character tall or wide line then use DrawHorizontal, or DrawVertical.</remarks>
         public Draw Line(int sx, int sy, int ex, int ey, LineThickNess? _thicknessOverride = null)
         {
-            return _Line(sx, sy, ex, ey, _thicknessOverride, HV.Undefined);
+            _console.DoCommand(_console, () => {
+                _console.Colors = _style.Line;
+                _Line(sx, sy, ex, ey, _thicknessOverride, HV.Undefined);
+            });
+            return this;
         }
 
         private enum HV {  Undefined, Horizontal, Vertical }

@@ -23,7 +23,7 @@ namespace Konsole.Tests.WindowTests
                 "cdef",
                 "    "
             };
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
 
@@ -47,7 +47,7 @@ namespace Konsole.Tests.WindowTests
                 "dddddddd"
             };
 
-            Precondition.Check(() => con.Buffer.Should().BeEquivalentTo(expected));
+            Precondition.Check(() => con.Buffer.ShouldBe(expected));
 
             window.WriteLine("123456");
             window.Write("7890AB");
@@ -58,7 +58,7 @@ namespace Konsole.Tests.WindowTests
                 "c7890ABc",
                 "dddddddd"
             };
-            Precondition.Check(() => con.Buffer.Should().BeEquivalentTo(expected));
+            Precondition.Check(() => con.Buffer.ShouldBe(expected));
 
             window.ScrollDown();
             expected = new[]
@@ -68,7 +68,7 @@ namespace Konsole.Tests.WindowTests
                 "c      c",
                 "dddddddd"
             };
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
 
         [Test]

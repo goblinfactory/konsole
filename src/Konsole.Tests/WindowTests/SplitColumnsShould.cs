@@ -70,7 +70,7 @@ namespace Konsole.Tests.WindowTests
                 "│three  ││six     │",
                 "└───────┘└────────┘"
             };
-            con.Buffer.Should().BeEquivalentTo(expected);
+            con.Buffer.ShouldBe(expected);
         }
     }
 }

@@ -4,16 +4,38 @@ using static Konsole.ControlStatus;
 
 namespace Konsole.Samples
 {
+    public class Foo
+    {
+        public static void Bar()
+        {
+            Console.WriteLine();
+            var m = new Menu("Accounts", ConsoleKey.Q, 20, MenuLine.naked,
+                new MenuItem('1', "Invoices", () => { }),
+                new MenuItem('2', "Expenses", () => { }),
+                new MenuItem('3', "Customers", () => { }),
+                new MenuItem('q', "Quit", () => { })
+            );
+
+            m.Run();
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
             Console.CursorVisible = false;
-            int y = Console.CursorTop;
-            Console.ForegroundColor = White;
-            Console.BackgroundColor = DarkBlue;
+            Foo.Bar();
+            return;
 
-            var window = new Window(100, 8, Style.BlueOnWhite);
+            AllTheDifferentConstructors.Demo();
+            return;
+            
+            int y = Console.CursorTop;
+            //Console.ForegroundColor = White;
+            //Console.BackgroundColor = DarkBlue;
+
+            var window = new Window(100, 20, Style.BlueOnWhite);
 
             while (true)
             {

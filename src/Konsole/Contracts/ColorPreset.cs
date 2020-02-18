@@ -33,7 +33,32 @@ namespace Konsole
             }
         }
 
-        
+        public static ConsoleColor ToSelectedItemForeground(this ConsoleColor foreground)
+        {
+            switch (foreground)
+            {
+                case Black: return Black;
+                case DarkBlue: return Blue;
+                case DarkCyan: return Cyan;
+                case DarkGray: return Gray;
+                case DarkGreen: return Green;
+                case DarkMagenta: return Magenta;
+                case DarkRed: return Red;
+                case DarkYellow: return Yellow;
+
+
+                case Blue: return White;
+                case Cyan: return White;
+                case Gray: return White;
+                case Green: return White;
+                case Magenta: return White;
+                case Red: return White;
+                case White: return White;
+                case Yellow: return Red;
+                default: return Red;
+            }
+        }
+
         public static ConsoleColor ToSelectedItemBackground(this ConsoleColor background)
         {
             switch (background)

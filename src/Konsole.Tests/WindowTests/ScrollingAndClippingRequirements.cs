@@ -50,7 +50,7 @@ namespace Konsole.Tests.WindowTests
             };
 
             Console.WriteLine(w.BufferString);
-            w.Buffer.Should().BeEquivalentTo(expected);
+            w.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace Konsole.Tests.WindowTests
                 "three ",
                 "four  "
             };
-            w.Buffer.Should().BeEquivalentTo(expected);
+            w.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace Konsole.Tests.WindowTests
                 "three ",
                 "444444"
             };
-            w.Buffer.Should().BeEquivalentTo(expected);
+            w.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace Konsole.Tests.WindowTests
                     "dog   ",
                     "      "
                 };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace Konsole.Tests.WindowTests
                     "dog   ",
                     "mouse "
                 };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace Konsole.Tests.WindowTests
                     "abcdef",
                     "g     "
                 };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -158,7 +158,7 @@ namespace Konsole.Tests.WindowTests
                     "g     ",
                     "      "
                 };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace Konsole.Tests.WindowTests
                     "      ",
                     "abcdef"
                 };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -190,7 +190,7 @@ namespace Konsole.Tests.WindowTests
                     "      ",
                     "abc   "
                 };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -215,7 +215,7 @@ namespace Konsole.Tests.WindowTests
                     "d     ",
                     "      "
                 };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -236,7 +236,7 @@ namespace Konsole.Tests.WindowTests
                     "five  ",
                     "      "
                 };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -257,7 +257,7 @@ namespace Konsole.Tests.WindowTests
                     "445555",
                     "5555  ",
                 };
-            c.Buffer.Should().BeEquivalentTo(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
 

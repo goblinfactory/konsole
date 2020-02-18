@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using ApprovalTests;
+using ApprovalTests.Reporters;
+using FluentAssertions;
 using Konsole.Forms;
 using Konsole.Tests.TestClasses;
 using NUnit.Framework;
@@ -44,8 +46,9 @@ namespace Konsole.Tests.FormTests
                 "line2"
             };
 
-            console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
+            console.BufferWrittenTrimmed.ShouldBe(expected);
         }
+
         [Test]
         public void show_the_form_inline_at_the_next_line_below_current_cursor_position_and_update_cursor()
         {
@@ -74,7 +77,7 @@ namespace Konsole.Tests.FormTests
                 "line2"
             };
 
-            console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
+            console.BufferWrittenTrimmed.ShouldBe(expected);
         }
 
         [Test]
@@ -95,7 +98,7 @@ namespace Konsole.Tests.FormTests
                 "line2"
             };
 
-            console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
+            console.BufferWrittenTrimmed.ShouldBe(expected);
 
         }
 
@@ -177,7 +180,7 @@ namespace Konsole.Tests.FormTests
                 " │ Float Epsilon     : 1E-45                          │",
                 " └────────────────────────────────────────────────────┘"
             };
-            console.BufferWrittenTrimmed.Should().BeEquivalentTo(expected);
+            console.BufferWrittenTrimmed.ShouldBe(expected);
         }
 
 
