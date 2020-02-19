@@ -88,22 +88,6 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void Not_change_parent_state()
-        {
-            var console = new MockConsole();
-            var state = console.State;
-
-            var w1 = console.Open();
-            state.Should().BeEquivalentTo(console.State);
-
-            var w2 = console.Open(0, 0);
-            state.Should().BeEquivalentTo(console.State);
-
-            var w3 = console.Open(0, 0, 10, 10);
-            state.Should().BeEquivalentTo(console.State);
-        }
-
-        [Test]
         public void use_parent_height_and_width_as_defaults()
         {
             Assert.Inconclusive();

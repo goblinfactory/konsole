@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
+using static System.ConsoleColor;
 
 namespace Konsole.Tests.WindowTests
 {
     class BackgroundColorShould
     {
         [Test]
-        public void not_change_parent_state()
+        public void not_change_parent_state_background_color()
         {
-            var c = new MockConsole();
-            var state = c.State;
+            var c = new MockConsole(White, Red);
             var w = new Window(c);
-            w.BackgroundColor = ConsoleColor.DarkGray;
-            state.Should().BeEquivalentTo(c.State);
+            w.BackgroundColor = DarkGray;
+            c.BackgroundColor.Should().Be(Red);
         }
 
     }

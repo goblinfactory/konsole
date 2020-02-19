@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
+using static System.ConsoleColor;
 
 namespace Konsole.Tests.WindowTests
 {
@@ -13,11 +9,10 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void not_change_parent_state()
         {
-            var c = new MockConsole();
-            var state = c.State;
+            var c = new MockConsole(White, Red);
             var w = new Window(c);
-            w.ForegroundColor = ConsoleColor.DarkGray;
-            state.Should().BeEquivalentTo(c.State);
+            w.ForegroundColor = DarkGray;
+            c.ForegroundColor.Should().Be(White);
         }
 
 

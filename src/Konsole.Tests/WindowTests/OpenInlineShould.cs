@@ -48,7 +48,7 @@ namespace Konsole.Tests.WindowTests
             c.CursorTop = 5;
             var w = c.Open(2);
             w.WindowWidth.Should().Be(12);
-            c.CursorTop.Should().Be(8);
+            c.CursorTop.Should().Be(7);
             c.CursorLeft.Should().Be(0);
         }
 

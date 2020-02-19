@@ -74,6 +74,11 @@ namespace Konsole
             return new Window(console, new WindowSettings { Theme = new StyleTheme(foreground, background) });
         }
 
+        public static Window Open(this IConsole console, int height, ConsoleColor foreground, ConsoleColor background)
+        {
+            return new Window(console, new WindowSettings { Height = height, Theme = new StyleTheme(foreground, background) });
+        }
+
         public static Window Open(this IConsole console, int width, int height, ConsoleColor foreground, ConsoleColor background)
         {
             return new Window(console, new WindowSettings { Width = width, Height = height, Theme = new StyleTheme(foreground, background) });
@@ -121,6 +126,14 @@ namespace Konsole
         }
 
         public Window(IConsole console) : this(console, new WindowSettings())
+        {
+        }
+
+        public Window(int height, ConsoleColor foreground, ConsoleColor background) : this(new WindowSettings { SX = 0, Height = height, Theme = new StyleTheme(foreground, background) })
+        {
+        }
+
+        public Window(ConsoleColor foreground, ConsoleColor background) : this(new WindowSettings { Theme = new StyleTheme(foreground, background) })
         {
         }
 

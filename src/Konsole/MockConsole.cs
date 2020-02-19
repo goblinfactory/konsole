@@ -13,6 +13,9 @@ namespace Konsole
     /// </summary>
     public class MockConsole : Window, IPeek
     {
+        public MockConsole(ConsoleColor foreground, ConsoleColor background)
+    : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = 120, Height = 60, Theme = StyleTheme.Default.WithColor(new Colors(foreground, background)), _echo = false }) { }
+
         public MockConsole()
     : base(new NullWriter(), new WindowSettings { SX = 0, SY = 0, Width = 120, Height = 60, Theme = StyleTheme.Default, _echo = false }) { }
 

@@ -8,11 +8,11 @@ namespace Konsole.Menus
 {
     public class TaskMenuItem : MenuItem
     {
-        public TaskMenuItem(char key, string title, Action action) : base(key, title, action)
+        public TaskMenuItem(char key, string title, Action<MenuItem> action) : base(key, title, action)
         {
         }
 
-        public TaskMenuItem(string title, Action action) : base(title, action)
+        public TaskMenuItem(string title, Action<MenuItem> action) : base(title, action)
         {
         }
     }

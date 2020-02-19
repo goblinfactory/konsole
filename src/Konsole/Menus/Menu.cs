@@ -319,7 +319,6 @@ namespace Konsole
                 OnBeforeMenu(this);
             }
             Refresh();
-
             while (!IsMatching(cmd = Keyboard.ReadKey(true), QuitKey))
             {
                 int move = isMoveMenuKey(cmd);
@@ -411,7 +410,7 @@ namespace Konsole
                     OnBeforeMenuItem(item);
                     try
                     {
-                        item.Action?.Invoke();
+                        item.Action?.Invoke(item);
                     }
                     finally
                     {
@@ -419,6 +418,7 @@ namespace Konsole
                         // if an exception is thrown we need to reset the menu to not active
                         // otherwise the menu item will be blocked permanent in active state
                         item.Running = false;
+                        Refresh();
                     }
                     
                 }

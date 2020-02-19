@@ -17,9 +17,9 @@ namespace Konsole.Tests.MenuTests
             var con = new MockConsole(15, 7);
             
             var m = new Menu(con, "MENU", ConsoleKey.Escape, 10,
-                new MenuItem('a', "item 1", () => { }),
-                new MenuItem('b', "item 2", () => { }),
-                new MenuItem('c', "item 3", () => { })
+                new MenuItem('a', "item 1", m => { }),
+                new MenuItem('b', "item 2", m => { }),
+                new MenuItem('c', "item 3", m => { })
                 );
             m.Keyboard = new MockKeyboard(ConsoleKey.Escape);
             m.Run();
@@ -56,9 +56,9 @@ namespace Konsole.Tests.MenuTests
             var con = new MockConsole(15, 7);
 
             var m = new Menu(con, "MENU", ConsoleKey.Escape, 10,
-                new MenuItem('a', "item a", () => { }),
-                new MenuItem('b', "item b", () => { }),
-                new MenuItem('q', "item c", () => { })
+                new MenuItem('a', "item a", m => { }),
+                new MenuItem('b', "item b", m => { }),
+                new MenuItem('q', "item c", m => { })
                 );
             m.Keyboard = new MockKeyboard(ConsoleKey.Escape);
             m.Run();

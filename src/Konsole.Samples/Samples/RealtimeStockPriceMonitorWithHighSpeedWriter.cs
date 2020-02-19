@@ -119,21 +119,21 @@ namespace Konsole.Samples
             // the menu will write updates to the status console window
 
             var menu = new Menu(menuCon, "Menu", ConsoleKey.Escape, 30,
-                new MenuItem('s', "slow", () =>
+                new MenuItem('s', "slow", m =>
                 {
                     speed = 200;
                     status.Write(White, $" : {DateTime.Now.ToString("HH:mm:ss - ")}");
                     status.WriteLine(Green, $" SLOW ");
                     crazyFast = false;
                 }),
-                new MenuItem('f', "fast", () =>
+                new MenuItem('f', "fast", m =>
                 {
                     speed = 10;
                     status.Write(White, $" : {DateTime.Now.ToString("HH:mm:ss - ")}");
                     status.WriteLine(White, $" FAST ");
                     crazyFast = false;
                 }),
-                new MenuItem('c', "crazy fast", () =>
+                new MenuItem('c', "crazy fast", m =>
                 {
                     speed = 1;
                     crazyFast = true;

@@ -6,9 +6,10 @@ namespace Konsole
     {
         internal object locker = new object();
         public ConsoleKeyInfo? Key { get; }
-        public string Title { get; }
+        public string Title { get; set; }
+
         public string Description { get; }
-        public Action Action { get; }
+        public Action<MenuItem> Action { get; }
         public bool Enabled { get; set; } = true;
         public bool Running { get; internal set; } = false;
 
@@ -19,14 +20,14 @@ namespace Konsole
         public bool IsDefault { get; set; }
 
 
-        public MenuItem(char key, string title, Action action)
+        public MenuItem(char key, string title, Action<MenuItem> action)
         {
             Key = key.ToKeypress();
             Title = title;
             Action = action;
         }
 
-        public MenuItem(string title, Action action)
+        public MenuItem(string title, Action<MenuItem> action)
         {
             Key = null;
             Title = title;
@@ -35,12 +36,12 @@ namespace Konsole
 
         public static MenuItem Quit(char q, string title)
         {
-            return new MenuItem(q, title, (Action)null);
+            return new MenuItem(q, title, (Action<MenuItem>)null);
         }
 
         public static MenuItem Quit(string title)
         {
-            return new MenuItem(title, (Action)null);
+            return new MenuItem(title, (Action<MenuItem>)null);
         }
 
     }
