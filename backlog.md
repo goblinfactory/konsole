@@ -2,6 +2,8 @@
 
 ## Busy now
 
+- remove Window static extensions and replace with IConsole extensions (or .. find out why they are there? add test to prove they are needed, if they are.) only need extensions on classes (vs interfaces) when interface does not expose required data of the class.
+
 - fix dimensions so that I can "make it faster" (otherwise dimensions will be wrong) [lets see if I can simply start with a parent window being correct? then stuff can start moving really quickly!]
 - make it faster, each root window to automatically return a high speed writer if (OSX = windows) and highspeed writer if (OSX = mac)
 - then make it set focus to current window
@@ -22,6 +24,8 @@
  - floating
  - padded
  
+ - fix Highspeed writer interface. Replaces usages of writer with the interface and correct it!
+
 - add test, openbox takes a style, and creates a theme from the style.
 - add test, if a window does not have a theme set, then asking for theme must return parent.
 - add test, if a window does have a theme, then asking for theme must return configured theme, except for any 'wildcard' null, properties.  (this means that we have to think carefully about cascading theme changes?) leave that till later
