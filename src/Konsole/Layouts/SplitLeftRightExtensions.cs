@@ -5,32 +5,32 @@ namespace Konsole
 {
     public static class SplitLeftRightExtensions
     {
-        public static (IConsole left, IConsole right) SplitLeftRight(this Window c, BorderCollapse border = Collapse)
+        public static (IConsole left, IConsole right) SplitLeftRight(this IConsole c, BorderCollapse border = Collapse)
         {
             return _SplitLeftRight(c, null, null, LineThickNess.Single, border, c.ForegroundColor, c.BackgroundColor);
         }
 
-        public static (IConsole left, IConsole right) SplitLeftRight(this Window c, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
+        public static (IConsole left, IConsole right) SplitLeftRight(this IConsole c, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
         {
             return _SplitLeftRight(c, null, null, LineThickNess.Single, border, foreground, background);
         }
 
-        public static (IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, BorderCollapse border = Collapse)
+        public static (IConsole left, IConsole right) SplitLeftRight(this IConsole c, string leftTitle, string rightTitle, BorderCollapse border = Collapse)
         {
             return _SplitLeftRight(c, leftTitle, rightTitle, LineThickNess.Single, border, c.ForegroundColor, c.BackgroundColor);
         }
 
-        public static (IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
+        public static (IConsole left, IConsole right) SplitLeftRight(this IConsole c, string leftTitle, string rightTitle, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
         {
             return _SplitLeftRight(c, leftTitle, rightTitle, LineThickNess.Single, border, foreground, background);
         }
 
-        public static (IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, LineThickNess thickness, BorderCollapse border = Collapse)
+        public static (IConsole left, IConsole right) SplitLeftRight(this IConsole c, string leftTitle, string rightTitle, LineThickNess thickness, BorderCollapse border = Collapse)
         {
             return _SplitLeftRight(c, leftTitle, rightTitle, thickness, border, c.ForegroundColor, c.BackgroundColor);
         }
 
-        public static (IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, LineThickNess thickness, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
+        public static (IConsole left, IConsole right) SplitLeftRight(this IConsole c, string leftTitle, string rightTitle, LineThickNess thickness, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
         {
             return _SplitLeftRight(c, leftTitle, rightTitle, thickness, border, foreground, background);
         }

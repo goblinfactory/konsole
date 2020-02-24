@@ -23,7 +23,7 @@ namespace Konsole.Tests.ListViewTests
                 new Column("Name", 0),
                 new Column("Credits", 0)
             );
-            view.Refresh();
+            view.Render();
             var expected = new[]{
                 "┌────── users ─────┐",
                 "│  Name  │ Credits │",

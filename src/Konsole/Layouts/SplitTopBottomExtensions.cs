@@ -5,32 +5,32 @@ namespace Konsole
 {
     public static class SplitTopBottomExtensions
     {
-        public static(IConsole top, IConsole bottom) SplitTopBottom(this Window c, BorderCollapse border = Collapse)
+        public static(IConsole top, IConsole bottom) SplitTopBottom(this IConsole c, BorderCollapse border = Collapse)
         {
             return _SplitTopBottom(c, null, null, LineThickNess.Single, border, c.ForegroundColor, c.BackgroundColor);
         }
 
-        public static(IConsole top, IConsole bottom) SplitTopBottom(this Window c, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
+        public static(IConsole top, IConsole bottom) SplitTopBottom(this IConsole c, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
         {
             return _SplitTopBottom(c, null, null, LineThickNess.Single, border, foreground, background);
         }
 
-        public static(IConsole top, IConsole bottom) SplitTopBottom(this Window c, string topTitle, string bottomTitle, BorderCollapse border = Collapse)
+        public static(IConsole top, IConsole bottom) SplitTopBottom(this IConsole c, string topTitle, string bottomTitle, BorderCollapse border = Collapse)
         {
             return _SplitTopBottom(c, topTitle, bottomTitle, LineThickNess.Single, border, c.ForegroundColor, c.BackgroundColor);
         }
 
-        public static(IConsole top, IConsole bottom) SplitTopBottom(this Window c, string topTitle, string bottomTitle, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
+        public static(IConsole top, IConsole bottom) SplitTopBottom(this IConsole c, string topTitle, string bottomTitle, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
         {
             return _SplitTopBottom(c, topTitle, bottomTitle, LineThickNess.Single, border, foreground, background);
         }
 
-        public static(IConsole top, IConsole bottom) SplitTopBottom(this Window c, string topTitle, string bottomTitle, LineThickNess thickness, BorderCollapse border = Collapse)
+        public static(IConsole top, IConsole bottom) SplitTopBottom(this IConsole c, string topTitle, string bottomTitle, LineThickNess thickness, BorderCollapse border = Collapse)
         {
             return _SplitTopBottom(c, topTitle, bottomTitle, thickness, border, c.ForegroundColor, c.BackgroundColor);
         }
 
-        public static(IConsole top, IConsole bottom) SplitTopBottom(this Window c, string topTitle, string bottomTitle, LineThickNess thickness, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
+        public static(IConsole top, IConsole bottom) SplitTopBottom(this IConsole c, string topTitle, string bottomTitle, LineThickNess thickness, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)
         {
             return _SplitTopBottom(c, topTitle, bottomTitle, thickness, border, foreground, background);
         }
@@ -39,14 +39,14 @@ namespace Konsole
         {
             if (border == None)
             {
-                var top = LayoutExtensions._TopBot(c, topTitle, false, false, thickness, foreground);
-                var bottom = LayoutExtensions._TopBot(c, bottomTitle, true, false, thickness, foreground);
+                var top = LayoutExtensions.Top(c, topTitle, false, thickness, foreground);
+                var bottom = LayoutExtensions.Bottom(c, bottomTitle, false, thickness, foreground);
                 return (top, bottom);
             }
             if (border == Separate)
             {
-                var top = LayoutExtensions._TopBot(c, topTitle, false, true, thickness, foreground);
-                var bottom = LayoutExtensions._TopBot(c, bottomTitle, true, true, thickness, foreground);
+                var top = LayoutExtensions.Top(c, topTitle, true, thickness, foreground);
+                var bottom = LayoutExtensions.Bottom(c, bottomTitle, true, thickness, foreground);
                 return (top, bottom);
             }
 

@@ -4,6 +4,11 @@
 
 - remove Window static extensions and replace with IConsole extensions (or .. find out why they are there? add test to prove they are needed, if they are.) only need extensions on classes (vs interfaces) when interface does not expose required data of the class.
 
+- add extension method to all INPUT controls to support .ReadLine(); 
+  (this will stay with the control until user optionally presses tab or any exit key to stop entering text, this is what the keyboard controller calls on each control,
+  piece of cake! :D
+
+
 - fix dimensions so that I can "make it faster" (otherwise dimensions will be wrong) [lets see if I can simply start with a parent window being correct? then stuff can start moving really quickly!]
 - make it faster, each root window to automatically return a high speed writer if (OSX = windows) and highspeed writer if (OSX = mac)
 - then make it set focus to current window
@@ -28,6 +33,7 @@
 
 - add test, openbox takes a style, and creates a theme from the style.
 - add test, if a window does not have a theme set, then asking for theme must return parent.
+- add undo (save the intialValues in the control) so that I can implement a global undo (reset, undo changes) ?
 - add test, if a window does have a theme, then asking for theme must return configured theme, except for any 'wildcard' null, properties.  (this means that we have to think carefully about cascading theme changes?) leave that till later
   - for now, setting a root window theme will cause new windows to inherit. But changing the theme will not change what gets inherited. the inheritance is once off, at time of creation. Will need to a write a method later
     - to cascade a change down to all children, and optionally call refresh, passing in optional 'refreshdata' or use cached. e.g. calling refresh on 

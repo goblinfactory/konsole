@@ -3,15 +3,16 @@ using static System.ConsoleColor;
 
 namespace Konsole
 {
+
     public class StyleTheme
     {
         // can globally override the default theme.
-        public static Func<StyleTheme> GlobalDefault = () => new StyleTheme(White,Black);
+        public static Func<StyleTheme> GlobalDefault = () => new StyleTheme(White, Black);
         public static StyleTheme Default
         {
             get { return GlobalDefault(); }
         }
-        
+
         public StyleTheme(Style active, Style inactive, Style disabled = null)
         {
             Active = active;
@@ -32,8 +33,8 @@ namespace Konsole
             Disabled = Active;
         }
 
-        public StyleTheme() 
-        { 
+        public StyleTheme()
+        {
             //Active = Style
         }
 

@@ -6,25 +6,20 @@ using static System.ConsoleColor;
 
 namespace Konsole
 {
-    public class ListView<T> : ITheme
+
+    public class ListView<T> : Control<ListView<T>, T>, ITheme
     {
         public int selectedItemIndex { get; set; }
         public Column[] Columns { get; set; }
 
+        public override T Value => throw new NotImplementedException();
+
+        public override XY? Cursor => null;
+
         protected Func<T, string[]> _getRow;
         private int startRecord = 0;
-        private readonly IConsole _console;
         protected Func<IEnumerable<T>> _getData;
 
-        public ControlStatus Status { get; set; } = ControlStatus.Active;
-        public StyleTheme Theme { get; set; } = null;
-        public Style Style
-        {
-            get
-            {
-                return Theme?.GetActive(Status) ?? _console?.Theme.GetActive(Status) ?? Style.Default;
-            }
-        }
 
         /// <summary>
         /// /// set this to a function that will override the default theme for a column
@@ -34,15 +29,19 @@ namespace Konsole
         /// <remarks>columnNo is unusually '1' based for these rules.</remarks>
         public Func<T, int, Colors> BusinessRuleColors = null;
 
-        public ListView(IConsole console, Func<T[]> getData, Func<T, string[]> getRow, params Column[] columns)
+        public ListView(IConsole console, Func<T[]> getData, Func<T, string[]> getRow, params Column[] columns) : base(console, null, null, null, null, null, null)
         {
-            _console = console;
             _getData = getData;
             _getRow = getRow;
             Columns = columns;
         }
 
-        public void Refresh()
+        public override (bool isDirty, bool handled) HandleKeyPress(ConsoleKeyInfo info, char key)
+        {
+            return (false, false);
+        }
+
+        public override void Render(ControlStatus status, Style style)
         {
             // can later add in overloads to the refesh to decide how much to refresh, e.g. just refresh the border(box) etc.
             // TODO: write concurrency test that proves that we need this lock here! Test must fail if I take it out !
@@ -127,10 +126,5 @@ namespace Konsole
             }
 
         }
-
-
-
-
-
     }
 }

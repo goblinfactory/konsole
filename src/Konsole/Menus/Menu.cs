@@ -18,12 +18,10 @@ namespace Konsole
     // - can optionally, 'clear' the menu screen portio and continue as if the menu had never happened.
     // - great for popping up a question in a first time developer (attended) vs un-attended build!
 
-    public class Menu
+    public class Menu : Control<Menu, string>
     {
         // locker is static here, because menu makes wrapped calls to Console.XX which is static, even though this class is not!
-        private static object _locker = new object();
-
-        private readonly IConsole _menuConsole;
+        //private readonly IConsole _console;
 
         public ConsoleKeyInfo QuitKey { get; }
 
@@ -66,6 +64,23 @@ namespace Konsole
         /// </summary>
         public bool EnableShortCut { get; set; } = true;
 
+        private ControlStatus _status = ControlStatus.Active;
+        public ControlStatus Status
+        {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                _status = value;
+                if (!LayoutSuspended)
+                {
+                    Render(Status, Style);
+                }
+            }
+        }
+
         public Style Style { get; set; } = Style
             .WhiteOnDarkBlue
             .WithThickness(LineThickNess.Single)
@@ -97,14 +112,31 @@ namespace Konsole
             }
         }
 
+        public override string Value => throw new NotImplementedException();
+
+        // return null, we don't want a flashing cursor when menu has focus and recieving keyboard input.
+        public override XY? Cursor => null;
+
+        public Menu(IConsole console, string title, params MenuItem[] menuActions)
+            : this(console, title, ConsoleKey.Escape, null, MenuLine.none, menuActions)
+        {
+
+        }
+
+        public Menu(string title, params MenuItem[] menuActions)
+        : this(Window.HostConsole, title, ConsoleKey.Escape, null, MenuLine.none, menuActions)
+        {
+
+        }
+
         public Menu(string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
-            : this(new Writer(), title, quit, width, MenuLine.none, menuActions)
+            : this(Window.HostConsole, title, quit, width, MenuLine.none, menuActions)
         {
 
         }
 
         public Menu(string title, ConsoleKey quit, int width, MenuLine separator, params MenuItem[] menuActions)
-            : this(new Writer(), title, quit, width, separator, menuActions)
+            : this(Window.HostConsole, title, quit, width, separator, menuActions)
         {
 
         }
@@ -118,17 +150,17 @@ namespace Konsole
         /// <summary>
         /// if we have any menu items with menu keys that differ only by case, then this is a case sensitive menu, otherwise the menu items will be case insensitive.
         /// </summary>
-        public Menu(IConsole menuConsole, string title, ConsoleKey quit, int width, MenuLine separator, params MenuItem[] menuActions)
+        public Menu(IConsole menuConsole, string title, ConsoleKey quit, int? width, MenuLine separator, params MenuItem[] menuActions) : base(menuConsole, null, null, null, null, null, null)
         {
-            lock (_locker)
+            lock (Window._locker)
             {
                 Separator = separator;
                 CaseSensitive = CaseForMenuItems(menuActions) == Case.Sensitive;
                 Title = title;
                 Keyboard = Keyboard ?? new Keyboard();
-                _menuConsole = menuConsole;
+                //_console = menuConsole;
                 QuitKey = quit.ToKeypress();
-                _width = width;
+                _width = width ?? menuConsole.WindowWidth;
                 NumMenus = menuActions.Length;
                 for (int i = 0; i < menuActions.Length; i++)
                 {
@@ -141,7 +173,7 @@ namespace Konsole
                     throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
                 _height = Naked ? menuActions.Length + 2 : menuActions.Length + 3;
                 //new Draw(menuConsole).Box()
-                _window = new Window(_menuConsole, new WindowSettings { SX = 2, Width = _width, Height = _height, Theme = Style.ToTheme(), Clipping = true });
+                _window = new Window(_console, new WindowSettings { SX = 2, Width = _width, Height = _height, Theme = Style.ToTheme(), Clipping = true });
             }
         }
 
@@ -171,16 +203,23 @@ namespace Konsole
 
         private IConsole _window;
 
-        public Action<MenuModel, bool> Render = (model, printBorder) => { _refresh(model, printBorder); };
-        private bool _printMenu = true;
-        public void Refresh()
+        public Action<MenuModel, bool> OnRender = (model, printBorder) => { _refresh(model, printBorder); };
+
+        private bool _printBorder = true;
+
+
+        public override (bool isDirty, bool handled) HandleKeyPress(ConsoleKeyInfo info, char key)
         {
-            lock (_locker)
+            throw new NotImplementedException();
+        }
+        public override void Render(ControlStatus status, Style style)
+        {
+            lock (Window._locker)
             {
                 var items = _menuItems.Values.ToArray();
                 var model = new MenuModel(_window, Title, Current, Height, _width, Separator, items, Style);
-                _refresh(model, _printMenu);
-                _printMenu = false;
+                _refresh(model, _printBorder);
+                _printBorder = false;
             }
         }
 
@@ -196,6 +235,7 @@ namespace Konsole
             int len = model.Width - (model.NoHotKeys ? 2 : 6);
             if(printBorder)
             {
+                // dont need to print the border twice
                 PrintTitleAndBorder(model, con);
             }
             for (int i = 0; i < cnt; i++)
@@ -284,9 +324,9 @@ namespace Konsole
         public virtual void Run()
         {
             ConsoleState state;
-            lock (_locker)
+            lock (Window._locker)
             {
-                state = _menuConsole.State;
+                state = _console.State;
             }
             try
             {
@@ -300,9 +340,9 @@ namespace Konsole
                 OnBeforeExitMenu();
                 OnAfterMenu();
 
-                lock (_locker)
+                lock (Window._locker)
                 {
-                    _menuConsole.State = state;
+                    _console.State = state;
                 }
             }
         }
@@ -312,20 +352,20 @@ namespace Konsole
             ConsoleState state;
             ConsoleKeyInfo cmd;
 
-            lock (_locker)
+            lock (Window._locker)
             {
-                _menuConsole.CursorVisible = false;
-                state = _menuConsole.State;
+                _console.CursorVisible = false;
+                state = _console.State;
                 OnBeforeMenu(this);
             }
-            Refresh();
+            Render();
             while (!IsMatching(cmd = Keyboard.ReadKey(true), QuitKey))
             {
                 int move = isMoveMenuKey(cmd);
                 if (move != 0)
                 {
                     MoveSelection(move);
-                    Refresh();
+                    Render();
                     continue;
                 }
 
@@ -382,7 +422,7 @@ namespace Konsole
                     if (key.Key == k.Key && k.KeyChar == key.KeyChar)
                     {
                         _current = i;
-                        Refresh();
+                        Render();
                         return;
                     }
                 }
@@ -391,7 +431,7 @@ namespace Konsole
                     if (key == k) 
                     {
                         _current = i;
-                        Refresh();
+                        Render();
                         return;
                     }
                 }
@@ -406,7 +446,7 @@ namespace Konsole
                 {
                     if (item.DisableWhenRunning && item.Running == true) return;
                     item.Running = true;
-                    _menuConsole.State = state;
+                    _console.State = state;
                     OnBeforeMenuItem(item);
                     try
                     {
@@ -418,13 +458,13 @@ namespace Konsole
                         // if an exception is thrown we need to reset the menu to not active
                         // otherwise the menu item will be blocked permanent in active state
                         item.Running = false;
-                        Refresh();
+                        Render();
                     }
                     
                 }
                 finally
                 {
-                    _menuConsole.State = state;
+                    _console.State = state;
                 }
             }
         }
@@ -450,7 +490,6 @@ namespace Konsole
                     return 0;
             }
         }
-
     }
 
     public class MenuOutput 

@@ -30,6 +30,21 @@ namespace Konsole.Tests.WindowTests
             window.WriteLine("foo");
         }
 
+        public void when_creating_a_new_inline_window_withoutspecifying_height_or_width_should_use_balance_of_screen_and_keep_cursor_top()
+        {
+            var console = new MockConsole(20, 6);
+            console.WriteLine("line1");
+            console.Write("1234");
+            Assert.AreEqual(1, console.CursorTop);
+            Assert.AreEqual(4, console.CursorLeft);
+            // create an inline window without specifying anything
+            var restOfWindow = new Window(console);
+            Assert.AreEqual(3, console.CursorTop);
+            Assert.AreEqual(0, console.CursorLeft);
+            console.WriteLine("foo");
+        }
+
+
         [Test]
         public void WhenCreatingInlineWindows_cursor_should_be_moved_to_below_the_newly_created_window2()
         {
@@ -166,7 +181,7 @@ namespace Konsole.Tests.WindowTests
         [TestCase(5, 5, 10, 10)]
         [TestCase(0, 5, 10, 10)]
         [TestCase(5, 0, 10, 10)]
-        public void when_no_values_set_should_use_parent_whole_screen_defaults_and_set_x_y_to_0_0(int parentCurrentX, int parentCurrentY, int expectedWidth, int expectedHeight)
+        public void when_no_values_set_should_use_balance_of_parent_screen_defaults_and_set_x_y_to_0_0_and_not_change_parent_window_top_or_left(int parentCurrentX, int parentCurrentY, int expectedWidth, int expectedHeight)
         { 
             var con = new MockConsole(10, 10);
             con.CursorLeft = parentCurrentX;
@@ -176,6 +191,12 @@ namespace Konsole.Tests.WindowTests
             win.WindowHeight.Should().Be(expectedHeight);
             win.CursorLeft.Should().Be(0);
             win.CursorTop.Should().Be(0);
+
+            // and not change parent window top
+            con.CursorTop.Should().Be(parentCurrentY);
+
+            // or left
+            con.CursorLeft.Should().Be(parentCurrentX);
         }
     }
 }

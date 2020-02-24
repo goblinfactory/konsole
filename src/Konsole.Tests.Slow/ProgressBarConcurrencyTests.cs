@@ -24,8 +24,8 @@ namespace Konsole.Tests.Slow
             console.WriteLine("two");
             var menu = new Menu(console, "Progress Bars", ConsoleKey.Escape, 30,
 
-                new MenuItem('1', "AutoResetEvent client", () => RunProgressBars(client, "client", "cats")),
-                new MenuItem('2', "AutoResetEvent server", () => RunProgressBars(server, "server", "dogs"))
+                new MenuItem('1', "AutoResetEvent client", m => RunProgressBars(client, "client", "cats")),
+                new MenuItem('2', "AutoResetEvent server", m => RunProgressBars(server, "server", "dogs"))
 
             );
             // need a unit test for the menu before fixing it.

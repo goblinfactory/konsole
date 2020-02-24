@@ -51,7 +51,7 @@ namespace Konsole.Forms
         {
             _width = width;
             _boxStyle = boxStyle ?? new ThinBoxStyle();
-            _console = console ?? new Writer();
+            _console = console ?? Window.HostConsole;
         }
 
         /// <summary>

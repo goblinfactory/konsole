@@ -42,9 +42,9 @@ namespace Konsole
             }
         }
 
-        public ProgressBarSlim(int max)                                  : this(max, '#', new Writer()) { }
-        public ProgressBarSlim(int max, int textWidth)                   : this(max, textWidth,'#', new Writer()) { }
-        public ProgressBarSlim(int max, int textWidth, char character)   : this(max, textWidth, character, new Writer()) { }
+        public ProgressBarSlim(int max)                                  : this(max, '#', Window.HostConsole) { }
+        public ProgressBarSlim(int max, int textWidth)                   : this(max, textWidth,'#', Window.HostConsole) { }
+        public ProgressBarSlim(int max, int textWidth, char character)   : this(max, textWidth, character, Window.HostConsole) { }
         public ProgressBarSlim(int max, IConsole console)                : this(max, null, '#', console) { }
         public ProgressBarSlim(int max, int textWidth, IConsole console) : this(max, textWidth, '#', console) { }
 

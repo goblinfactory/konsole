@@ -23,13 +23,13 @@ namespace Konsole.Tests.Slow
             console.WriteLine("line 2");
             // create and run a menu inline, at the current cursor position
             var menu = new Menu(console, "Test samples", ConsoleKey.Escape, 30,
-                new MenuItem('1', "cats", () => RunMenuItem(client, "client", "cats")),
-                new MenuItem('2', "dogs", () => RunMenuItem(server, "server", "dogs")),
-                new MenuItem('3', "item 1", () => {}),
-                new MenuItem('4', "item 2", () => {}),
-                new MenuItem('5', "item 3", () => {}),
-                new MenuItem('6', "item 4", () => {}),
-                new MenuItem('7', "item 5", () => {})
+                new MenuItem('1', "cats", m => RunMenuItem(client, "client", "cats")),
+                new MenuItem('2', "dogs", m => RunMenuItem(server, "server", "dogs")),
+                new MenuItem('3', "item 1", m => {}),
+                new MenuItem('4', "item 2", m => {}),
+                new MenuItem('5', "item 3", m => {}),
+                new MenuItem('6', "item 4", m => {}),
+                new MenuItem('7', "item 5", m => {})
                 
                 );
             // line below should print after (below) the menu.

@@ -2,7 +2,7 @@
 
 namespace Konsole.Platform
 {
-
+    // Oh dear...this interface cannot be right  oops!! :0 
     public interface IHighspeedWriter : IDisposable
     {
         void ClearScreen();

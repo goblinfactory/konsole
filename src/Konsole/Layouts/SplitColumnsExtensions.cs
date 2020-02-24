@@ -5,10 +5,10 @@ namespace Konsole
 {
     public static class SplitColumnsExtensions
     {
-        public static IConsole[] SplitColumns(this Window w, params Split[] splits)
-        {
-            return _SplitColumns(w, splits);
-        }
+        //public static IConsole[] SplitColumns(this Window w, params Split[] splits)
+        //{
+        //    return _SplitColumns(w, splits);
+        //}
 
         public static IConsole[] SplitColumns(this IConsole c, params Split[] splits)
         {

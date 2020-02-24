@@ -43,7 +43,7 @@ namespace Konsole.Tests.ListViewTests
                 new Column("ID",10), 
                 new Column("Credits", 7)
             );
-            view.Refresh();
+            view.Render();
             var expected = new[]{
                 "   Name   │    ID    │Credits ",
                 "Graham    │GRH01     │00100   ",
@@ -65,7 +65,7 @@ namespace Konsole.Tests.ListViewTests
                 new Column("ID", 8),
                 new Column("Credits", 7)
             );
-            view.Refresh();
+            view.Render();
             var expected = new[]{
                 "┌─────────── users ──────────┐",
                 "│   Name    │   ID   │Credits│",
@@ -89,7 +89,7 @@ namespace Konsole.Tests.ListViewTests
                 new Column("Name", 0),
                 new Column("Credits", 0)
             );
-            view.Refresh();
+            view.Render();
             var expected = new[]{
                 "┌────── users ─────┐",
                 "│  Name  │ Credits │",

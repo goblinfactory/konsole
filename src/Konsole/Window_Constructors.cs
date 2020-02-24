@@ -104,7 +104,7 @@ namespace Konsole
 
     }
 
-    public partial class Window
+    public partial class Window : IConsole
     {
         private static WindowSettings FullScreenSettings()
         {
@@ -167,22 +167,25 @@ namespace Konsole
         {            
             lock (_locker)
             {
-                int? x = settings.SX;
+                int x = settings.SX;
                 int? y = settings.SY;
                 int? width = settings.Width;
                 int? height = settings.Height;
+                bool fullScreen = x == 0 && y == null && width == null & height == null;
                 ControlStatus status = settings.Status;
                 StyleTheme theme = settings.Theme;
+                // todo - assign _console only once, prepare for readonly in C#8
                 _echo = settings._echo;
-                _console = console ?? Window.HostConsole;
-                if (_echo && _console == null) this._console = new Writer();
+                _console = console ?? HostConsole;
+                if (_echo && _console == null) _console = new Writer();
+                bool inline = (_console != null && y == null);
 
                 Status = status;
                 Theme = theme ?? this._console.Theme;
                 Colors = Style.Body;
 
                 _y = y ?? _console?.CursorTop ?? this._console.CursorTop + height ?? 0;
-                _x = x ?? 0;
+                _x = x;
                 _width = GetStartWidth(_echo, width, _x, _console);
                 _height = GetStartHeight(height, _y, _console);
 
@@ -205,9 +208,8 @@ namespace Konsole
 
                 init();
                 // if we're creating an inline window
-                //bool inline = (this._console != null && x == null && y == null);
-                bool inline = (this._console != null && y == null);
-                if (inline)
+                // then move cursor underneath the inline
+                if (inline && !fullScreen)
                 {
                     this._console.CursorTop += _height;
                     this._console.CursorLeft = 0;

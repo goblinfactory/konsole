@@ -28,6 +28,12 @@ namespace Konsole
             return char.ToUpper(lkey) == char.ToUpper(rkey);
         }
 
+        public static ConsoleKeyInfo ToKeypress(this char c, bool shift, bool alt, bool control)
+        {
+            var ck = (ConsoleKey)char.ToUpper(c);
+            return new ConsoleKeyInfo(c, ck, shift, alt, control);
+        }
+
 
         public static ConsoleKeyInfo ToKeypress(this char c)
         {

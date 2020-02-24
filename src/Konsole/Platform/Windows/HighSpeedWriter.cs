@@ -200,6 +200,7 @@ namespace Konsole
 
         public void PrintAt(ConsoleColor color, int x, int y, string format, params object[] args)
         {
+            // this is not used!!!
             var _colors = Colors;
             try
             {
@@ -214,6 +215,7 @@ namespace Konsole
 
         public void PrintAt(Colors colors, int x, int y, string format, params object[] args)
         {
+            // this is not used!!!
             var _colors = Colors;
             try
             {

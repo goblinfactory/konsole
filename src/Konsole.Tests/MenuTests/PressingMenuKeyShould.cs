@@ -27,11 +27,11 @@ namespace Konsole.Tests.MenuTests
             var seq = new List<char>();
 
             var m = new Menu(con, "MENU", ConsoleKey.Q, 10,
-                new MenuItem('A', "item 1", () => seq.Add('1')),
-                new MenuItem('B', "item 2", () => seq.Add('2')),
-                new MenuItem('C', "item 3", () => seq.Add('3')),
-                new MenuItem('D', "item 4", () => seq.Add('4')),
-                new MenuItem('E', "item 5", () => seq.Add('5'))
+                new MenuItem('A', "item 1", m => seq.Add('1')),
+                new MenuItem('B', "item 2", m => seq.Add('2')),
+                new MenuItem('C', "item 3", m => seq.Add('3')),
+                new MenuItem('D', "item 4", m => seq.Add('4')),
+                new MenuItem('E', "item 5", m => seq.Add('5'))
                 );
 
             m.Keyboard = new MockKeyboard('A','F','A','D','D','Q');
@@ -53,12 +53,12 @@ namespace Konsole.Tests.MenuTests
             var con = new MockConsole(15, 10);
 
             var m1 = new Menu(con, "MENU", ConsoleKey.Q, 10,
-                new MenuItem('A', "item 1", () => { })
+                new MenuItem('A', "item 1", m => { })
                 );
             Assert.AreEqual(false, m1.CaseSensitive);
 
             var m2 = new Menu(con, "MENU", ConsoleKey.Q, 10,
-                new MenuItem('a', "item 1", () => { })
+                new MenuItem('a', "item 1", m => { })
                 );
 
             Assert.AreEqual(false, m2.CaseSensitive);
@@ -70,22 +70,22 @@ namespace Konsole.Tests.MenuTests
             var con = new MockConsole(15, 10);
 
             var m1 = new Menu(con, "MENU", ConsoleKey.Q, 10,
-                new MenuItem('A', "item 1", () => { }),
-                new MenuItem('a', "item 1", () => { })
+                new MenuItem('A', "item 1", m => { }),
+                new MenuItem('a', "item 1", m => { })
                 );
             Assert.AreEqual(true, m1.CaseSensitive);
 
             var m2 = new Menu(con, "MENU", ConsoleKey.Q, 10,
-                new MenuItem('A', "item 1", () => { }),
-                new MenuItem('B', "item 1", () => { })
+                new MenuItem('A', "item 1", m => { }),
+                new MenuItem('B', "item 1", m => { })
                 );
 
             Assert.AreEqual(false, m2.CaseSensitive);
 
 
             var m3 = new Menu(con, "MENU", ConsoleKey.Q, 10,
-                new MenuItem('A', "item 1", () => { }),
-                new MenuItem('b', "item 1", () => { })
+                new MenuItem('A', "item 1", m => { }),
+                new MenuItem('b', "item 1", m => { })
             );
             Assert.AreEqual(false, m3.CaseSensitive);
 
@@ -110,8 +110,8 @@ namespace Konsole.Tests.MenuTests
             var seq = new List<char>();
 
             var m = new Menu(con, "MENU", ConsoleKey.Q, 10,
-                new MenuItem('A', "item 1", () => seq.Add('1')) { Enabled = true },
-                new MenuItem('B', "item 2", () => seq.Add('2')) { Enabled = enabled }
+                new MenuItem('A', "item 1", m => seq.Add('1')) { Enabled = true },
+                new MenuItem('B', "item 2", m => seq.Add('2')) { Enabled = enabled }
                 );
 
             m.Keyboard = new MockKeyboard('A', 'B', 'Q');

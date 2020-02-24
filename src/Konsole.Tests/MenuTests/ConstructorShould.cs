@@ -12,6 +12,12 @@ namespace Konsole.Tests.MenuTests
     
     public class ConstructorShould
     {
+        [Test]
+        public void When_width_is_not_provided_use_entire_width_of_parent_console_and_no_padding()
+        {
+            var console = new MockConsole();
+            //var menu = new Menu("sample", ConsoleKey.es)
+        }
 
         [Test]
         public void display_menu_inline_and_move_cursor_below_menu()
@@ -47,9 +53,9 @@ namespace Konsole.Tests.MenuTests
             var output = new MockConsole(20,20);
 
             var menu = new Menu(con, "TITLE", ConsoleKey.Escape, 20, MenuLine.top, 
-                new MenuItem("ONE", ()=> output.WriteLine("cats")),
-                new MenuItem("TWO", () => output.WriteLine("dogs")),
-                new MenuItem("TWO", () => output.WriteLine("mice")),
+                new MenuItem("ONE", m => output.WriteLine("cats")),
+                new MenuItem("TWO", m => output.WriteLine("dogs")),
+                new MenuItem("TWO", m => output.WriteLine("mice")),
                 MenuItem.Quit("QUIT")
             );
             menu.Keyboard = new MockKeyboard(ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.Enter, ConsoleKey.DownArrow, ConsoleKey.Escape);

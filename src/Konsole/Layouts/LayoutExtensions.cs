@@ -2,135 +2,37 @@
 using static Konsole.BorderCollapse;
 
 namespace Konsole
-{
+{  
+    public enum LeftRight {  Left, Right }
+    public enum TopBottom {  Top, Bottom }
+    public class SplitSettings
+    {
+        public IConsole Console { get; set; }
+        public string Title { get; set; }
+        public LeftRight Direction { get; set; }
+        
+        bool ShowBorder { get; set; }
+        
+        public LineThickNess? Thickness { get; set; }
+        
+        public ConsoleColor Foreground { get; set; }
+    }
+
     // TODO: convert to a partial class of Window so that the namespace does not need to be referenced?
     public static class LayoutExtensions
     {
-        // TOPS
-        public static IConsole SplitTop(this IConsole c)
+        private static void ensureAlphaNumeric(string title, ConsoleKeyInfo hotkey)
         {
-            return _TopBot(c, null, false, false, null, c.ForegroundColor);
+            if (hotkey.Key.IsAlphaNumeric()) throw new ArgumentOutOfRangeException($"Cannot use '{hotkey.KeyChar}' as a hot key for window '{title}' because it is alphanumeric and will interfere with any text input.");
         }
 
-        public static IConsole SplitTop(this IConsole c, ConsoleColor foreground)
+        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor foreground, ConsoleKeyInfo ? hotkey = null)
         {
-            return _TopBot(c, null, false, false, null, foreground);
-        }
-
-        public static IConsole SplitTop(this IConsole c, string title)
-        {
-            return _TopBot(c, title, false, true, LineThickNess.Single, c.ForegroundColor);
-        }
-
-        public static IConsole SplitTop(this IConsole c, string title, ConsoleColor foreground)
-        {
-            return _TopBot(c, title, false, true, LineThickNess.Single, foreground);
-        }
-
-        public static IConsole SplitTop(this IConsole c, string title, LineThickNess thickness)
-        {
-            return _TopBot(c, title, false, true, thickness, c.ForegroundColor);
-        }
-
-        public static IConsole SplitTop(this IConsole c, string title, LineThickNess thickness, ConsoleColor foreground)
-        {
-            return _TopBot(c, title, false, true, thickness, foreground);
-        }
-
-        // BOTTOMS
-
-        public static IConsole SplitBottom(this IConsole c)
-        {
-            return _TopBot(c, null, true, false, null, c.ForegroundColor);
-        }
-
-        public static IConsole SplitBottom(this IConsole c, ConsoleColor foreground)
-        {
-            return _TopBot(c, null, true, false, null, foreground);
-        }
-
-        public static IConsole SplitBottom(this IConsole c, string title)
-        {
-            return _TopBot(c, title, true, true, LineThickNess.Single, c.ForegroundColor);
-        }
-
-        public static IConsole SplitBottom(this IConsole c, string title, ConsoleColor foreground)
-        {
-            return _TopBot(c, title, true, true, LineThickNess.Single, foreground);
-        }
-
-        public static IConsole SplitBottom(this IConsole c, string title, LineThickNess thickness)
-        {
-            return _TopBot(c, title, true, true, thickness, c.ForegroundColor);
-        }
-
-        public static IConsole SplitBottom(this IConsole c, string title, LineThickNess thickness, ConsoleColor foreground)
-        {
-            return _TopBot(c, title, true, true, thickness, foreground);
-        }
-
-        public static IConsole SplitLeft(this IConsole c)
-        {
-            return _LeftRight(c, null, false, false, null, c.ForegroundColor);
-        }
-
-        public static IConsole SplitLeft(this IConsole c, ConsoleColor foreground)
-        {
-            return _LeftRight(c, null, false, false, null, foreground);
-        }
-
-        public static IConsole SplitLeft(this IConsole c, string title)
-        {
-            return _LeftRight(c, title, false, true, LineThickNess.Single, c.ForegroundColor);
-        }
-
-        public static IConsole SplitLeft(this IConsole c, string title, ConsoleColor foreground)
-        {
-            return _LeftRight(c, title, false, true, LineThickNess.Single, foreground);
-        }
-
-        public static IConsole SplitLeft(this IConsole c, string title, LineThickNess thickness)
-        {
-            return _LeftRight(c, title, false, true, thickness, c.ForegroundColor);
-        }
-
-        public static IConsole SplitLeft(this IConsole c, string title, LineThickNess thickness, ConsoleColor foreground)
-        {
-            return _LeftRight(c, title, false, true, thickness, foreground);
-        }
-
-        public static IConsole SplitRight(this IConsole c)
-        {
-            return _LeftRight(c, null, true, false, null, c.ForegroundColor);
-        }
-
-        public static IConsole SplitRight(this IConsole c, ConsoleColor foreground)
-        {
-            return _LeftRight(c, null, true, false, null, foreground);
-        }
-
-        public static IConsole SplitRight(this IConsole c, string title)
-        {
-            return _LeftRight(c, title, true, true, LineThickNess.Single, c.ForegroundColor);
-        }
-
-        public static IConsole SplitRight(this IConsole c, string title, ConsoleColor foreground)
-        {
-            return _LeftRight(c, title, true, true, LineThickNess.Single, foreground);
-        }
-
-        public static IConsole SplitRight(this IConsole c, string title, LineThickNess thickness)
-        {
-            return _LeftRight(c, title, true, true, thickness, c.ForegroundColor);
-        }
-
-        public static IConsole SplitRight(this IConsole c, string title, LineThickNess thickness, ConsoleColor foreground)
-        {
-            return _LeftRight(c, title, true, true, thickness, foreground);
-        }
-
-        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
-        {
+            if(hotkey.HasValue)
+            {
+                ensureAlphaNumeric(title, hotkey.Value);
+            }
+            
             lock (Window._locker)
             {
                 var theme = c.Theme.WithForeground(foreground);
@@ -148,8 +50,17 @@ namespace Konsole
             }
         }
 
+        internal static IConsole Top(IConsole c, string title, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
+        {
+            return _TopBot(c, title, false, showBorder, thickness, foreground);
+        }
 
-        internal static IConsole _TopBot(IConsole c, string title, bool bottom, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
+        internal static IConsole Bottom(IConsole c, string title, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
+        {
+            return _TopBot(c, title, true, showBorder, thickness, foreground);
+        }
+
+        private static IConsole _TopBot(IConsole c, string title, bool bottom, bool showBorder, LineThickNess? thickness, ConsoleColor foreground)
         {
             lock (Window._locker)
             {

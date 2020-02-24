@@ -47,7 +47,7 @@ namespace Konsole
         private readonly bool _echo;
 
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
-        private IConsole _console { get; set; }
+        private IConsole _console { get; }
 
 
         private bool _transparent = false;

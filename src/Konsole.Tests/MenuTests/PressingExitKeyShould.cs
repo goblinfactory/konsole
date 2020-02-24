@@ -18,7 +18,7 @@ namespace Konsole.Tests.MenuTests
             var seq = new List<char>();
 
             var m = new Menu(con, "MENU", ConsoleKey.Escape, 10,
-                new MenuItem('a', "item 1", () => { seq.Add('a'); })
+                new MenuItem('a', "item 1", m => { seq.Add('a'); })
             );
 
             m.Keyboard = new MockKeyboard(ConsoleKey.Escape);
