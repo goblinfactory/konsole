@@ -120,24 +120,6 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void set_scrolling_if_specified()
-        {
-            var c = new MockConsole();
-            Window.HostConsole = c;
-            var w = new Window( new WindowSettings { Height = 3, Width = 3, Scrolling = false } );
-            Assert.Fail("need to finish the test, make something scroll then ..not scroll");
-        }
-
-        [Test]
-        public void set_clipping_if_specified()
-        {
-            var c = new MockConsole();
-            Window.HostConsole = c;
-            var w = new Window(new WindowSettings { Height = 10, Width = 10, Clipping = true });
-            Assert.Fail("need to finish the test, make something clip then ..not  clip");
-        }
-
-        [Test]
         public void set_scrolling_as_default_if_nothing_specified()
         {
             var c = new MockConsole();

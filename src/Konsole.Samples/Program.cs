@@ -14,24 +14,32 @@ namespace Konsole.Samples
             // that someone browsing the code can see what the code
             // renders w/o having to hunt through documentation.
 
-            //var window2 = new Window();
-            //Console.CursorVisible = false;
-            //ControlSample.Demo(window2);
-            //Console.ReadKey(true);
+            // NB! I may need to allow windows to create a progress bar (i.e. create a new window) BELOW the top of the window ... to "scroll" it up?
+
+            var window2 = new Window();
+            Console.CursorVisible = false;
+            ConstructorsShouldBeThreadSafe._demo();
+            Console.ReadKey(true); 
+
+            return;
 
             var window = new Window();
+
+            //Console.ReadKey(true);
+            //return;
+
             var (menuCon, contentCon) = window.SplitLeftRight();
 
-            var menuItems = GetDir().GetDirectories().Select(d => new MenuItem(d.Name, (m) => RunDemo(d.Name, contentCon))).ToArray();
-
-            var menu = new Menu(menuCon, "DEMO", menuItems);
-            menu.Run();
+            var menu1 = new Menu(menuCon, "DEMO", GetDir().GetDirectories().Select(d => new MenuItem(d.Name, (m) => RunDemo(d.Name, contentCon))).ToArray());
+            var menu2 = new Menu(contentCon, "DEMO", ConsoleKey.Escape, 0, GetDir().GetDirectories().Select(d => new MenuItem(d.Name, (m) => RunDemo(d.Name, contentCon))).ToArray());
+            menu2.Refresh();
+            menu1.Run();
         }
 
         private static void RunDemo(string name, IConsole console)
         {
-            console.WriteLine(name);
 
+            console.WriteLine(name);
         }
 
         private static DirectoryInfo GetDir([CallerFilePath] string path = null)

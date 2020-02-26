@@ -37,6 +37,8 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void return_an_inside_scrollable_window_that_exactly_fits_inside_the_box_with_the_title()
         {
+            console = new MockConsole(20, 10);
+            Window.HostConsole = console;
             var w = new Window(0, 0, 8, 6, "title", LineThickNess.Double, White, Black);
             w.WindowHeight.Should().Be(4);
             w.WindowWidth.Should().Be(6);
@@ -150,14 +152,13 @@ namespace Konsole.Tests.WindowTests
                 "                                        ",
                 "                                        ",
                 "                                        ",
+                "                                        ",
                 "                    ╔═══════════ test ══",
-                "                    ║                   ",
                 "                    ║cats and dogs      ",
                 "                    ║                   ",
                 "                    ║                   ",
-                "                                        ",
+                "                    ╚═══════════════════",
                 };
-
             con.Buffer.ShouldBe(expected);
         }
 

@@ -112,6 +112,12 @@ namespace Konsole.Tests.ProgressBarTests
 
             Assert.AreEqual(expected,console.BufferWritten);
         }
+
+        [Test]
+        public void turn_off_cursor_during_update_to_avoid_flicker_on_windows()
+        {
+            Assert.Fail();
+        }
     }
 
 

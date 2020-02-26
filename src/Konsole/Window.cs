@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Konsole.Internal;
+using Konsole.Platform;
 
 namespace Konsole
 {
@@ -29,7 +30,7 @@ namespace Konsole
         public bool OverflowBottom
         {
             get {
-                lock (_locker) return CursorTop >= _height;
+                lock (_locker) return CursorTop >= WindowHeight;
             }
         }
 
@@ -42,35 +43,17 @@ namespace Konsole
 
         private readonly int _x;
         private readonly int _y;
-        private readonly int _width;
-        private readonly int _height;
         private readonly bool _echo;
 
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
         private IConsole _console { get; }
 
-
-        private bool _transparent = false;
         internal static object _locker = new object();
 
-        public bool Clipping
-        {
-            get { lock (_locker) return _clipping; }
-        }
+        public bool Clipping { get; } = false;
 
-        private bool _clipping = false;
-
-        public bool Scrolling
-        {
-            get { lock (_locker) return _scrolling; }
-        }
-
-        private bool _scrolling = true;
-
-        public bool Transparent
-        {
-            get { lock (_locker) return _transparent; }
-        }
+        public bool Scrolling { get; } = true;
+        public bool Transparent { get; } = false;
 
         protected readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
 
@@ -85,8 +68,8 @@ namespace Konsole
             {
                 lock (_locker)
                 {
-                    int row = y > (_height - 1) ? (_height - 1) : y;
-                    int col = x > (_width - 1) ? (_width - 1) : x;
+                    int row = y > (WindowHeight - 1) ? (WindowHeight - 1) : y;
+                    int col = x > (WindowWidth - 1) ? (WindowWidth - 1) : x;
                     return _lines[row].Cells[col];
                 }
             }
@@ -98,8 +81,8 @@ namespace Konsole
             set
             {
                 {
-                    int x = value.X >= _width ? (_width - 1) : value.X;
-                    int y = value.Y > _height ? _height : value.Y;
+                    int x = value.X >= WindowWidth ? (WindowWidth - 1) : value.X;
+                    int y = value.Y > WindowHeight ? WindowHeight : value.Y;
                     _cursor = new XY(x, y);
 
                     if (_cursor.Y > _lastLineWrittenTo && _cursor.X != 0) _lastLineWrittenTo = _cursor.Y;
@@ -176,9 +159,17 @@ namespace Konsole
 
         public ControlStatus Status { get; set; } = ControlStatus.Active;
 
-        private static int GetStartHeight(int? height, int y, IConsole echoConsole)
+        private static int GetStartHeight(int? height, int y, IConsole console)
         {
-            return height ?? (echoConsole?.WindowHeight ?? y);
+            // if no height has been provided then use the whole or balance of the window height
+            int h = height ?? (console?.WindowHeight ?? y);
+
+            // start height should be clipped to not exceed parent window
+            if (h + y > console.WindowHeight)
+            {
+                return (console.WindowHeight - y);
+            }
+            return h;
         }
 
         private static int GetStartWidth(bool echo, int? width, int x, IConsole echoConsole)
@@ -199,15 +190,15 @@ namespace Konsole
         {
             if (HasTitle)
             {
-                new Draw(_console, Style, Drawing.MergeOrOverlap.Fast).Box(_x - 1, _y - 1, _x + _width, _y + _height, _title);
+                new Draw(_console, Style, Drawing.MergeOrOverlap.Fast).Box(_x - 1, _y - 1, _x + WindowWidth, _y + WindowHeight, _title);
             }
 
             _lastLineWrittenTo = -1;
             _lines.Clear();
-            for (int i = 0; i < _height; i++)
+            for (int i = 0; i < WindowHeight; i++)
             {
-                _lines.Add(i, new Row(_width, ' ', ForegroundColor, BackgroundColor));
-                if (!_transparent) _printAt(0, i, new string(' ', _width));
+                _lines.Add(i, new Row(WindowWidth, ' ', ForegroundColor, BackgroundColor));
+                if (!Transparent) _printAt(0, i, new string(' ', WindowWidth));
             }
             Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
@@ -274,7 +265,7 @@ namespace Konsole
             get
             {
                 lock(_locker)
-                    return _lines.Values.Take(_height).Select(b => b.ToString()).ToArray();
+                    return _lines.Values.Take(WindowHeight).Select(b => b.ToString()).ToArray();
             }
     }
         /// <summary>
@@ -358,28 +349,28 @@ namespace Konsole
         //NB!Need to test if this is cross platform ?
         public void ScrollDown()
         {
-            lock (_locker)
+            lock(_locker)
             {
-                for (int i = 0; i < (_height - 1); i++)
-                {
-                    _lines[i] = _lines[i + 1];
-                }
-                _lines[_height - 1] = new Row(_width, ' ', ForegroundColor, BackgroundColor);
-                Cursor = new XY(0, _height - 1);
-                if (_console != null)
-                {
-                    _console.MoveBufferArea(_x, _y + 1, _width, _height - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
-                }
+                _scrollDown();
             }
         }
 
-        public int WindowHeight
+        private void _scrollDown()
         {
-            get
+            for (int i = 0; i < (WindowHeight - 1); i++)
             {
-                return _height;
+                _lines[i] = _lines[i + 1];
             }
+            _lines[WindowHeight - 1] = new Row(WindowWidth, ' ', ForegroundColor, BackgroundColor);
+            Cursor = new XY(0, WindowHeight - 1);
+            if (_console != null)
+            {
+                _console.MoveBufferArea(_x, _y + 1, WindowWidth, WindowHeight - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
+            }
+
         }
+
+        public int WindowHeight { get; }
 
         public int CursorTop
         {
@@ -417,7 +408,7 @@ namespace Konsole
 
         public int AbsoluteY => _absoluteY;
         public int AbsoluteX => _absoluteX;
-        public int WindowWidth => _width;
+        public int WindowWidth { get; }
 
         public ConsoleColor BackgroundColor { get; set; }
 
@@ -457,6 +448,10 @@ namespace Konsole
                     CursorTop = value.Top;
                     ForegroundColor = value.ForegroundColor;
                     BackgroundColor = value.BackgroundColor;
+                    if(PlatformStuff.IsWindows)
+                    {
+                        CursorVisible = value.CursorVisible;
+                    }
                 }
             }
         }

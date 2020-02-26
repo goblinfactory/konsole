@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Konsole.Tests.WindowTests
 {
     [UseReporter(typeof(DiffReporter))]
-    class ScrollingAndClippingRequirements
+    class ScrollingAndClipping
     {
         // Nesting SplitWindows is when you call w.SplitLeft() or w.SplitRight() on a window already created by calling split.
         // for example w1 = new Window(); w2 = w1.SplitLeft(); w3 = w2.SplitRight();
@@ -54,50 +54,87 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void when_clipping_is_enabled_WriteLine_SHOULD_clip_all_text_that_overflows_the_bottom_of_the_screen_and_not_scroll_the_screen()
+        public void WhenNotScrolling_WriteLine_SHOULD_clip_all_text_that_overflows_the_bottom_of_the_screen()
         {
             // need to test PrintAt, Write, WriteLine
             var c = new MockConsole(6, 4);
-            var w = c.Open( new WindowSettings { Width = 6, Height = 4, Clipping = true });
-            Assert.Fail("This test is actually incorrect, needs to clip text off right hand side of screen, i.e. no overflow");
+            var w = c.Open(new WindowSettings { Width = 6, Height = 4, Scrolling = false });
             w.WriteLine("one");
             w.WriteLine("two");
             w.WriteLine("three");
             w.WriteLine("four");
             w.WriteLine("five");
+            w.WriteLine("six");
             var expected = new[]
             {
-                "one   ",
-                "two   ",
-                "three ",
-                "four  "
+            "one   ",
+            "two   ",
+            "three ",
+            "four  "
             };
             w.Buffer.ShouldBe(expected);
         }
 
         [Test]
-        public void when_clipping_is_enabled_Write_SHOULD_clip_all_text_that_overflows_the_bottom_of_the_screen_and_not_scroll_the_screen()
+        public void WhenClipping_Write_SHOULD_clip_all_text_that_overflows_X_width()
         {
-            var c = new MockConsole(6, 4);
-            var w = c.Open( new WindowSettings { Width = 6, Height = 4, Clipping = true });
-            Assert.True(w.Clipping);
-            w.WriteLine("one");
-            w.WriteLine("two");
-            w.WriteLine("three");
-            w.Write("44444444"); // NB! there are 8 x 4's here, so we expect the last 2 four's to be clipped and not cause scrolling
-            w.Write("555");     // should be ingored since scrolling is clipped.
+            // need to test PrintAt, Write, WriteLine
+            var c = new MockConsole(6, 3);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Clipping = true });
+            w.WriteLine("123456789");
+            // should not advance the line (Y) if it's a write...
+            w.Write("ABC");
             var expected = new[]
             {
-                "one   ",
-                "two   ",
-                "three ",
-                "444444"
+            "123456",
+            "ABC   ",
+            "      "
             };
-            w.Buffer.ShouldBe(expected);
+            c.Buffer.ShouldBe(expected);
         }
 
         [Test]
-        public void When_scrolling_is_enabled_WriteLine_when_on_bottom_line_SHOULD_Scroll_screen_up_1_line_for_each_line_that_overflows()
+        public void WhenClipping_WriteLine_SHOULD_clip_all_text_that_overflows_X_width()
+        {
+            // need to test PrintAt, Write, WriteLine
+            var c = new MockConsole(6, 3);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Clipping = true });
+            w.WriteLine("one two three");
+            w.Write("four");
+            var expected = new[]{
+                "one tw",
+                "four  ",
+                "      ",
+            };
+            c.Buffer.ShouldBe(expected);
+        }
+
+        [Test]
+        public void WhenClipping_Multiple_Write_SHOULD_not_advance_CursorY()
+        {
+            // need to test PrintAt, Write, WriteLine
+            var c = new MockConsole(6, 3);
+            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Clipping = true });
+            w.Write("123");
+            // should not advance the line (Y) if it's a write...
+            w.Write("AAAAA");
+            w.Write("BBB");
+            // writeLine should not print, but finally move cursor to new line after everything is said and done.
+            w.WriteLine("CCCCCCC");
+            w.Write("ABC");
+            var expected = new[]{
+                "123AAC",  // the C is written here because of a rare edge case where if the cursor to a Write, writes to the last character of the screen we don't advance it 1 
+                "ABC   ",  // character, otherwise that would cause a scroll, and we'd never be able to neatly print to the bottom of the screen.
+                "      ",  // will require a bit of tweaking to sort properly, but is acceptable small edge case for now until I change this.
+                };
+            c.Buffer.ShouldBe(expected);
+        }
+
+
+
+
+        [Test]
+        public void WhenScrolling_WriteLine_when_on_bottom_line_SHOULD_Scroll_screen_up_1_line_for_each_line_that_overflows()
         {
             var c = new MockConsole(6, 2);
             var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });
@@ -112,7 +149,7 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void When_scrolling_is_enabled_Write_then_WriteLine_without_overflowing_width_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
+        public void WhenScrolling_Write_then_WriteLine_without_overflowing_width_SHOULD_scroll_the_screen_up_1_line_for_each_line_that_overflows_the_screen_height()
         {
             var c = new MockConsole(6, 2);
             var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });
@@ -134,12 +171,12 @@ namespace Konsole.Tests.WindowTests
             var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });
             w.CursorLeft = 0;
             w.CursorTop = 1;
-            w.Write("abcdefg");
+            w.Write("123456abc");
             var expected = new[]
             {
-                    "abcdef",
-                    "g     "
-                };
+                    "123456",
+                    "abc   "
+            };
             c.Buffer.ShouldBe(expected);
         }
 

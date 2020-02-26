@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### Added
 
+- ClipScrolling, ClipWrapping.
 - new class `WriteResults` returns the result of writing to a buffer row, including any overflow.
 - new peek commands `IPeek` interface to tell what's at a screen location, added to `Window` and `MockConsole`.
   - `Row Peek(int sx, int sy, int width);`

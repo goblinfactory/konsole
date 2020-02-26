@@ -99,7 +99,6 @@ namespace Konsole
         private int _height;
 
         public int NumMenus { get; }
-        public int Height => _height;
         public bool CaseSensitive { get; }
 
         public IKeyboard Keyboard { get; set; }
@@ -147,34 +146,71 @@ namespace Konsole
 
         }
 
-        /// <summary>
-        /// if we have any menu items with menu keys that differ only by case, then this is a case sensitive menu, otherwise the menu items will be case insensitive.
-        /// </summary>
-        public Menu(IConsole menuConsole, string title, ConsoleKey quit, int? width, MenuLine separator, params MenuItem[] menuActions) : base(menuConsole, null, null, null, null, null, null)
+        public class MenuSettings
+        {
+            public IConsole Console { get; set; }
+            public string Title { get; set; }
+            public ConsoleKey Quit { get; set; } = ConsoleKey.Escape;
+            public int? Width { get; set; }
+            public MenuLine Separator { get; set; } = MenuLine.none;
+            public int Margin { get; set; } = 0;
+
+            public MenuItem[] MenuActions { get; set; }
+        }
+
+        public Menu(IConsole console, string title, ConsoleKey quit, int? width, MenuLine separator, params MenuItem[] menuActions) : this(new MenuSettings { 
+             Console = console,
+             Title = title,
+             Quit = quit,
+             Width = width,
+             Separator = separator,
+             MenuActions = menuActions        
+        }){}
+
+            /// <summary>
+            /// if we have any menu items with menu keys that differ only by case, then this is a case sensitive menu, otherwise the menu items will be case insensitive.
+            /// </summary>
+        public Menu(MenuSettings settings) : base(settings.Console, null, null, null, null, null, null)
         {
             lock (Window._locker)
             {
-                Separator = separator;
-                CaseSensitive = CaseForMenuItems(menuActions) == Case.Sensitive;
-                Title = title;
+                Separator = settings.Separator;
+                CaseSensitive = CaseForMenuItems(settings.MenuActions) == Case.Sensitive;
+                Title = settings.Title;
                 Keyboard = Keyboard ?? new Keyboard();
                 //_console = menuConsole;
-                QuitKey = quit.ToKeypress();
-                _width = width ?? menuConsole.WindowWidth;
-                NumMenus = menuActions.Length;
-                for (int i = 0; i < menuActions.Length; i++)
+                QuitKey = settings.Quit.ToKeypress();
+
+                (var width, var padding)  = GetWidth(_console, settings.Width, settings.Margin, settings.MenuActions);
+                _width = width;
+                NumMenus = settings.MenuActions.Length;
+                for (int i = 0; i < settings.MenuActions.Length; i++)
                 {
-                    var item = menuActions[i];
+                    var item = settings.MenuActions[i];
                     var key = item.Key;
                     if (key.HasValue) _keyBindings.Add(key.Value, i);
                     _menuItems.Add(i, item);
                 }
-                if (menuActions == null || menuActions.Length == 0)
-                    throw new ArgumentOutOfRangeException(nameof(menuActions), "Must provide at least one menu action");
-                _height = Naked ? menuActions.Length + 2 : menuActions.Length + 3;
-                //new Draw(menuConsole).Box()
-                _window = new Window(_console, new WindowSettings { SX = 2, Width = _width, Height = _height, Theme = Style.ToTheme(), Clipping = true });
+                if (settings.MenuActions == null || settings.MenuActions.Length == 0)
+                    throw new ArgumentOutOfRangeException(nameof(settings.MenuActions), "Must provide at least one menu action");
+                _height = Naked ? settings.MenuActions.Length + 2 : settings.MenuActions.Length + 3;
+                _window = new Window(_console, new WindowSettings { SX = padding, Width = _width, Height = _height, Theme = Style.ToTheme(), Scrolling =  false, Clipping = true});
             }
+        }
+
+        private static (int width, int padding) GetWidth(IConsole console, int? settingWidth, int? margin, MenuItem[] menuItems)
+        {
+            // if width is null use entire window width
+            if (settingWidth == null) return (console.WindowWidth, 0);
+
+            // if width = 0 use widest menuitem text + margin left
+            if (settingWidth == 0)
+            {
+                return (menuItems.Max(m => m.Title?.Length ?? 10) + (margin ?? 0) + 2, (margin ?? 0) + 2); 
+            }
+
+            // use configured width
+            return (settingWidth.Value + 2, margin ?? 2); 
         }
 
         private char SwitchCase(char c)
@@ -202,6 +238,7 @@ namespace Konsole
         }
 
         private IConsole _window;
+
 
         public Action<MenuModel, bool> OnRender = (model, printBorder) => { _refresh(model, printBorder); };
 

@@ -2,8 +2,10 @@
 
 ## Busy now
 
-- remove Window static extensions and replace with IConsole extensions (or .. find out why they are there? add test to prove they are needed, if they are.) only need extensions on classes (vs interfaces) when interface does not expose required data of the class.
+- find out why Write() appears to work, despite being wrapping call to __write in a DoCommand
 
+- remove Window static extensions and replace with IConsole extensions (or .. find out why they are there? add test to prove they are needed, if they are.) only need extensions on classes (vs interfaces) when interface does not expose required data of the class.
+- Add suspend layout and resume layout to IConsole, so that I can write a dialog that opens on top of a console, then resumes layout when console continues. add to highspeed writer? otherwise cant continue to print to window?
 - add extension method to all INPUT controls to support .ReadLine(); 
   (this will stay with the control until user optionally presses tab or any exit key to stop entering text, this is what the keyboard controller calls on each control,
   piece of cake! :D
@@ -45,6 +47,14 @@
 - simple simple list view,  basically it's a menu item that can run keyboard event, no scrolling.
 
 ## Now but paused
+
+- create control "Choice", returns X (lambda) var fruit = Choose("choose fruit", ("apples", 1), ("bananas", 2));
+- and some kewl overloads 
+```csharp
+    var fruit = console.Menu(("Apples", _ => 123), ("Bananas", _ => x + 2));
+    var topping = console.Menu("syrup", "chocolate");
+    bool addIceCream = console.Pick("add icecream?", ("hell yeah", true), ("not today", false));
+```
 - fast boxes! (after I've compared speed improvement.)
 - can  I remove all the overloads to simplify the API? so that there's only 1 way to construct something, passing in theme, or default, or null to inherit.
 - replace all constructors taking foreground and background with either Colors, or Style or Theme.

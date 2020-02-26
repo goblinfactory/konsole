@@ -55,7 +55,7 @@
 //            // advanced settings can 
 //            var client = console.SplitLeft("client", ConsoleKey.F1);
 //            var server = console.SplitRight("server", ConsoleKey.F2);
-            
+
 //            // setting hotkey causes the hotkey to be displayed in the frame and binds the key to switch the active window processing keystrokes
 
 //            SetupClientPage(client);
@@ -82,7 +82,7 @@
 
 //            //TODO: set a hintText, hintText to appear in nice soft color! As soon as start typing hintText to go away!
 
-//            var name = new Input(client, "Name, Initials, Surname", 25);        
+//            var name = new Input(client, "Name, Initials, Surname", 25);
 //            var initials = new Input(client, 3);
 //            var surname = new Input(client, 25);
 
@@ -150,7 +150,7 @@
 //        private static void SetupServerPage(IConsole server)
 //        {
 //            return;
-//            var port = new Input(server, "server Port", maxlength:8, captionWidth: 15);
+//            var port = new Input(server, "server Port", maxlength: 8, captionWidth: 15);
 //            var IPAddress = new Input(server, "IP4 Address", maxlength: 12, captionWidth: 15);
 //        }
 

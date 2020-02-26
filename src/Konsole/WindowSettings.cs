@@ -5,18 +5,39 @@ namespace Konsole
     public class WindowSettings
     {
         public WindowSettings() { }
-        public WindowSettings(WindowSettings settings)
+        public WindowSettings(WindowSettings settings) : this(
+            settings.SX, 
+            settings.SY, 
+            settings.Clipping, 
+            settings.PadLeft,
+            settings.Transparent,
+            settings.Scrolling,
+            settings.Status,
+            settings.Title,
+            settings.Width,
+            settings.Height,
+            settings.Theme,
+            settings._echo,
+            settings._parentWindow
+            )
         {
-            if (settings != null)
-            {
-                Status = settings.Status;
-                Title = settings.Title;
-                SX = settings.SX;
-                SY = settings.SY;
-                Width = settings.Width;
-                Height = settings.Height;
-                Theme = settings.Theme;
-            }
+        }
+
+        public WindowSettings(int sX, int? sY, bool clipping, int padLeft, bool transparent, bool scrolling, ControlStatus status, string title, int? width, int? height, StyleTheme theme, bool echo, IConsole parentWindow)
+        {
+            SX = sX;
+            SY = sY;
+            Clipping = clipping;
+            PadLeft = padLeft;
+            Transparent = transparent;
+            Scrolling = scrolling;
+            Status = status;
+            Title = title;
+            Width = width;
+            Height = height;
+            Theme = theme;
+            _echo = echo;
+            _parentWindow = parentWindow;
         }
 
         /// <summary>
@@ -30,6 +51,10 @@ namespace Konsole
         public int? SY { get; set; } = null;
 
         /// <summary>
+        /// If set to true, then printing to the console beyond the X Width will not wrap, it will be clipped. 
+        /// </summary>
+        public bool Clipping { get; set; } = false;
+        /// <summary>
         /// Left padding, to open an inline window slightly offset from the left by a few characters. Only applies to OpenInline.
         /// </summary>
         public int PadLeft { get; set; } = 0;
@@ -38,14 +63,9 @@ namespace Konsole
         /// Window background color is transparent until you start writing then will print using the configured fore and background color i.e. initial window will not clear the background
         /// </summary>
         public bool Transparent { get; set; } = false;
-
-        /// <summary>
-        /// When true, printing off the right hand edge of the screen is clipped, no wrapping.
-        /// </summary>
-        public bool Clipping { get; set; } = false;
         
         /// <summary>
-        /// Printing off the bottom of the window causes the window to scroll. 
+        /// Printing off the bottom of the window causes the window to scroll. When set to false, text scrolling off the bottom of the screen will be truncated.
         /// </summary>
         public bool Scrolling { get; set; } = true;   
         

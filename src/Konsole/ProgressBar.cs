@@ -25,17 +25,22 @@ namespace Konsole
         public ProgressBar(IConsole console, PbStyle style, int max, int textWidth)                   : this(max, textWidth, '#', style, console) { }
         public ProgressBar(IConsole console, PbStyle style, int max, int textWidth, char character)   : this(max, textWidth, character, style, console) { }
 
+        private static object _locker = new object();
+
         // in the private constructor IConsole is right at the end so that it does not clash with the other signatures
         private ProgressBar(int max, int? textWidth, char character, PbStyle style, IConsole console)
         {
-            switch (style)
+            lock(Window._locker)
             {
-                case PbStyle.DoubleLine:
-                    _bar = new ProgressBarTwoLine(max, textWidth, character, console);
-                    break;
-                case PbStyle.SingleLine:
-                    _bar = new ProgressBarSlim(max,textWidth,character,console);
-                    break;
+                switch (style)
+                {
+                    case PbStyle.DoubleLine:
+                        _bar = new ProgressBarTwoLine(max, textWidth, character, console);
+                        break;
+                    case PbStyle.SingleLine:
+                        _bar = new ProgressBarSlim(max, textWidth, character, console);
+                        break;
+                }
             }
         }
 

@@ -25,11 +25,11 @@ namespace Konsole.Tests.MenuTests
             m.Run();
 
             var expected = new[]{
-                "     MENU      ",
+                "    MENU       ",
                 "               ",
-                "   a. item     ",
-                "   b. item     ",
-                "   c. item     ",
+                " a. item 1     ",
+                " b. item 2     ",
+                " c. item 3     ",
                 "               ",
                 "               ",
                 };
@@ -37,12 +37,12 @@ namespace Konsole.Tests.MenuTests
             con.Buffer.ShouldBe(expected);
 
             expected = new[]{
-                " wk wk yr yr yrMyrEyrNyrUyr yr yr yr wk wk wk",
-                " wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk",
-                " wk wk wBawB.wB wBiBatBaeBamBa wB wB wk wk wk",
-                " wk wk wBbwB.wB wBiwBtwBewBmwB wB wB wk wk wk",
-                " wk wk wBcwB.wB wBiwBtwBewBmwB wB wB wk wk wk",
-                " wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " yr yr yr yrMyrEyrNyrUyr yr yr yr yr wk wk wk",
+                " wB wB wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " wBawB.wB wBiBatBaeBamBa Ba1Ba wB wB wk wk wk",
+                " wBbwB.wB wBiwBtwBewBmwB wB2wB wB wB wk wk wk",
+                " wBcwB.wB wBiwBtwBewBmwB wB3wB wB wB wk wk wk",
+                " wB wB wB wB wB wB wB wB wB wB wB wB wk wk wk",
                 " wk wk wk wk wk wk wk wk wk wk wk wk wk wk wk",
                 };
 
@@ -64,15 +64,14 @@ namespace Konsole.Tests.MenuTests
             m.Run();
 
             var expected = new[]{
-                " wk wk yr yr yrMyrEyrNyrUyr yr yr yr wk wk wk",
-                " wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk",
-                " wk wk wBawB.wB wBiBatBaeBamBa wB wB wk wk wk",
-                " wk wk wBbwB.wB wBiwBtwBewBmwB wB wB wk wk wk",
-                " wk wk wBqwB.wB wBiwBtwBewBmwB wB wB wk wk wk",
-                " wk wk wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " yr yr yr yrMyrEyrNyrUyr yr yr yr yr wk wk wk",
+                " wB wB wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " wBawB.wB wBiBatBaeBamBa BaaBa wB wB wk wk wk",
+                " wBbwB.wB wBiwBtwBewBmwB wBbwB wB wB wk wk wk",
+                " wBqwB.wB wBiwBtwBewBmwB wBcwB wB wB wk wk wk",
+                " wB wB wB wB wB wB wB wB wB wB wB wB wk wk wk",
                 " wk wk wk wk wk wk wk wk wk wk wk wk wk wk wk",
                 };
-
             con.BufferWithColor.ShouldBe(expected);
         }
 

@@ -171,7 +171,7 @@ namespace Konsole
                 int? y = settings.SY;
                 int? width = settings.Width;
                 int? height = settings.Height;
-                bool fullScreen = x == 0 && y == null && width == null & height == null;
+                bool fullScreen = x == 0 && y == null && width == null && height == null;
                 ControlStatus status = settings.Status;
                 StyleTheme theme = settings.Theme;
                 // todo - assign _console only once, prepare for readonly in C#8
@@ -186,12 +186,12 @@ namespace Konsole
 
                 _y = y ?? _console?.CursorTop ?? this._console.CursorTop + height ?? 0;
                 _x = x;
-                _width = GetStartWidth(_echo, width, _x, _console);
-                _height = GetStartHeight(height, _y, _console);
+                WindowWidth = GetStartWidth(_echo, width, _x, _console);
+                WindowHeight = GetStartHeight(height, _y, _console);
 
-                _transparent = settings.Transparent;
-                _clipping = settings.Clipping;
-                _scrolling = settings.Scrolling;
+                Transparent = settings.Transparent;
+                Clipping = settings.Clipping;
+                Scrolling = settings.Scrolling;
                 _title = settings.Title;
                 if (settings.hasTitle)
                 {
@@ -199,8 +199,8 @@ namespace Konsole
                     // we have a box around the outside, so window dimensions are "inside"
                     _x = _x + 1;
                     _y = _y + 1;
-                    _width = _width - 2;
-                    _height = _height - 2;
+                    WindowWidth = WindowWidth - 2;
+                    WindowHeight = WindowHeight - 2;
                 }
 
                 _absoluteX = _console?.AbsoluteX ?? 0 + _x;
@@ -211,7 +211,7 @@ namespace Konsole
                 // then move cursor underneath the inline
                 if (inline && !fullScreen)
                 {
-                    this._console.CursorTop += _height;
+                    this._console.CursorTop += WindowHeight;
                     this._console.CursorLeft = 0;
                 }
             }

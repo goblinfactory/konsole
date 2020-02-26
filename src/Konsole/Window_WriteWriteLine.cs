@@ -6,36 +6,63 @@ namespace Konsole
     {
         public void Write(string text)
         {
-            _write(text);
+            lock(_locker)
+            {
+                _write(text);
+            }
         }
 
         public void Write(string format, object args0)
         {
-            var text = string.Format(format, args0);
-            Write(text);
+            lock (_locker)
+            {
+                _write(format, args0);
+            }
         }
+
+        private void _write(string format, object args0)
+        {
+                var text = string.Format(format, args0);
+                _write(text);
+        }
+
+        private void _write(string format, params object[] args)
+        {
+            var text = string.Format(format, args);
+            _write(text);
+        }
+
 
         public void Write(string format, params object[] args)
         {
-            var text = string.Format(format, args);
-            Write(text);
+            lock (_locker)
+            {
+                _write(format, args);
+            }
         }
 
-        public void Write(ConsoleColor color, string format, params object[] args)
+        private void _write(ConsoleColor color, string format, params object[] args)
         {
             var foreground = ForegroundColor;
             try
             {
                 ForegroundColor = color;
-                Write(format, args);
+                _write(format, args);
             }
             finally
             {
                 ForegroundColor = foreground;
             }
         }
+        public void Write(ConsoleColor color, string format, params object[] args)
+        {
+            lock(_locker)
+            {
+                _write(color, format, args);
+            }
+        }
 
-        public void WriteLine(ConsoleColor color, string text)
+        private void _writeLine(ConsoleColor color, string text)
         {
             var foreground = ForegroundColor;
             try
@@ -46,6 +73,14 @@ namespace Konsole
             finally
             {
                 ForegroundColor = foreground;
+            }
+        }
+
+        public void WriteLine(ConsoleColor color, string text)
+        {
+            lock (_locker)
+            {
+                _writeLine(color, text);
             }
         }
 
@@ -119,33 +154,42 @@ namespace Konsole
         }
 
 
-        public void WriteLine(string text)
+        private void _writeLine(string text)
         {
-            if (_clipping && OverflowBottom)
+            if (!Scrolling && OverflowBottom)
             {
                 return;
             }
 
             if (OverflowBottom)
             {
-                ScrollDown();
-                Write(text);
+                _scrollDown();
+                _write(text);
                 Cursor = new XY(0, Cursor.Y + 1);
                 return;
             }
 
-            Write(text);
+            _write(text);
             Cursor = new XY(0, Cursor.Y + 1);
-            if (OverflowBottom && !_clipping)
+            if (OverflowBottom && Scrolling)
             {
-                ScrollDown();
+                _scrollDown();
             }
         }
+        public void WriteLine(string text)
+        {
+            lock(_locker)
+            {
+                _writeLine(text);
+            }
+        }
+
         private void __write(IConsole console, string text)
         {
             var overflow = "";
             while (overflow != null)
             {
+                if (Clipping && Cursor.X >= WindowWidth) break;
                 if (!_lines.ContainsKey(Cursor.Y)) return;
                 var result = _lines[Cursor.Y].Write(ForegroundColor, BackgroundColor, Cursor.X, text);
                 overflow = result.Overflow;
@@ -161,8 +205,14 @@ namespace Konsole
                 }
                 else
                 {
+                    if (Clipping)
+                    {
+                        Cursor = new XY(WindowWidth, Cursor.Y);
+                        break;
+                    }
                     Cursor = new XY(0, Cursor.Y + 1);
-                    if (_clipping && OverflowBottom) break;
+                    if (!Scrolling && OverflowBottom)
+                        break;
                     if (OverflowBottom)
                         ScrollDown();
                 }
@@ -172,7 +222,7 @@ namespace Konsole
         }
         private void _write(string text)
         {
-            if (_clipping && OverflowBottom) return;
+            if (!Scrolling && OverflowBottom) return;
             DoCommand(_console, () => __write(_console, text));
         }
 
