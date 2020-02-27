@@ -4,6 +4,11 @@ namespace Konsole
 {
     public partial class Window
     {
+        // **************************
+        // **                      **
+        // **  Write(string text)  **
+        // **                      **
+        // **************************
         public void Write(string text)
         {
             lock(_locker)
@@ -11,7 +16,17 @@ namespace Konsole
                 _write(text);
             }
         }
+        private void _write(string text)
+        {
+            if (!Scrolling && OverflowBottom) return;
+            DoCommand(_console, () => __write(_console, text));
+        }
 
+        // *******************************************
+        // **                                       **
+        // **  Write(string format, object args0)   **
+        // **                                       **
+        // *******************************************
         public void Write(string format, object args0)
         {
             lock (_locker)
@@ -26,18 +41,35 @@ namespace Konsole
                 _write(text);
         }
 
+        // ****************************************************
+        // **                                                **
+        // **  _write(string format, params object[] args)   **
+        // **                                                **
+        // ****************************************************
+        public void Write(string format, params object[] args)
+        {
+            lock (_locker)
+            {
+                _write(format, args);
+            }
+        }
+
         private void _write(string format, params object[] args)
         {
             var text = string.Format(format, args);
             _write(text);
         }
 
-
-        public void Write(string format, params object[] args)
+        // ***********************************************************************
+        // **                                                                   **
+        // **  Write(ConsoleColor color, string format, params object[] args)   **
+        // **                                                                   **
+        // ***********************************************************************
+        public void Write(ConsoleColor color, string format, params object[] args)
         {
             lock (_locker)
             {
-                _write(format, args);
+                _write(color, format, args);
             }
         }
 
@@ -54,11 +86,17 @@ namespace Konsole
                 ForegroundColor = foreground;
             }
         }
-        public void Write(ConsoleColor color, string format, params object[] args)
+
+        // ***************************************************
+        // **                                               **
+        // **  WriteLine(ConsoleColor color, string text)   **
+        // **                                               **
+        // ***************************************************
+        public void WriteLine(ConsoleColor color, string text)
         {
-            lock(_locker)
+            lock (_locker)
             {
-                _write(color, format, args);
+                _writeLine(color, text);
             }
         }
 
@@ -76,21 +114,25 @@ namespace Konsole
             }
         }
 
-        public void WriteLine(ConsoleColor color, string text)
+        // **********************************************
+        // **                                          **
+        // **  WriteLine(Colors colors, string text)   **
+        // **                                          **
+        // **********************************************
+        public void WriteLine(Colors colors, string text)
         {
-            lock (_locker)
+            lock(_locker)
             {
-                _writeLine(color, text);
+                _writeLine(colors, text);
             }
         }
-
-        public void WriteLine(Colors colors, string text)
+        private void _writeLine(Colors colors, string text)
         {
             var _colors = Colors;
             try
             {
                 Colors = colors;
-                WriteLine(text);
+                _writeLine(text);
             }
             finally
             {
@@ -98,7 +140,21 @@ namespace Konsole
             }
         }
 
+
+        // ******************************************
+        // **                                      **
+        // **  Write(Colors colors, string text)   **
+        // **                                      **
+        // ******************************************
         public void Write(Colors colors, string text)
+        {
+            lock(_locker)
+            {
+                _write(colors, text);
+            }
+        }
+
+        private void _write(Colors colors, string text)
         {
             var _colors = Colors;
             try
@@ -112,6 +168,11 @@ namespace Konsole
             }
         }
 
+        // ***********************************************
+        // **                                           **
+        // **  Write(ConsoleColor color, string text)   **
+        // **                                           **
+        // ***********************************************
         public void Write(ConsoleColor color, string text)
         {
             var foreground = ForegroundColor;
@@ -126,16 +187,47 @@ namespace Konsole
             }
         }
 
+        // ***********************************************
+        // **                                           **
+        // **  WriteLine(string format, object arg0)    **
+        // **                                           **
+        // ***********************************************
         public void WriteLine(string format, object arg0)
         {
-            WriteLine(string.Format(format, arg0));
+            lock(_locker)
+            {
+                _writeLine(format, arg0);
+            }
         }
 
+        private void _writeLine(string format, object arg0)
+        {
+            _writeLine(string.Format(format, arg0));
+        }
+
+        // ******************************************************
+        // **                                                  **
+        // **  WriteLine(string format, params object[] args)  **
+        // **                                                  **
+        // ******************************************************
         public void WriteLine(string format, params object[] args)
+        {
+            lock(_locker)
+            {
+                _writeLine(format, args);
+            }
+        }
+
+        private void _writeLine(string format, params object[] args)
         {
             WriteLine(string.Format(format, args));
         }
 
+        // **************************************************************************
+        // **                                                                      **
+        // **  WriteLine(ConsoleColor color, string format, params object[] args)  **
+        // **                                                                      **
+        // **************************************************************************
         /// <summary>
         /// Write the text to the window in the {color} color, withouting resetting the window's current foreground colour. Optionally causes text to wrap, and if text moves beyond the end of the window causes the window to scroll.
         /// </summary>
@@ -153,6 +245,18 @@ namespace Konsole
             }
         }
 
+        // ********************************
+        // **                            **
+        // **  WriteLine(string text)    **
+        // **                            **
+        // ********************************
+        public void WriteLine(string text)
+        {
+            lock (_locker)
+            {
+                _writeLine(text);
+            }
+        }
 
         private void _writeLine(string text)
         {
@@ -176,14 +280,10 @@ namespace Konsole
                 _scrollDown();
             }
         }
-        public void WriteLine(string text)
-        {
-            lock(_locker)
-            {
-                _writeLine(text);
-            }
-        }
 
+        // ****************
+        // **  __write   **
+        // ****************
         private void __write(IConsole console, string text)
         {
             var overflow = "";
@@ -220,11 +320,5 @@ namespace Konsole
             }
 
         }
-        private void _write(string text)
-        {
-            if (!Scrolling && OverflowBottom) return;
-            DoCommand(_console, () => __write(_console, text));
-        }
-
     }
 }

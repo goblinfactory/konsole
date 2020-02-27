@@ -160,8 +160,8 @@ namespace Konsole.Tests.WindowTests
         //}
 
         [TestCase(0, 0, 10, 10)]
-        [TestCase(5, 5, 10, 10)]
-        [TestCase(0, 5, 10, 10)]
+        [TestCase(5, 5, 10, 5)]
+        [TestCase(0, 5, 10, 5)]
         [TestCase(5, 0, 10, 10)]
         public void when_no_values_set_should_use_balance_of_parent_screen_defaults_and_set_x_y_to_0_0_and_not_change_parent_window_top_or_left(int parentCurrentX, int parentCurrentY, int expectedWidth, int expectedHeight)
         { 

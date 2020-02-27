@@ -1,7 +1,8 @@
 # Roadmap
 
 ## Busy now
-
+- fix concuirrency bug (failing test) ProgressTests.ConstructorShould.be_threadsafe
+- TODO: check all the usages, and any internal usages redirect to _Foo
 - find out why Write() appears to work, despite being wrapping call to __write in a DoCommand
 
 - remove Window static extensions and replace with IConsole extensions (or .. find out why they are there? add test to prove they are needed, if they are.) only need extensions on classes (vs interfaces) when interface does not expose required data of the class.
