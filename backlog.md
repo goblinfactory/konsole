@@ -1,20 +1,9 @@
 # Roadmap
 
 ## Busy now
-
-things to try
-
-fresh checkout, locked directory access denied, really bad!
-
 - fix bug with unit tests failing to run consistently in test runner, specifically ListViewTests.LinqExtensionTests
   - see if nested classes are causing problems!
   - try move Linqtest to new project and see if that fails as well?
-
-CODE RUSH;
-also ... xunit instead of nunit?
-also .. .manual testing?
-finish refactoring the locks???  dammit ... 
-
   - see if characters I added cause problem?
   - checkout setup /teardown
   - checkout other test runners (done) dotnet test fails as well!
