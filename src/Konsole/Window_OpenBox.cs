@@ -95,17 +95,17 @@ namespace Konsole
     {
         public static IConsole OpenBox(string title)
         {
-            return _OpenBox(null, new WindowSettings { Title = title });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title });
         }
 
         public static IConsole OpenBox(string title, WindowSettings settings)
         {
-            return _OpenBox(null, new WindowSettings(settings) { Title = title } );
+            return _OpenBox(Window.HostConsole, new WindowSettings(settings) { Title = title } );
         }
 
         public static IConsole OpenBox(string title, int sx, int sy, int width, int height, LineThickNess thickness)
         {
-            return _OpenBox(null, new WindowSettings {
+            return _OpenBox(Window.HostConsole, new WindowSettings {
                 Title = title,
                 SX = sx,
                 SY = sy,
@@ -117,58 +117,58 @@ namespace Konsole
 
         public static IConsole OpenBox(string title, int width, int height)
         {
-            return _OpenBox(null, new WindowSettings { Title = title, Width = width, Height = height });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Width = width, Height = height });
         }
 
         public static IConsole OpenBox(string title, int sx, int sy, int width, int height)
         {
-            return _OpenBox(null, new WindowSettings { SX = sx, SY = sy, Title = title, Width = width, Height = height });
+            return _OpenBox(Window.HostConsole, new WindowSettings { SX = sx, SY = sy, Title = title, Width = width, Height = height });
         }
 
         public static IConsole OpenBox(string title, int width, int height, ConsoleColor foreground, ConsoleColor background)
         {
-            return _OpenBox(null, new WindowSettings { Title = title, Width = width, Height = height, Theme = new StyleTheme(foreground, background) });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Width = width, Height = height, Theme = new StyleTheme(foreground, background) });
         }
 
         public static IConsole OpenBox(string title, ConsoleColor foreground, ConsoleColor background)
         {
-            return _OpenBox(null, new WindowSettings { Title = title, Theme = new StyleTheme(foreground, background) });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Theme = new StyleTheme(foreground, background) });
         }
         public static IConsole OpenBox(string title, Style style)
         {
-            return _OpenBox(null, new WindowSettings { Title = title, Theme = style.ToTheme() });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Theme = style.ToTheme() });
         }
 
         public static IConsole OpenBox(string title, int width, int height, Style style)
         {
-            return _OpenBox(null, new WindowSettings { Title = title, Width = width, Height = height, Theme = style.ToTheme() });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Width = width, Height = height, Theme = style.ToTheme() });
         }
         public static IConsole OpenBox(string title, StyleTheme theme)
         {
-            return _OpenBox(null, new WindowSettings { Title = title, Theme = theme });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Theme = theme });
         }
 
         public static IConsole OpenBox(string title, int width, int height, StyleTheme theme)
         {
-            return _OpenBox(null, new WindowSettings { Title = title, Width = width, Height = height, Theme = theme });
+            return _OpenBox(Window.HostConsole, new WindowSettings { Title = title, Width = width, Height = height, Theme = theme });
         }
 
         internal static IConsole _OpenBox(IConsole console, WindowSettings settings)
         {
+            var status = settings.Status;
+            var title = settings.Title;
+            var _sx = settings.SX;
+            var _sy = settings.SY;
+            var _width = settings.Width;
+            var _height = settings.Height;
+            var theme = settings.Theme;
+
+            IConsole _console = console ??  HostConsole;
+            theme = theme ?? console.Theme;
+
+
             lock (Window._locker)
             {
-                var status = settings.Status;
-                var title = settings.Title;
-                var _sx = settings.SX;
-                var _sy = settings.SY;
-                var _width = settings.Width;
-                var _height = settings.Height;
-                var theme = settings.Theme;
-
-                IConsole _console = console ??  _HostConsole;
-                theme = theme ?? console.Theme;
-
-
                 int width = _width ?? _console.WindowWidth;
                 int height = _height ?? _console.WindowHeight;
                 var inline = _sx == 0 && _sy == null;
