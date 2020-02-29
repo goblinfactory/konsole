@@ -2,9 +2,9 @@
 
 namespace Konsole.Tests.WindowTests
 {
-    [TestFixture]
-    public class BufferTests
+    namespace BufferTests
     {
+        [TestFixture]
         public class BufferWrittenShould
         {
             [Test]
@@ -39,6 +39,7 @@ namespace Konsole.Tests.WindowTests
 
         }
 
+        [TestFixture]
         public class BufferShould
         {
             [Test]

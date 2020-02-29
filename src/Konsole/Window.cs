@@ -384,11 +384,16 @@ namespace Konsole
             set { lock (_locker) Cursor = Cursor.WithX(value); }
         }
 
+        // ***************
+        // **           **
+        // **  Colors   **
+        // **           **
+        // ***************
         public Colors Colors
         {
             get
             {
-                lock (_locker) return new Colors(ForegroundColor, BackgroundColor);
+                lock (_locker) return _Colors;
             }
             set
             {
@@ -399,6 +404,18 @@ namespace Konsole
                 }
             }
         }
+        private Colors _Colors
+        {
+            get
+            {
+                return new Colors(ForegroundColor, BackgroundColor);
+            }
+            set
+            {
+                _Colors = value;
+            }
+        }
+
 
         internal void SetWindowOffset(int x, int y)
         {

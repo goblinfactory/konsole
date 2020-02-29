@@ -1,6 +1,14 @@
 # Roadmap
 
 ## Busy now
+- fix bug with unit tests failing to run consistently in test runner, specifically ListViewTests.LinqExtensionTests
+  - see if nested classes are causing problems!
+  - try move Linqtest to new project and see if that fails as well?
+  - see if characters I added cause problem?
+  - checkout setup /teardown
+  - checkout other test runners (done) dotnet test fails as well!
+  - ?? is this xunit vs nunit problems? or visual studio plugin? in verbose mode the microsoft runner keeps trying to talk to non existant test service, what a load of toss.
+  - google to see if making tests Async Task makes them more stable in latest nunit? check out best practice.
 - fix concuirrency bug (failing test) ProgressTests.ConstructorShould.be_threadsafe
 - TODO: check all the usages, and any internal usages redirect to _Foo
 - find out why Write() appears to work, despite being wrapping call to __write in a DoCommand
