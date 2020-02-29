@@ -30,7 +30,7 @@ namespace Konsole.Samples
 
             int y = 3;
 
-            while (true)
+            while (Console.ReadKey(true).KeyChar != 'q')
             {
                 RenderGames(window, y + 2, Active);
                 RenderUsers(window, y + 2, Inactive);
@@ -38,7 +38,7 @@ namespace Konsole.Samples
 
                 RenderGames(window, y + 2, Inactive);
                 RenderUsers(window, y + 2, Active);
-                Console.ReadKey(true);
+               
             }
 
         }

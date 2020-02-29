@@ -123,19 +123,19 @@ namespace Konsole
         }
 
         public Menu(string title, params MenuItem[] menuActions)
-        : this(Window.HostConsole, title, ConsoleKey.Escape, null, MenuLine.none, menuActions)
+        : this(null, title, ConsoleKey.Escape, null, MenuLine.none, menuActions)
         {
 
         }
 
         public Menu(string title, ConsoleKey quit, int width, params MenuItem[] menuActions)
-            : this(Window.HostConsole, title, quit, width, MenuLine.none, menuActions)
+            : this(null, title, quit, width, MenuLine.none, menuActions)
         {
 
         }
 
         public Menu(string title, ConsoleKey quit, int width, MenuLine separator, params MenuItem[] menuActions)
-            : this(Window.HostConsole, title, quit, width, separator, menuActions)
+            : this(null, title, quit, width, separator, menuActions)
         {
 
         }

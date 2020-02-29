@@ -280,6 +280,23 @@ namespace Konsole
             }
         }
 
+        // ****************************
+        // **  _With(Action action)  **
+        // ****************************
+        private void _WithState(Action action)
+        {
+            var state = _State;
+            try
+            {
+                action();
+            }
+            finally
+            {
+                _State = state;
+            }
+        }
+
+
         // *****************************************************
         // **  _WithColor(ConsoleColor color, Action action)  **
         // *****************************************************

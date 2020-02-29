@@ -115,10 +115,13 @@ namespace Konsole
 
         public Control(IConsole console, int? x, int? y, string caption, int? captionWidth, int? width, int? height)
         {
-            _captionWidth = captionWidth ?? caption?.Length ?? 0;
-            HasCaption = _captionWidth != 0;
-            _caption = caption;
-            _console = console;
+            lock(Window._locker)
+            {
+                _captionWidth = captionWidth ?? caption?.Length ?? 0;
+                HasCaption = _captionWidth != 0;
+                _caption = caption;
+                _console = console ?? Window._HostConsole;
+            }
 
             // layout
             // Absolute  : fixed X and Y, and does not impact console's cursor X or Y

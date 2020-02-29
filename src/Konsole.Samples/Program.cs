@@ -18,7 +18,11 @@ namespace Konsole.Samples
 
             var window2 = new Window();
             Console.CursorVisible = false;
-            ConstructorsShouldBeThreadSafe._demo();
+            ListViewDemos.ListViewThemeTest();
+            Console.Clear();
+            WindowClientServerSamples.Demo();
+            Console.Clear();
+            RealtimeStockPriceMonitorWithHighSpeedWriter.Main(new string[0]);
             Console.ReadKey(true); 
 
             return;

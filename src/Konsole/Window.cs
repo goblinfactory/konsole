@@ -8,26 +8,45 @@ namespace Konsole
 {
     public partial class Window : IConsole, IPeek
     {
+        // *****************
+        // ** HostConsole **
+        // *****************
         internal static IConsole _hostConsole;
         public static IConsole HostConsole
         {
             get
             {
-                lock (_locker)
+                lock (_locker) return _HostConsole;
+            }
+            set
+            {
+                lock (_locker)_HostConsole = value;
+            }
+        }
+
+        internal static IConsole _HostConsole
+        {
+            get
+            {
                     return _hostConsole ?? (_hostConsole = new ConcurrentWriter());
             }
             set
             {
-                lock (_locker)
                     _hostConsole = value;
             }
         }
 
+        // *****************
+        // ** GetVersion  **
+        // *****************
         public string GetVersion()
         {
             return GetType().Assembly.GetName().Version.ToString();
         }
 
+        // *********************
+        // ** OverflowBottom  **
+        // *********************
         public bool OverflowBottom
         {
             get
@@ -207,7 +226,7 @@ namespace Konsole
             for (int i = 0; i < WindowHeight; i++)
             {
                 _lines.Add(i, new Row(WindowWidth, ' ', ForegroundColor, BackgroundColor));
-                if (!Transparent) _printAt(0, i, new string(' ', WindowWidth));
+                if (!Transparent) _PrintAt(0, i, new string(' ', WindowWidth));
             }
             _Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
@@ -542,11 +561,15 @@ namespace Konsole
         // ****************************************************************
         public void PrintAt(int x, int y, string format, params object[] args)
         {
-            DoCommand(this, () =>
-            {
+            lock (_locker) _PrintAt(x, y, format, args);
+        }
+
+        private void _PrintAt(int x, int y, string format, params object[] args)
+        {
+            _WithState(() => {
                 var text = string.Format(format, args);
                 _Cursor = new XY(x, y);
-                Write(text);
+                _Write(text);
             });
         }
 
@@ -557,17 +580,16 @@ namespace Konsole
         // ****************************************
         public void PrintAt(int x, int y, string text)
         {
-            DoCommand(this, () =>
-            {
-                _Cursor = new XY(x, y);
-                Write(text);
-            });
+            lock (_locker) _PrintAt(x, y, text);
         }
 
-        private void _printAt(int x, int y, string text)
+        private void _PrintAt(int x, int y, string text)
         {
-            _Cursor = new XY(x, y);
-            Write(text);
+            _WithState(() =>
+            {
+                _Cursor = new XY(x, y);
+                _Write(text);
+            });
         }
 
         // ***********************************
@@ -575,16 +597,25 @@ namespace Konsole
         // ** PrintAt(int x, int y, char c) **
         // **                               **
         // ***********************************
-
         public void PrintAt(int x, int y, char c)
         {
-            DoCommand(this, () =>
+            lock (_locker) _PrintAt(x, y, c);
+        }
+
+        private void _PrintAt(int x, int y, char c)
+        {
+            _WithState(() =>
             {
                 _Cursor = new XY(x, y);
-                Write(c.ToString());
+                _Write(c.ToString());
             });
         }
 
+        // *******************************************************************************
+        // **                                                                           **
+        // ** PrintAt(Colors colors, int x, int y, string format, params object[] args) **
+        // **                                                                           **
+        // *******************************************************************************
         public void PrintAt(Colors colors, int x, int y, string format, params object[] args)
         {
             DoCommand(this, () =>
