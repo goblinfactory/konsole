@@ -41,7 +41,7 @@
  - padded
  
  - fix Highspeed writer interface. Replaces usages of writer with the interface and correct it!
-
+- move IPeek to IConsole?
 - add test, openbox takes a style, and creates a theme from the style.
 - add test, if a window does not have a theme set, then asking for theme must return parent.
 - add undo (save the intialValues in the control) so that I can implement a global undo (reset, undo changes) ?

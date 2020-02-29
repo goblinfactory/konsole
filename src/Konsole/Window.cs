@@ -27,10 +27,19 @@ namespace Konsole
         {
             return GetType().Assembly.GetName().Version.ToString();
         }
+
         public bool OverflowBottom
         {
+            get
+            {
+                lock (_locker) return _OverflowBottom;
+            }
+        }
+
+        private bool _OverflowBottom
+        {
             get {
-                lock (_locker) return CursorTop >= WindowHeight;
+                return CursorTop >= WindowHeight;
             }
         }
 
@@ -75,7 +84,7 @@ namespace Konsole
             }
         }
 
-        private XY Cursor
+        private XY _Cursor
         {
             get { return _cursor; }
             set
@@ -200,7 +209,7 @@ namespace Konsole
                 _lines.Add(i, new Row(WindowWidth, ' ', ForegroundColor, BackgroundColor));
                 if (!Transparent) _printAt(0, i, new string(' ', WindowWidth));
             }
-            Cursor = new XY(0, 0);
+            _Cursor = new XY(0, 0);
             _lastLineWrittenTo = -1;
         }
 
@@ -362,7 +371,7 @@ namespace Konsole
                 _lines[i] = _lines[i + 1];
             }
             _lines[WindowHeight - 1] = new Row(WindowWidth, ' ', ForegroundColor, BackgroundColor);
-            Cursor = new XY(0, WindowHeight - 1);
+            _Cursor = new XY(0, WindowHeight - 1);
             if (_console != null)
             {
                 _console.MoveBufferArea(_x, _y + 1, WindowWidth, WindowHeight - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
@@ -374,20 +383,34 @@ namespace Konsole
 
         public int CursorTop
         {
-            get { lock (_locker) return Cursor.Y; }
-            set { lock (_locker) Cursor = Cursor.WithY(value); }
+            get { lock (_locker) return _CursorTop; }
+            set { lock (_locker) _CursorTop = value; }
         }
+
+        private int _CursorTop
+        {
+            get { return _Cursor.Y; }
+            set { _Cursor = _Cursor.WithY(value); }
+        }
+
+        // ******************
+        // **  CursorLeft  **
+        // ******************
 
         public int CursorLeft
         {
-            get { lock (_locker) return Cursor.X; }
-            set { lock (_locker) Cursor = Cursor.WithX(value); }
+            get { lock (_locker) return _CursorLeft;  }
+            set { lock (_locker) _CursorLeft = value; }
+        }
+
+        private int _CursorLeft
+        {
+            get { return _Cursor.X; }
+            set { _Cursor = _Cursor.WithX(value); }
         }
 
         // ***************
-        // **           **
         // **  Colors   **
-        // **           **
         // ***************
         public Colors Colors
         {
@@ -427,82 +450,137 @@ namespace Konsole
         public int AbsoluteX => _absoluteX;
         public int WindowWidth { get; }
 
-        public ConsoleColor BackgroundColor { get; set; }
+        // *********************
+        // ** BackgroundColor **
+        // *********************
+        private ConsoleColor _backgroundColor;
+        public ConsoleColor BackgroundColor
+        {
+            get { lock (_locker) return _backgroundColor; }
+            set { lock (_locker) _backgroundColor = value; }
+        }
 
         private bool _noEchoCursorVisible = true;
 
         public bool CursorVisible
         {
-            get { lock (_locker) return _console?.CursorVisible ?? _noEchoCursorVisible; }
+            get { lock (_locker) return _CursorVisible; }
             set
             {
                 lock (_locker)
                 {
-                    if (_console == null)
-                        _noEchoCursorVisible = value;
-                    else
-                        _console.CursorVisible = value;
+                    _CursorVisible = value;
                 }
             }
         }
 
+        private bool _CursorVisible
+        {
+            get { return _console?.CursorVisible ?? _noEchoCursorVisible; }
+            set
+            {
+                if (_console == null)
+                    _noEchoCursorVisible = value;
+                else
+                    _console.CursorVisible = value;
+            }
+        }
 
+        // *********************
+        // ** ForegroundColor **
+        // *********************
+        private ConsoleColor _foregroundColor;
+        public ConsoleColor ForegroundColor { 
+            get { lock (_locker) return _foregroundColor;  }
+            set { lock (_locker) _foregroundColor = value; }
+        }
 
-        public ConsoleColor ForegroundColor { get; set; }
-
+        // ***********
+        // ** State **
+        // ***********
         public ConsoleState State
         {
             get
             {
-                lock (_locker) return new ConsoleState(ForegroundColor, BackgroundColor, CursorTop, CursorLeft, CursorVisible);
+                lock (_locker) return _State;
             }
 
             set
             {
                 lock (_locker)
                 {
-                    CursorLeft = value.Left;
-                    CursorTop = value.Top;
-                    ForegroundColor = value.ForegroundColor;
-                    BackgroundColor = value.BackgroundColor;
-                    if(PlatformStuff.IsWindows)
-                    {
-                        CursorVisible = value.CursorVisible;
-                    }
+                    _State = value;
                 }
             }
         }
 
+        private ConsoleState _State
+        {
+            get
+            {
+                return new ConsoleState(_foregroundColor, _backgroundColor, _CursorTop, _CursorLeft, _CursorVisible);
+            }
+
+            set
+            {
+                _CursorLeft = value.Left;
+                _CursorTop = value.Top;
+                _foregroundColor = value.ForegroundColor;
+                _backgroundColor = value.BackgroundColor;
+                if (PlatformStuff.IsWindows)
+                {
+                    _CursorVisible = value.CursorVisible;
+                }
+            }
+
+        }
+
+        // ****************************************************************
+        // **                                                            **
+        // ** PrintAt(int x, int y, string format, params object[] args) **
+        // **                                                            **
+        // ****************************************************************
         public void PrintAt(int x, int y, string format, params object[] args)
         {
             DoCommand(this, () =>
             {
                 var text = string.Format(format, args);
-                Cursor = new XY(x, y);
+                _Cursor = new XY(x, y);
+                Write(text);
+            });
+        }
+
+        // ****************************************
+        // **                                    **
+        // ** PrintAt(int x, int y, string text) **
+        // **                                    **
+        // ****************************************
+        public void PrintAt(int x, int y, string text)
+        {
+            DoCommand(this, () =>
+            {
+                _Cursor = new XY(x, y);
                 Write(text);
             });
         }
 
         private void _printAt(int x, int y, string text)
         {
-            Cursor = new XY(x, y);
+            _Cursor = new XY(x, y);
             Write(text);
         }
 
-        public void PrintAt(int x, int y, string text)
-        {
-            DoCommand(this, () =>
-            {
-                Cursor = new XY(x, y);
-                Write(text);
-            });
-        }
+        // ***********************************
+        // **                               **
+        // ** PrintAt(int x, int y, char c) **
+        // **                               **
+        // ***********************************
 
         public void PrintAt(int x, int y, char c)
         {
             DoCommand(this, () =>
             {
-                Cursor = new XY(x, y);
+                _Cursor = new XY(x, y);
                 Write(c.ToString());
             });
         }
@@ -511,7 +589,7 @@ namespace Konsole
         {
             DoCommand(this, () =>
             {
-                Cursor = new XY(x, y);
+                _Cursor = new XY(x, y);
                 Colors = colors;
                 var text = string.Format(format, args);
                 Write(text);
@@ -522,7 +600,7 @@ namespace Konsole
         {
             DoCommand(this, () =>
             {
-                Cursor = new XY(x, y);
+                _Cursor = new XY(x, y);
                 ForegroundColor = color;
                 var text = string.Format(format, args);
                 Write(text);
@@ -533,7 +611,7 @@ namespace Konsole
         {
             DoCommand(this, () =>
             {
-                Cursor = new XY(x, y);
+                _Cursor = new XY(x, y);
                 Colors = colors;
                 Write(text);
             });
@@ -543,7 +621,7 @@ namespace Konsole
         {
             DoCommand(this, () =>
             {
-                Cursor = new XY(x, y);
+                _Cursor = new XY(x, y);
                 ForegroundColor = color;
                 Write(text);
             });
@@ -569,6 +647,11 @@ namespace Konsole
             });
         }
 
+        // ************************************************
+        // **                                            **
+        // ** DoCommand(IConsole console, Action action) **
+        // **                                            **
+        // ************************************************
         /// <summary>
         /// Run command and preserve the state, i.e. restore the console state after running command.
         /// </summary>
@@ -576,24 +659,32 @@ namespace Konsole
         {
             lock(_locker)
             {
-                if (console == null)
-                {
-                    action();
-                    return;
-                }
-                var state = console.State;
-                try
-                {
-                    GotoEchoCursor(console);
-                    action();
-                }
-                finally
-                {
-                    console.State = state;
-                }
+                _DoCommand(console, action);
             }
         }
 
+        private void _DoCommand(IConsole console, Action action)
+        {
+            if (console == null)
+            {
+                action();
+                return;
+            }
+            var state = console.State;
+            try
+            {
+                GotoEchoCursor(console);
+                action();
+            }
+            finally
+            {
+                console.State = state;
+            }
+        }
+
+        // ********************************
+        // GotoEchoCursor(IConsole console) 
+        // ********************************
         private void GotoEchoCursor(IConsole console)
         {
             console.CursorTop = _cursor.Y + _y;

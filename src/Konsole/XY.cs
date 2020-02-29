@@ -2,8 +2,8 @@ namespace Konsole
 {
     public struct XY
     {
-        public int X;
-        public int Y;
+        public readonly int X;
+        public readonly int Y;
         public XY(int x, int y) { X = x; Y = y; }
         public XY WithX(int x)  { return new XY(x, Y); }
         public XY IncX(int x)  { return new XY(x + X, Y); }

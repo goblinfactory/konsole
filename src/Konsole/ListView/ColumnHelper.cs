@@ -16,10 +16,10 @@ namespace Konsole
         /// if any columns are 0, then the other columns will be fixed, and the 0 columns (wildcards) will receive the balance, split evenly between 0's.
         /// </summary>
         /// <returns>A new array of columns with updated widths, old source is not affected</returns>
-        public static (Column column, int resized)[] ResizeColumns(this Column[] columns, int width)
+        public static Column[] ResizeColumns(this Column[] columns, int width)
         {
-            if (columns == null) return new (Column, int)[0];
-            if (width == 0) return columns.Select(c => (c, 0)).ToArray();
+            if (columns == null) return new Column[0];
+            if (width == 0) return columns.Select(c => c.WithWidth(0)).ToArray();
 
             int cnt = columns.Length;
             var items = new (Column column, int resized)[cnt];
@@ -39,25 +39,25 @@ namespace Konsole
                 wildSize = (balance - requestedSize) / numWildCards;
             }
 
-            var newColumns = columns.Decorate((c,first, last)  => 
+            var newColumns = columns.SelectWithFirstLast<Column>((c,first, last)  => 
             {
                 // if last column
                 if (last)
                 {
-                    return balance;
+                    return c.WithWidth(balance);
                 }
                 else
                 {
                     if (c.Width == 0)
                     {
                         balance -= wildSize;
-                        return wildSize;
+                        return c.WithWidth(wildSize);
                     }
                     else
                     {
                         int newSize = (int)((double)c.Width * ratio);
                         balance -= newSize;
-                        return newSize;
+                        return c.WithWidth(newSize);
                     }
                 }
             });

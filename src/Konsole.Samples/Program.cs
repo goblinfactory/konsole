@@ -16,9 +16,10 @@ namespace Konsole.Samples
 
             // NB! I may need to allow windows to create a progress bar (i.e. create a new window) BELOW the top of the window ... to "scroll" it up?
 
-            var window2 = new Window();
             Console.CursorVisible = false;
-            ConstructorsShouldBeThreadSafe._demo();
+            ProgressBarSamples.Run();
+            RealtimeStockPriceMonitorWithHighSpeedWriter.Main(new[] { "" });
+            WindowClientServerSamples.Demo();
             Console.ReadKey(true); 
 
             return;

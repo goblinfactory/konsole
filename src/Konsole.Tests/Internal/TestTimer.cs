@@ -36,24 +36,11 @@ namespace Konsole.Tests
             sw.Stop();
             var ms = sw.Elapsed.TotalMilliseconds;
             var µs = ms * 1000;
-            Console.WriteLine(µs);
             if(_debug)
-                debugCheckHardwareResolution(µs, microSeconds);
-            else
-                checkHardwareResolution(µs, microSeconds);
+                debugCheck_µs(µs, microSeconds);
+            else if (µs > microSeconds)
+                Failµs(µs, microSeconds);
             return t;
-        }
-
-        private static void debugCheckHardwareResolution(double µsActual, double µsMaxAllowed)
-        {
-            if (µsActual > µsMaxAllowed * DebugMultiplierFail)
-            {
-                Failµs(µsActual, µsMaxAllowed * DebugMultiplierFail);
-            }
-            if (µsActual > µsMaxAllowed * DebugMultiplierInconclusive)
-            {
-                Inconclusiveµs(µsActual, µsMaxAllowed * DebugMultiplierInconclusive);
-            }
         }
 
         public static T RunTest_ms<T>(double milliSeconds, Func<T> test, bool warmup = true)
@@ -65,18 +52,37 @@ namespace Konsole.Tests
             t = test();
             sw.Stop();
             var ms = sw.Elapsed.TotalMilliseconds;
-            if (ms > milliSeconds)
-            {
-                Assert.Fail($"Failed Performance test. Took {ms:0.00}ms. Expected less than {milliSeconds:0.00}ms.");
-            }
+            if (_debug)
+                debugCheck_ms(ms, milliSeconds);
+            else if (ms > milliSeconds) 
+                Failms(ms, milliSeconds);
             return t;
         }
 
-        private static void checkHardwareResolution(double µsActual, double µsMaxAllowed)
+        private static void debugCheck_µs(double µsActual, double µsMaxAllowed)
         {
-            Console.WriteLine("got to release check!");
-            if (µsActual > µsMaxAllowed) Failµs(µsActual, µsMaxAllowed);
+            if (µsActual > µsMaxAllowed * DebugMultiplierFail)
+            {
+                Failµs(µsActual, µsMaxAllowed * DebugMultiplierFail);
+            }
+            if (µsActual > µsMaxAllowed * DebugMultiplierInconclusive)
+            {
+                Inconclusiveµs(µsActual, µsMaxAllowed * DebugMultiplierInconclusive);
+            }
         }
+
+        private static void debugCheck_ms(double msActual, double msMaxAllowed)
+        {
+            if (msActual > msMaxAllowed * DebugMultiplierFail)
+            {
+                Failms(msActual, msMaxAllowed * DebugMultiplierFail);
+            }
+            if (msActual > msMaxAllowed * DebugMultiplierInconclusive)
+            {
+                Inconclusivems(msActual, msMaxAllowed * DebugMultiplierInconclusive);
+            }
+        }
+
 
         private static void Failµs(double µsActual, double µsAllowedMax) 
         {

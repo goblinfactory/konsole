@@ -93,16 +93,7 @@ namespace Konsole
 
         private void _WriteLine(ConsoleColor color, string text)
         {
-            var foreground = ForegroundColor;
-            try
-            {
-                ForegroundColor = color;
-                _WriteLine(text);
-            }
-            finally
-            {
-                ForegroundColor = foreground;
-            }
+            _WithColor(color, ()=> _WriteLine(text));
         }
 
         // **********************************************
@@ -119,16 +110,7 @@ namespace Konsole
         }
         private void _WriteLine(Colors colors, string text)
         {
-            var ccolors = _Colors;
-            try
-            {
-                _Colors = colors;
-                _WriteLine(text);
-            }
-            finally
-            {
-                _Colors = ccolors;
-            }
+            _WithColors(colors, () => _WriteLine(text));
         }
 
         // ******************************************
@@ -146,16 +128,7 @@ namespace Konsole
 
         private void _Write(Colors colors, string text)
         {
-            var ccolors = _Colors;
-            try
-            {
-                _Colors = colors;
-                _Write(text);
-            }
-            finally
-            {
-                _Colors = ccolors;
-            }
+            _WithColors(colors, () => _Write(text));
         }
 
         // ***********************************************
@@ -202,13 +175,13 @@ namespace Konsole
         {
             lock(_locker)
             {
-                _writeLine(format, args);
+                _WriteLine(format, args);
             }
         }
 
-        private void _writeLine(string format, params object[] args)
+        private void _WriteLine(string format, params object[] args)
         {
-            WriteLine(string.Format(format, args));
+            _WriteLine(string.Format(format, args));
         }
 
         // **************************************************************************
@@ -221,16 +194,15 @@ namespace Konsole
         /// </summary>
         public void WriteLine(ConsoleColor color, string format, params object[] args)
         {
-            var foreground = ForegroundColor;
-            try
+            lock(_locker)
             {
-                ForegroundColor = color;
-                WriteLine(format, args);
+                _WriteLine(color, format, args);
             }
-            finally
-            {
-                ForegroundColor = foreground;
-            }
+        }
+
+        private void _WriteLine(ConsoleColor color, string format, params object[] args)
+        {
+            _WithColor(color, () => WriteLine(format, args));
         }
 
         // ********************************
@@ -248,22 +220,22 @@ namespace Konsole
 
         private void _WriteLine(string text)
         {
-            if (!Scrolling && OverflowBottom)
+            if (!Scrolling && _OverflowBottom)
             {
                 return;
             }
 
-            if (OverflowBottom)
+            if (_OverflowBottom)
             {
                 _scrollDown();
                 _Write(text);
-                Cursor = new XY(0, Cursor.Y + 1);
+                _Cursor = new XY(0, _Cursor.Y + 1);
                 return;
             }
 
             _Write(text);
-            Cursor = new XY(0, Cursor.Y + 1);
-            if (OverflowBottom && Scrolling)
+            _Cursor = new XY(0, _Cursor.Y + 1);
+            if (Scrolling && _OverflowBottom)
             {
                 _scrollDown();
             }
@@ -277,9 +249,9 @@ namespace Konsole
             var overflow = "";
             while (overflow != null)
             {
-                if (Clipping && Cursor.X >= WindowWidth) break;
-                if (!_lines.ContainsKey(Cursor.Y)) return;
-                var result = _lines[Cursor.Y].Write(ForegroundColor, BackgroundColor, Cursor.X, text);
+                if (Clipping && _Cursor.X >= WindowWidth) break;
+                if (!_lines.ContainsKey(_Cursor.Y)) return;
+                var result = _lines[_Cursor.Y].Write(ForegroundColor, BackgroundColor, _Cursor.X, text);
                 overflow = result.Overflow;
                 if (_echo && _console != null)
                 {
@@ -289,16 +261,16 @@ namespace Konsole
                 }
                 if (overflow == null)
                 {
-                    Cursor = Cursor.IncX(text.Length);
+                    _Cursor = _Cursor.IncX(text.Length);
                 }
                 else
                 {
                     if (Clipping)
                     {
-                        Cursor = new XY(WindowWidth, Cursor.Y);
+                        _Cursor = new XY(WindowWidth, _Cursor.Y);
                         break;
                     }
-                    Cursor = new XY(0, Cursor.Y + 1);
+                    _Cursor = new XY(0, _Cursor.Y + 1);
                     if (!Scrolling && OverflowBottom)
                         break;
                     if (OverflowBottom)
@@ -322,6 +294,23 @@ namespace Konsole
             finally
             {
                 ForegroundColor = foreground;
+            }
+        }
+
+        // ************************************************
+        // **  _WithColors(Colors color, Action action)  **
+        // ************************************************
+        private void _WithColors(Colors colors, Action action)
+        {
+            var currentColors = Colors;
+            try
+            {
+                Colors = colors;
+                action();
+            }
+            finally
+            {
+                Colors = currentColors;
             }
         }
 

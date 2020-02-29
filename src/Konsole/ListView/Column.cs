@@ -19,5 +19,10 @@
         {
             return new Column(Name, width, Colors, Visible);
         }
+        public Column WithVisibility(bool visible)
+        {
+            return new Column(Name, Width, Colors, visible);
+        }
+
     }
 }

@@ -62,7 +62,7 @@ namespace Konsole
         public int WindowWidth { get; set; } = 120;
         public int WindowHeight { get; set; } = 60;
 
-        public int CursorLeft { get; set; } = 1;
+        public int CursorLeft { get; set; } = 0;
 
 
         public Colors Colors
@@ -77,7 +77,7 @@ namespace Konsole
                 BackgroundColor = value.Background;
             }
         }
-        public int CursorTop { get; set; } = 1;
+        public int CursorTop { get; set; } = 0;
 
         public XY XY
         {

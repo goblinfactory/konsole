@@ -50,7 +50,7 @@ namespace Konsole
                 int cnt = Columns.Count();
                 var columns = Columns.ResizeColumns(_console.WindowWidth);
                 int width = _console.WindowWidth;
-                var colLen = columns.Sum(c => c.resized);
+                var colLen = columns.Sum(c => c.Width);
 
                 // certain that we can do better than
                 // clearing each time. Make sure we always write the full width
@@ -70,8 +70,8 @@ namespace Konsole
                     var row = _getRow(item);
                     foreach (var columnText in row)
                     {
-                        var column = columns[i].column;
-                        int cwidth = columns[i].resized;
+                        var c = columns[i];
+                        int cwidth = c.Width;
                         bool lastColumn = (++i == cnt);
                         var colors = getColors(item, i);
                         if (lastColumn)
@@ -105,22 +105,21 @@ namespace Konsole
             return Style.Body;
         }
 
-        private void PrintColumnHeadings((Column column, int width)[] resized)
+        private void PrintColumnHeadings(Column[] columns)
         {
             int i = 0;
-            int len = resized.Length;
+            int len = columns.Length;
             var colors = Style?.Title ?? new Colors(Yellow, Black);
-            foreach (var item in resized)
+            foreach (var col in columns)
             {
-                var col = item.column;
                 bool last = (++i == len);
                 if (last)
                 {
-                    _console.WriteLine(colors, col.Name.FixCenter(item.width));
+                    _console.WriteLine(colors, col.Name.FixCenter(col.Width));
                 }
                 else
                 {
-                    _console.Write(colors, col.Name.FixCenter(item.width));
+                    _console.Write(colors, col.Name.FixCenter(col.Width));
                     _console.Write(colors, "│");
                 }
             }

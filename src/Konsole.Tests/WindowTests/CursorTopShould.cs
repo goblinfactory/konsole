@@ -18,7 +18,6 @@ namespace Konsole.Tests.WindowTests
                     "new line 1",
                     "line 2"
                 };
-                System.Console.WriteLine(console.BufferWrittenString);
                 Assert.That(console.BufferWrittenTrimmed, Is.EqualTo(expected));
             }
 
