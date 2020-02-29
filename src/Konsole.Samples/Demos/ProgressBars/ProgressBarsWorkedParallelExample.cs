@@ -25,7 +25,7 @@ namespace Konsole.Samples
             // use a concurrentWriter.
 
             var dirCnt = 15;
-            var filesPerDir = 50;
+            var filesPerDir = 30;
             
             var r = new Random();
             var dirs = TestData.MakeObjectNames(dirCnt);
@@ -60,7 +60,7 @@ namespace Konsole.Samples
                 for(int i =1 ; i<= files.Length; i++)
                 {
                     bar.Refresh(i, files[i-1]);
-                    Thread.Sleep(r.Next(250));
+                    Thread.Sleep(r.Next(500));
                 }
             });
         }

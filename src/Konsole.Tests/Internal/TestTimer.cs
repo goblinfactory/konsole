@@ -36,30 +36,15 @@ namespace Konsole.Tests
             sw.Stop();
             var ms = sw.Elapsed.TotalMilliseconds;
             var µs = ms * 1000;
+            Console.WriteLine(µs);
             if(_debug)
-                debugCheck_µs(µs, microSeconds);
-            else if (µs > microSeconds)
-                Failµs(µs, microSeconds);
+                debugCheckHardwareResolution(µs, microSeconds);
+            else
+                checkHardwareResolution(µs, microSeconds);
             return t;
         }
 
-        public static T RunTest_ms<T>(double milliSeconds, Func<T> test, bool warmup = true)
-        {
-            T t;
-            var sw = new Stopwatch();
-            if (warmup) test();
-            sw.Start();
-            t = test();
-            sw.Stop();
-            var ms = sw.Elapsed.TotalMilliseconds;
-            if (_debug)
-                debugCheck_ms(ms, milliSeconds);
-            else if (ms > milliSeconds) 
-                Failms(ms, milliSeconds);
-            return t;
-        }
-
-        private static void debugCheck_µs(double µsActual, double µsMaxAllowed)
+        private static void debugCheckHardwareResolution(double µsActual, double µsMaxAllowed)
         {
             if (µsActual > µsMaxAllowed * DebugMultiplierFail)
             {
@@ -71,18 +56,27 @@ namespace Konsole.Tests
             }
         }
 
-        private static void debugCheck_ms(double msActual, double msMaxAllowed)
+        public static T RunTest_ms<T>(double milliSeconds, Func<T> test, bool warmup = true)
         {
-            if (msActual > msMaxAllowed * DebugMultiplierFail)
+            T t;
+            var sw = new Stopwatch();
+            if (warmup) test();
+            sw.Start();
+            t = test();
+            sw.Stop();
+            var ms = sw.Elapsed.TotalMilliseconds;
+            if (ms > milliSeconds)
             {
-                Failms(msActual, msMaxAllowed * DebugMultiplierFail);
+                Assert.Fail($"Failed Performance test. Took {ms:0.00}ms. Expected less than {milliSeconds:0.00}ms.");
             }
-            if (msActual > msMaxAllowed * DebugMultiplierInconclusive)
-            {
-                Inconclusivems(msActual, msMaxAllowed * DebugMultiplierInconclusive);
-            }
+            return t;
         }
 
+        private static void checkHardwareResolution(double µsActual, double µsMaxAllowed)
+        {
+            Console.WriteLine("got to release check!");
+            if (µsActual > µsMaxAllowed) Failµs(µsActual, µsMaxAllowed);
+        }
 
         private static void Failµs(double µsActual, double µsAllowedMax) 
         {

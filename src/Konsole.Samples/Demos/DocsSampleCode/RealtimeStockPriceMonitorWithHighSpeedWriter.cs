@@ -17,9 +17,8 @@ namespace Konsole.Samples
         static Func<bool> rand = () => new Random().Next(100) > 49;
         public static void Main(string[] args)
         {
-            // this constructor takes up the balance of the window so need to 
-            // clear console to ensure we get the full window.
-            Console.Clear();
+
+
             using var writer = new HighSpeedWriter();
             var window = new Window(writer);
 
