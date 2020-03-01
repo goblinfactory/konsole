@@ -1,6 +1,8 @@
 # Roadmap
 
 ## Busy now
+- new window should never use the rest of the screen, it's really bad default!
+  - change to use the whole screen!
 - fix bug with unit tests failing to run consistently in test runner, specifically ListViewTests.LinqExtensionTests
   - see if nested classes are causing problems!
   - try move Linqtest to new project and see if that fails as well?

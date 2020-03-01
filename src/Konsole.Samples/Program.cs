@@ -18,10 +18,10 @@ namespace Konsole.Samples
 
             var window2 = new Window();
             Console.CursorVisible = false;
-            ListViewDemos.ListViewThemeTest();
-            Console.Clear();
+            MenuConcurrencyTestDemo.SeperateThreadsForMenuAndTwoWindows(window2, 100);
+            window2.Clear();
             WindowClientServerSamples.Demo();
-            Console.Clear();
+            window2.Clear();
             RealtimeStockPriceMonitorWithHighSpeedWriter.Main(new string[0]);
             Console.ReadKey(true); 
 

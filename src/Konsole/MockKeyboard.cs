@@ -45,7 +45,7 @@ namespace Konsole
         public MockKeyboard PressKey(char c, bool shift = false, bool alt = false, bool control = false)
         {
             var keyPress = new ConsoleKeyInfo(c, (ConsoleKey) c, shift, alt, control);
-            _onCharPress(c);
+            OnCharPress(c);
             _keypresses.Enqueue(keyPress);
             return this;
         }
@@ -68,16 +68,19 @@ namespace Konsole
             if (_keyEnumerator != null)
             {
                 _keyEnumerator.MoveNext();
-                return _keyEnumerator.Current;
+                var key = _keyEnumerator.Current;
+                OnCharPress(key.KeyChar);
+                return key;
             }
             
             if (_keypresses.Count == 0)
             {
                 if (AutoReplyKey == null) throw new InvalidOperationException("MockKeyboard has run out of queued keys to return. Enable auto-reply or queue up more keystrokes.");
+                OnCharPress(AutoReplyKey.Value.KeyChar);
                 return AutoReplyKey.Value;
             }
             var k = _keypresses.Dequeue();
-            _onCharPress(k.KeyChar);
+            OnCharPress(k.KeyChar);
             return k;
         }
 
@@ -134,7 +137,7 @@ namespace Konsole
 
         public void OnCharPressed(char[] chars, Action<char> action)
         {
-            _onCharPress += cp =>
+            OnCharPress += cp =>
             {
                 if (chars.Any(c => c == cp))
                 {
@@ -143,7 +146,7 @@ namespace Konsole
             };
         }
 
-        private Action<char> _onCharPress = (c) => { };
+        public Action<char> OnCharPress = (c) => { };
 
     }
 }

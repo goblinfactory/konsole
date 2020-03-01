@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Konsole.Tests\Konsole.Tests.csproj" />
     <ProjectReference Include="..\Konsole\Konsole.csproj" />
   </ItemGroup>
 

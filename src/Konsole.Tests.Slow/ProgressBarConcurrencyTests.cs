@@ -40,19 +40,18 @@ namespace Konsole.Tests.Slow
             console.WriteLine("finished, press enter to close.");
             var actual = console.BufferWritten;
 
-            var expected = new string[]
-            {
+            var expected = new[]{
                 "one                                ┌─────────────── client ───────────────┐  ┌─────────────── server ───────────────┐   ",
                 "two                                │Item 24    of 24   . (100%) ########  │  │Item 24    of 24   . (100%) ########  │   ",
+                "         Progress Bars             │cats99                                │  │dogs99                                │   ",
+                "                                   │Item 11    of 11   . (100%) ########  │  │Item 11    of 11   . (100%) ########  │   ",
+                " 1. AutoResetEvent client          │cats99                                │  │dogs99                                │   ",
+                " 2. AutoResetEvent server          │Item 46    of 46   . (100%) ########  │  │Item 46    of 46   . (100%) ########  │   ",
                 "                                   │cats99                                │  │dogs99                                │   ",
-                "    Progress Bars                  │Item 11    of 11   . (100%) ########  │  │Item 11    of 11   . (100%) ########  │   ",
-                "    --------------------------     │cats99                                │  │dogs99                                │   ",
-                "    AutoResetEvent client          │Item 46    of 46   . (100%) ########  │  │Item 46    of 46   . (100%) ########  │   ",
-                "    AutoResetEvent server          │cats99                                │  │dogs99                                │   ",
-                "                                   │Item 77    of 77   . (100%) ########  │  │Item 77    of 77   . (100%) ########  │   ",
-                "three                              │cats99                                │  │dogs99                                │   ",
-                "stopping                           │Item 65    of 65   . (100%) ########  │  │Item 65    of 65   . (100%) ########  │   ",
-                "finished, press enter to close.    │cats99                                │  │dogs99                                │   ",
+                "three                              │Item 77    of 77   . (100%) ########  │  │Item 77    of 77   . (100%) ########  │   ",
+                "stopping                           │cats99                                │  │dogs99                                │   ",
+                "finished, press enter to close.    │Item 65    of 65   . (100%) ########  │  │Item 65    of 65   . (100%) ########  │   ",
+                "                                   │cats99                                │  │dogs99                                │   ",
                 "                                   │Item 43    of 43   . (100%) ########  │  │Item 43    of 43   . (100%) ########  │   ",
                 "                                   │cats99                                │  │dogs99                                │   ",
                 "                                   │Item 35    of 35   . (100%) ########  │  │Item 35    of 35   . (100%) ########  │   ",
@@ -66,10 +65,10 @@ namespace Konsole.Tests.Slow
                 "                                   │                                      │  │                                      │   ",
                 "                                   │                                      │  │                                      │   ",
                 "                                   │                                      │  │                                      │   ",
-                "                                   └──────────────────────────────────────┘  └──────────────────────────────────────┘   "
-            };
+                "                                   └──────────────────────────────────────┘  └──────────────────────────────────────┘   ",
+                };
 
-            actual.Should().BeEquivalentTo(expected);
+            actual.ShouldBe(expected);
         }
 
 
