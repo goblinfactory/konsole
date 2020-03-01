@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using FluentAssertions;
 using NUnit.Framework;
-using Konsole.Tests;
 using Konsole.Samples;
 
 namespace Konsole.Tests.Slow
@@ -51,41 +47,5 @@ namespace Konsole.Tests.Slow
             var actual = console.BufferWritten;
             actual.ShouldBe(expected);
         }
-
-        void RunMenuItem(IConsole console, string service, string prefix)
-        {
-            var t = Task.Run(() =>
-            {
-                Console.WriteLine("starting " + service);
-                for (int i = 0; i < 8000; i++) console.WriteLine("{0} {1}", prefix, i.ToString());
-            });
-            _tasks.Add(t);
-        }
-
-
-        IEnumerable<ConsoleKeyInfo> GetKeyInfos()
-        {
-            return GetKeys().Select(k => k.ToKeypress());
-        }
-
-        IEnumerable<ConsoleKey> GetKeys()
-        {
-            yield return ConsoleKey.Enter;
-            yield return ConsoleKey.DownArrow;
-            yield return ConsoleKey.Enter;
-            yield return ConsoleKey.DownArrow;
-            
-
-            for (int i = 0; i < 1000; i++)
-            {
-                yield return ConsoleKey.DownArrow;
-                yield return ConsoleKey.DownArrow;
-                yield return ConsoleKey.DownArrow;
-                yield return ConsoleKey.UpArrow;
-                yield return ConsoleKey.UpArrow;
-            }
-            yield return ConsoleKey.Escape;
-        }
-
     }
 }
