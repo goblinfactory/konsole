@@ -15,7 +15,12 @@ namespace Konsole.Samples
             // renders w/o having to hunt through documentation.
 
             // NB! I may need to allow windows to create a progress bar (i.e. create a new window) BELOW the top of the window ... to "scroll" it up?
+            ProgressBarInsideWindow.Main(null);
+            Console.ReadKey(true);
+            Console.Clear();
 
+            ProgressBarAtBottomOfScreen.Run();
+            Console.Clear();
             var window2 = new Window();
             Console.CursorVisible = false;
             MenuConcurrencyTestDemo.SeperateThreadsForMenuAndTwoWindows(window2, 100);

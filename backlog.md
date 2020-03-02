@@ -1,6 +1,19 @@
 # Roadmap
 
 ## Busy now
+- solve the print at last char problem
+  (be able to set the cursor position to below the bottom line)
+  and only when you start printing at below the line should we call scroll
+  that way we can print to the end of the screen, and if it ends exactly at the
+  end we move to (down 1 and back to left, i.e. carriage return CR)
+  - currently the bahavior is somewhat distorted,
+
+- create more manual tests (samples) that test any concerns, starting with
+  progressbar concurrency, and when progressbar created at bottom of screen,
+  with and without a parent console.
+- get all samples to be able to run back to back and call validate
+  which calls screenshot, so that I can have a really fully exhaustive end to end
+  that tests absolutely all the functionality of the library in a real user test.
 - new window should never use the rest of the screen, it's really bad default!
   - change to use the whole screen!
 - fix bug with unit tests failing to run consistently in test runner, specifically ListViewTests.LinqExtensionTests
@@ -20,6 +33,11 @@
 - add extension method to all INPUT controls to support .ReadLine(); 
   (this will stay with the control until user optionally presses tab or any exit key to stop entering text, this is what the keyboard controller calls on each control,
   piece of cake! :D
+
+
+  some concern ...running console ... high speed writer, 
+inside windows parallels - ...then alt tab back to windows
+and boom, crash...both mac and windows reboot!!!
 
 
 - fix dimensions so that I can "make it faster" (otherwise dimensions will be wrong) [lets see if I can simply start with a parent window being correct? then stuff can start moving really quickly!]
