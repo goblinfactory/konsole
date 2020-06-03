@@ -5,7 +5,7 @@ using static System.ConsoleColor;
 
 namespace Konsole.Tests.WindowTests
 {
-    public class OpenBoxShould
+    public class OpenWithTitleShould
     {
         private MockConsole _console;
         
@@ -19,7 +19,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void open_a_window_with_border_using_default_values()
         {
-            Window.OpenBox("title");
+            var w = new Window("title");
             var expected = new[]
             {
                 "┌─ title ┐",
@@ -28,7 +28,7 @@ namespace Konsole.Tests.WindowTests
                 "│        │",
                 "└────────┘"
             };
-            _console.Buffer.Should().BeEquivalentTo(expected);
+            _console.Buffer.ShouldBe(expected);
         }
 
         [Test]
@@ -36,8 +36,8 @@ namespace Konsole.Tests.WindowTests
         {
             _console = new MockConsole(10, 7);
             Window.HostConsole = _console;
-            var parent = Window.OpenBox("parent");
-            var child = parent.OpenBox("child");
+            var parent = new Window("parent");
+            var child = parent.Open("child");
             child.WriteLine("......");
             child.WriteLine("......");
             child.Write("......");
@@ -58,24 +58,47 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void WhenNestedShould_print_relative_to_the_window_being_printed_to_not_the_parent()
         {
-            var parent = Window.OpenBox("parent");
-            var child = parent.OpenBox("child");
+            var console = new MockConsole(10, 6);
+            Window.HostConsole = console;
+
+
+            // might only be breaking when window is only 1 line tall?
+            var parent = new Window("parent");
+            var child = parent.Open("child");
             Fill(child);
             var expected = new[]
             {
                 "┌ parent ┐",
                 "│┌ child┐│",
+                "││four  ││",
                 "││five  ││",
                 "│└──────┘│",
                 "└────────┘"
             };
-            _console.Buffer.Should().BeEquivalentTo(expected);
+
+            // actual when height = 5
+            // ------------
+            //"┌ parent ┐",
+            //"│      d┐│",
+            //"││fivee ││",
+            //"│└──────┘│",
+            //"└────────┘",
+
+            // actual when height = 6
+            //┌ parent ┐
+            //│┌ child┐│
+            //││one   ││
+            //││five   │
+            //│└─      │
+            //└────────┘
+
+            console.Buffer.ShouldBe(expected);
         }
 
         [Test]
         public void return_an_inside_scrollable_window_that_exactly_fits_inside_the_box_with_the_title()
         {
-            var win = Window.OpenBox("title");
+            var win = new Window("title");
             win.WindowHeight.Should().Be(3);
             win.WindowWidth.Should().Be(8);
         }
@@ -92,7 +115,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void open_a_window_that_can_be_scrolled()
         {
-            var win = Window.OpenBox("title", new Style( thickNess : LineThickNess.Double ));
+            var win = new Window("title", new Style( thickNess : LineThickNess.Double ));
             Fill(win);
 
             var expected = new[]
@@ -107,33 +130,62 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
+        public void nested_windows_open_a_Floating_window_using_provided_sizes()
+        {
+            var console = new MockConsole(15, 7);
+            Window.HostConsole = console;
+            var parent = new Window("parent");
+            var child = parent.Open("x", 1, 1, 5, 3);
+            var expected = new[]{
+                "┌── parent ───┐",
+                "│             │",
+                "│ ┌ x ┐       │",
+                "│ │   │       │",
+                "│ └───┘       │",
+                "│             │",
+                "└─────────────┘",
+                }; console.Buffer.ShouldBe(expected);
+        }
+
+        [Test]
+        public void nested_windows_width_should_be_clipped_by_parent()
+        {
+            var console = new MockConsole(15, 7);
+            Window.HostConsole = console;
+            var parent = new Window("parent");
+            var child = parent.Open("child", 1, 1, 25, 3);
+            var expected = new[]{
+                "┌── parent ───┐",
+                "│             │",
+                "│ ┌── child ─┐│",
+                "│ │          ││",
+                "│ └──────────┘│",
+                "│             │",
+                "└─────────────┘",
+                };
+
+            console.Buffer.ShouldBe(expected);
+        }
+
+
+        [Test]
         public void open_a_Floating_window_using_provided_sizes()
         {
-            Window.OpenBox("x", 1, 1, 5, 3);
-            var expected = new[]
-            {
+            new Window("x", 1, 1, 5, 3);
+            var expected = new[]{
                 "          ",
                 " ┌ x ┐    ",
                 " │   │    ",
                 " └───┘    ",
-                "          "
-            };
-
-            //"          ",
-            //" ┌ x┐     ",
-            //" └        ",
-            //"          ",
-            //"          "
-
-
-
-            _console.Buffer.Should().BeEquivalentTo(expected);
+                "          ",
+                };
+            _console.Buffer.ShouldBe(expected);
         }
 
         [Test]
         public void open_an_inline_window_using_provided_sizes()
         {
-            Window.OpenBox("x", 5, 3);
+            new Window("x", 5, 3);
             var expected = new[]
             {
                 "┌ x ┐     ",
@@ -151,9 +203,9 @@ namespace Konsole.Tests.WindowTests
             var console = new MockConsole(10, 9);
             Window.HostConsole = console;
             console.WriteLine("one");
-            var box1 = Window.OpenBox("A", 5, 3);
+            var box1 = new Window("A", 5, 3);
             console.WriteLine("two");
-            var box2 = Window.OpenBox("B", 5, 3);
+            var box2 = new Window("B", 5, 3);
             console.Write("Under B");
             var expected = new[]
             {
@@ -167,14 +219,14 @@ namespace Konsole.Tests.WindowTests
                 "└───┘     ",
                 "Under B   "
             };
-            console.Buffer.Should().BeEquivalentTo(expected);
+            console.Buffer.ShouldBe(expected);
         }
 
 
         [Test]
         public void move_the_cursor_to_below_the_inline_window()
         {
-            Window.OpenBox("x", 5, 3);
+            new Window("x", 5, 3);
             _console.WriteLine("I am under");
             var expected = new[]
             {
@@ -184,35 +236,33 @@ namespace Konsole.Tests.WindowTests
                 "I am under",
                 "          "
             };
-            _console.Buffer.Should().BeEquivalentTo(expected);
+            _console.Buffer.ShouldBe(expected);
         }
 
-        // needs new feature for box, i.e. that box clips parent and draws box inside parent boundary.
+        [Test]
+        public void clip_child_window_to_not_exceed_parent_boundaries_test1()
+        {
+            var con = new MockConsole(40, 10);
+            Window.HostConsole = con;
+            var parent = new Window("test", new Style(LineThickNess.Double));
+            var child = parent.Open(new WindowSettings { Title = "child", SX = 20, SY = 0, Width = 30, Height = 6, Theme = new Style(LineThickNess.Double).ToTheme() });
+            child.WriteLine("test");
 
-        //[Test]
-        //public void clip_child_window_to_not_exceed_parent_boundaries_test1()
-        //{
-        //    var con = new MockConsole(40, 10);
-        //    Window.HostConsole = con;
-        //    var parent = Window.OpenBox("test", new BoxStyle() { ThickNess = LineThickNess.Double, Line = new Colors(White, Black) });
-        //    var child = parent.OpenBox("child", 20, 0, 30, 6, new BoxStyle() { ThickNess = LineThickNess.Double });
-        //    child.WriteLine("test");
-
-        //    var expected = new[]
-        //    {
-        //            "╔════════════════ test ════════════════╗",
-        //            "║                    ╔═══════════ child║",
-        //            "║                    ║test            ║║",
-        //            "║                    ║                ║║",
-        //            "║                    ║                ║║",
-        //            "║                    ║                ║║",
-        //            "║                    ╚═════════════════║",
-        //            "║                                      ║",
-        //            "║                                      ║",
-        //            "╚══════════════════════════════════════╝"
-        //    };
-        //    con.Buffer.Should().BeEquivalentTo(expected);
-        //}
+            var expected = new[]
+            {
+                    "╔════════════════ test ════════════════╗",
+                    "║                    ╔═════ child ════╗║",
+                    "║                    ║test            ║║",
+                    "║                    ║                ║║",
+                    "║                    ║                ║║",
+                    "║                    ║                ║║",
+                    "║                    ╚════════════════╝║",
+                    "║                                      ║",
+                    "║                                      ║",
+                    "╚══════════════════════════════════════╝"
+            };
+            con.Buffer.ShouldBe(expected);
+        }
 
         [Test]
         public void should_not_move_parent_cursor_when_box_is_not_inline()

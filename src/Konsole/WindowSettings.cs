@@ -1,4 +1,5 @@
-﻿using static Konsole.ControlStatus;
+﻿using System;
+using static Konsole.ControlStatus;
 
 namespace Konsole
 {
@@ -21,6 +22,24 @@ namespace Konsole
             settings._parentWindow
             )
         {
+        }
+
+        public WindowSettings WithStyle(Style style)
+        {
+            var settings = new WindowSettings(this)
+            {
+                Theme = style.ToTheme()
+            };
+            return settings;
+        }
+
+        public WindowSettings WithTitle(string title)
+        {
+            var settings = new WindowSettings(this)
+            {
+                Title = title
+            };
+            return settings;
         }
 
         public WindowSettings(int sX, int? sY, bool clipping, int padLeft, bool transparent, bool scrolling, ControlStatus status, string title, int? width, int? height, StyleTheme theme, bool echo, IConsole parentWindow)

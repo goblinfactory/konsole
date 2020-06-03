@@ -73,6 +73,13 @@ namespace Konsole
         private readonly int _y;
         private readonly bool _echo;
 
+        /// <summary>
+        /// Whether the window has any content (size, height and width) that is inside and visible
+        /// of a parent window. e.g. entire window is outside the parent
+        /// or either of the height or width are 0.
+        /// </summary>
+        private readonly bool _hasVisibleContent = true;
+
         // Echo console is a default wrapper around the real Console, that we can swap out during testing. single underscore indicating it's not for general usage.
         private IConsole _console { get; }
 
@@ -82,6 +89,7 @@ namespace Konsole
 
         public bool Scrolling { get; } = true;
         public bool Transparent { get; } = false;
+        
 
         protected readonly Dictionary<int, Row> _lines = new Dictionary<int, Row>();
 
@@ -134,13 +142,20 @@ namespace Konsole
         {
             lock (_locker)
             {
-                if (OS.IsOSX())
-                {
-                    return (Console.WindowWidth, Console.WindowHeight - 1);
-                }
-                return (Console.WindowWidth, Console.WindowHeight);
+                return _GetHostWidthHeight();
             }
         };
+
+        private static Func<(int width, int height)> _GetHostWidthHeight = () =>
+        {
+            var con = _HostConsole;
+            if (OS.IsOSX())
+            {
+                return (con.WindowWidth, con.WindowHeight - 1);
+            }
+            return (con.WindowWidth, con.WindowHeight);
+        };
+
 
 
 
@@ -187,35 +202,9 @@ namespace Konsole
 
         public ControlStatus Status { get; set; } = ControlStatus.Active;
 
-        private static int GetStartHeight(int? height, int y, IConsole console)
-        {
-            // if no height has been provided then use the whole or balance of the window height
-            int h = height ?? (console?.WindowHeight ?? y);
-
-            // start height should be clipped to not exceed parent window
-            if (h + y > console.WindowHeight)
-            {
-                return (console.WindowHeight - y);
-            }
-            return h;
-        }
-
-        private static int GetStartWidth(bool echo, int? width, int x, IConsole echoConsole)
-        {
-            if (width != null) return width.Value;
-            // if echo is false, then this is a mock console and the width is never capped
-
-            // should_clip_child_window_to_not_exceed_parent_boundaries
-
-            int echoWidth = echoConsole?.WindowWidth ?? x;
-            int maxWidth = (echoWidth - x);
-            int w = width ?? (echoConsole?.WindowWidth ?? 120);
-            if (echo && w > maxWidth) w = maxWidth;
-            return w;
-        }
-
         private void init()
         {
+            if (!_hasVisibleContent) return;
             if (HasTitle)
             {
                 new Draw(_console, Style, Drawing.MergeOrOverlap.Fast).Box(_x - 1, _y - 1, _x + WindowWidth, _y + WindowHeight, _title);
@@ -385,6 +374,10 @@ namespace Konsole
 
         private void _scrollDown()
         {
+            if (!_hasVisibleContent)
+            {
+                return;
+            }
             for (int i = 0; i < (WindowHeight - 1); i++)
             {
                 _lines[i] = _lines[i + 1];
@@ -394,6 +387,7 @@ namespace Konsole
             if (_console != null)
             {
                 _console.MoveBufferArea(_x, _y + 1, WindowWidth, WindowHeight - 1, _x, _y, ' ', ForegroundColor, BackgroundColor);
+                
             }
 
         }

@@ -3,13 +3,53 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Linq;
+using static System.ConsoleColor;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Konsole.Samples
 {
     class Program
     {
+        static void Fill(IConsole con)
+        {
+            con.WriteLine("one");
+            con.WriteLine("two");
+            con.WriteLine("three");
+            con.WriteLine("four");
+            con.Write("five");
+        }
+
         static void Main(string[] args)
         {
+
+            var parent = new Window(10, 6, "parent");
+            var child = parent.Open("child");
+            Fill(child);
+            Console.ReadLine();
+
+            //var parent = new Window(10, 7, "parent");
+            ////var child = new Window(10, 7, "parent");
+            //var child = parent.Open("child");
+            //child.WriteLine("one");
+            //child.WriteLine("two");
+            //child.WriteLine("three");
+            //child.WriteLine("four"); 
+            //child.Write("five");
+            //Console.ReadLine();
+
+            Console.CursorVisible = false;
+
+            var win = new Window();
+            InlineWindowTests.NestedWindowsWithTitles(win);
+
+            //ProgressBarWithNewWindowConcurrencyTests.Test(win);
+            Console.ReadKey(true);
+            Console.Clear();
+
+            //return;
+
             // TODO - drop a screenshot into each sample folder so 
             // that someone browsing the code can see what the code
             // renders w/o having to hunt through documentation.

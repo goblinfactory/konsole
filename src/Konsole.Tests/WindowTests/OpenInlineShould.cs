@@ -11,6 +11,26 @@ namespace Konsole.Tests.WindowTests
     public class OpenInlineShould
     {
         [Test]
+        public void When_includingBox_set_cursor_position_to_below_the_box()
+        {
+            var c = new MockConsole(10, 6);
+            c.WriteLine("line1");
+            var w = c.Open(10, 4, "test");
+            w.Write("hello");
+            c.Write("line2");
+            var expected = new[]
+            {
+                "line1     ",
+                "┌─ test ─┐",
+                "│hello   │",
+                "│        │",
+                "└────────┘",
+                "line2     "
+            };
+            c.Buffer.ShouldBe(expected);
+        }
+
+        [Test]
         public void set_cursor_position_to_below_the_window()
         {
             var c = new MockConsole(10, 4);

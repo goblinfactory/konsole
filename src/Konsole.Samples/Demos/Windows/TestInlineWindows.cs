@@ -3,8 +3,43 @@ using static System.ConsoleColor;
 
 namespace Konsole.Samples
 {
-    public static class InlineWindowSandbox
+    public static class InlineWindowTests
     {
+        public static void NestedWindowsWithTitles(IConsole con)
+        {
+
+            var floatWin = new Window(10, 10, 50, 20, "test", LineThickNess.Double, White, Red);
+
+
+            var w0 = floatWin.Open(10, 4, "child2");
+            w0.Write("hello from child0!");
+            Console.ReadKey(true);
+            return;
+
+            var w1 = con.Open(20, 8, "parent");
+            var w2 = w1.Open(10, 4, "child");
+            Console.ReadKey(true);
+            //┌───── parent ─────┐
+            //│┌─ child ┐        │
+            //││        │        │
+            //││        │        │
+            //│└────────┘        │
+            //│                  │
+            //│                  │
+            //└──────────────────┘
+            w2.Write("hello from child!");
+
+            //┌───── parent ─────┐
+            //││hello f ┐        │
+            //│        r│        │
+            //││!m child│        │
+            //│└────────┘        │
+            //│                  │
+            //│                  │
+            //└──────────────────┘ 
+
+
+        }
         public static void InlineWindowMovesParentConsoleCursorTopToBelow()
         {
             Console.WriteLine("this is the top line");

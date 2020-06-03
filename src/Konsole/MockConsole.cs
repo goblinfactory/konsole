@@ -32,6 +32,8 @@ namespace Konsole
         public override void MoveBufferArea(int sourceLeft, int sourceTop, int sourceWidth, int sourceHeight, int targetLeft, int targetTop,
             char sourceChar, ConsoleColor sourceForeColor, ConsoleColor sourceBackColor)
         {
+            if (sourceLeft < 0 || sourceTop < 0 || sourceWidth < 0 || sourceHeight < 0 || targetLeft < 0 || targetTop < 0)
+                return;
             for (int i = sourceTop-1; i < sourceTop + (sourceHeight-1); i++)
             {
                 for (int x = sourceLeft; x < sourceLeft + sourceWidth; x++)

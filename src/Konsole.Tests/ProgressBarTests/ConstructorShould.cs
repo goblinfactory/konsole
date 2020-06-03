@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Konsole.Samples;
 using NUnit.Framework;
 
 namespace Konsole.Tests.ProgressBarTests
@@ -44,6 +45,34 @@ namespace Konsole.Tests.ProgressBarTests
             Console.WriteLine(con.BufferString);
             Assert.AreEqual(4, con.CursorTop);
             
+        }
+
+        [Test]
+        public void be_threasafe_when_used_concurrently_with_new_windows_ProgressBarSlim()
+        {
+            var console = new MockConsole();
+            Window.HostConsole = console;
+            ProgressBarWithNewWindowConcurrencyTests.Test(console, 3, 3);
+
+            var expected = new[]{
+                "reading file 1                                                                                                          ",
+                "┌───────────────────────────────────── uncompressing ────────────────────────────────────┐                              ",
+                "│                                                                                        │                              ",
+                "└────────────────────────────────────────────────────────────────────────────────────────┘                              ",
+                "reading file 2                                                                                                          ",
+                "┌────────────────────────────────────── decrypting ──────────────────────────────────────┐                              ",
+                "│good bye!                                                                               │                              ",
+                "│                                                                                        │                              ",
+                "└────────────────────────────────────────────────────────────────────────────────────────┘                              ",
+                "reading file 3                                                                                                          ",
+                "┌───────────────────────────────────── uncompressing ────────────────────────────────────┐                              ",
+                "│                                                                                        │                              ",
+                "└────────────────────────────────────────────────────────────────────────────────────────┘                              ",
+                "reading file 4                                                                                                          ",
+                "waiting for compress to finish; finished.                                                                               ",
+                };
+
+            console.BufferWritten.ShouldBe(expected);
         }
 
 

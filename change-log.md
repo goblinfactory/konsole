@@ -1,11 +1,14 @@
 ﻿# Change Log
 
+new change log for version 7 onwards. See archive changelog for version 1 to 6.4 here [tbd]
+
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
 ## [7.0.0]
 
 ### Added
 
+- massive improvements in stability and loads more concurrency tests, handling lots of edge cases.
 - ClipScrolling, ClipWrapping.
 - new class `WriteResults` returns the result of writing to a buffer row, including any overflow.
 - new peek commands `IPeek` interface to tell what's at a screen location, added to `Window` and `MockConsole`.

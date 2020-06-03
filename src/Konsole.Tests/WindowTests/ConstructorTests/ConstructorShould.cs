@@ -113,7 +113,32 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void clip_child_window_to_not_exceed_parent_boundaries_test1()
+        public void clip_child_window_to_not_exceed_parent_boundaries_test_height()
+        {
+            var con = new MockConsole(40, 10);
+            Window.HostConsole = con;
+            var win = new Window(0, 0, 40, 10, "test", LineThickNess.Double, White, Black);
+            var child = win.Open(20, 5, 14, 6, "child", LineThickNess.Double, White, Black);
+            child.Write("test");
+            
+            var expected = new[]{
+                "╔════════════════ test ════════════════╗",
+                "║                                      ║",
+                "║                                      ║",
+                "║                                      ║",
+                "║                                      ║",
+                "║                                      ║",
+                "║                    ╔═══ child ══╗    ║",
+                "║                    ║test        ║    ║",
+                "║                    ╚════════════╝    ║",
+                "╚══════════════════════════════════════╝",
+                };
+             con.Buffer.ShouldBe(expected);
+        }
+
+
+        [Test]
+        public void clip_child_window_to_not_exceed_parent_boundaries_test_width()
         {
             var con = new MockConsole(40, 10);
             Window.HostConsole = con;
@@ -121,21 +146,18 @@ namespace Konsole.Tests.WindowTests
             var child = win.Open(20, 0, 30, 6, "child", LineThickNess.Double, White, Black);
             child.WriteLine("test");
 
-            // this is the current behaviour, not ideal, but test needs to be this until
-            // the change is made.
             var expected = new[]{
                 "╔════════════════ test ════════════════╗",
-                "║                    ╔═══════════ child║",
-                "║                    ║test             ║",
-                "║                    ║                 ║",
-                "║                    ║                 ║",
-                "║                    ║                 ║",
-                "║                    ╚═════════════════║",
+                "║                    ╔═════ child ════╗║",
+                "║                    ║test            ║║",
+                "║                    ║                ║║",
+                "║                    ║                ║║",
+                "║                    ║                ║║",
+                "║                    ╚════════════════╝║",
                 "║                                      ║",
                 "║                                      ║",
                 "╚══════════════════════════════════════╝",
                 };
-
             con.Buffer.ShouldBe(expected);
         }
 
@@ -153,13 +175,12 @@ namespace Konsole.Tests.WindowTests
                 "                                        ",
                 "                                        ",
                 "                                        ",
-                "                    ╔═══════════ test ══",
-                "                    ║cats and dogs      ",
-                "                    ║                   ",
-                "                    ║                   ",
-                "                    ╚═══════════════════",
-                };
-            con.Buffer.ShouldBe(expected);
+                "                    ╔══════ test ══════╗",
+                "                    ║cats and dogs     ║",
+                "                    ║                  ║",
+                "                    ║                  ║",
+                "                    ╚══════════════════╝",
+                }; con.Buffer.ShouldBe(expected);
         }
 
         [Test]

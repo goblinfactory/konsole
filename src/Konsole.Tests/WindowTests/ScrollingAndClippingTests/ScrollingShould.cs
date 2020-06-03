@@ -5,17 +5,15 @@ using NUnit.Framework;
 
 namespace Konsole.Tests.WindowTests
 {
-    [UseReporter(typeof(DiffReporter))]
-    class ScrollingAndClipping
-    {
+    public class ScrollingShould
+    {        
         // Nesting SplitWindows is when you call w.SplitLeft() or w.SplitRight() on a window already created by calling split.
         // for example w1 = new Window(); w2 = w1.SplitLeft(); w3 = w2.SplitRight();
         // in the example above, w3 is a nested SplitWindow and w1. w2 is not a nested split window.
-
         [Test]
         public void when_nesting_split_windows_printing_that_causes_scrolling_SHOULD_scroll_the_nested_portion_of_the_screen_only()
         {
-            var w = new MockConsole(20,12);
+            var w = new MockConsole(20, 12);
 
             var left = w.SplitLeft("left");
             var right = w.SplitRight("right");
@@ -54,7 +52,7 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void WhenNotScrolling_WriteLine_SHOULD_clip_all_text_that_overflows_the_bottom_of_the_screen()
+        public void WhenFalse_Truncate_all_WriteLine_text_that_overflows_the_bottom_of_the_screen()
         {
             // need to test PrintAt, Write, WriteLine
             var c = new MockConsole(6, 4);
@@ -76,65 +74,7 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void WhenClipping_Write_SHOULD_clip_all_text_that_overflows_X_width()
-        {
-            // need to test PrintAt, Write, WriteLine
-            var c = new MockConsole(6, 3);
-            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Clipping = true });
-            w.WriteLine("123456789");
-            // should not advance the line (Y) if it's a write...
-            w.Write("ABC");
-            var expected = new[]
-            {
-            "123456",
-            "ABC   ",
-            "      "
-            };
-            c.Buffer.ShouldBe(expected);
-        }
-
-        [Test]
-        public void WhenClipping_WriteLine_SHOULD_clip_all_text_that_overflows_X_width()
-        {
-            // need to test PrintAt, Write, WriteLine
-            var c = new MockConsole(6, 3);
-            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Clipping = true });
-            w.WriteLine("one two three");
-            w.Write("four");
-            var expected = new[]{
-                "one tw",
-                "four  ",
-                "      ",
-            };
-            c.Buffer.ShouldBe(expected);
-        }
-
-        [Test]
-        public void WhenClipping_Multiple_Write_SHOULD_not_advance_CursorY()
-        {
-            // need to test PrintAt, Write, WriteLine
-            var c = new MockConsole(6, 3);
-            var w = c.Open(new WindowSettings { Width = 6, Height = 2, Clipping = true });
-            w.Write("123");
-            // should not advance the line (Y) if it's a write...
-            w.Write("AAAAA");
-            w.Write("BBB");
-            // writeLine should not print, but finally move cursor to new line after everything is said and done.
-            w.WriteLine("CCCCCCC");
-            w.Write("ABC");
-            var expected = new[]{
-                "123AAC",  // the C is written here because of a rare edge case where if the cursor to a Write, writes to the last character of the screen we don't advance it 1 
-                "ABC   ",  // character, otherwise that would cause a scroll, and we'd never be able to neatly print to the bottom of the screen.
-                "      ",  // will require a bit of tweaking to sort properly, but is acceptable small edge case for now until I change this.
-                };
-            c.Buffer.ShouldBe(expected);
-        }
-
-
-
-
-        [Test]
-        public void WhenScrolling_WriteLine_when_on_bottom_line_SHOULD_Scroll_screen_up_1_line_for_each_line_that_overflows()
+        public void Scroll_screen_up_1_line_for_each_line_that_overflows()
         {
             var c = new MockConsole(6, 2);
             var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });
@@ -165,7 +105,7 @@ namespace Konsole.Tests.WindowTests
         }
 
         [Test]
-        public void When_scrolling_is_enabled_And_on_last_line_and_overflowing_width_Write_SHOULD_cause_a_scroll()
+        public void Cause_a_scroll_when_on_last_line_and_Write_overflows_width()
         {
             var c = new MockConsole(6, 2);
             var w = c.Open(new WindowSettings { Width = 6, Height = 2, Scrolling = true });

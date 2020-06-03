@@ -12,7 +12,6 @@ namespace Konsole
         private int _y;
         private int _current = 0;
         private ConsoleColor _c;
-        private static object _locker = new object();
 
         private string _line = "";
         private string _item = "";
@@ -50,7 +49,7 @@ namespace Konsole
 
         public ProgressBarSlim(int max, int? textWidth, char character, IConsole console)
         {
-            lock (_locker)
+            lock (Window._locker)
             {
                 TextWidth = GetTextWidth(console, textWidth);
                 _console = console;
@@ -88,37 +87,42 @@ namespace Konsole
             Refresh(current, text);
         }
 
-
         public void Refresh(int current, string itemText)
+        {
+            lock(Window._locker)
+            {
+                _Refresh(current, itemText);
+            }
+        }
+
+        internal void _Refresh(int current, string itemText)
         {
             var item = itemText ?? "";
             var clippedText = item.FixLeft(TextWidth);
-            lock (_locker)
-            {                
-                _item = item;
-                var state = _console.State;
-                _current = current.Max(Max);
-                try
-                {
-                    decimal perc = _max == 0 ? 0 : (decimal) _current/(decimal) _max;
-                    int barWidth = _console.WindowWidth - (TextWidth+8);
-                    var bar = _current > 0
-                        ? new string(_character, (int) ((decimal) (barWidth)*perc)).PadRight(barWidth)
-                        : new string(' ', barWidth);
-                    var text = string.Format("{0} ({1,-3}%) ", clippedText, (int) (perc*100));
-                    _console.CursorTop = _y;
-                    _console.CursorLeft = 0; 
-                    _console.ForegroundColor = _c;
-                    _console.Write(text);
-                    _console.ForegroundColor = ConsoleColor.Green;
-                    _console.Write(bar);
-                    _line = $"{text} {bar}";
-                }
-                finally
-                {
-                    _console.State = state;
-                }
+            _item = item;
+            var state = _console.State;
+            _current = current.Max(Max);
+            try
+            {
+                decimal perc = _max == 0 ? 0 : (decimal)_current / (decimal)_max;
+                int barWidth = _console.WindowWidth - (TextWidth + 8);
+                var bar = _current > 0
+                    ? new string(_character, (int)((decimal)(barWidth) * perc)).PadRight(barWidth)
+                    : new string(' ', barWidth);
+                var text = string.Format("{0} ({1,-3}%) ", clippedText, (int)(perc * 100));
+                _console.CursorTop = _y;
+                _console.CursorLeft = 0;
+                _console.ForegroundColor = _c;
+                _console.Write(text);
+                _console.ForegroundColor = ConsoleColor.Green;
+                _console.Write(bar);
+                _line = $"{text} {bar}";
             }
+            finally
+            {
+                _console.State = state;
+            }
+
         }
 
         public void Next(string item)

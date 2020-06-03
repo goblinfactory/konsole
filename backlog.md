@@ -1,19 +1,57 @@
 # Roadmap
 
 ## Busy now
+
+- non nested window with title works perfectly! however...
+    - nested window with title, scroll is broken with wrap
+    - nested window with title, scroll is broken on print new line at bottom
+
+## to test
+
+- fix bug, when write is on last line and write wraps, should only defer scroll if the last write ended on the last char.
+    - need to test the same with WriteLine
+- solve wierd redbar that appears in TestInlineWIndows sample.
+- solve window size and cursor position when OpenBox bug! (solution, add new overload and never use open box, just new window!)
+- clip_child_window_to_not_exceed_parent_boundaries_test1
+
+## Busy next
+- fix threading issue with background progressbar demo in samples.
+  - bar.Refresh excessive locking
+  - write failing test, see it fail
+  - fix progressbar, see all pass
+- fix twoLineProgressBar in two line window prints off end of screen. (check if other tasks below will fix this?)
+- need a test to prove nested windows open at correct X and Y of parent.
+- replace all OpenBox tests with Open 
+- delete all OpenBox extension methods
+  - remove all OpenBox constructors, replace usages with new Window.
 - solve the print at last char problem
+ - Konsole.Tests.Windows.WriteShould + WriteLineShould
+  (move writeLine test to WriteLine!)
+   - how do I avoid duplicating business rules for Write and WriteLine ?
+   - mabye call it ...writing Should (writing = rules that apply to writeLine and Write?)
+   - then WriteShould and WRiteLineShould should only contain the difference between them?
   (be able to set the cursor position to below the bottom line)
   and only when you start printing at below the line should we call scroll
   that way we can print to the end of the screen, and if it ends exactly at the
   end we move to (down 1 and back to left, i.e. carriage return CR)
   - currently the bahavior is somewhat distorted,
-
+- Window.Title should be able to be set, and redraw the title.
+- Window.Border property should be able to be set, and redraw the border.
+- Window.
+- add "word wrapping" option to window. (just need to add to _write and we're done, boom!) edge case are words that are too long to fit on next line that need to be broken, then no wrapping for that long word, and wrapping for the rest.
+- fix bug with OpenInline (with title, i.e. boxed) not counting height/width of box.
+- create a string reporter that's essentially a mock console, with a simpler interface
+  to be used for creating friendly strings to be used anywhere.
+  and write up doc samples. :D - doesnt have any colors? 
+ - replace all ShouldBeEquivalent with ShouldBe() where appropriate.
 - create more manual tests (samples) that test any concerns, starting with
   progressbar concurrency, and when progressbar created at bottom of screen,
   with and without a parent console.
+- add tests for clipping windows so that they are no longer visible or no space to write to, then writing, make sure no exceptions.
 - get all samples to be able to run back to back and call validate
   which calls screenshot, so that I can have a really fully exhaustive end to end
   that tests absolutely all the functionality of the library in a real user test.
+- fix doCmd! 
 - new window should never use the rest of the screen, it's really bad default!
   - change to use the whole screen!
 - fix bug with unit tests failing to run consistently in test runner, specifically ListViewTests.LinqExtensionTests

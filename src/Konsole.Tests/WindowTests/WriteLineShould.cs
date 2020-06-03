@@ -7,6 +7,36 @@ namespace Konsole.Tests.WindowTests
 {
     class WriteLineShould
     {
+        // for now, if we want to write to a box to fill it completely simply enable clipping instead.
+        //[Test]
+        //public void when_WriteLine_to_last_char_on_screen_and_on_last_row_dont_scroll_until_more_printing_happens()
+        //{
+        //    Assert.Fail("this is not a bug, this is a new feature! so need to fix all the other bugs first..before implementing this.");
+        //    var con = new MockConsole(6, 4);
+        //    con.WriteLine("123");
+        //    con.WriteLine("abc");
+        //    con.WriteLine("456");
+        //    con.WriteLine("defghi");
+        //    var expected = new[]
+        //    {
+        //        "123   ",
+        //        "abc   ",
+        //        "456   ",
+        //        "defghi"
+        //    };
+        //    con.Buffer.ShouldBe(expected);
+        //    con.Write("123");
+
+        //    expected = new[]
+        //    {
+        //        "456   ",
+        //        "defghi",
+        //        "      ",
+        //        "123   "
+        //    };
+        //    con.Buffer.ShouldBe(expected);
+        //}
+
         [Test]
         public void when_writeLine_ends_on_last_char_on_screen_move_cursor_forward_one_line_only()
         {

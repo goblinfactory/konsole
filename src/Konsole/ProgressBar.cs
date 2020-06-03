@@ -25,8 +25,6 @@ namespace Konsole
         public ProgressBar(IConsole console, PbStyle style, int max, int textWidth)                   : this(max, textWidth, '#', style, console) { }
         public ProgressBar(IConsole console, PbStyle style, int max, int textWidth, char character)   : this(max, textWidth, character, style, console) { }
 
-        private static object _locker = new object();
-
         // in the private constructor IConsole is right at the end so that it does not clash with the other signatures
         private ProgressBar(int max, int? textWidth, char character, PbStyle style, IConsole console)
         {
@@ -57,7 +55,11 @@ namespace Konsole
 
         public void Refresh(int current, string item)
         {
-            _bar.Refresh(current,item);
+            lock(Window._locker)
+            {
+                _bar.Refresh(current, item);
+            }
+            
         }
 
         public void Next(string item)

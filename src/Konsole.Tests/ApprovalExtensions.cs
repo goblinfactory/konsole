@@ -17,8 +17,11 @@ namespace Konsole.Tests
         }
         public static void ShouldBe(this string[] src, string[] expected)
         {
-            var actual = string.Join("\n", src);
-            Approvals.AssertText(expected, actual);
+            var srcArray = src ?? new string[0];
+            var expectedArray = expected ?? new string[0];
+            var actual = string.Join("\n", srcArray);
+
+            Approvals.AssertText(expectedArray, actual);
         }
     }
 }
