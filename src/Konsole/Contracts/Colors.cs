@@ -47,7 +47,29 @@ namespace Konsole
                 return new Colors(White, Black);
             }
         }
+        public static Colors WhiteOnDarkGrey
+        {
+            get
+            {
+                return new Colors(White, DarkGray);
+            }
+        }
 
+        public static Colors YellowOnDarkGrey
+        {
+            get
+            {
+                return new Colors(Yellow, DarkGray);
+            }
+        }
+
+        public static Colors YellowOnBlack
+        {
+            get
+            {
+                return new Colors(Yellow, Black);
+            }
+        }
         public static Colors BlackOnWhite
         {
             get
@@ -61,6 +83,14 @@ namespace Konsole
             get
             {
                 return new Colors(White, Blue);
+            }
+        }
+
+        public static Colors WhiteOnRed
+        {
+            get
+            {
+                return new Colors(White, Red);
             }
         }
 

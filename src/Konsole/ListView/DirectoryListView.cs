@@ -1,79 +1,59 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.IO;
-//using static System.ConsoleColor;
+﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.IO;
+using static Konsole.FileOrDirectory;
+using static System.ConsoleColor;
 
 
-//namespace Konsole
-//{
-//    public interface IFileOrDirectoryProvider
-//    {
-//        IEnumerable<FileOrDirectory> ReadDir(
-//            DirectoryInfo di, 
-//            string fileSearchPattern = "*.*", 
-//            string dirSearchPattern = "*.*", 
-//            Func<FileInfo, bool> filterFiles = null, 
-//            Func<DirectoryInfo, bool> filterDirs = null);
+namespace Konsole
+{
+    public interface IFileOrDirectoryProvider
+    {
+        IEnumerable<FileOrDirectory> ReadDir(
+            DirectoryInfo di,
+            string fileSearchPattern = "*.*",
+            string dirSearchPattern = "*.*",
+            Func<FileInfo, bool> filterFiles = null,
+            Func<DirectoryInfo, bool> filterDirs = null);
 
-//        IEnumerable<FileOrDirectory> ReadDir(string path);
-//    }
+        IEnumerable<FileOrDirectory> ReadDir(string path);
+    }
 
+    public enum DirectorySortBy { Size, Name, DirSize, DirName, FileSize, FileName }
 
-//    public class DirectoryListView : ListView<FileOrDirectory>
-//    {
-
-        
-//        public class Settings
-//        {
-//            public IConsole Console { get; set; } = null;
-//            public string Path { get; set; } = null;
-//            public string FileSearchPattern { get; set; } = null;
-//            public string DirSearchPattern { get; set; } = null;
-//            public Func<FileInfo, bool> FilterFiles = null;
-//            public Func<DirectoryInfo, bool> FilterDirs = null;
-//            public Func<FileOrDirectory[]> Reader = null;
-//            public Func<FileOrDirectory, int, Colors> BusinessRuleColors = (item, columnNo) => null;
-//            public Theme Theme { get; set; } = new ListView<FileOrDirectory>.Theme();
-//            public DirTheme StyleExtras { get; set; } = new DirTheme();
-//        }
-
-//        public class DirTheme
-//        {
-//            public Colors Directories = new Colors(Green, Black);
-//        }
-
-//        public 
-
-//        public DirectoryListView(Settings settings) : base(settings.Console, getData: null, getRow: null, ("Name", 0), ("Size", 12), ("Modified", 17))
-//        {
-//            settings.Column1 = settings.Column1 ?? new ColumnSetting("Name", 0, Colors.WhiteOnBlack, true);
-//            public ColumnSetting Column2 = new ColumnSetting("Size", 12, Colors.WhiteOnBlack, true);
-//            public ColumnSetting Column3 = new ColumnSetting("Modified", 17, Colors.WhiteOnBlack, true);
-
-//        Path = path;
-//            FileSearchPattern = fileSearchPattern;
-//            DirSearchPattern = dirSearchPattern;
-//            FilterFiles = filterFiles;
-//            FilterDirs = filterDirs;
-//            //TODO: inject FileOrDirectory dependancy, create a dependencies optional last, as well as overload where the file types are passed in.
-//            _getData = () => FileOrDirectory.ReadDir(new DirectoryInfo(Path), FileSearchPattern, DirSearchPattern, FilterFiles, FilterDirs);
-//            _getRow = (i) => new[] {
-//                $"{Slash(i.Item)}{i.Name}",
-//                BytesToSize(i.Size),
-//                i.LastModifiedUTC.ToString("dd MMM yyyy hh:mm")
-//            };
-            
-//            BusinessRuleColors = (item, column) =>
-//            {
-//                if (column != 1) return null;
-//                if (item.Item is DirectoryInfo) return StyleExtras.Directories;
-//                return null;
-//            };
-//        }
-
-//        private static string Slash(object i)
-//        {
-//            return i is DirectoryInfo ? "/" : "";
-//        }
-//    }
-//}
+    public class DirectoryListView : ListView<FileOrDirectory>
+    {
+        public Colors DirColors { get; set; } = new Colors(Green, Black);
+        public DirectoryListView(IConsole console, string path) : this(console, path, DirectorySortBy.FileSize, null, null, false, null, null) { }
+        public DirectoryListView(string path) : this(Window.HostConsole, path, DirectorySortBy.FileSize, null, null, false, null, null) { }
+        public DirectoryListView(
+            IConsole console,
+            string path,
+            DirectorySortBy sort,
+            string fileSearchPattern,
+            string dirSearchPattern,
+            bool recursive,
+            Func<FileInfo, bool> filterFiles,
+            Func<DirectoryInfo, bool> filterDirs
+            ) : base(
+            console,
+            getData: () => FileOrDirectory.ReadDir(new DirectoryInfo(path), sort, fileSearchPattern, dirSearchPattern, filterFiles, filterDirs, recursive),
+            getRow: (i) => new[] {
+                $"{(i.Is == Me.Directory ? "/" : "")}{i.Name}",
+                i.SizeText,
+                i.LastModifiedUTC.ToString("dd MMM yyyy hh:mm")
+            },
+            new Column("Name", 0), 
+            new Column("Size", 12), 
+            new Column("Modified", 17))
+        {
+            BusinessRuleColors = (item, column) =>
+                {
+                    if (column != 1) return null;
+                    if (item.Is == FileOrDirectory.Me.Directory) return DirColors;
+                    return null;
+                };
+        }
+    }
+}

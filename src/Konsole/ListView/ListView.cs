@@ -109,7 +109,7 @@ namespace Konsole
         {
             int i = 0;
             int len = columns.Length;
-            var colors = Style?.Title ?? new Colors(Yellow, Black);
+            var colors = Style?.ColumnHeaders ?? new Colors(Yellow, Black);
             foreach (var col in columns)
             {
                 bool last = (++i == len);

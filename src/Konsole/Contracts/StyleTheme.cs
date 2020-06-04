@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using static System.ConsoleColor;
 
 namespace Konsole
@@ -6,11 +7,21 @@ namespace Konsole
 
     public class StyleTheme
     {
+        public static StyleTheme[] GetStyleThemes()
+        {
+            return Style.GetStyles().Select(s => s.ToTheme()).ToArray();
+        }
+
         // can globally override the default theme.
         public static Func<StyleTheme> GlobalDefault = () => new StyleTheme(White, Black);
         public static StyleTheme Default
         {
             get { return GlobalDefault(); }
+        }
+
+        public override string ToString()
+        {
+            return $"{Active.Body.Foreground} on {Active.Body.Background}";
         }
 
         public StyleTheme(Style active, Style inactive, Style disabled = null)

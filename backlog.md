@@ -2,19 +2,18 @@
 
 ## Busy now
 
-- non nested window with title works perfectly! however...
-    - nested window with title, scroll is broken with wrap
-    - nested window with title, scroll is broken on print new line at bottom
+- finish adding the new columnHeaders style, manually test all the styles :D
 
 ## to test
-
 - fix bug, when write is on last line and write wraps, should only defer scroll if the last write ended on the last char.
     - need to test the same with WriteLine
 - solve wierd redbar that appears in TestInlineWIndows sample.
 - solve window size and cursor position when OpenBox bug! (solution, add new overload and never use open box, just new window!)
 - clip_child_window_to_not_exceed_parent_boundaries_test1
 
-## Busy next
+## random stuff
+ 
+- demo code appears to render title twice?
 - fix threading issue with background progressbar demo in samples.
   - bar.Refresh excessive locking
   - write failing test, see it fail

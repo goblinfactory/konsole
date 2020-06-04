@@ -5,7 +5,7 @@ namespace Konsole
 {
     public class Style
     {
-        public static Func<Style> GetDefault = ()=> Style.WhiteOnBlack;
+        public static Func<Style> GetDefault = () => Style.WhiteOnBlack;
         public static Style Default
         {
             get
@@ -14,24 +14,43 @@ namespace Konsole
             }
         }
 
+        public static Style[] GetStyles()
+        {
+            return new [] {
+                WhiteOnBlack
+               // BlackOnWhite,
+               // GrayOnBlack,
+               // WhiteOnBlue,
+               // WhiteOnRed,
+               // BlueOnWhite,
+               // WhiteOnDarkBlue,
+               //DarkBlueOnWhite,
+            };
+        }
+
+        public static Style WhiteOnBlack
+        {
+            //get { return new Style(LineThickNess.Single, Colors.WhiteOnBlack, Colors.WhiteOnBlue, Colors.WhiteOnBlack, Colors.WhiteOnBlack, Colors.DarkBlueOnGray); }
+            get { return new Style(LineThickNess.Single, Colors.WhiteOnBlack, Colors.YellowOnBlack, Colors.WhiteOnBlack, Colors.WhiteOnBlack, Colors.DarkBlueOnGray); }
+        }
+
         public static Style BlackOnWhite
         {
-            get { return new Style(LineThickNess.Single, Colors.BlackOnWhite, Colors.BlackOnWhite, Colors.BlackOnWhite, Colors.WhiteOnBlack); }
+            get { return new Style(LineThickNess.Single, Colors.BlackOnWhite, Colors.WhiteOnBlue, Colors.BlackOnWhite, Colors.BlackOnWhite, Colors.WhiteOnBlack); }
         }
 
         public static Style GrayOnBlack
         {
             get { return new Style(LineThickNess.Single, Colors.GrayOnBlack, Colors.GrayOnBlack, Colors.GrayOnBlack, Colors.BlackOnWhite); }
         }
-
-        public static Style WhiteOnBlack
-        {
-            get { return new Style(LineThickNess.Single, Colors.WhiteOnBlack, Colors.WhiteOnBlack, Colors.WhiteOnBlack, Colors.BlackOnWhite); }
-        }
-
         public static Style WhiteOnBlue
         {
             get { return new Style(LineThickNess.Single, Colors.WhiteOnBlue, Colors.WhiteOnBlue, Colors.WhiteOnBlue, Colors.BlueOnWhite); }
+        }
+
+        public static Style WhiteOnRed
+        {
+            get { return new Style(LineThickNess.Single, Colors.WhiteOnRed, Colors.WhiteOnRed, Colors.WhiteOnRed, Colors.BlueOnWhite); }
         }
 
         public static Style BlueOnWhite
@@ -55,11 +74,11 @@ namespace Konsole
             Body = body;
         }
 
-
-        public Style(LineThickNess? thickNess = null, Colors title = null, Colors line = null, Colors body = null, Colors selectedItem = null)
+        public Style(LineThickNess? thickNess = null, Colors title = null, Colors columnHeaders = null, Colors line = null, Colors body = null, Colors selectedItem = null)
         {
             ThickNess = thickNess ?? LineThickNess.Single;
             Title = title;
+            ColumnHeaders = columnHeaders;
             Line = line;
             Body = body;
             SelectedItem = selectedItem ?? body?.ToSelectedItem();
@@ -88,11 +107,12 @@ namespace Konsole
             if (colors == null) return Style.Default.WithThickness(style.ThickNess);
 
             return new Style(
-                style.ThickNess,
-                style.Title ?? colors,
-                style.Line ?? colors,
-                style.Body ?? colors,
-                style.SelectedItem ?? colors.ToSelectedItem()
+                thickNess:      style.ThickNess,
+                title:          style.Title ?? colors,
+                columnHeaders:  style.ColumnHeaders ?? colors,
+                line:           style.Line ?? colors,
+                body:           style.Body ?? colors,
+                selectedItem:   style.SelectedItem ?? colors.ToSelectedItem()
             );
         }
 
@@ -116,7 +136,10 @@ namespace Konsole
             SelectedItem = new Colors(foreground, background.ToSelectedItemBackground());
         }
 
+
         public LineThickNess ThickNess { get; } = LineThickNess.Single;
+        public Colors ColumnHeaders { get; } = null;
+
         public Colors Title { get; } = null;
         public Colors Line { get; } = null;
 

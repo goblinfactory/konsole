@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
+
 namespace Konsole.Samples
 {
     class Program
@@ -21,8 +22,34 @@ namespace Konsole.Samples
             con.Write("five");
         }
 
+        
+
         static void Main(string[] args)
         {
+
+            var styleThemes = StyleTheme.GetStyleThemes();
+
+            foreach(var theme in styleThemes)
+            {
+                // fix the colors so that default rendering is EPIC with all the themes
+                var dirwin = new Window(new WindowSettings { Title = theme.ToString(), Width = 50, Height = 30, Theme = theme });
+                var at = dirwin.Style.Title;
+                var listView = new DirectoryListView(dirwin, "../../..");
+
+                listView.BusinessRuleColors = (o, column) =>
+                {
+                    if (column == 2 && o.Size > 4000000) return new Colors(White, Red);
+                    if (column == 1  && o.Is == FileOrDirectory.Me.Directory) return new Colors(Green, Black);
+                    return null;
+                };
+
+
+                listView.Refresh();
+                Console.ReadKey(true);
+                Console.Clear();
+            }
+
+            return;
 
             var parent = new Window(10, 6, "parent");
             var child = parent.Open("child");
@@ -41,7 +68,7 @@ namespace Konsole.Samples
 
             Console.CursorVisible = false;
 
-            var win = new Window();
+            var win = new Window(new WindowSettings { Title = "files", Width = 50, Height = 30, Theme = Style.WhiteOnRed.ToTheme() });
             InlineWindowTests.NestedWindowsWithTitles(win);
 
             //ProgressBarWithNewWindowConcurrencyTests.Test(win);

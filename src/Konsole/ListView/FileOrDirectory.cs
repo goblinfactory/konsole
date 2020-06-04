@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Konsole.Internal;
+using static Konsole.DirectoryListView;
 
 namespace Konsole
 {
@@ -80,6 +81,33 @@ namespace Konsole
             LastModifiedUTC = lastModifiedUTC;
             LastModifiedText = DefaultDateTimeFormat;
             Is = @is;
+        }
+
+        public static FileOrDirectory[] ReadDir(DirectoryInfo path, DirectorySortBy sort, string fileSearchPattern = "*", string dirSearchPattern = "*", Func<FileInfo, bool> filterFiles = null, Func<DirectoryInfo, bool> filterDirs = null, bool recursive = false)
+        {
+            var searchOptions = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            var allFiles = path.GetFiles(fileSearchPattern ?? "*", searchOptions);
+            var files = (filterFiles == null ? allFiles : allFiles.Where(f => filterFiles(f))).Select(f => new FileOrDirectory(f, null));
+            var allDirs = path.GetDirectories(dirSearchPattern ?? "*", searchOptions);
+            var dirs = (filterDirs == null ? allDirs : allDirs.Where(d => filterDirs(d))).Select(d => new FileOrDirectory(null, d));
+            var all = files.Concat(dirs);
+            switch (sort)
+            {
+                case DirectorySortBy.Size:
+                    return all.OrderBy(o => o.Size).ToArray();
+                case DirectorySortBy.Name:
+                    return all.OrderBy(o => o.Name).ToArray();
+                case DirectorySortBy.DirSize:
+                    return all.OrderBy(o => o.Is.ToString()).ThenBy(o=> o.Size).ToArray();
+                case DirectorySortBy.DirName:
+                    return all.OrderBy(o => o.Is.ToString()).ThenBy(o => o.Name).ToArray();
+                case DirectorySortBy.FileSize:
+                    return all.OrderByDescending(o => o.Is.ToString()).ThenBy(o => o.Size).ToArray();
+                case DirectorySortBy.FileName:
+                    return all.OrderByDescending(o => o.Is.ToString()).ThenBy(o => o.Name).ToArray();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(sort), sort.ToString());
+            }
         }
     }
 }
