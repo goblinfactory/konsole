@@ -24,6 +24,7 @@ namespace Konsole
             Background = background;
         }
 
+        #region ON DARKBLUE
         public static Colors GrayOnDarkBlue
         {
             get
@@ -31,7 +32,24 @@ namespace Konsole
                 return new Colors(Gray, DarkBlue);
             }
         }
+        public static Colors WhiteOnDarkBlue
+        {
+            get
+            {
+                return new Colors(White, DarkBlue);
+            }
+        }
 
+        #endregion
+
+        #region ON BLACK
+        public static Colors YellowOnBlack
+        {
+            get
+            {
+                return new Colors(Yellow, Black);
+            }
+        }
         public static Colors GrayOnBlack
         {
             get
@@ -47,6 +65,25 @@ namespace Konsole
                 return new Colors(White, Black);
             }
         }
+        public static Colors GreenOnBlack
+        {
+            get
+            {
+                return new Colors(Green, Black);
+            }
+        }
+        #endregion
+        #region ON DARKRED
+        public static Colors GrayOnDarkRed
+        {
+            get
+            {
+                return new Colors(Gray, DarkRed);
+            }
+        }
+        #endregion
+
+        #region ON DARK GREY
         public static Colors WhiteOnDarkGrey
         {
             get
@@ -62,21 +99,25 @@ namespace Konsole
                 return new Colors(Yellow, DarkGray);
             }
         }
+        #endregion region
 
-        public static Colors YellowOnBlack
+        #region ON BLUE
+        public static Colors YellowOnBlue
         {
             get
             {
-                return new Colors(Yellow, Black);
+                return new Colors(Yellow, Blue);
             }
         }
-        public static Colors BlackOnWhite
+
+        public static Colors GrayOnBlue
         {
             get
             {
-                return new Colors(Black, White);
+                return new Colors(Gray, Blue);
             }
         }
+
 
         public static Colors WhiteOnBlue
         {
@@ -85,20 +126,54 @@ namespace Konsole
                 return new Colors(White, Blue);
             }
         }
-
-        public static Colors WhiteOnRed
+        public static Colors CyanOnBlue
         {
             get
             {
-                return new Colors(White, Red);
+                return new Colors(Cyan, Blue);
+            }
+        }
+        #endregion
+
+        #region ON GRAY
+        public static Colors BlackOnGray
+        {
+            get
+            {
+                return new Colors(Black, Gray);
+            }
+        }
+        public static Colors MagentaOnGray
+        {
+            get
+            {
+                return new Colors(Magenta, Gray);
+            }
+        }
+        public static Colors DarkBlueOnGray
+        {
+            get
+            {
+                return new Colors(DarkBlue, Gray);
             }
         }
 
-        public static Colors WhiteOnDarkBlue
+        #endregion
+
+        #region ON WHITE
+        public static Colors BlackOnWhite
         {
             get
             {
-                return new Colors(White, DarkBlue);
+                return new Colors(Black, White);
+            }
+        }
+
+        public static Colors RedOnWhite
+        {
+            get
+            {
+                return new Colors(Red, White);
             }
         }
 
@@ -110,14 +185,6 @@ namespace Konsole
             }
         }
 
-        public static Colors DarkBlueOnGray
-        {
-            get
-            {
-                return new Colors(DarkBlue, Gray);
-            }
-        }
-
         public static Colors DarkBlueOnWhite
         {
             get
@@ -125,5 +192,18 @@ namespace Konsole
                 return new Colors(DarkBlue, White);
             }
         }
+
+        #endregion
+
+        #region ON RED
+        public static Colors WhiteOnRed
+        {
+            get
+            {
+                return new Colors(White, Red);
+            }
+        }
+        #endregion
+
     }
 }

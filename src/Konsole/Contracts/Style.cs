@@ -17,55 +17,63 @@ namespace Konsole
         public static Style[] GetStyles()
         {
             return new [] {
-                WhiteOnBlack
-               // BlackOnWhite,
-               // GrayOnBlack,
-               // WhiteOnBlue,
-               // WhiteOnRed,
+                WhiteOnRed,
+                WhiteOnBlue,
+                GrayOnBlack,
+                WhiteOnBlack, 
+                BlackOnGray,
+                BlackOnWhite,
+                
+                
                // BlueOnWhite,
                // WhiteOnDarkBlue,
                //DarkBlueOnWhite,
             };
         }
+        public static Style WhiteOnBlue
+        {
+            get { return new Style(LineThickNess.Single, Colors.WhiteOnBlue, Colors.WhiteOnBlue, Colors.WhiteOnDarkBlue, Colors.WhiteOnBlue, Colors.BlueOnWhite, Colors.CyanOnBlue); } 
+        }
 
         public static Style WhiteOnBlack
         {
-            //get { return new Style(LineThickNess.Single, Colors.WhiteOnBlack, Colors.WhiteOnBlue, Colors.WhiteOnBlack, Colors.WhiteOnBlack, Colors.DarkBlueOnGray); }
-            get { return new Style(LineThickNess.Single, Colors.WhiteOnBlack, Colors.YellowOnBlack, Colors.WhiteOnBlack, Colors.WhiteOnBlack, Colors.DarkBlueOnGray); }
+            get { return new Style(LineThickNess.Single, Colors.WhiteOnBlack, Colors.WhiteOnBlack, Colors.YellowOnBlack, Colors.WhiteOnBlack, Colors.DarkBlueOnGray, Colors.GreenOnBlack); }
         }
 
         public static Style BlackOnWhite
         {
-            get { return new Style(LineThickNess.Single, Colors.BlackOnWhite, Colors.WhiteOnBlue, Colors.BlackOnWhite, Colors.BlackOnWhite, Colors.WhiteOnBlack); }
+            get { return new Style(LineThickNess.Single, Colors.BlackOnWhite, Colors.BlackOnWhite, Colors.BlueOnWhite, Colors.BlackOnWhite, Colors.WhiteOnDarkGrey, Colors.RedOnWhite); }
+        }
+
+        public static Style BlackOnGray  // one of my favourite styles!
+        {
+            get { return new Style(LineThickNess.Single, Colors.BlackOnGray, Colors.BlackOnGray, Colors.DarkBlueOnGray, Colors.BlackOnGray, Colors.GrayOnBlue, Colors.MagentaOnGray); }
         }
 
         public static Style GrayOnBlack
         {
-            get { return new Style(LineThickNess.Single, Colors.GrayOnBlack, Colors.GrayOnBlack, Colors.GrayOnBlack, Colors.BlackOnWhite); }
-        }
-        public static Style WhiteOnBlue
-        {
-            get { return new Style(LineThickNess.Single, Colors.WhiteOnBlue, Colors.WhiteOnBlue, Colors.WhiteOnBlue, Colors.BlueOnWhite); }
+            get { return new Style(LineThickNess.Single, Colors.GrayOnBlack, Colors.GrayOnBlack, Colors.YellowOnBlack, Colors.GrayOnBlack, Colors.BlackOnGray, Colors.GreenOnBlack); }
         }
 
         public static Style WhiteOnRed
         {
-            get { return new Style(LineThickNess.Single, Colors.WhiteOnRed, Colors.WhiteOnRed, Colors.WhiteOnRed, Colors.BlueOnWhite); }
+            //                          thickNess               body                title               columnHeaders           line            selectedItem        bold 
+            get { return new Style(LineThickNess.Single, Colors.WhiteOnRed, Colors.WhiteOnRed, new Colors(White, DarkRed), Colors.WhiteOnRed, new Colors(Red, Gray), new Colors(Gray, Red)); }
         }
 
         public static Style BlueOnWhite
         {
-            get { return new Style(LineThickNess.Single, Colors.BlueOnWhite, Colors.BlueOnWhite, Colors.BlueOnWhite, Colors.WhiteOnBlue); }
+            get { return new Style(LineThickNess.Single, Colors.WhiteOnBlue, Colors.BlueOnWhite, Colors.BlueOnWhite, Colors.BlueOnWhite); }
         }
 
         public static Style WhiteOnDarkBlue
         {
-            get { return new Style(LineThickNess.Single, Colors.WhiteOnDarkBlue, Colors.WhiteOnDarkBlue, Colors.WhiteOnDarkBlue, Colors.DarkBlueOnGray); }
+            get { return new Style(LineThickNess.Single, Colors.DarkBlueOnGray, Colors.WhiteOnDarkBlue, Colors.WhiteOnDarkBlue, Colors.WhiteOnDarkBlue); }
         }
 
         public static Style DarkBlueOnWhite
         {
-            get { return new Style(LineThickNess.Single, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite, Colors.GrayOnDarkBlue); }
+            get { return new Style(LineThickNess.Single, Colors.GrayOnDarkBlue, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite); }
         }
 
         public Style(LineThickNess thickNess, Colors body)
@@ -74,7 +82,7 @@ namespace Konsole
             Body = body;
         }
 
-        public Style(LineThickNess? thickNess = null, Colors title = null, Colors columnHeaders = null, Colors line = null, Colors body = null, Colors selectedItem = null)
+        public Style(LineThickNess? thickNess = null, Colors body = null, Colors title = null, Colors columnHeaders = null, Colors line = null, Colors selectedItem = null, Colors bold = null)
         {
             ThickNess = thickNess ?? LineThickNess.Single;
             Title = title;
@@ -82,6 +90,7 @@ namespace Konsole
             Line = line;
             Body = body;
             SelectedItem = selectedItem ?? body?.ToSelectedItem();
+            Bold = bold ?? columnHeaders ?? body;
         }
 
         public Style()
@@ -107,12 +116,13 @@ namespace Konsole
             if (colors == null) return Style.Default.WithThickness(style.ThickNess);
 
             return new Style(
-                thickNess:      style.ThickNess,
-                title:          style.Title ?? colors,
-                columnHeaders:  style.ColumnHeaders ?? colors,
-                line:           style.Line ?? colors,
-                body:           style.Body ?? colors,
-                selectedItem:   style.SelectedItem ?? colors.ToSelectedItem()
+                thickNess: style.ThickNess,
+                body: style.Body ?? colors,
+                title: style.Title ?? colors,
+                columnHeaders: style.ColumnHeaders ?? colors,
+                line: style.Line ?? colors,
+                bold: style.Bold ?? colors,
+                selectedItem: style.SelectedItem ?? colors.ToSelectedItem()
             );
         }
 
@@ -145,71 +155,72 @@ namespace Konsole
 
         public Colors SelectedItem { get; } = null;
         public Colors Body { get; } = null;
+        public Colors Bold { get; } = null;
 
         public Style WithBackGround(ConsoleColor background)
         {
             return new Style(
                 ThickNess,
+                SelectedItem
+,
                 new Colors(Title.Foreground, background),
                 new Colors(Line.Foreground, background),
-                new Colors(Body.Foreground, background),
-                SelectedItem
-                );
+                new Colors(Body.Foreground, background));
         }
 
         public Style WithForeground(ConsoleColor foreground)
         {
             return new Style(
                 ThickNess,
+                SelectedItem
+,
                 new Colors(Title.Foreground, Title.Background),
                 new Colors(Line.Foreground, Line.Background),
-                new Colors(foreground, Body.Background),
-                SelectedItem
-                );
+                new Colors(foreground, Body.Background));
         }
 
         public Style WithTitle(Colors title)
         {
             return new Style(
                 ThickNess,
+                SelectedItem
+,
                 title,
                 Line,
-                Body,
-                SelectedItem
-                );
+                Body);
         }
 
         public Style WithLine(Colors line)
         {
             return new Style(
                 ThickNess,
+                SelectedItem
+,
                 Title,
                 line,
-                Body,
-                SelectedItem
-                );
+                Body);
         }
 
         public Style WithColors(Colors colors)
         {
             return new Style(
                 ThickNess,
-                colors,
-                colors,
-                colors,
                 SelectedItem
-                );
+,
+                colors,
+                colors,
+                colors);
         }
 
         public Style WithThickness(LineThickNess thickNess)
         {
             return new Style(
                 thickNess,
+                SelectedItem
+,
                 Title,
                 Line,
-                Body,
-                SelectedItem
-                );
+                Body);
         }
 
     }

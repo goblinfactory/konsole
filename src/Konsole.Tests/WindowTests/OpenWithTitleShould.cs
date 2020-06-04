@@ -115,7 +115,7 @@ namespace Konsole.Tests.WindowTests
         [Test]
         public void open_a_window_that_can_be_scrolled()
         {
-            var win = new Window("title", new Style( thickNess : LineThickNess.Double ));
+            var win = new Window("title", new Style(thickNess: LineThickNess.Double));
             Fill(win);
 
             var expected = new[]

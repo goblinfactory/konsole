@@ -31,15 +31,25 @@ namespace Konsole.Samples
 
             foreach(var theme in styleThemes)
             {
-                // fix the colors so that default rendering is EPIC with all the themes
-                var dirwin = new Window(new WindowSettings { Title = theme.ToString(), Width = 50, Height = 30, Theme = theme });
-                var at = dirwin.Style.Title;
-                var listView = new DirectoryListView(dirwin, "../../..");
+                var dirs = new Window(new WindowSettings { Title = theme.ToString(), Width = 50, Height = 12, Theme = theme });
+                var at = dirs.Style.Title;
+                var listView = new DirectoryListView(dirs, "../../..");
 
                 listView.BusinessRuleColors = (o, column) =>
                 {
-                    if (column == 2 && o.Size > 4000000) return new Colors(White, Red);
-                    if (column == 1  && o.Is == FileOrDirectory.Me.Directory) return new Colors(Green, Black);
+                    if (column == 2 && o.Size > 4000000) return theme.Active.SelectedItem;
+                    if (column == 1 && o.Is == FileOrDirectory.Me.Directory) return theme.Active.Bold;
+                    //{
+                    //    switch (theme.Active.Body.Background)
+                    //    {
+                    //        case Black:
+                    //            return Colors.GreenOnBlack;
+                    //        case Blue:
+                    //            return new Colors(Yellow, Blue);
+                    //        default:
+                    //            return theme.Active.ColumnHeaders; 
+                    //    }
+                    //}
                     return null;
                 };
 
