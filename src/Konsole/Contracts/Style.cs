@@ -223,5 +223,9 @@ namespace Konsole
                 Body);
         }
 
+        public override string ToString()
+        {
+            return $"{ThickNess},{Body},{Title},{ColumnHeaders},{Line},{SelectedItem},{Bold}";
+        }
     }
 }

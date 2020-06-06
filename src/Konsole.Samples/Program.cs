@@ -22,15 +22,39 @@ namespace Konsole.Samples
             con.Write("five");
         }
 
+        public static StyleTheme RTheme()
+        {
+            var bodyback = rnd.Next(16);
+            var lineBack = rnd.Next(100) > 50 ? 0 : rnd.Next(16);
+            var body = Colors.RandomColor(bodyback);
+            var line = Colors.RandomColor(lineBack);
+            var headers = Colors.RandomColor(rnd.Next(16));
+            var selected = Colors.RandomColor(rnd.Next(16));
+            var bold = Colors.RandomColor(bodyback);
+            return new Style(LineThickNess.Single, body, line, headers, line, selected, bold).ToTheme();
+        }
+
+        private static Random rnd = new Random();
         
+
 
         static void Main(string[] args)
         {
-
-            var styleThemes = StyleTheme.GetStyleThemes();
-
-            foreach(var theme in styleThemes)
+            var cwin = new Window();
+            for(int bg = 0; bg < 16; bg++)
             {
+                var colors = Colors.RandomColor(bg);
+                cwin.Write(colors, $"[{colors.Background}][{colors.Foreground}] hello world! ");
+            }
+            Console.ReadKey();
+            Console.Clear();
+            //var styleThemes = StyleTheme.GetStyleThemes();
+
+            //foreach (var theme in styleThemes)
+            while(true)
+            {
+                var theme = RTheme();
+                Console.WriteLine(theme.Active);
                 var dirs = new Window(new WindowSettings { Title = theme.ToString(), Width = 50, Height = 12, Theme = theme });
                 var at = dirs.Style.Title;
                 var listView = new DirectoryListView(dirs, "../../..");
