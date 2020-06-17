@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using static System.ConsoleColor;
 
 namespace Konsole
@@ -15,6 +16,55 @@ namespace Konsole
 
     public class Colors
     {
+        const string CODES = "kBGCRMYaAbgcrmyw";
+        char[] CHARS = CODES.ToCharArray();
+
+        /// k = Black = 0,              
+        /// B = DarkBlue = 1,           
+        /// G = DarkGreen = 2,      
+        /// C = DarkCyan = 3,
+        /// R = DarkRed = 4,
+        /// M = DarkMagenta = 5,
+        /// Y = DarkYellow = 6,
+        /// a = Gray = 7,
+        /// A = DarkGray = 8,
+        /// b = Blue = 9,
+        /// g = Green = 10,
+        /// c = Cyan = 11,
+        /// r = Red = 12,
+        /// m = Magenta = 13,
+        /// y = Yellow = 14,
+        /// w = White = 15
+
+        Dictionary<char, int> ColorMap = new Dictionary<char, int> { 
+            { 'k', 0 },
+            { 'B', 1 },
+            { 'G', 2 },
+            { 'C', 3 },
+            { 'R', 4 },
+            { 'M', 5 },
+            { 'Y', 6 },
+            { 'a', 7 },
+            { 'A', 8 },
+            { 'b', 9 },
+            { 'g', 10 },
+            { 'c', 11 },
+            { 'r', 12 },
+            { 'm', 13 },
+            { 'y', 14 },
+            { 'w', 15 },
+        };
+
+        public string Code
+        {
+            get
+            {
+                int fore = (int)Foreground;
+                int back = (int)Background;
+                return new string(new [] { CODES[fore], CODES[back] });
+            }
+        }
+
         public ConsoleColor Foreground { get; } = White;
         public ConsoleColor Background { get; } = Black;
 
@@ -22,6 +72,19 @@ namespace Konsole
         {
             
         }
+
+        public Colors(char fore, char back)
+        {
+            if (!CHARS.Contains(fore)) throw new ArgumentOutOfRangeException($"'{fore}' is not a valid color char");
+            if (!CHARS.Contains(back)) throw new ArgumentOutOfRangeException($"'{back}' is not a valid color char");
+            Foreground = (ConsoleColor)ColorMap[fore];
+            Background = (ConsoleColor)ColorMap[back];
+        }
+
+        // shortcut codes for representing colors, caps are Dark
+        
+
+
         private static Random rnd = new Random();
 
         public static Dictionary<ConsoleColor, int[]> BestForegrounds = new Dictionary<ConsoleColor, int[]>()

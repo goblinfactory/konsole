@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.ConsoleColor;
 using static Konsole.BorderCollapse;
 
 namespace Konsole
@@ -26,7 +27,12 @@ namespace Konsole
             if (hotkey.Key.IsAlphaNumeric()) throw new ArgumentOutOfRangeException($"Cannot use '{hotkey.KeyChar}' as a hot key for window '{title}' because it is alphanumeric and will interfere with any text input.");
         }
 
-        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor foreground, ConsoleKeyInfo ? hotkey = null)
+        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, LineThickNess? thickness, ConsoleColor foreground, ConsoleKeyInfo? hotkey = null)
+        {
+            var theme = c.Theme.WithForeground(foreground).WithThickness(thickness ?? LineThickNess.Single);
+            return _LeftRight(c, title, right, showBorder, theme, thickness, hotkey);
+        }
+        internal static IConsole _LeftRight(IConsole c, string title, bool right, bool showBorder, StyleTheme theme, LineThickNess? thickness, ConsoleKeyInfo ? hotkey = null)
         {
             if(hotkey.HasValue)
             {
@@ -35,7 +41,6 @@ namespace Konsole
             
             lock (Window._locker)
             {
-                var theme = c.Theme.WithForeground(foreground);
                 if (showBorder && thickness == null) throw new ArgumentOutOfRangeException(nameof(showBorder), "cannot be false while thickness is none.");
                 int h = c.WindowHeight;
                 int w = c.WindowWidth / 2 + (right ? c.WindowWidth % 2 : 0);

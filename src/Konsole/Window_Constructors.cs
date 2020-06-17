@@ -250,14 +250,15 @@ namespace Konsole
                 int? height = settings.Height;
                 bool fullScreen = x == 0 && y == null && width == null && height == null;
                 ControlStatus status = settings.Status;
-                StyleTheme theme = settings.Theme;  
+                StyleTheme theme = settings.Theme ?? console.Theme;
+                Theme = theme;
                 // todo - assign _console only once, prepare for readonly in C#8
                 _echo = settings._echo;
                 _console = console ?? HostConsole;
                 if (_echo && _console == null) _console = new Writer();
                 bool inline = (_console != null && y == null);
                 Status = status;
-                Theme = theme ?? this._console.Theme;
+                
                 Colors = Style.Body;
 
                 _y = y ?? _console?.CursorTop ?? this._console.CursorTop + height ?? 0;

@@ -26,8 +26,9 @@ namespace Konsole.Samples
         {
             var bodyback = rnd.Next(16);
             var lineBack = rnd.Next(100) > 50 ? 0 : rnd.Next(16);
+            bool useBodyForLine = rnd.Next(100) > 70;
             var body = Colors.RandomColor(bodyback);
-            var line = Colors.RandomColor(lineBack);
+            var line =useBodyForLine ? body :  Colors.RandomColor(lineBack);
             var headers = Colors.RandomColor(rnd.Next(16));
             var selected = Colors.RandomColor(rnd.Next(16));
             var bold = Colors.RandomColor(bodyback);
@@ -41,6 +42,8 @@ namespace Konsole.Samples
         static void Main(string[] args)
         {
             var cwin = new Window();
+            //ListViewDemos.ListViewRenderChessGamesSwapFocus();
+            //return;
             for(int bg = 0; bg < 16; bg++)
             {
                 var colors = Colors.RandomColor(bg);

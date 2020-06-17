@@ -4,9 +4,20 @@ using static System.ConsoleColor;
 
 namespace Konsole
 {
-
     public class StyleTheme
     {
+        public StyleTheme(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code)) throw new ArgumentNullException(nameof(code));
+            if (code.Length != 13) throw new ArgumentOutOfRangeException("code must be exactly 13 characters long.");
+            var style = new Style(code);
+            Active = style;
+            Disabled = style;
+            Inactive = style;
+        }
+
+
+
         public static StyleTheme[] GetStyleThemes()
         {
             return Style.GetStyles().Select(s => s.ToTheme()).ToArray();
@@ -21,7 +32,7 @@ namespace Konsole
 
         public override string ToString()
         {
-            return $"{Active.Body.Foreground} on {Active.Body.Background}";
+            return $"{Active.Body.Foreground} on {Active.Body.Background} [{Active.ToString()}]";
         }
 
         public StyleTheme(Style active, Style inactive, Style disabled = null)
@@ -80,6 +91,15 @@ namespace Konsole
             return new StyleTheme(active, Inactive, Disabled);
         }
 
+        public StyleTheme WithThickness(LineThickNess thickness)
+        {
+            return new StyleTheme(
+                Active.WithThickness(thickness),
+                Inactive.WithThickness(thickness),
+                Disabled.WithThickness(thickness)
+            );
+        }
+
         public StyleTheme WithForeground(ConsoleColor color)
         {
             return new StyleTheme(
@@ -129,6 +149,5 @@ namespace Konsole
             }
         }
     }
-
 
 }

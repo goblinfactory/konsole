@@ -24,6 +24,7 @@ namespace Konsole
         Scroller _scroller;
         CharAndColor[] _buffer;
         SafeFileHandle _consoleFileHandle;
+        StyleTheme _theme;
 
         public bool AutoFlush { get; set; } = false;
         public char ClearScreenChar { get; set; }
@@ -45,6 +46,7 @@ namespace Konsole
             _consoleFileHandle = OpenConsole();
             _height = height;
             _width = width;
+            _theme = theme ?? StyleTheme.Default;
             _buffer = new CharAndColor[_width * _height];
             _scroller = new Scroller(_buffer, _width, _height, clearScreenChar, Colors);
             _consoleWriteArea = new ConsoleRegion(0, 0, (short)(_width - 1), (short)(_height - 1));
