@@ -30,10 +30,13 @@ namespace Konsole.Samples
             win = Window.OpenBox("full screen", new WindowSettings
             {
                 Theme = new Style(
-                body: new Colors(Yellow, DarkBlue),
-                    line: new Colors(Yellow, Black),
-                    thickNess: LineThickNess.Double,
-                    title: new Colors(White, DarkRed)
+                    thickNess:      LineThickNess.Single,
+                    body:           new Colors(Yellow, DarkBlue),
+                    title:          new Colors(White, DarkRed),
+                    columnHeaders:  new Colors(Yellow, Red),
+                    line:           new Colors(Yellow, Black),
+                    selectedItem:   new Colors(White,Red),
+                    bold:           new Colors(White, Red)
             ).ToTheme()
             }
             );
@@ -51,10 +54,13 @@ namespace Konsole.Samples
             Console.WriteLine("line 2");
             // should continue at current line 3!! ie Inline.
             win = Window.OpenBox("full screen", 60, 10, new Style(
-                body: new Colors(Yellow, Black),
-                line: new Colors(Red, Black),
                 thickNess: LineThickNess.Double,
-                title: new Colors(White, Red)
+                body: new Colors(Yellow, Black),
+                title: new Colors(White, Red),
+                columnHeaders: new Colors(Yellow, Red),
+                line: new Colors(Red, Black),
+                selectedItem: new Colors(White, Red),
+                bold: new Colors(White, Red)
             ));
             Fill(win);
 

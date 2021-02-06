@@ -131,6 +131,14 @@ namespace Konsole
                 Height = _GetHostWidthHeight().height
             };
         }
+        public Window(string title, LineThickNess thickness) : this(null,
+            FullScreenSettings()
+            .WithTitle(title)
+            .WithStyle(Style.Default.WithThickness(thickness))
+        )
+        {
+
+        }
 
         public Window(string title, Style style) : this(null, 
             FullScreenSettings()

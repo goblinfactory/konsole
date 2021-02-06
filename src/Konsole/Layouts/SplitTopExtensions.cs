@@ -15,6 +15,11 @@ namespace Konsole
             return LayoutExtensions.Top(c, null, false, null, foreground);
         }
 
+        //public static IConsole SplitTop(this IConsole c, string title, StyleTheme theme)
+        //{
+        //    return LayoutExtensions.Top(c, title, true, theme);
+        //}
+
         public static IConsole SplitTop(this IConsole c, string title)
         {
             return LayoutExtensions.Top(c, title, true, LineThickNess.Single, c.ForegroundColor);

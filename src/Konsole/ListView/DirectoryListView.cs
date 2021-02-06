@@ -25,7 +25,8 @@ namespace Konsole
     public class DirectoryListView : ListView<FileOrDirectory>
     {
         public Colors DirColors { get; set; } = new Colors(Green, Black);
-        public DirectoryListView(IConsole console, string path) : this(console, path, DirectorySortBy.FileSize, null, null, false, null, null) { }
+
+        public DirectoryListView(IConsole console, string path = null) : this(console, path, DirectorySortBy.FileSize, null, null, false, null, null) { }
         public DirectoryListView(string path) : this(Window.HostConsole, path, DirectorySortBy.FileSize, null, null, false, null, null) { }
         public DirectoryListView(
             IConsole console,
@@ -38,7 +39,7 @@ namespace Konsole
             Func<DirectoryInfo, bool> filterDirs
             ) : base(
             console,
-            getData: () => FileOrDirectory.ReadDir(new DirectoryInfo(path), sort, fileSearchPattern, dirSearchPattern, filterFiles, filterDirs, recursive),
+            getData: () => FileOrDirectory.ReadDir(new DirectoryInfo(path ?? "./"), sort, fileSearchPattern, dirSearchPattern, filterFiles, filterDirs, recursive),
             getRow: (i) => new[] {
                 $"{(i.Is == Me.Directory ? "/" : "")}{i.Name}",
                 i.SizeText,

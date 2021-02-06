@@ -5,7 +5,9 @@ namespace Konsole
 {
     public class WindowSettings
     {
-        public WindowSettings() { }
+        public WindowSettings() {
+            Theme = StyleTheme.Default;
+        }
         public WindowSettings(WindowSettings settings) : this(
             settings.SX, 
             settings.SY, 
@@ -17,7 +19,7 @@ namespace Konsole
             settings.Title,
             settings.Width,
             settings.Height,
-            settings.Theme,
+            settings.Theme ?? StyleTheme.Default,
             settings._echo,
             settings._parentWindow
             )

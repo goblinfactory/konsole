@@ -244,7 +244,7 @@ namespace Konsole.Tests.WindowTests
         {
             var con = new MockConsole(40, 10);
             Window.HostConsole = con;
-            var parent = new Window("test", new Style(LineThickNess.Double));
+            var parent = new Window("test", Style.Default.WithThickness(LineThickNess.Double));
             var child = parent.Open(new WindowSettings { Title = "child", SX = 20, SY = 0, Width = 30, Height = 6, Theme = new Style(LineThickNess.Double).ToTheme() });
             child.WriteLine("test");
 
@@ -261,6 +261,7 @@ namespace Konsole.Tests.WindowTests
                     "║                                      ║",
                     "╚══════════════════════════════════════╝"
             };
+
             con.Buffer.ShouldBe(expected);
         }
 

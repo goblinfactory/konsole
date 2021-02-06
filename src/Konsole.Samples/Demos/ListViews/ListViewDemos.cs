@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using static System.ConsoleColor;
 using static Konsole.ControlStatus;
 
@@ -38,7 +36,7 @@ namespace Konsole.Samples
 
                 RenderGames(window, y + 2, Inactive);
                 RenderUsers(window, y + 2, Active);
-               
+                Console.ReadKey(true);
             }
 
         }

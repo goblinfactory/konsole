@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Goblinfactory.Konsole.Contracts
+namespace Konsole
 {
     public static class Bling
     {

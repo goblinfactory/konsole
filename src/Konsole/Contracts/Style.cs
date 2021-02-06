@@ -119,7 +119,17 @@ namespace Konsole
 
         public static Style BlueOnWhite
         {
-            get { return new Style(LineThickNess.Single, Colors.WhiteOnBlue, Colors.BlueOnWhite, Colors.BlueOnWhite, Colors.BlueOnWhite, Colors.BlueOnWhite, Colors.BlueOnWhite); }
+            get { 
+                return new Style(
+                    LineThickNess.Single,   // thickness
+                    Colors.WhiteOnBlue,     // body
+                    Colors.BlueOnWhite,     // title
+                    Colors.BlueOnWhite,     // column headers
+                    Colors.BlueOnWhite,     // line
+                    Colors.BlueOnWhite,     // selected item
+                    Colors.BlueOnWhite      // bold
+                    ); 
+            }
         }
 
         public static Style WhiteOnDarkBlue
@@ -132,6 +142,10 @@ namespace Konsole
             get { return new Style(LineThickNess.Single, Colors.GrayOnDarkBlue, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite, Colors.DarkBlueOnWhite); }
         }
 
+        public Style(LineThickNess thickNess)
+        {
+            ThickNess = thickNess;
+        }
         public Style(LineThickNess thickNess, Colors body)
         {
             ThickNess = thickNess;

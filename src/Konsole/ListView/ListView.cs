@@ -29,12 +29,25 @@ namespace Konsole
         /// <remarks>columnNo is unusually '1' based for these rules.</remarks>
         public Func<T, int, Colors> BusinessRuleColors = null;
 
+        public ListView(IConsole console, T[] data, string columnName) : base(console, null, null, null, null, null, null)
+        {
+            _getData = () => data;
+            _getRow = (i) => new[] { i.ToString() };
+            Columns = new[] { new Column(columnName) };
+        }
+
+        private static Column[] GetColumns<T>(IEnumerable<T> src)
+        {
+            return null;
+        }
+
         public ListView(IConsole console, Func<T[]> getData, Func<T, string[]> getRow, params Column[] columns) : base(console, null, null, null, null, null, null)
         {
             _getData = getData;
             _getRow = getRow;
             Columns = columns;
         }
+
 
         public override (bool isDirty, bool handled) HandleKeyPress(ConsoleKeyInfo info, char key)
         {

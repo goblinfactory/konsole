@@ -64,6 +64,7 @@ namespace Konsole
         {
             return LayoutExtensions._LeftRight(c, null, false, false, null, foreground);
         }
+
         public static IConsole SplitLeft(this IConsole c, string title, StyleTheme theme)
         {
             return LayoutExtensions._LeftRight(c, title, false, true, theme, LineThickNess.Single);

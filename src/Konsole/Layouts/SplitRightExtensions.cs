@@ -65,6 +65,11 @@ namespace Konsole
             return LayoutExtensions._LeftRight(c, title, true, true, LineThickNess.Single, c.ForegroundColor);
         }
 
+        public static IConsole SplitRight(this IConsole c, string title, StyleTheme theme)
+        {
+            return LayoutExtensions._LeftRight(c, title, true, true, theme, LineThickNess.Single);
+        }
+
         public static IConsole SplitRight(this IConsole c, string title, ConsoleKeyInfo hotkey)
         {
             return LayoutExtensions._LeftRight(c, title, true, true, c.Style.ThickNess, c.ForegroundColor, hotkey);

@@ -42,19 +42,18 @@ namespace Konsole.Samples
         static void Main(string[] args)
         {
             var cwin = new Window();
-            //ListViewDemos.ListViewRenderChessGamesSwapFocus();
-            //return;
-            for(int bg = 0; bg < 16; bg++)
+            ListViewDemos.ListViewRenderChessGamesSwapFocus();
+            return;
+            for (int bg = 0; bg < 16; bg++)
             {
                 var colors = Colors.RandomColor(bg);
                 cwin.Write(colors, $"[{colors.Background}][{colors.Foreground}] hello world! ");
             }
             Console.ReadKey();
             Console.Clear();
-            //var styleThemes = StyleTheme.GetStyleThemes();
 
-            //foreach (var theme in styleThemes)
-            while(true)
+            int cnt = 0;
+            while(cnt++<4)
             {
                 var theme = RTheme();
                 Console.WriteLine(theme.Active);
@@ -66,17 +65,6 @@ namespace Konsole.Samples
                 {
                     if (column == 2 && o.Size > 4000000) return theme.Active.SelectedItem;
                     if (column == 1 && o.Is == FileOrDirectory.Me.Directory) return theme.Active.Bold;
-                    //{
-                    //    switch (theme.Active.Body.Background)
-                    //    {
-                    //        case Black:
-                    //            return Colors.GreenOnBlack;
-                    //        case Blue:
-                    //            return new Colors(Yellow, Blue);
-                    //        default:
-                    //            return theme.Active.ColumnHeaders; 
-                    //    }
-                    //}
                     return null;
                 };
 
@@ -86,7 +74,7 @@ namespace Konsole.Samples
                 Console.Clear();
             }
 
-            return;
+           // return;
 
             var parent = new Window(10, 6, "parent");
             var child = parent.Open("child");

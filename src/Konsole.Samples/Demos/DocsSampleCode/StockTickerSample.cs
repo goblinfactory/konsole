@@ -83,10 +83,11 @@ namespace Konsole.Samples
 
             
             Console.WriteLine("line one");
-            var nyse = Window.OpenBox("NYSE", 20, 12, new Style(thickNess: LineThickNess.Single, title: new Colors(White, Red)));
+            var nyse = Window.OpenBox("NYSE", 20, 12, new Style(
+                thickNess: LineThickNess.Single, body: new Colors(White, Red)));
 
             Console.WriteLine("line two");
-            var ftse100 = Window.OpenBox("FTSE 100", 20, 12, new Style(thickNess: LineThickNess.Double, title: new Colors(White, Blue)));
+            var ftse100 = Window.OpenBox("FTSE 100", 20, 12, new Style(thickNess: LineThickNess.Double, body: new Colors(White, Blue)));
             Console.Write("line three");
 
 

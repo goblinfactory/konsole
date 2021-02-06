@@ -36,13 +36,18 @@ namespace Konsole.Tests.MenuTests
 
             con.Buffer.ShouldBe(expected);
 
+            // idea : write colour tests using two colours that can be represented using solid and space.
+            // then assert that the colors are ..and show the layout for foreground, and background.
+            // finally assert the text, independantly of the foreground or background colour.
+            // so that you can visually "see" the colouring.
+
             expected = new[]{
                 " yr yr yr yrMyrEyrNyrUyr yr yr yr yr wk wk wk",
-                " wB wB wB wB wB wB wB wB wB wB wB wB wk wk wk",
-                " wBawB.wB wBiBatBaeBamBa Ba1Ba wB wB wk wk wk",
-                " wBbwB.wB wBiwBtwBewBmwB wB2wB wB wB wk wk wk",
-                " wBcwB.wB wBiwBtwBewBmwB wB3wB wB wB wk wk wk",
-                " wB wB wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba wk wk wk",
+                " BaaBa.Ba BaiwBtwBewBmwB wB1wB Ba Ba wk wk wk",
+                " BabBa.Ba BaiBatBaeBamBa Ba2Ba Ba Ba wk wk wk",
+                " BacBa.Ba BaiBatBaeBamBa Ba3Ba Ba Ba wk wk wk",
+                " Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba wk wk wk",
                 " wk wk wk wk wk wk wk wk wk wk wk wk wk wk wk",
                 };
 
@@ -65,11 +70,11 @@ namespace Konsole.Tests.MenuTests
 
             var expected = new[]{
                 " yr yr yr yrMyrEyrNyrUyr yr yr yr yr wk wk wk",
-                " wB wB wB wB wB wB wB wB wB wB wB wB wk wk wk",
-                " wBawB.wB wBiBatBaeBamBa BaaBa wB wB wk wk wk",
-                " wBbwB.wB wBiwBtwBewBmwB wBbwB wB wB wk wk wk",
-                " wBqwB.wB wBiwBtwBewBmwB wBcwB wB wB wk wk wk",
-                " wB wB wB wB wB wB wB wB wB wB wB wB wk wk wk",
+                " Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba wk wk wk",
+                " BaaBa.Ba BaiwBtwBewBmwB wBawB Ba Ba wk wk wk",
+                " BabBa.Ba BaiBatBaeBamBa Babba Ba Ba wk wk wk",
+                " BaqBa.Ba BaiBatBaeBamBa BacBa Ba Ba wk wk wk",
+                " Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba Ba wk wk wk",
                 " wk wk wk wk wk wk wk wk wk wk wk wk wk wk wk",
                 };
             con.BufferWithColor.ShouldBe(expected);
