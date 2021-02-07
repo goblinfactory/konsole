@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Konsole.Internal;
+using System;
 
 namespace Konsole
 {
@@ -120,6 +121,24 @@ namespace Konsole
         {
             if (_clipping && OverflowBottom)
                 return;
+
+            var splits = text.SplitByCrLfOrNull();
+            if (splits != null)
+            {
+                for(int i = 0; i<splits.Length; i++)
+                {
+                    if (i+1 < splits.Length)
+                    {
+                        WriteLine(splits[i]);
+                    }
+                    else
+                    {
+                        Write(splits[i]);
+                    }
+                }
+                return;
+            }
+
             DoCommand(_echoConsole, () =>
             {
                 var overflow = "";
