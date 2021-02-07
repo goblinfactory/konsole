@@ -148,6 +148,25 @@ namespace Konsole.Tests.WindowTests
             state.Should().BeEquivalentTo(parent.State);
         }
 
+        [Test]
+        public void replace_crlf_cr_lf_lfcr_with_individual_writeLines()
+        {
+            var w = new MockConsole(20, 5);
+            (var left, var right) = w.SplitLeftRight("left", "right");
+
+            left.Write("one\r\ntwo\rthree\nfour");
+            right.Write("one\r\ntwo\rthree\nfour");
+            var expected = new[]
+            {
+                "┌─ left ─┬─ right ─┐",
+                "│two     │two      │",
+                "│three   │three    │",
+                "│four    │four     │",
+                "└────────┴─────────┘"
+            };
+            w.Buffer.Should().BeEquivalentTo(expected);
+        }
+
 
     }
 }

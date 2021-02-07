@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [6.2.1]
+
+### Fixed
+
+- #72 Fix critical bug : Embedded CrLf cause window isolation to break.
+
 ## [6.2.0]
 
 ### Added
