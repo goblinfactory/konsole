@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
-    <RootNamespace>Goblinfactory.Konsole</RootNamespace>
+    <RootNamespace>Konsole</RootNamespace>
     <Version>6.2.0</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>

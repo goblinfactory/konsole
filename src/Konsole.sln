@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29519.161
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{0EE5C02C-E612-4429-829C-094D5CED3171}"
 	ProjectSection(SolutionItems) = preProject
+		_old_global.json = _old_global.json
 		..\backlog.md = ..\backlog.md
 		..\build.ps1 = ..\build.ps1
 		..\change-log.md = ..\change-log.md
 		..\.github\workflows\dotnetcore.yml = ..\.github\workflows\dotnetcore.yml
-		global.json = global.json
 		..\README.source.md = ..\README.source.md
 		..\test.ps1 = ..\test.ps1
 		..\docs\threading.md = ..\docs\threading.md
@@ -25,7 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Tests.Slow", "Konso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.PerformanceTests", "Konsole.PerformanceTests\Konsole.PerformanceTests.csproj", "{DA26765B-E193-48DA-B2F5-EEFD9E6EFA49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konsole.Remote", "Konsole.Remote\Konsole.Remote.csproj", "{40B76706-976E-4688-885E-8C516EFE08C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Remote", "Konsole.Remote\Konsole.Remote.csproj", "{99E3C892-626B-4418-A534-1DB2862FFAE3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Remote.Netmq", "Konsole.Remote.Netmq\Konsole.Remote.Netmq.csproj", "{EAA2AF8D-5273-41D0-9632-24C812E18E08}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Remote.Tests", "Konsole.Remote.Tests\Konsole.Remote.Tests.csproj", "{79FDF840-419D-4D25-9645-4ADA10966D58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +57,18 @@ Global
 		{DA26765B-E193-48DA-B2F5-EEFD9E6EFA49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA26765B-E193-48DA-B2F5-EEFD9E6EFA49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA26765B-E193-48DA-B2F5-EEFD9E6EFA49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40B76706-976E-4688-885E-8C516EFE08C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40B76706-976E-4688-885E-8C516EFE08C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40B76706-976E-4688-885E-8C516EFE08C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40B76706-976E-4688-885E-8C516EFE08C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99E3C892-626B-4418-A534-1DB2862FFAE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99E3C892-626B-4418-A534-1DB2862FFAE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99E3C892-626B-4418-A534-1DB2862FFAE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99E3C892-626B-4418-A534-1DB2862FFAE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAA2AF8D-5273-41D0-9632-24C812E18E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAA2AF8D-5273-41D0-9632-24C812E18E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAA2AF8D-5273-41D0-9632-24C812E18E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAA2AF8D-5273-41D0-9632-24C812E18E08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79FDF840-419D-4D25-9645-4ADA10966D58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79FDF840-419D-4D25-9645-4ADA10966D58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79FDF840-419D-4D25-9645-4ADA10966D58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79FDF840-419D-4D25-9645-4ADA10966D58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

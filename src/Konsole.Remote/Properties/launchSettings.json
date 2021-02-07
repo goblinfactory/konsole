@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Konsole.Remote": {
+      "commandName": "Project",
+      "commandLineArgs": "test1 5001 my-key netmq"
+    }
+  }
+}

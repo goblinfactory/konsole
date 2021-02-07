@@ -5,3 +5,9 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+# Goblinfactory.Konsole.Remote licence terms
+
+All remote access to Konsole libraries will require a separate licence for use or distribution from Goblinfactory Limited.
+
+- Goblinfactory.Konsole.Remote software (or any software attempting to provide similar functionality) is available for preview but is not made available as part of the goblinfactory.konsole library licence. it is seperately licenced. See `Konsole.Remote/licence.md`
