@@ -1,4 +1,8 @@
-# Roadmap
+# Roadmap (scrapbook of ideas)
+
+This is a very rough place for random notes. Please look on github to see what's actually being planned for the next releases. 
+
+Update: 7 Feb 21, This isn't kept up to date. I'm hacking "issues" as way of tracking "features" and planning releases. Please check out the real backlog here -> https://github.com/goblinfactory/konsole/issues
 
 ## Busy now
 
