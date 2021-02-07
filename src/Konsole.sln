@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29519.161
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{0EE5C02C-E612-4429-829C-094D5CED3171}"
 	ProjectSection(SolutionItems) = preProject
+		_deleted_global.json = _deleted_global.json
 		..\backlog.md = ..\backlog.md
 		..\build.ps1 = ..\build.ps1
 		..\change-log.md = ..\change-log.md
 		..\.github\workflows\dotnetcore.yml = ..\.github\workflows\dotnetcore.yml
-		global.json = global.json
 		..\README.source.md = ..\README.source.md
 		..\test.ps1 = ..\test.ps1
 		..\docs\threading.md = ..\docs\threading.md
@@ -24,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Tests.Slow", "Konsole.Tests.Slow\Konsole.Tests.Slow.csproj", "{88673DE4-7501-4B72-9EDA-047E4C58BF9F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.PerformanceTests", "Konsole.PerformanceTests\Konsole.PerformanceTests.csproj", "{DA26765B-E193-48DA-B2F5-EEFD9E6EFA49}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Tests.Sandbox", "Konsole.Tests.Sandbox\Konsole.Tests.Sandbox.csproj", "{067EBFCC-E97F-4D2F-8FFB-2E02E12AA931}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{DA26765B-E193-48DA-B2F5-EEFD9E6EFA49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA26765B-E193-48DA-B2F5-EEFD9E6EFA49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA26765B-E193-48DA-B2F5-EEFD9E6EFA49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067EBFCC-E97F-4D2F-8FFB-2E02E12AA931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067EBFCC-E97F-4D2F-8FFB-2E02E12AA931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067EBFCC-E97F-4D2F-8FFB-2E02E12AA931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067EBFCC-E97F-4D2F-8FFB-2E02E12AA931}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
