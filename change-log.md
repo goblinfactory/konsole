@@ -1,6 +1,26 @@
-﻿# Change Log
+# Change Log
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
+
+## [6.3.0]
+
+###  Added
+
+- Ability to create Progress bars without any text. 
+  * New progressbar constructor `new ProgressBar()` creates a new `no text ProgressBar, with char `#` and max of 100.
+    & New enum value, `PbStyle.BarOnly`
+- `IProgressBar` has additional properties
+  * `int Current { get; }` property. 
+  * `ConsoleColor TextColor { get; set;}`
+  * `ConsoleColor BarColor { get; set;}`
+- new type 'CharBar' - for ad-hoc bars at (x,y) location, with fixed width, without any text. e.g, quick indicators, or LED effects.
+
+### Minor breaking behavior.
+
+Minor breaking behavior are cosmetic only and wont break an application.
+
+- Default ProgressBar with no values, o
+
 
 ## [6.2.1]
 
@@ -174,7 +194,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 
 ### Fixed
 
-- #26 : fix bug where ProgressBar and ProgressBarSlim would report incorrect percentage (out by 1%) for some values.
+- #26 : fix bug where ProgressBar and ProgressBarNoText would report incorrect percentage (out by 1%) for some values.
 
 ## [3.3.0]
 
@@ -219,7 +239,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 ### Added
 
 - Menus
-- ProgressBarSlim
+- ProgressBarNoText
 
 ## [2.1.0] - 2017-05-07
 

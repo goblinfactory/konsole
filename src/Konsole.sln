@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-
 		..\change-log.md = ..\change-log.md
 		..\.github\workflows\dotnetcore.yml = ..\.github\workflows\dotnetcore.yml
 		global.json = global.json
-		..\README.source.md = ..\README.source.md
+		..\README.md = ..\README.md
 		..\test.ps1 = ..\test.ps1
 		..\docs\threading.md = ..\docs\threading.md
 	EndProjectSection
@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.Tests.Slow", "Konso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konsole.PerformanceTests", "Konsole.PerformanceTests\Konsole.PerformanceTests.csproj", "{DA26765B-E193-48DA-B2F5-EEFD9E6EFA49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxDeleteme", "SandboxDeleteme\SandboxDeleteme.csproj", "{E92FD2BB-2808-40BF-B19D-E1925025F8DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandboxDeleteme", "SandboxDeleteme\SandboxDeleteme.csproj", "{E92FD2BB-2808-40BF-B19D-E1925025F8DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

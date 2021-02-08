@@ -27,5 +27,5 @@ namespace Konsole
 
         void Clear(ConsoleColor? backgroundColor);
     }
-    //end-snippet
+    // end-snippet
 }

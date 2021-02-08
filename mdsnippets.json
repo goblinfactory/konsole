@@ -1,0 +1,6 @@
+{
+    "$schema": "https://raw.githubusercontent.com/SimonCropp/MarkdownSnippets/master/schema.json",
+    "Convention": "InPlaceOverwrite",
+    "WriteHeader":false,
+    "ReadOnly": false
+}

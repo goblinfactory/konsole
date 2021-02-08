@@ -19,6 +19,6 @@ namespace Konsole.Samples
             var pb2 = new ProgressBar(right, 100);
             pb2.Refresh(10, "Clint Eastwood");
         }
-        //end-snippet
+        // end-snippet
     }
 }

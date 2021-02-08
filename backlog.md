@@ -18,6 +18,10 @@ Update: 7 Feb 21, This isn't kept up to date. I'm hacking "issues" as way of tra
 - window keyboard event handler, highlight current windows, allow you to open 3 different boxes and tab between them, typing pushes keystrokes to each window in turn, if that window has a ReadText, then that windows gets input, cursor set
    to blink at that windows current position. Readtext should set cursor to readtext position.
 
+## unsorted ideas
+
+- fluently return IConsole on as many commands as possible, so that I can write, `var box = Window.OpenBox(10, 5, "demo").WriteLine(Yellow, "line1").Write(Red, "line2").PrintAt(Green, 2,3,'status');`
+
 ## Busy next
 - simple input, ReadLine()
 - support IObservable<T> in listView

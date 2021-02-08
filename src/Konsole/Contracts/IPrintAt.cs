@@ -10,5 +10,5 @@ namespace Konsole
         void PrintAt(int x, int y, string text);
         void PrintAt(int x, int y, char c);
     }
-    //end-snippet
+    // end-snippet
 }

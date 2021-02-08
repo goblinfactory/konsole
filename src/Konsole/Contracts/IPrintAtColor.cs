@@ -7,5 +7,5 @@ namespace Konsole
     {
         void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background);
     }
-    //end-snippet
+    // end-snippet
 }

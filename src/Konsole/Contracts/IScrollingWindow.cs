@@ -4,5 +4,5 @@
     public interface IScrollingWindow : IScrolling, IWindowed
     {
     }
-    //end-snippet
+    // end-snippet
 }

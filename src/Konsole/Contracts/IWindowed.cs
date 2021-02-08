@@ -16,5 +16,5 @@
         int WindowWidth { get; }
         int WindowHeight { get; }
     }
-    //end-snippet
-}   
+    // end-snippet
+}

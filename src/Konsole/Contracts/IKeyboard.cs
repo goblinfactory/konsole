@@ -26,5 +26,5 @@ namespace Konsole
 
         void OnCharPressed(char c, Action<char> key);
     }
-    //end-snippet
+    // end-snippet
 }
