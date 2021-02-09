@@ -39,37 +39,52 @@ namespace Konsole.PerformanceTests
             using (var logstream = File.OpenWrite("performance.log"))
             {
                 using var log = new StreamWriter(logstream);
-                log.WriteLine($"starting test [ {iterations} ] iterations.");
                 
-                var logs = Solution.Path("logs");
-                if (!Directory.Exists(logs)) Directory.CreateDirectory(logs);
-                
-                var tester = new Tester(log);
-                Console.WriteLine($"hello from default size console  {Console.WindowWidth}x{Console.WindowHeight}");
-                Screenshot.Take(Path.Combine(logs, "screen1"));
-                if(PlatformStuff.IsWindows)
+                try
                 {
-                    Console.SetWindowSize(90, 30);
-                    Console.WriteLine($"hello from 90x30");
-                    Screenshot.Take(Path.Combine(logs, "screen2"));
+                    log.WriteLine($"starting test [ {iterations} ] iterations.");
+                    var logs = Solution.Path("logs");
+                    if (!Directory.Exists(logs)) Directory.CreateDirectory(logs);
+
+                    var tester = new Tester(log);
+                    Console.WriteLine($"hello from default size console  {Console.WindowWidth}x{Console.WindowHeight}");
+                    Screenshot.Take(Path.Combine(logs, "screen1"));
+                    if (PlatformStuff.IsWindows)
+                    {
+                        Console.SetWindowSize(90, 30);
+                        Console.WriteLine($"hello from 90x30");
+                        Screenshot.Take(Path.Combine(logs, "screen2"));
+                    }
+
+                    // ----------------------
+                    //  THE ACTUAL TESTS 
+                    // ----------------------
+
+                    tester.TestIt(DirectoryListViewTestsSetup, iterations, "ListViewTests", DirectoryListViewTests, TakeScreenShot);
+                    //tester.TestIt(NoSetup, iterations, "NewWindowTest", NewWindowTest, DoNothing);
+                    //tester.TestIt(NoSetup, iterations, "NewWindowConcurrent", NewWindowConcurrent, DoNothing);
+                    //tester.TestIt(NewWindowSetup, iterations, "SplitRightLeft", SplitRightLeft, TakeScreenShot);
+                    //tester.TestIt(NewWindowSetup, iterations, "SplitColumns", SplitColumns, TakeScreenShot);
+                    //tester.TestIt(NewWindowSetup, iterations, "SplitRows", SplitRows, TakeScreenShot);
+                    //tester.TestIt(NewWindowSetup, iterations, "SplitRightLeft 2", SplitRows, TakeScreenShot);
+
+                    // TODO: write out test results to Logs.IO or similar, track performance over time.
+
+                    // ----------------------
+
                 }
-
-                // ----------------------
-                //  THE ACTUAL TESTS 
-                // ----------------------
-
-                tester.TestIt(DirectoryListViewTestsSetup, iterations, "ListViewTests", DirectoryListViewTests, TakeScreenShot);
-                //tester.TestIt(NoSetup, iterations, "NewWindowTest", NewWindowTest, DoNothing);
-                //tester.TestIt(NoSetup, iterations, "NewWindowConcurrent", NewWindowConcurrent, DoNothing);
-                //tester.TestIt(NewWindowSetup, iterations, "SplitRightLeft", SplitRightLeft, TakeScreenShot);
-                //tester.TestIt(NewWindowSetup, iterations, "SplitColumns", SplitColumns, TakeScreenShot);
-                //tester.TestIt(NewWindowSetup, iterations, "SplitRows", SplitRows, TakeScreenShot);
-                //tester.TestIt(NewWindowSetup, iterations, "SplitRightLeft 2", SplitRows, TakeScreenShot);
-
-                // TODO: write out test results to Logs.IO or similar, track performance over time.
-
-                // ----------------------
-                logstream.Flush();
+                catch (Exception ex)
+                {
+                    log.WriteLine("Error running performance test.");
+                    log.WriteLine(ex.Message);
+                    log.WriteLine("--------");
+                    log.WriteLine(ex.ToString());
+                    log.WriteLine("--------");
+                }
+                finally
+                {
+                    logstream.Flush();
+                }
             }
         }
 
