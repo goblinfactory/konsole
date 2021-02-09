@@ -39,7 +39,7 @@ jobs:
         dotnet test src/Konsole.Tests/Konsole.Tests.csproj
         dotnet test src/Konsole.Tests.Slow/Konsole.Tests.Slow.csproj
     - name: Performance Tests
-      run: START "performance-tests" /wait src/Konsole.PerformanceTests/bin/Release/netcoreapp3.0/Konsole.PerformanceTests.exe 10
+      run: START "performance-tests" /wait src/Konsole.PerformanceTests/bin/Release/net5.0/Konsole.PerformanceTests.exe 10
       shell: cmd
     - name: Archive performance results
       uses: actions/upload-artifact@v1
