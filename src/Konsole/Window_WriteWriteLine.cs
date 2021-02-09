@@ -247,10 +247,9 @@ namespace Konsole
         // ****************
         private void __write(IConsole console, string text)
         {
-            //#TODO:  code below was from interim changes to master, see if this is still needed
-            // var overflow = "";
-            // while (overflow != null)
-            if (_clipping && OverflowBottom)
+            //TODO: refactor DOCOMMAND so that we dont need it anymore? and fix this console being ignored! re-write as totally immutable!
+
+            if (Clipping && OverflowBottom)
                 return;
 
             var splits = text.SplitByCrLfOrNull();
@@ -270,7 +269,8 @@ namespace Konsole
                 return;
             }
 
-            DoCommand(_echoConsole, () =>
+            var overflow = "";
+            while (overflow != null)
             {
                 if (Clipping && _Cursor.X >= WindowWidth) break;
                 if (!_lines.ContainsKey(_Cursor.Y)) return;

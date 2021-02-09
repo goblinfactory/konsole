@@ -77,17 +77,17 @@ namespace Konsole.Tests.WindowTests
         }
 
 
-        [Test]
-        public void should_clip_child_window_to_not_exceed_parent_boundaries()
-        {
-            // this currently does not get clipped, it simply does not render at all? mmm...needs investigating and clipping added.
-            Assert.Inconclusive("Not yet implemented.");
+        //[Test]
+        //public void should_clip_child_window_to_not_exceed_parent_boundaries()
+        //{
+        //    // this currently does not get clipped, it simply does not render at all? mmm...needs investigating and clipping added.
+        //    Assert.Inconclusive("Not yet implemented.");
             
-            var c = new MockConsole(20, 10);
-            var w2 = c.Open( new WindowSettings { SX = 10, SY = 5, Width = 20, Height = 10, Theme = new StyleTheme(ConsoleColor.Red, ConsoleColor.White) });
-            Assert.AreEqual(10, w2.WindowWidth);
-            //Assert.AreEqual(5, w2.WindowHeight);
-        }
+        //    var c = new MockConsole(20, 10);
+        //    var w2 = c.Open( new WindowSettings { SX = 10, SY = 5, Width = 20, Height = 10, Theme = new StyleTheme(ConsoleColor.Red, ConsoleColor.White) });
+        //    Assert.AreEqual(10, w2.WindowWidth);
+        //    //Assert.AreEqual(5, w2.WindowHeight);
+        //}
 
         [Test]
         public void not_allow_start_x_y_values_outside_of_parent_window()
@@ -102,22 +102,22 @@ namespace Konsole.Tests.WindowTests
             //Assert.Inconclusive("new requirements");
         }
 
-        [Test]
-        public void use_parent_height_and_width_as_defaults()
-        {
-            Assert.Inconclusive();
-            //var c = new MockConsole(10,10);
-            //var state = c.State;
+        //[Test]
+        //public void use_parent_height_and_width_as_defaults()
+        //{
+        //    Assert.Inconclusive();
+        //    //var c = new MockConsole(10,10);
+        //    //var state = c.State;
 
-            //var w1 = new Window(c);
-            //w1.WindowHeight()
+        //    //var w1 = new Window(c);
+        //    //w1.WindowHeight()
 
-            //var w2 = new Window(0, 0, c);
-            //state.Should().BeEquivalentTo(c.State);
+        //    //var w2 = new Window(0, 0, c);
+        //    //state.Should().BeEquivalentTo(c.State);
 
-            //var w3 = new Window(0, 0, 10, 10, true, c);
-            //state.Should().BeEquivalentTo(c.State);
-        }
+        //    //var w3 = new Window(0, 0, 10, 10, true, c);
+        //    //state.Should().BeEquivalentTo(c.State);
+        //}
 
         [Test]
         public void set_scrolling_as_default_if_nothing_specified()
