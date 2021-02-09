@@ -1,4 +1,4 @@
-﻿# Konsole.Tests.Sandbox
+# Konsole.Tests.Sandbox
 
 Sandbox to move test code to, so that the samples project can be not messed with and the samples can be curated to be helpful documentation.
 

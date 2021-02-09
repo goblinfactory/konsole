@@ -23,7 +23,7 @@ This is the sum of all interfaces. It will require the most work to implement. T
 <!-- snippet: IConsole -->
 <a id='snippet-iconsole'></a>
 ```cs
-public interface IConsole : IPrintAtColor, IConsoleState, IWriteColor, IScrollingWindow 
+public interface IConsole : IPrintAtColor, IConsoleState, IWriteColor, IScrollingWindow, ITheme
 { 
     
 }
@@ -181,9 +181,13 @@ public interface IWriteColor : IWrite, ISetColors
     void WriteLine(ConsoleColor color, string text);
 
     void Clear(ConsoleColor? backgroundColor);
+
+    void Write(Colors colors, string text); 
+
+    void WriteLine(Colors colors, string text);
 }
 ```
-<sup><a href='/src/Konsole/Contracts/IWriteColor.cs#L5-L30' title='Snippet source file'>snippet source</a> | <a href='#snippet-iwritecolor' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Konsole/Contracts/IWriteColor.cs#L5-L34' title='Snippet source file'>snippet source</a> | <a href='#snippet-iwritecolor' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ## IPrintAt
@@ -200,7 +204,7 @@ public interface IPrintAt
     void PrintAt(int x, int y, char c);
 }
 ```
-<sup><a href='/src/Konsole/Contracts/IPrintAt.cs#L6-L13' title='Snippet source file'>snippet source</a> | <a href='#snippet-iprintat' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Konsole/Contracts/IPrintAt.cs#L3-L10' title='Snippet source file'>snippet source</a> | <a href='#snippet-iprintat' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ## IPrintAtColor
@@ -210,10 +214,16 @@ public interface IPrintAt
 ```cs
 public interface IPrintAtColor : IPrintAt, ISetColors
 {
-    void PrintAtColor(ConsoleColor foreground, int x, int y, string text, ConsoleColor? background);
+    void PrintAt(Colors colors, int x, int y, string format, params object[] args);
+    void PrintAt(Colors colors, int x, int y, string text);
+    void PrintAt(Colors colors, int x, int y, char c);
+
+    void PrintAt(ConsoleColor color, int x, int y, string format, params object[] args);
+    void PrintAt(ConsoleColor color, int x, int y, string text);
+    void PrintAt(ConsoleColor color, int x, int y, char c);
 }
 ```
-<sup><a href='/src/Konsole/Contracts/IPrintAtColor.cs#L5-L10' title='Snippet source file'>snippet source</a> | <a href='#snippet-iprintatcolor' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Konsole/Contracts/IPrintAtColor.cs#L5-L16' title='Snippet source file'>snippet source</a> | <a href='#snippet-iprintatcolor' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 ## IScrolling

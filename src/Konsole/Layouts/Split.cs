@@ -7,12 +7,19 @@ namespace Konsole
     {
         public Split()
         {
-
+            Size = 0;
         }
 
         public Split(int size)
         {
             Size = size;
+        }
+
+        public Split(string title)
+        {
+            Size = 0;
+            Title = title;
+            Thickness = LineThickNess.Single;
         }
 
         public Split(int size, string title)

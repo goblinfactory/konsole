@@ -9,29 +9,22 @@ namespace Konsole.Tests.RunOne
 
         static void Main(string[] args)
         {
-            var w = new Window();
-            var feed = w.SplitLeft("feed");
-            var status  = w.SplitRight("status");
+            var c = Window.OpenBox("test", 40, 6);
+            var left = c.SplitLeft();
+            var right = c.SplitRight();
+            left.WriteLine("one");
+            left.WriteLine("two");
+            left.WriteLine("three");
+            left.WriteLine("four");
+            // used write here so that last line does not add aditional scroll
+            left.Write("five");
 
-            // now try to break the layout!
+            right.WriteLine("foo");
+            right.WriteLine("cats");
+            right.WriteLine("dogs");
+            // last line is already scrolling ie at the bottom of the screen so this adds an additional scroll
+            right.WriteLine("dots");
 
-            var longText = @"
-        a ver wide text block ...  aqsdasds            asad as                 q   k    j  h   jq  q   jkh jk  hjk         j   j   h   jkh kh  k   j       kjh jkh     kj   k  jh      hjk 
-                   
-        line 1
-    line2
-line 3
-    line 4
-        line5
-
-";
-
-            var shortTexts = "adas\n\r das askladsdfs dfsklfdsadlfj slashN\n  asdklfas sdfasl slashr-slashn\r\n;djsdfj asadsklfja  adsfasdlkf slashN-slashR\n\r ajsklf jsdfklsklfadsf adsfl ds";
-            Console.ReadKey();
-            feed.WriteLine(Green, longText);
-            feed.WriteLine(Yellow, shortTexts);
-
-            status.WriteLine(Yellow, "Press enter to quit");
             Console.ReadLine();
         }
     }

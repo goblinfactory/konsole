@@ -283,18 +283,28 @@ To open a progress bar inside a new window, just pass the window (`IConsole`) as
 ```cs
 public static void Main(string[] args)
 {
-    var w = Window.OpenBox("tasks", 60, 8);
-    var right = w.SplitLeft("files");
-    var left = w.SplitRight("users");
+    var w = Window.OpenBox("tasks", 64, 9);
+    var left = w.SplitLeft("files");
+    var right = w.SplitRight("users");
     
     var pb1 = new ProgressBar(left, 100);
     pb1.Refresh(50, "hotel-california.mp3");
 
     var pb2 = new ProgressBar(right, 100);
     pb2.Refresh(10, "Clint Eastwood");
+
+    Console.ReadKey(true);
+    var pbl = new List<ProgressBar>();
+    for (int i = 1; i < 6; i++)
+    {
+        var pb = new ProgressBar(left, 100);
+        pbl.Add(pb);
+        pb.Refresh(100, $"hello {i}");
+        Console.ReadKey(true);
+    }
 }
 ```
-<sup><a href='/src/Konsole.Samples/Samples/ProgressBarInsideWindow.cs#L9-L22' title='Snippet source file'>snippet source</a> | <a href='#snippet-progressbarinsidewindow' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Konsole.Samples/Demos/ProgressBars/ProgressBarInsideWindow.cs#L9-L32' title='Snippet source file'>snippet source</a> | <a href='#snippet-progressbarinsidewindow' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 Gives you
@@ -323,7 +333,7 @@ _console.Buffer.Should().BeEquivalentTo(new[]
     "└────────────────────┘"
 });
 ```
-<sup><a href='/src/Konsole.Tests/ProgressBarNoTextTests/RefreshShould.cs#L38-L54' title='Snippet source file'>snippet source</a> | <a href='#snippet-progresscharbar' title='Start of snippet'>anchor</a></sup>
+<sup><a href='/src/Konsole.Tests/ProgressCharBarTests/RefreshShould.cs#L38-L54' title='Snippet source file'>snippet source</a> | <a href='#snippet-progresscharbar' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
 
 # Threading and threadsafe writing to the Console.
@@ -468,7 +478,7 @@ gives you
 
 Open a full screen styled window with a lined box border with a title. Styling allows for setting foreground and background color of the Line, Title, and body, as well as the line thickness, single or double using default styling, white on black, single thickness line. 
 
-```csharp4
+```csharp
 
   [Test]
         public void WhenNested_draw_a_box_around_the_scrollable_window_with_a_centered_title_and_return_a_live_window_at_the_correct_screen_location()
@@ -609,837 +619,59 @@ Same as `Write` but simulates a carriage return by moving the `CursorTop` to nex
 
 ## SplitRows
 
-Split a console window screen into rows of screens. Returns an array of the rows. Specify the height for each split. Use a height of `0` to indicate that row will take the remainder of the rows. Similar to `*` in CSS.
-
-- `IConsole[] _SplitRows(IConsole c, params Split[] splits)`
-
-```csharp
- var con = new MockConsole(20, 11);
-            var consoles = con.SplitRows(
-                    new Split(3, "headline", LineThickNess.Single, ConsoleColor.Yellow),
-                    new Split(0, "content", LineThickNess.Single),
-                    new Split(3, "status", LineThickNess.Single, ConsoleColor.Yellow)
-            );
-
-            var headline = consoles[0];
-            var content = consoles[1];
-            var status = consoles[2];
-
-            headline.Write("my headline that scrolls because of wrapping");
-            content.Write("content goes here, and this content get's wrapped, and if long enough will cause a bit of scrolling.");
-            status.Write("I get clipped & scroll off.");
-
-            var expected = new[]
-            {
-                    "┌──── headline ────┐",
-                    "│wrapping          │",
-                    "└──────────────────┘",
-                    "┌───── content ────┐",
-                    "│ if long enough wi│",
-                    "│ll cause a bit of │",
-                    "│scrolling.        │",
-                    "└──────────────────┘",
-                    "┌───── status ─────┐",
-                    "│roll off.         │",
-                    "└──────────────────┘"
-            };
-
-            con.Buffer.Should().BeEquivalentTo(expected);
-```
-
-## SplitColumns
-
-Split a console window screen into columns of screens. Returns an array of the rows. Specify the height for each split. Use a height of `0` to indicate that row will take the remainder of the rows. Similar to `*` in CSS.
-
-- `IConsole[] _SplitRows(IConsole c, params Split[] splits)`
-
-```csharp
-
-        [Test]
-        public void split_the_window_into_windows_using_provided_splits()
-        {
-            var con = new MockConsole(19, 5);
-            var cols = con.SplitColumns(
-                new Split(9, "left"),
-                new Split(0, "right")
-                );
-            var left = cols[0];
-            var right = cols[1];
-
-            left.WriteLine("one");
-            left.WriteLine("two");
-            left.Write("three");
-
-            right.WriteLine("four");
-            right.WriteLine("five");
-            right.Write("six");
-
-            var expected = new[]
-            {    
-                "┌ left ─┐┌─ right ┐",
-                "│one    ││four    │",
-                "│two    ││five    │",
-                "│three  ││six     │",
-                "└───────┘└────────┘"
-            };
-            con.Buffer.Should().BeEquivalentTo(expected);
-        }
-```
-
-## Advanced windows with `SplitRows` and `SplitColumns`
-
-You can create advanced window layouts using `SplitRows` and `SplitColumns` passing in a collection of Splits. Pass in a size of `0` to indicate that `row` or `column` window must contain the remainder of the window space. 
-
-```csharp
-            var c = new Window();
-            var consoles = c.SplitRows(
-                    new Split(4, "heading", LineThickNess.Single),
-                    new Split(0),
-                    new Split(4, "status", LineThickNess.Single)
-            ); ; ;
-
-            var headline = consoles[0];
-            var status = consoles[2];
-
-            var contents = consoles[1].SplitColumns(
-                    new Split(20),
-                    new Split(0, "content") { Foreground = ConsoleColor.White, Background = ConsoleColor.Cyan },
-                    new Split(20)
-            );
-            var menu = contents[0];
-            var content = contents[1];
-            var sidebar = contents[2];
-
-            headline.Write("my headline");
-            content.WriteLine("content goes here");
-
-            menu.WriteLine("Options A");
-            menu.WriteLine("Options B");
-
-            sidebar.WriteLine("20% off all items between 11am and midnight tomorrow!");
-
-            status.Write("System offline!");
-            Console.ReadLine();
-```
-
-Produces the following window. Each of the console(s) that you have a reference to can be written to like any normal console, and will scroll and clip correctly. You can create progress bar instances inside these windows like any console.
-
-<img src='docs/img/06-window-example.png' width='600' />
-
-Configure the properties of each section of a window with the `Split` class.
-
-```csharp
-new Split(size) 
-{
-    title,
-    lineThickNess, 
-    foregroundColor,
-    backgroundColor
-};
-```
-
-## SplitLeft
-
-Split an `IConsole` window and return the left half of a screen. Returns an `IConsole` consisting of the inner window representing the scrollable window region inside the lined border. 
-
-- `IConsole SplitLeft(this Window c)`
-- `IConsole SplitLeft(this Window c, ConsoleColor foreground)`
-- `IConsole SplitLeft(this Window c, string title)`
-- `IConsole SplitLeft(this Window c, string title, ConsoleColor foreground)`
-- `IConsole SplitLeft(this Window c, string title, LineThickNess thickness)`
-- `IConsole SplitLeft(this Window c, string title, LineThickNess thickness, ConsoleColor foreground)`
-
-## SplitRight
-
-Split an `IConsole` window and return the left half of a screen. Returns an `IConsole` consisting of the inner window representing the scrollable window region inside the lined border.
-
-- `IConsole SplitRight(this Window c)`
-- `IConsole SplitRight(this Window c, ConsoleColor foreground)`
-- `IConsole SplitRight(this Window c, string title)`
-- `IConsole SplitRight(this Window c, string title, ConsoleColor foreground)`
-- `IConsole SplitRight(this Window c, string title, LineThickNess thickness)`
-- `IConsole SplitRight(this Window c, string title, LineThickNess thickness, ConsoleColor foreground)`
-
-
-#### SplitLeft, SplitRight example
-
-```csharp
-    var w = new Window();
-
-    // split left
-    var left = w.SplitLeft("left");
-
-    // split right
-    var right = w.SplitRight("right");
-
-    left.WriteLine("one");
-    left.WriteLine("two");
-    left.Write("three");
-
-    right.WriteLine("four");
-    right.WriteLine("five");
-    right.Write("six");
-```
-
-gives you
-
-```
-    ┌ left ─┐┌─ right ┐
-    │one    ││four    │
-    │two    ││five    │
-    │three  ││six     │
-    └───────┘└────────┘
-```
-
-## SplitLeftRight
-
-Split an `IConsole` window instance into two equal halves in one command returning a tuple consisting of the two inner windows representing the scrollable window region inside the lined border. The lined border between the two windows are merged.
-
-- `(IConsole left, IConsole right) SplitLeftRight(this Window c, BorderCollapse border = Collapse)`
-- `(IConsole left, IConsole right) SplitLeftRight(this Window c, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)`
-- `(IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, BorderCollapse border = Collapse)`
-- `(IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)`
-- `(IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, LineThickNess thickness, BorderCollapse border = Collapse)`
-- `(IConsole left, IConsole right) SplitLeftRight(this Window c, string leftTitle, string rightTitle, LineThickNess thickness, ConsoleColor foreground, ConsoleColor background, BorderCollapse border = Collapse)`
-
-```csharp
-    void Fill(IConsole con) => { 
-        con.WriteLine("one");
-        con.WriteLine("two");
-        con.WriteLine("three");
-        con.WriteLine("four");
-    }
-    (var left, var right) = win.SplitLeftRight("left", "right");
-    
-    Fill(left);
-    Fill(right);
-    
-    // gives you   ...
-
-    ┌ left ─┬─ right ┐
-    │two    │two     │
-    │three  │three   │
-    │four   │four    │
-    └───────┴────────┘    
-```
-
-## SplitTop
-
-- `IConsole SplitTop(this IConsole c)`
-- `IConsole SplitTop(this IConsole c, ConsoleColor foreground)`
-- `IConsole SplitTop(this IConsole c, string title)`
-- `IConsole SplitTop(this IConsole c, string title, ConsoleColor foreground)`
-- `IConsole SplitTop(this IConsole c, string title, LineThickNess thickness)`
-- `IConsole SplitTop(this IConsole c, string title, LineThickNess thickness, ConsoleColor foreground)`
-
-## SplitBottom
-
-- `IConsole SplitBottom(this IConsole c)`
-- `IConsole SplitBottom(this IConsole c, ConsoleColor foreground)`
-- `IConsole SplitBottom(this IConsole c, string title)`
-- `IConsole SplitBottom(this IConsole c, string title, ConsoleColor foreground)`
-- `IConsole SplitBottom(this IConsole c, string title, LineThickNess thickness)`
-- `IConsole SplitBottom(this IConsole c, string title, LineThickNess thickness, ConsoleColor foreground)`
-
-```csharp
-    var w = new Window();
-    var top = w.SplitTop("top");
-    var bottom = w.SplitBottom("bot");
-
-    top.WriteLine("one");
-    top.WriteLine("two");
-    top.Write("three");
-
-    bottom.WriteLine("four");
-    bottom.WriteLine("five");
-    bottom.Write("six");
-
-```
-
-gives you
-
-```
-    ┌── top ─┐
-    │one     │
-    │two     │
-    │three   │
-    └────────┘
-    ┌── bot ─┐
-    │four    │
-    │five    │
-    │six     │
-    └────────┘
-```
-
-## SplitTopBottom
-
-## Nested Windows
-
-#### combining `SplitTop, SplitBottom` with `SplitLeft, SplitRight`
-
-```csharp
-    var win = new Window(30,10);
-
-    var left = win.SplitLeft("left");
-    var right = win.SplitRight("right");
-    
-    var top = left.SplitTop("top");
-    var bottom = left.SplitBottom("bot");
-    
-    top.WriteLine("one");
-    top.WriteLine("two");
-    top.Write("three");
-
-    bottom.WriteLine("four");
-    bottom.WriteLine("five");
-    bottom.Write("six");
-```
-
-Gives you the window shown below.
-
-Note that `top` and `bottom` windows are only 2 lines high and therefore printing three lines has cause the windows to scroll the top item off the window.
-
-```
-┌─── left ────┐┌─── right ───┐
-│┌─── top ───┐││             │
-││two        │││             │
-││three      │││             │
-│└───────────┘││             │
-│┌─── bot ───┐││             │
-││five       │││             │
-││six        │││             │
-│└───────────┘││             │
-└─────────────┘└─────────────┘
-```
-
-# Window Properties
-
-(TBD) - Link to new readme.
-
-# Input
-
-To capture input, create an Inline Window, e.g. `var myWindow = Window.Open(width, height, title)` and the cursor will be placed immediately UNDERNEATH the newly created window, and you can use and normal `Console.ReadLine()` reads, `Console.ReadLine()` will run at the current cursor.
-
-#### [Roadmap - version 6]  : `version 6 includes significant updates addressed at forms, input and listview` For now, use `Console.ReadLine`.
-
-Here's a worked example showing you how to read input using `Konsole`
-
-```csharp
-
-        static void Main(string[] args)
-        {
-            static void Compress(IConsole status, string file)
-            {
-                status.WriteLine($"compressing {file}");
-                Thread.Sleep(new Random().Next(10000));
-                status.WriteLine(Green, $"{file} (OK)");
-            }
-
-            static void Index(IConsole status, string file)
-            {
-                status.WriteLine($"indexing {file}");
-                Thread.Sleep(new Random().Next(10000));
-                status.WriteLine(Green, " finished.");
-            }
-
-            var console = new ConcurrentWriter();  // < -- NOTE THE ConcurrentWriter to replace Console
-
-            // open two new windows inline at the current cursor position
-            // cursor will move to below the new windows for easy ReadLine input
-
-            var compressWindow = Window.OpenBox("compress", 50, 10);
-            
-            console.WriteLine("I am below compress");
-
-            var encryptWindow = Window.OpenBox("encrypt", 50, 10);
-
-            var tasks = new List<Task>();
-
-            while (true)
-            {
-                console.Write("Enter name of file to process (quit) to exit:");
-                var file = Console.ReadLine();
-                if (file == "quit") break;
-                tasks.Add(Task.Run(() => Compress(compressWindow, file)));
-                tasks.Add(Task.Run(() => Index(encryptWindow, file)));
-                console.WriteLine($"processing {file}");
-            }
-
-            console.WriteLine("waiting for background tasks");
-            Task.WaitAll(tasks.ToArray());
-            Console.WriteLine("done.");
-        }
-```
-
-Running the code above gives you
-
-<img src='docs/img/07-input.png' width='600' />
-
-## Clipping and Transparency
-
-#### experimental Window constructors
-
-These `Window` constructors are specifically to support writing controls and take optional `K` parameters. This is experimental for now and the constructor params will be changed in future release as the API stabilises as we get more users to give us feedback. There's a long story behind why I used the ugly `K` parameter instead of more traditional constructor injection, buy me a beer and I'll tell you. Some of the original problems that led to `K` are no longer a problem and I will be removing it going forward and will be moving this out of `experimental` add adding to `BoxStyle`. 
-
-- `public Window(int x, int y, int width, int height, IConsole echoConsole = null, params K[] options)`
-- `public Window(IConsole echoConsole, params K[] options)`
-- `public Window(IConsole console, int width, int height, params K[] options)`
-- `public Window(IConsole console, int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)`
-- `public Window(int width, int height, ConsoleColor foreground, ConsoleColor background, params K[] options)`
-
-K | effect
---- | ---
-Transparent | window background color is transparent until you start writing then will print using the configured fore and background color i.e. initial window will not clear the background
-FullScreen | window background color is transparent until you start writing then will print using the configured fore and background color i.e. initial window will not clear the background
-Clipping | printing off the screen is clipped, no scrolling. Clipping is the default behavior for a window.
-Scrolling | printing off the bottom of the window causes the window to scroll. (cannot be used in conjunction with Clipping) Scrolling is the default window behavior.
-
-```csharp
-    // create a single line 40 characters wide floating window 
-    // starting at 10,10
-    // White on blue text
-    // with any overflow will be clipped. 
-    // No scrolling. 
-    var singleLineWindow = new Window(10,10, 40, 1, White, Blue, K.Clipping);
-```
-
-
-# Draw
-
-## Draw
-
-Draw lines and boxes single or double line width on the console window and intelligently merge lines that are drawn.
-
-Start by creating a `Draw` instance, that needs an `IConsole`. for example
-
-```
-var window = new Window();
-var draw = new Draw(window);
-```
-
-#### Draw constructors
-
-Draw lines, optionally merging them intelligently to draw console forms or borders or lines.
-
-- `Draw(IConsole console)`
-- `Draw(IConsole console, LineThickNess thickness = LineThickNess.Single, MergeOrOverlap mergeOrOverlap = MergeOrOverlap.Merge)`
-
-[V6 roadmap] 
-
-- `new Draw()` - draw without needing a window instance
-
-#### Draw methods
-
-## Box
-
-Draw a box from start to end, with an optional centered title. Returns the draw instance for fluent chaining.
-
-- `Draw Box(int sx, int sy, int ex, int ey, LineThickNess? thickness = null)`
-- `Draw Box(int sx, int sy, int ex, int ey, string title, LineThickNess? thicknessOverride = null)`
-
-```csharp
-var window = new Window();
-new Draw(window).Box(2, 2, 42, 8, "my test box", LineThickNess.Single);
-```
-gives you
-```
- ┌───────────── my test box ─────────────┐  
- │                                       │ 
- │                                       │ 
- │                                       │ 
- │                                       │ 
- │                                       │ 
- └───────────────────────────────────────┘ 
-```
-
-#### boxes can overlap
-
-Boxes can overlap and line chars are intelligently merged. This allows for creating very sophisticated designs.
-
-The sample below uses `MockConsole` which is also part of the `Konsole` library, so that we can `assert` on what was drawn to the console.
-
-```csharp
-            var console = new MockConsole(12, 10);
-            var line = new Draw(console, LineThickNess.Single, Merge);
-            line.Box(0, 0, 8, 6, LineThickNess.Single);
-            line.Box(3, 3, 11, 9, LineThickNess.Double);
-
-            var expected = new[]
-            {
-               "┌───────┐   ",
-               "│       │   ",
-               "│       │   ",
-               "│  ╔════╪══╗",
-               "│  ║    │  ║",
-               "│  ║    │  ║",
-               "└──╫────┘  ║",
-               "   ║       ║",
-               "   ║       ║",
-               "   ╚═══════╝"
-            };
-            console.Buffer.Should().BeEquivalentTo(expected);
-```
-
-## Line
-
-Draw a line between two points, either horizontally or vertically. 
-
-- `Draw Line(int sx, int sy, int ex, int ey, LineThickNess? thickness = null)`
-
-```csharp
-
-var window = new Window();
-
-
-int height = 18;
-int sy = 2;
-int sx = 2;
-int width = 60;
-int ex = sx + width;
-int ey = sy + height;
-int col1 = 20;
-
-  var draw = new Draw(console, LineThickNess.Double);
-            draw
-                .Box(sx, sy, ex, ey, "my test box")
-                .Line(sx, sy + 2, ex, sy + 2)
-                .Line(sx + col1, sy, sx + col1, sy + 2, LineThickNess.Single)
-                .Line(sx + 35, ey - 4, ex - 5, ey - 4, LineThickNess.Double)
-                .Line(sx + 35, ey - 2, ex - 5, ey - 2, LineThickNess.Double)
-                .Line(sx + 35, ey - 4, sx + 35, ey - 2, LineThickNess.Single) 
-                .Line(ex - 5, ey - 4, ex - 5, ey - 2, LineThickNess.Single); 
-
-window.PrintAt(sx + 2, sy + 1, "DEMO INVOICE");                
-```
-
-gives you. (there is a small bug when switching from single to double line at a corner, as seen in the sample below, this will be fixed in upcoming version 6.)
-
-```
-╔═══════════════════╤═══ my test box ═══════════════════════╗
-║ DEMO INVOICE      │                                       ║
-╠═══════════════════╧═══════════════════════════════════════╣
-║                                                           ║
-║                                                           ║
-║                                                           ║
-║                                                           ║
-║                                                           ║
-║                                                           ║
-║                                                           ║
-║                                                           ║
-║                                                           ║
-║                                                           ║
-║                                                           ║
-║                                  ╤═══════════════════╤    ║
-║                                  │                   │    ║
-║                                  ╧═══════════════════╧    ║
-║                                                           ║
-╚═══════════════════════════════════════════════════════════╝
-
-```
-
-# Forms
-
-Quickly and neatly render an object and it's properties in a window or to the console. Support for multiple border styles. Support C# objects or dynamic objects.  Readonly forms are currently rendered. (Currently only text fields, readonly, simple objects.) On the backlog; `[V6]` add additional field types, complex objects, and editing. 
-
-#### constructors
-
-- `public Form()`
-- `public Form(int width)`
-- `Form(IConsole console = null)`
-
-If no width is provided, the whole width of the parent window is used.
-
-#### Form methods
-
-## Write
-
-Form is written (inline) at current cursor position, and cursor is updated to next line below form, with left=0. 
-
-- `void Write<T>(T item, string title = null)`
-
-#### Rendering Null objects
-
-```csharp
-var form = new Form();
-Person p = null;
-console.WriteLine("line1");
-form.Write(p);
-console.WriteLine("line2");
-```
-gives you
-```
-line1
-    ┌────────────────────────────────── Person  ──────────────────────────────────┐
-    │ Null                                                                        │
-    └─────────────────────────────────────────────────────────────────────────────┘
-line2
-```
-
-#### Rendering Nullable fields
-
-```csharp
-var form = new Form(54, new ThinBoxStyle());
-var numclass = new TestClasses.FormTests.MixedNumClass
-{
-    DoubleField = double.MaxValue,
-    DoubleNull = null,
-    IntMinValue = int.MaxValue,
-    IntNull = null,
-    FloatField = 10.1234F,
-    FloatNull = null,
-};
-form.Write(numclass);
-```
-gives you
-```
-┌────────────────── MixedNumClass  ──────────────────┐
-│ Double Field      : 1.7976931348623157E+308        │
-│ Double Null       : Null                           │
-│ Int Min Value     : 2147483647                     │
-│ Int Null          : Null                           │
-│ Float Field       : 10.1234                        │
-│ Float Null        : Null                           │
-└────────────────────────────────────────────────────┘
-```
-
-#### Numerics and Nullable types
-
-
-#### examples showing auto rendering of simple objects.
-
-`using Konsole.Forms`
- 
-```csharp
-        using Konsole.Form;
-        ...
-            var form1 = new Form(80,new ThickBoxStyle());
-            var person = new Person()
-            {
-                FirstName = "Fred",
-                LastName = "Astair",
-                FieldWithLongerName = "22 apples",
-                FavouriteMovie = "Night of the Day of the Dawn of the Son 
-                of the Bride of the Return of the Revenge of the Terror 
-                of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating 
-                Subhumanoid Zombified Living Dead, Part 2: In Shocking 2-D"
-            };
-            form1.Write(person);
-```
-
-![sample output](docs/img/08-form-person.png)
-
-
-```csharp        
-
-           // works with anonymous types
-            new Form().Write(new {Height = "40px", Width = "200px"}, "Demo Box");
-```
-![sample output](docs/img/09-form-demobox.png)
-
-```csharp        
-
-            // change the box style, and width
-            new Form(40, new ThickBoxStyle()).Show(new { AddUser= "true", CloseAccount = "false", OpenAccount = "true"}, "Permissions");
-```
-![sample output](docs/img/10-form-permissions.png)
-
-# `Goblinfactory.Konsole.Windows` (seperate nuget package)
-
-TODO: move to seperate readme.
-
-# HighSpeedWriter 
-
-If you want to write a console game, or serious console application that you've tested and it's too slow using normal Konsole writing, and you are OK with the app only running on windows, then you can use `HighSpeedWriter` to write to the console window via native windows `Kernel32`. (A highspeed writer for MAC has been succesfully spiked and is on the backlog and will allow you to use Konsole to write .NET Core console apps that run on OSX and Windows.)
-
-If you are only going to be updating small portions of the screen, then it is less CPU intensive to simply use `PrintAt` without a highspeed writer. 
-
-The other trade off is you need to keep calling `.Flush()` on your writer to refresh the screen. For a game you could dedicate a timer thread to refresh on `tick` and allow you to control the refresh rate, and cpu usage. Higher refresh rates will use more cpu.
-
-## Getting started with `HighSpeedWriter`
-
-You use `Konsole` in the same way as described in the docs further above, except that all output is buffered, and you need to call `Flush()` on the writer when you want to update the screen. 
-
-If you have multiple threads writing to the Console, then instead of calling flush all the time, another option is to create a background thread that will `tick` over and refresh the screen x times a second. (depending on what framerate you require).
-
-Known issues 
-
-- `HighSpeedWriter` currently is not optimised to only write to a `dirty` section of a screen, that is on the backlog to implement. The result is that it's the same amount of CPU work to refresh the entire screen, as it is to update just 1 character. 
-
-## HighSpeedWriter end to end sample
-
-below is code that should give you a clue as to how I'm using HighSpeedWriter for myself. This sample code produces the following screen and output.
-
-![sample demo using HighSpeedWriter](docs/img/11-crazy-fast-demo.gif)
-
-**Below is the source code that produced these screenshots** 
-
-<!-- snippet: RealtimeStockPriceMonitorWithHighSpeedWriter -->
-<a id='snippet-realtimestockpricemonitorwithhighspeedwriter'></a>
+Split a console window screen into rows of screens. Returns an array of the rows. Provide either a string title for a boxed row, or a `Split`. Optionally Specify the height for each split. Use a height of `0` to indicate that row will take the remainder of the rows. Similar to `*` in CSS.
+
+**Evenly split rows**
+<!-- snippet: splitrows -->
+<a id='snippet-splitrows'></a>
 ```cs
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Konsole;
-using Konsole.Internal;
-using static System.ConsoleColor;
+var rows = console.SplitRows("top","middle", "bottom");
+rows[0].Write("one");
+rows[1].Write("two");
+rows[2].Write("three");
 
-namespace Konsole.Samples
-{
-    public static class RealtimeStockPriceMonitorWithHighSpeedWriter
-    {
-        //TODO: get a feed of stock symbols, and allow user to pick stock prices from column B, and add to monitor
-        //      on left. use fake (and real) stock service
-        static bool finished = false;
-        static bool crazyFast = false;
-        static Func<bool> rand = () => new Random().Next(100) > 49;
-        public static void Main(string[] args)
-        {
-
-            using var writer = new HighSpeedWriter();
-            var window = new Window(writer);
-
-            window.CursorVisible = false;
-            
-            var left = window.SplitLeft();
-            var leftConsoles = left.SplitRows(
-                new Split(0),
-                new Split(9, "status"),
-                new Split(10)
-                );
-
-            var status = leftConsoles[1];           
-            status.BackgroundColor = Yellow;
-            status.ForegroundColor = Red;
-            status.Clear();
-
-            var stocksCon = leftConsoles[0];            
-            var menuCon = leftConsoles[2];
-            var namesCon = window.SplitRight("account audit log");
-
-            var r = new Random();
-            int speed = 200;
-            int i = 0;
-
-            // print random names in random colors 
-            // and demonstrate scrolling and wrapping at high speed
-            var t1 = Task.Run(() => {
-                var names = TestData.MakeNames(500);
-                while (!finished)
-                {
-                    if (crazyFast)
-                    {
-                        while (crazyFast && !finished)
-                        {
-                            // fill a screen full before flushing
-                            // this is super quick because writer 
-                            // simply writes to a buffer and no actual
-                            // slow IO has happened yet
-                            for(int x = 0; x < 100; x++)
-                            {
-                                var color = (ConsoleColor)(r.Next(100) % 16);
-                                namesCon.Write(color, $" {names[i++ % names.Length]}");
-                            }
-                            // now lets flush this massive block of updates
-                            writer.Flush();
-                        }
-                    }
-                    else
-                    {
-                        var color = (ConsoleColor)(r.Next(100) % 16);
-                        namesCon.Write(color, $" {names[i++ % names.Length]}");
-                        if (finished) break;
-                        Thread.Sleep(r.Next(speed));
-                        writer.Flush();
-                    }
-                }
-            });
-
-            var t3 = Task.Run(() =>
-            {
-                // stock ticker simulation
-                var stocksNYSE = new[] { "BRK.A", "MSFT", "AMZN", "BTG.L", "AAPL", "LWRF.L", "GBLN1", "GBLN2" };
-                var stocksFTSE = new[] { "SDR", "WPP", "ABF", "BP", "AVV", "AAL", "KGF", "MNDI", "NG","RM", "NXT","PSON" };
-                var FTSE100Con = stocksCon.SplitLeft("FTSE 100");
-                var NYSECon = stocksCon.SplitRight("NYSE");
-
-                while (!finished)
-                {
-                    decimal move = (decimal)r.Next(100) / 10;
-                    decimal newPrice = (50 + r.Next(100) + move);
-                    decimal perc = ((decimal)r.Next(2000) / 100);
-                    var increase = rand() ? true : false;
-                    var sign = increase ? '+' : '-';
-                    var changeColor = perc < 10 ? Cyan : increase ? Green : Red;
-                    IConsole con;
-                    string stock;
-                    if (rand())
-                    {
-                        con = FTSE100Con;
-                        stock = stocksFTSE[r.Next(stocksFTSE.Length)];
-                    }
-                    else
-                    {
-                        con = NYSECon;
-                        stock = stocksNYSE[r.Next(stocksNYSE.Length)];
-                    }
-                    con.Write(White, $"   {stock,-10}");
-                    con.WriteLine(changeColor, $"{newPrice:0.00}");
-                    con.WriteLine(changeColor, $"  ({sign}{newPrice}, {perc}%)");
-                    con.WriteLine("");
-                    Thread.Sleep(r.Next(2000));
-                }
-            });
-
-            // create a menu inside the menu console window
-            // the menu will write updates to the status console window
-
-            var menu = new Menu(menuCon, "Menu", ConsoleKey.Escape, 30,
-                new MenuItem('s', "slow", () =>
-                {
-                    speed = 200;
-                    status.Write(White, $" : {DateTime.Now.ToString("HH:mm:ss - ")}");
-                    status.WriteLine(Green, $" SLOW ");
-                    crazyFast = false;
-                }),
-                new MenuItem('f', "fast", () =>
-                {
-                    speed = 10;
-                    status.Write(White, $" : {DateTime.Now.ToString("HH:mm:ss - ")}");
-                    status.WriteLine(White, $" FAST ");
-                    crazyFast = false;
-                }),
-                new MenuItem('c', "crazy fast", () =>
-                {
-                    speed = 1;
-                    crazyFast = true;
-                    status.Write(White, $" : {DateTime.Now.ToString("HH:mm:SS - ")}");
-                    status.WriteLine(Red, $" CRAZY FAST ");
-                })
-
-            );
-
-            status.WriteLine("press up and down to select a menu item, and enter or highlighted letter to select. Press escape to quit.");
-
-            // menu writes to the console automatically,
-            // but because we're using a buffered screen writer
-            // we need to flush the UI after any menu action.
-            menu.OnAfterMenuItem = _ => writer.Flush();
-
-            menu.Run();
-            // menu will block until user presses the exit key.
-
-            finished = true;
-            Task.WaitAll(t1, t3);
-
-            window.Clear();
-            window.WriteLine("thank you for flying Konsole air.");
-            writer.Flush();
-        }
-    }
-}
+console.Buffer.Should().BeEquivalentTo(new[] {
+    "┌── top ─┐",
+    "│one     │",
+    "└────────┘",
+    "┌ middle ┐",
+    "│two     │",
+    "└────────┘",
+    "┌ bottom ┐",
+    "│three   │",
+    "└────────┘"
+});
 ```
-<sup><a href='/src/Konsole.Samples/Samples/RealtimeStockPriceMonitorWithHighSpeedWriter.cs#L1-L165' title='Snippet source file'>snippet source</a> | <a href='#snippet-realtimestockpricemonitorwithhighspeedwriter' title='Start of snippet'>anchor</a></sup>
+
+<sup><a href='/src/Konsole.Tests/WindowTests/SplitWithBorderTests/splitRowsTests.cs#L51-L70' title='Snippet source file'>snippet source</a> | <a href='#snippet-splitrows' title='Start of snippet'>anchor</a></sup>
 <!-- endSnippet -->
+
+**Wildcards in `SplitRows`, `SplitColumns`**
+
+SplitRows, SplitColumns now supports multiple wildcards per split layout, for example 
+
+```csharp
+    // assuming width of 60
+    var columns = console.SplitColumns(
+        new Split(10, "left"),      // Fixed width of 10.
+        new Split("wild1"),         // Wildcard : no width specified, this column will be 15.
+        new Split(10, "middle"),    // Fixed width of 10.
+        new Split("wild2"),         // Wildcard, will be 15 characters wide.
+        new Split(10,"right")       // Fixed width of 10.
+    );
+```
+
+> Wildcard column size above is 15 because -> (balance of 60 - [10 x 3] = 30) split evenly between all the wildcards
+
+**Shortcut `SplitColumns` notation**
+
+Shortcut notation of supplying only the caption for each split row or column will all have equal sizes.
+
+```csharp
+    var actors = Window.OpenBox("London", width:60, height:20);
+    var columns = box.SplitColumns("a-grade", "b-grade", "extras"); // Creates 3 columns 20 chars wide each.
+```
+
 
 ## Copying code from the unit tests
 

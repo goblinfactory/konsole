@@ -4,7 +4,16 @@ new change log for version 7 onwards. See archive changelog for version 1 to 6.4
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
-## [7.0.0]
+## [7.0.0.3-alpha]
+
+### Adding
+
+- SplitRows, SplitColumns now supports multiple wildcards per split layout, `console.SplitColumns(new Split(10, "left"), new Split("wild1"), new Split(20, "middle"), new Split("wild2"), new Split(20,"right"));`
+- Split windows without border. (added more extensions and tests for splitting.)
+- Split adds extra row to bottom of uneven splits to fit parent.
+- faster way to create an even number split windows `var rows = con.SplitRows("top", "middle", "bottom");` even split across new windows.
+
+## [7.0.0.1-alpha]
 
 ### Added
 

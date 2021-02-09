@@ -1,65 +1,11 @@
 ﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 
-namespace Konsole.Tests.WindowTests.SplitTests
+namespace Konsole.Tests.WindowTests.SplitWithoutBorderTests
 {
-        public class LeftRightTests
+        public class SplitLeft_and_SplitRightTests
         {
-            [Test]
-            [TestCase(1, 19)]
-            [TestCase(2, 20)]
-            [TestCase(3, 21)]
-            public void LeftHalf_and_RightHalf_ShouldFillTheParentConsole(int test, int width)
-            {
-                // test to show how uneven lines are split between left and right windows.
-                var c = new MockConsole(width, 5);
-                var left = c.SplitLeft("left");
-                var right = c.SplitRight("right");
-                left.WriteLine("one");
-                left.WriteLine("two");
-                left.Write("three");
-
-                right.WriteLine("four");
-                right.WriteLine("five");
-                right.Write("six");
-                Console.WriteLine(c.BufferString);
-
-                var _19Cols = new[]
-                {
-                    "┌ left ─┐┌─ right ┐",
-                    "│one    ││four    │",
-                    "│two    ││five    │",
-                    "│three  ││six     │",
-                    "└───────┘└────────┘"
-            };
-
-                var _20Cols = new[]
-                {
-                    "┌─ left ─┐┌─ right ┐",
-                    "│one     ││four    │",
-                    "│two     ││five    │",
-                    "│three   ││six     │",
-                    "└────────┘└────────┘"
-            };
-
-                var _21Cols = new[]
-                {
-                    "┌─ left ─┐┌─ right ─┐",
-                    "│one     ││four     │",
-                    "│two     ││five     │",
-                    "│three   ││six      │",
-                    "└────────┘└─────────┘"
-
-            };
-
-                var expecteds = new[]
-                {
-                _19Cols, _20Cols, _21Cols
-            };
-                c.Buffer.ShouldBe(expecteds[test - 1]);
-            }
-
-
             [Test]
             [TestCase(1, 19)]
             [TestCase(2, 20)]
@@ -111,7 +57,7 @@ namespace Konsole.Tests.WindowTests.SplitTests
                 {
                 _19Cols, _20Cols, _21Cols
             };
-                c.Buffer.ShouldBe(expecteds[test - 1]);
+                c.Buffer.Should().BeEquivalentTo(expecteds[test - 1]);
             }
 
 
@@ -143,7 +89,7 @@ namespace Konsole.Tests.WindowTests.SplitTests
                     "│four    ││dots    │",
                     "│five    ││        │",
                     "└────────┘└────────┘"
-            };
+                };
 
                 c.Buffer.ShouldBe(expectedParent);
             }
