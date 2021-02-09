@@ -11,7 +11,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version:  5.x
+        dotnet-version:  5.0.x
     - name: Build and Test Konsole
       run: |
         # dotnet build src/Konsole/Konsole.csproj --configuration Release
