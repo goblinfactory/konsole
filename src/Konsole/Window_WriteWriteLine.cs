@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Konsole.Internal;
+using System;
 
 namespace Konsole
 {
@@ -246,8 +247,30 @@ namespace Konsole
         // ****************
         private void __write(IConsole console, string text)
         {
-            var overflow = "";
-            while (overflow != null)
+            //#TODO:  code below was from interim changes to master, see if this is still needed
+            // var overflow = "";
+            // while (overflow != null)
+            if (_clipping && OverflowBottom)
+                return;
+
+            var splits = text.SplitByCrLfOrNull();
+            if (splits != null)
+            {
+                for(int i = 0; i<splits.Length; i++)
+                {
+                    if (i+1 < splits.Length)
+                    {
+                        WriteLine(splits[i]);
+                    }
+                    else
+                    {
+                        Write(splits[i]);
+                    }
+                }
+                return;
+            }
+
+            DoCommand(_echoConsole, () =>
             {
                 if (Clipping && _Cursor.X >= WindowWidth) break;
                 if (!_lines.ContainsKey(_Cursor.Y)) return;

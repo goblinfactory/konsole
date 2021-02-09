@@ -33,5 +33,5 @@ namespace Konsole
 
         bool CursorVisible { get; set; }
     }
-    //end-snippet
-}   
+    // end-snippet
+}

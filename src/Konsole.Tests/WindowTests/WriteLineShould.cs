@@ -55,6 +55,7 @@ namespace Konsole.Tests.WindowTests
                 };
             con.Buffer.ShouldBe(expected);
         }
+
         [Test]
         public void allow_embedded_interpolations_without_exception()
         {
@@ -165,6 +166,26 @@ namespace Konsole.Tests.WindowTests
 
             console.WriteLine("This");
             state.Should().BeEquivalentTo(parent.State);
+        }
+
+        [Test]
+        public void replace_crlf_cr_lf_lfcr_with_individual_writeLines()
+        {
+            var w = new MockConsole(20, 5);
+            (var left, var right) = w.SplitLeftRight("left", "right");
+
+            left.WriteLine("one\r\ntwo\rthree\nfour");
+            right.WriteLine("one\r\ntwo\rthree\nfour");
+            var expected = new[]
+            {
+                "┌─ left ─┬─ right ─┐",
+                "│three   │three    │",
+                "│four    │four     │",
+                "│        │         │",
+                "└────────┴─────────┘"
+            };
+
+            w.Buffer.Should().BeEquivalentTo(expected);
         }
 
     }

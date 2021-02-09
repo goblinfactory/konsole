@@ -1,10 +1,10 @@
-﻿
+﻿using System.Net;
+
 namespace Konsole
 {
     public enum PbStyle {  SingleLine, DoubleLine }
     public class ProgressBar : IProgressBar
     {
-
         private IProgressBar _bar;
 
         public int Y => _bar.Y;
@@ -42,10 +42,19 @@ namespace Konsole
             }
         }
 
+        public int Current {  get { return _bar.Current; } }
+
         public int Max
         {
             get { return _bar.Max; }
             set { _bar.Max = value; }
+        }
+
+        public string Item { get => _bar.Item; set => _bar.Item = value; }
+
+        public void Refresh(int current)
+        {
+            _bar.Refresh(current);
         }
 
         public void Refresh(int current, string format, params object[] args)

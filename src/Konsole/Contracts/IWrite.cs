@@ -9,5 +9,5 @@
         void Write(string text);
         void Clear();
     }
-    //end-snippet
+    // end-snippet
 }

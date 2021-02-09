@@ -3,7 +3,6 @@ using Konsole.Internal;
 
 namespace Konsole
 {
-
     public class ProgressBarSlim : IProgressBar
     {
         private int _max;
@@ -36,8 +35,9 @@ namespace Konsole
             get { return _item; }
             set
             {
+                bool changed = _item != value;
                 _item = value;
-                Refresh(Current, Item);
+                if(changed) Refresh(Current, Item);
             }
         }
 
@@ -83,8 +83,8 @@ namespace Konsole
 
         public void Refresh(int current, string format, params object[] args)
         {
-            var text = string.Format(format, args);
-            Refresh(current, text);
+            _item = string.Format(format, args);
+            Refresh(current, Item);
         }
 
         public void Refresh(int current, string itemText)
@@ -125,10 +125,15 @@ namespace Konsole
 
         }
 
-        public void Next(string item)
+        public void Next(string text)
         {
             _current++;
-            Refresh(_current, item);
+            Refresh(_current, text);
+        }
+
+        public void Refresh(int current)
+        {
+            Refresh(current, Item);
         }
     }
 

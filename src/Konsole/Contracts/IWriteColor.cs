@@ -31,5 +31,5 @@ namespace Konsole
 
         void WriteLine(Colors colors, string text);
     }
-    //end-snippet
+    // end-snippet
 }

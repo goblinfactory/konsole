@@ -29,6 +29,6 @@ namespace Konsole.Samples
                 Console.ReadKey(true);
             }
         }
-        //end-snippet
+        // end-snippet
     }
 }

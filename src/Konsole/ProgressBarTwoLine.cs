@@ -8,8 +8,9 @@ namespace Konsole
         private readonly char _character;
         private readonly IConsole _console;
         private int _y;
-        private int _current = 1;
+        private int _current = 0;
         private ConsoleColor _c;
+        private string _item = "";
 
         private const string FORMAT = "Item {0,-5} of {1,-5}. ({2,-3}%) ";
 
@@ -27,6 +28,22 @@ namespace Konsole
         {
             get { return _line2; }
         }
+
+        /// <summary>
+        /// this is the item that the progressbar represents, e.g, "MyFiles.zip"
+        /// </summary>
+        public string Item
+        {
+            get { return _item; }
+            set
+            {
+                bool changed = _item != value;
+                _item = value;
+                if (changed) Refresh(Current, Item);
+            }
+        }
+
+        public int Current {  get { return _current; } }
 
         //todo: test for textWidth
         //todo: test for setting max to 0...avoid divide by zero exception!
@@ -53,8 +70,13 @@ namespace Konsole
             set
             {
                 _max = value;
-                Refresh(_current, _item);
+                Refresh(_current, Item);
             }
+        }
+
+        public void Refresh(int current)
+        {
+            Refresh(current, Item);
         }
 
         public void Refresh(int current, string format, params object[] args)
@@ -67,13 +89,12 @@ namespace Konsole
 
         private string _line1 ="";
         private string _line2 ="";
-        private string _item = "";
 
         public void Refresh(int current, string item)
         {
             lock (_locker)
             {
-                _item = item;
+                _item = item ?? "";
                 var itemText = item ?? "";
                 var state = _console.State;
                 _current = current;

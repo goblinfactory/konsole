@@ -11,4 +11,4 @@ namespace Konsole
         void ScrollDown();
     }
     // end-snippet
-}   
+}
