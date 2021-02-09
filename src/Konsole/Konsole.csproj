@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>6.3-alpha</Version>
+    <Version>7.0.0.1-alpha</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -392,6 +392,8 @@ New core `Window` functionality, plus big class renames, main interface `IConsol
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/goblinfactory/konsole/</RepositoryUrl>
     <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
+    <AssemblyVersion>7.0.0.1</AssemblyVersion>
+    <FileVersion>7.0.0.1</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="konsole.png" Pack="true" Visible="false" PackagePath="" />
