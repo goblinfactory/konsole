@@ -48,7 +48,7 @@ namespace Konsole
 
                 if (showBorder)
                 {
-                    new Draw(c).Box(offset, 0, w - 1 + offset, h - 1, title, thickness);
+                    new Faster(c).Box(offset, 0, w - 1 + offset, h - 1, title, thickness);
                     return Window._CreateFloatingWindow(c, new WindowSettings { SX = 1 + offset, SY = 1, Width = w - 2, Height = h - 2, Theme = theme });
                 }
                 return Window._CreateFloatingWindow(c, new WindowSettings { SX = offset, SY = 0, Width = w, Height = h, Theme = theme });
@@ -78,7 +78,7 @@ namespace Konsole
                 {
                     c.DoCommand(c, () =>
                     {
-                        new Draw(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness  ?? theme.Active.ThickNess);
+                        new Faster(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness  ?? theme.Active.ThickNess);
                     });
                     return Window._CreateFloatingWindow(c, new WindowSettings { SX = 1, SY = 1 + offset, Width = w - 2, Height = h - 2, Theme = theme });
                 }
@@ -99,7 +99,7 @@ namespace Konsole
                 {
                     c.DoCommand(c, () =>
                     {
-                        new Draw(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness);
+                        new Faster(c).Box(0, offset, w - 1, h - 1 + offset, title, thickness);
                     });
                     return Window._CreateFloatingWindow(c, new WindowSettings { SX = 1, SY = 1 + offset, Width = w - 2, Height = h - 2, Theme = theme });
                 }
@@ -119,7 +119,7 @@ namespace Konsole
                 {
                     c.DoCommand(c, () =>
                     {
-                        new Draw(c).Box(offset, 0, offset + width - 1, height - 1, title, thickness);
+                        new Faster(c).Box(offset, 0, offset + width - 1, height - 1, title, thickness);
                     });
                     return Window._CreateFloatingWindow(c,  new WindowSettings { SX = offset + 1, SY = 1, Width = width - 2, Height = height - 2, Theme = theme });
                 }

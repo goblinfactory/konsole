@@ -61,9 +61,9 @@ namespace Konsole
 
                 c.DoCommand(c, () =>
                 {
-                    new Draw(c)
+                    new Faster(c)
                     .Box(0, 0, width-1, topHeight + 1, topTitle, thickness);
-                    new Draw(c)
+                    new Faster(c)
                     .Box(0, topHeight + 1, width-1, bottomHeight + topHeight  + 2, bottomTitle, thickness);
                     // print the edges
                     c.PrintAt(0, topHeight + 1, leftChar);

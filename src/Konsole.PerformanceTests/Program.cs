@@ -35,11 +35,9 @@ namespace Konsole.PerformanceTests
             {
                 WriteHelpThenExitWithError();
             }
-            
-            using (var logstream = File.OpenWrite("performance.log"))
+
+            using (var log = new StreamWriter("performance.log", true))
             {
-                using var log = new StreamWriter(logstream);
-                
                 try
                 {
                     log.WriteLine($"starting test [ {iterations} ] iterations.");
@@ -51,6 +49,7 @@ namespace Konsole.PerformanceTests
                     Screenshot.Take(Path.Combine(logs, "screen1"));
                     if (PlatformStuff.IsWindows)
                     {
+                        Console.CursorVisible = false;
                         Console.SetWindowSize(90, 30);
                         Console.WriteLine($"hello from 90x30");
                         Screenshot.Take(Path.Combine(logs, "screen2"));
@@ -60,7 +59,7 @@ namespace Konsole.PerformanceTests
                     //  THE ACTUAL TESTS 
                     // ----------------------
 
-                    tester.TestIt(DirectoryListViewTestsSetup, iterations, "ListViewTests", DirectoryListViewTests, TakeScreenShot);
+                    tester.TestIt(TestSetupEmptyFullScreenWindow, iterations, "SplitLeftRight", SplitLeftRightPerformanceTest, TakeScreenShot);
                     //tester.TestIt(NoSetup, iterations, "NewWindowTest", NewWindowTest, DoNothing);
                     //tester.TestIt(NoSetup, iterations, "NewWindowConcurrent", NewWindowConcurrent, DoNothing);
                     //tester.TestIt(NewWindowSetup, iterations, "SplitRightLeft", SplitRightLeft, TakeScreenShot);
@@ -83,7 +82,9 @@ namespace Konsole.PerformanceTests
                 }
                 finally
                 {
-                    logstream.Flush();
+                    if (PlatformStuff.IsWindows) Console.CursorVisible = true;
+                    log.Flush();
+                    log.Dispose();
                 }
             }
         }
@@ -131,12 +132,17 @@ namespace Konsole.PerformanceTests
                 );
         }
 
-        private static IConsole DirectoryListViewTestsSetup()
+        private static IConsole TestSetupEmptyFullScreenWindow()
         {
             var w = new Window();
-            var left = w.SplitLeft("left");
-            var right = w.SplitRight("right");
-            return left;
+            return w;
+        }
+        private static void SplitLeftRightPerformanceTest(IConsole console)
+        {
+            var left = console.SplitLeft("left");
+            left.WriteLine("Inside left");
+            var right = console.SplitRight("right");
+            right.WriteLine("Inside right");
         }
         public static void DirectoryListViewTests(IConsole console)
         {

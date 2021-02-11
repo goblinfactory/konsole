@@ -4,6 +4,12 @@ new change log for version 7 onwards. See archive changelog for version 1 to 6.4
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [7.0.0.4-alpha]
+
+### changed
+
+- Faster box drawing. before, 972ms to split window left, and right. After ..
+
 ## [7.0.0.3-alpha]
 
 ### Adding

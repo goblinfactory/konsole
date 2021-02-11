@@ -60,9 +60,9 @@ namespace Konsole
                 c.DoCommand(c, () =>
                 {
                     //todo need unit test for merging two boxes :D for now, lets print them twice so we get true overlap to start with
-                    new Draw(c)
+                    new Faster(c)
                     .Box(0, 0, leftWidth + 1, h - 1, leftTitle, thickness);
-                    new Draw(c)
+                    new Faster(c)
                     .Box(leftWidth + 1, 0, rightWidth + leftWidth + 2, h - 1, rightTitle, thickness);
                     // print the corners
                     c.PrintAt(leftWidth + 1, 0, '┬');
