@@ -17,6 +17,8 @@ Low ceremony, Fluent DSL for writing console apps, utilities and spike projects.
 
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole/community?source=orgpage) and I'll be happy to help you. 
 
+Update: 11 Feb 2021, there are some early V7 alpha releases available in nuget, check them out :D : see the release notes here : https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.5-alpha
+
 cheers, 
 
 Alan
