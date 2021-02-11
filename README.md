@@ -25,7 +25,7 @@ Alan
 
 ![sample demo using HighSpeedWriter](docs/img/01-intro.png)
 
-## Contents
+## Contents : V6
 
   * [Installing and getting started](#installing-and-getting-started)
   * [using static Console.ConsoleColor](#using-static-consoleconsolecolor)      
