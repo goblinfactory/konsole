@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using static System.ConsoleColor;
 
 namespace Konsole.PerformanceTests
@@ -59,7 +60,9 @@ namespace Konsole.PerformanceTests
                     //  THE ACTUAL TESTS 
                     // ----------------------
 
-                    tester.TestIt(TestSetupEmptyFullScreenWindow, iterations, "SplitLeftRight", SplitLeftRightPerformanceTest, TakeScreenShot);
+                    //public void TestIt(int iterations, string testName, Action<IConsole, HighSpeedWriter> testMethod, bool useHighSpeedWriter, Action<string> postTest)
+                    tester.TestIt(iterations, "HighSpeedWriterBoxes", HWSplitLeftRightPerformanceTest, true, TakeScreenShot);
+
                     //tester.TestIt(NoSetup, iterations, "NewWindowTest", NewWindowTest, DoNothing);
                     //tester.TestIt(NoSetup, iterations, "NewWindowConcurrent", NewWindowConcurrent, DoNothing);
                     //tester.TestIt(NewWindowSetup, iterations, "SplitRightLeft", SplitRightLeft, TakeScreenShot);
@@ -132,12 +135,13 @@ namespace Konsole.PerformanceTests
                 );
         }
 
-        private static IConsole TestSetupEmptyFullScreenWindow()
+        private static void HWSplitLeftRightPerformanceTest(IConsole console, HighSpeedWriter hw)
         {
-            var w = new Window();
-            return w;
+            SplitLeftRightPerformanceTest(console, null);
+            hw.Flush();
         }
-        private static void SplitLeftRightPerformanceTest(IConsole console)
+
+        private static void SplitLeftRightPerformanceTest(IConsole console, HighSpeedWriter hw)
         {
             var left = console.SplitLeft("left");
             left.WriteLine("Inside left");
@@ -202,7 +206,7 @@ namespace Konsole.PerformanceTests
             this.log = log;
             //Console.SetWindowSize(120, 50);
         }
-        public void TestIt(Func<IConsole> setup, int iterations, string testName, Action<IConsole> testMethod, Action<string> postTest)
+        public void TestIt(int iterations, string testName, Action<IConsole, HighSpeedWriter> testMethod, bool useHighSpeedWriter, Action<string> postTest)
         {
             Console.WriteLine($"Running test :{testName}");
             int cnt = 0;
@@ -210,10 +214,22 @@ namespace Konsole.PerformanceTests
             Console.Write($"{testName} - started, ");
             for (int i = 0; i < iterations; i++)
             {
-                Console.Clear();
-                var console = setup();
+                HighSpeedWriter hw = null;
+                IConsole console;
+                if(useHighSpeedWriter)
+                {
+                    hw = new HighSpeedWriter();
+                    console = new Window(hw);
+                }
+                else
+                {
+                    console = new Window();
+                }
+                // add a brief pause before clearing screen otherwise we won't see much, just flicker
+                //if (useHighSpeedWriter) Thread.Sleep(100);
+                Console.Clear();                
                 timer.Start();
-                testMethod(console);
+                testMethod(console, hw);
                 cnt++;
                 timer.Stop();
             }
