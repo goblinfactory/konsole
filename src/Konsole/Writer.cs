@@ -127,8 +127,7 @@ namespace Konsole
                     Console.ForegroundColor,
                     Console.BackgroundColor, 
                     Console.CursorTop, 
-                    Console.CursorLeft,
-                    _isWindows ? Console.CursorVisible : false
+                    Console.CursorLeft
                 );
             }
             set
@@ -137,10 +136,6 @@ namespace Konsole
                 Console.BackgroundColor = value.BackgroundColor;
                 Console.CursorTop = value.Top;
                 Console.CursorLeft = CheckWidth(value.Left);
-                if(_isWindows)
-                {
-                    Console.CursorVisible = value.CursorVisible;
-                }
             }
         }
 
@@ -372,7 +367,7 @@ namespace Konsole
         {
             DoCommand(this, () =>
             {
-                State = new ConsoleState(foreground, background ?? BackgroundColor, y, x, CursorVisible);
+                State = new ConsoleState(foreground, background ?? BackgroundColor, y, x);
                 Write(text);
             });
         }

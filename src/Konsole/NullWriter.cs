@@ -42,8 +42,7 @@ namespace Konsole
                 return new ConsoleState(
                     ForegroundColor,BackgroundColor, 
                     CursorTop, 
-                    CursorLeft,
-                    CursorVisible
+                    CursorLeft
                 );
             }
             set
@@ -52,7 +51,6 @@ namespace Konsole
                 BackgroundColor = value.BackgroundColor;
                 CursorTop = value.Top;
                 CursorLeft = value.Left;
-                CursorVisible = value.CursorVisible;
             }
         }
 

@@ -391,7 +391,6 @@ namespace Konsole
 
             lock (Window._locker)
             {
-                _console.CursorVisible = false;
                 state = _console.State;
                 OnBeforeMenu(this);
             }

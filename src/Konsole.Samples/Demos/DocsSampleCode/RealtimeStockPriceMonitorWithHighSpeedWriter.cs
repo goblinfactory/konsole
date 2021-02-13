@@ -22,7 +22,7 @@ namespace Konsole.Samples
             using var writer = new HighSpeedWriter();
             var window = new Window(writer);
 
-            window.CursorVisible = false;
+            Console.CursorVisible = false;
             
             var left = window.SplitLeft();
             var leftConsoles = left.SplitRows(

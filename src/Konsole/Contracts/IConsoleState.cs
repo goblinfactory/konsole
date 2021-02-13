@@ -30,8 +30,6 @@ namespace Konsole
         ///    }
         ///  }</example>
         void DoCommand(IConsole console, Action action);
-
-        bool CursorVisible { get; set; }
     }
     // end-snippet
 }
