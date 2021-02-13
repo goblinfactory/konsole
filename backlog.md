@@ -4,6 +4,8 @@ This is a very rough place for random notes. Please look on github to see what's
 
 Update: 7 Feb 21, This isn't kept up to date. I'm hacking "issues" as way of tracking "features" and planning releases. Please check out the real backlog here -> https://github.com/goblinfactory/konsole/issues
 
+
+
 ## Busy now
 
 - finish adding the new columnHeaders style, manually test all the styles :D
@@ -16,6 +18,8 @@ Update: 7 Feb 21, This isn't kept up to date. I'm hacking "issues" as way of tra
 - clip_child_window_to_not_exceed_parent_boundaries_test1
 
 ## random stuff
+
+- fix the IConsole UML diagram, it's upside down plus arrows need to be solid not dashed, oof!
  
 - demo code appears to render title twice?
 - fix threading issue with background progressbar demo in samples.

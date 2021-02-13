@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>7.0.0.4-alpha</Version>
+    <Version>7.0.0.5-alpha</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -13,17 +13,12 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
-    <PackageReleaseNotes># Change Log
-
-new change log for version 7 onwards. See archive changelog for version 1 to 6.4 here [tbd]
-
-The format is based on [Keep a Changelog](http://keepachangelog.com/) 
-
-## [7.0.0.4-alpha]
+    <PackageReleaseNotes>## [7.0.0.5-alpha/faster-borders-no-cursor]
 
 ### changed
 
-- Faster box drawing. before, 972ms to split window left, and right. After ..
+- removed cursorVisible. (to make konsole easier to make multiplatform)
+- improved fullscreen window.split rendering. From 1.08 fps (927ms) to 1.71fps (602ms) over 75 test runs.
 
 ## [7.0.0.3-alpha]
 
@@ -62,19 +57,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
   - white on blue
   - white on darkblue
   - blue on white
-  - darkblue on white
-
-### Fixed
-
-- #57 Console.Clear() should not reset the current colors of the window.</PackageReleaseNotes>
+  - darkblue on white</PackageReleaseNotes>
     <PackageIcon>konsole.png</PackageIcon>
     <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/goblinfactory/konsole/</RepositoryUrl>
     <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
-    <AssemblyVersion>7.0.4.0</AssemblyVersion>
-    <FileVersion>7.0.4.0</FileVersion>
+    <AssemblyVersion>7.0.0.5</AssemblyVersion>
+    <FileVersion>7.0.0.5</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="konsole.png" Pack="true" Visible="false" PackagePath="" />

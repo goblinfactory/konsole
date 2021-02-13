@@ -200,18 +200,6 @@ namespace Konsole
             }
         }
 
-        public bool CursorVisible
-        {
-            get
-            {
-                lock (_locker) return _window.CursorVisible;
-            }
-            set
-            {
-                lock (_locker) _window.CursorVisible = value;
-            }
-        }
-
         public void PrintAt(int x, int y, string format, params object[] args)
         {
             lock (_locker)

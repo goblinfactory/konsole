@@ -18,7 +18,6 @@ namespace Konsole
         {
             _console.DoCommand(_console, () =>
             {
-                if (Platform.PlatformStuff.IsWindows) _console.CursorVisible = false;
                 _Box(sx, sy, ex, ey, title, thickness ?? LineThickNess.Single);
             });
 

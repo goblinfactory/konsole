@@ -475,30 +475,6 @@ namespace Konsole
 
         private bool _noEchoCursorVisible = true;
 
-        public bool CursorVisible
-        {
-            get { lock (_locker) return _CursorVisible; }
-            set
-            {
-                lock (_locker)
-                {
-                    _CursorVisible = value;
-                }
-            }
-        }
-
-        private bool _CursorVisible
-        {
-            get { return _console?.CursorVisible ?? _noEchoCursorVisible; }
-            set
-            {
-                if (_console == null)
-                    _noEchoCursorVisible = value;
-                else
-                    _console.CursorVisible = value;
-            }
-        }
-
         // *********************
         // ** ForegroundColor **
         // *********************
@@ -531,7 +507,7 @@ namespace Konsole
         {
             get
             {
-                return new ConsoleState(_foregroundColor, _backgroundColor, _CursorTop, _CursorLeft, _CursorVisible);
+                return new ConsoleState(_foregroundColor, _backgroundColor, _CursorTop, _CursorLeft);
             }
 
             set
@@ -540,10 +516,6 @@ namespace Konsole
                 _CursorTop = value.Top;
                 _foregroundColor = value.ForegroundColor;
                 _backgroundColor = value.BackgroundColor;
-                if (PlatformStuff.IsWindows)
-                {
-                    _CursorVisible = value.CursorVisible;
-                }
             }
 
         }

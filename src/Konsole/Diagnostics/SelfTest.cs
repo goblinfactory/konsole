@@ -20,8 +20,6 @@ namespace Konsole.Diagnostics
         /// <param name="flush"></param>
         public static void Test(IConsole window, Action flush)
         {
-            window.CursorVisible = false;
-
             var consoles = window.SplitRows(
                     new Split(4, "heading", LineThickNess.Single),
                     new Split(10),

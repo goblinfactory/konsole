@@ -4,11 +4,12 @@ new change log for version 7 onwards. See archive changelog for version 1 to 6.4
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
-## [7.0.0.4-alpha]
+## [7.0.0.5-alpha/faster-borders-no-cursor]
 
 ### changed
 
-- Faster box drawing. before, 972ms to split window left, and right. After ..
+- removed cursorVisible. (to make konsole easier to make multiplatform)
+- improved fullscreen window.split rendering. From 1.08 fps (927ms) to 1.71fps (602ms) over 75 test runs.
 
 ## [7.0.0.3-alpha]
 

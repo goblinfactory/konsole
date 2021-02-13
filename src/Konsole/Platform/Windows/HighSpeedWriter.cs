@@ -120,7 +120,7 @@ namespace Konsole
         //TODO: Move this to default interface implementations C#8
         public ConsoleState State
         {
-            get { return new ConsoleState(ForegroundColor, BackgroundColor, CursorTop, CursorLeft, CursorVisible); }
+            get { return new ConsoleState(ForegroundColor, BackgroundColor, CursorTop, CursorLeft); }
             set
             {
                 ForegroundColor = value.ForegroundColor;
@@ -141,8 +141,6 @@ namespace Konsole
 
         public int CursorTop { get => Console.CursorTop; set => Console.CursorTop = value; }
         public int CursorLeft { get => Console.CursorLeft; set => Console.CursorLeft = value; }
-
-        public bool CursorVisible { get => Console.CursorVisible; set => Console.CursorVisible = value;  }
 
         protected virtual void Dispose(bool disposing)
         {
