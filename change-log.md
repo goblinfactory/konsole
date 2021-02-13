@@ -4,16 +4,20 @@ new change log for version 7 onwards. See archive changelog for version 1 to 6.4
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
-## [7.0.0.5-alpha/faster-borders-no-cursor]
+## [7.0.0.6-alpha/hsw-perf-faster-borders]
 
-### changed
+### Improved
+
+- improvement in HighspeedWriter performance tested rendering full screen (90x30 window) splitWindow left and right. (from `5.46fps`, `183ms` per screen render, to `8.26fps`, `121ms` per request.) Test run 200 iterations.
+- improvement in standard console rendering, performance tested rendering full screen (90x30 window) splitWindow left and right. (from `1.08fps`, `927ms` per screen render, to `1.71fps`, `602ms` per request.) Test run 40 iterations.
+
+### Removed
 
 - removed cursorVisible. (to make konsole easier to make multiplatform)
-- improved fullscreen window.split rendering. From 1.08 fps (927ms) to 1.71fps (602ms) over 75 test runs.
 
 ## [7.0.0.3-alpha]
 
-### Adding
+### Added
 
 - SplitRows, SplitColumns now supports multiple wildcards per split layout, `console.SplitColumns(new Split(10, "left"), new Split("wild1"), new Split(20, "middle"), new Split("wild2"), new Split(20,"right"));`
 - Split windows without border. (added more extensions and tests for splitting.)

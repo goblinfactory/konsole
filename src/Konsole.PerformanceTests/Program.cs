@@ -47,6 +47,7 @@ namespace Konsole.PerformanceTests
 
                     var tester = new Tester(log);
                     Console.WriteLine($"hello from default size console  {Console.WindowWidth}x{Console.WindowHeight}");
+                    Console.ReadKey();
                     Screenshot.Take(Path.Combine(logs, "screen1"));
                     if (PlatformStuff.IsWindows)
                     {

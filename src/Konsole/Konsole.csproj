@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>7.0.0.5-alpha</Version>
+    <Version>7.0.0.6-alpha</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -13,16 +13,21 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
-    <PackageReleaseNotes>## [7.0.0.5-alpha/faster-borders-no-cursor]
+    <PackageReleaseNotes>
+## [7.0.0.6-alpha]
 
-### changed
+### Improved
+
+- improvement in HighspeedWriter performance tested rendering full screen (90x30 window) splitWindow left and right. (from `5.46fps`, `183ms` per screen render, to `8.26fps`, `121ms` per request.) Test run 200 iterations.
+- improvement in standard console rendering, performance tested rendering full screen (90x30 window) splitWindow left and right. (from `1.08fps`, `927ms` per screen render, to `1.71fps`, `602ms` per request.) Test run 40 iterations.
+
+### Removed
 
 - removed cursorVisible. (to make konsole easier to make multiplatform)
-- improved fullscreen window.split rendering. From 1.08 fps (927ms) to 1.71fps (602ms) over 75 test runs.
 
 ## [7.0.0.3-alpha]
 
-### Adding
+### Added
 
 - SplitRows, SplitColumns now supports multiple wildcards per split layout, `console.SplitColumns(new Split(10, "left"), new Split("wild1"), new Split(20, "middle"), new Split("wild2"), new Split(20,"right"));`
 - Split windows without border. (added more extensions and tests for splitting.)
@@ -64,8 +69,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/goblinfactory/konsole/</RepositoryUrl>
     <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
-    <AssemblyVersion>7.0.0.5</AssemblyVersion>
-    <FileVersion>7.0.0.5</FileVersion>
+    <AssemblyVersion>7.0.0.6</AssemblyVersion>
+    <FileVersion>7.0.0.6</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="konsole.png" Pack="true" Visible="false" PackagePath="" />
