@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Konsole.Samples\Konsole.Samples.csproj" />
     <ProjectReference Include="..\Konsole\Konsole.csproj" />
   </ItemGroup>
 

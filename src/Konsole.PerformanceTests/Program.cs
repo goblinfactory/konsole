@@ -22,8 +22,8 @@ namespace Konsole.PerformanceTests
             }
 
             var argument = args[0];
-            
-            if(argument.Contains("RUN"))
+
+            if (argument.Contains("RUN"))
             {
                 Console.WriteLine("launching console process, wait for finish, propogate return code");
                 var iterationArg = argument.Replace(RUN, "");
@@ -59,9 +59,24 @@ namespace Konsole.PerformanceTests
                     // ----------------------
                     //  THE ACTUAL TESTS 
                     // ----------------------
+                    IConsole left = null;
+                    IConsole right = null;
+                    tester.TestIt(()=>
+                    {
+                        var hw = new HighSpeedWriter();
+                        var console = new Window(hw);
+                        left = console.SplitLeft("left");
+                        right = console.SplitRight("right");
+                        return (console, hw);
+                    },
+                    iterations, "HighSpeedWriterBoxes", (IConsole console, HighSpeedWriter hw, int iteration) =>
+                    {
+                        left.WriteLine(Red, $"left iteration {iteration}");
+                        right.WriteLine(Green, $"left iteration {iteration}");
+                        hw.Flush();
+                    } , TakeScreenShot);
 
-                    // disable high speed writer tests for Azure (for now) - tester.TestIt(iterations, "HighSpeedWriterBoxes", HWSplitLeftRightPerformanceTest, true, TakeScreenShot);
-                    tester.TestIt(iterations, "HighSpeedWriterBoxes", HWSplitLeftRightPerformanceTest, false, TakeScreenShot);
+                    //tester.TestIt(iterations, "HighSpeedWriterBoxes", HWSplitLeftRightPerformanceTest, false, TakeScreenShot);
 
                     //tester.TestIt(NoSetup, iterations, "NewWindowTest", NewWindowTest, DoNothing);
                     //tester.TestIt(NoSetup, iterations, "NewWindowConcurrent", NewWindowConcurrent, DoNothing);
@@ -93,7 +108,7 @@ namespace Konsole.PerformanceTests
         }
 
         private static Action<string> DoNothing = (string name) => { };
-        private static Action<string> TakeScreenShot = (string name)  =>Screenshot.Take(Solution.Path("logs", name));
+        private static Action<string> TakeScreenShot = (string name) => Screenshot.Take(Solution.Path("logs", name));
 
         static IConsole NoSetup() => null;
         static IConsole NewWindowSetup() => new Window();
@@ -110,7 +125,7 @@ namespace Konsole.PerformanceTests
             var w = new Window();
             w.Write(".");
         }
-        
+
         public static void SplitRightLeft(IConsole console)
         {
             var left = console.SplitLeft("left");
@@ -135,19 +150,7 @@ namespace Konsole.PerformanceTests
                 );
         }
 
-        private static void HWSplitLeftRightPerformanceTest(IConsole console, HighSpeedWriter hw)
-        {
-            SplitLeftRightPerformanceTest(console, null);
-            hw?.Flush();
-        }
 
-        private static void SplitLeftRightPerformanceTest(IConsole console, HighSpeedWriter hw)
-        {
-            var left = console.SplitLeft("left");
-            left.WriteLine("Inside left");
-            var right = console.SplitRight("right");
-            right.WriteLine("Inside right");
-        }
         public static void DirectoryListViewTests(IConsole console)
         {
             return;
@@ -206,30 +209,24 @@ namespace Konsole.PerformanceTests
             this.log = log;
             //Console.SetWindowSize(120, 50);
         }
-        public void TestIt(int iterations, string testName, Action<IConsole, HighSpeedWriter> testMethod, bool useHighSpeedWriter, Action<string> postTest)
+        public void TestIt(Func<(IConsole, HighSpeedWriter)> setup, int iterations, string testName, Action<IConsole, HighSpeedWriter, int> testMethod, Action<string> postTest)
         {
             Console.WriteLine($"Running test :{testName}");
             int cnt = 0;
             var timer = new Stopwatch();
             Console.Write($"{testName} - started, ");
+            Console.Clear();
+
+            var (console, hw) = setup();
+
             for (int i = 0; i < iterations; i++)
             {
-                HighSpeedWriter hw = null;
-                IConsole console;
-                if(useHighSpeedWriter)
-                {
-                    hw = new HighSpeedWriter();
-                    console = new Window(hw);
-                }
-                else
-                {
-                    console = new Window();
-                }
+
                 // add a brief pause before clearing screen otherwise we won't see much, just flicker
                 //if (useHighSpeedWriter) Thread.Sleep(100);
-                Console.Clear();                
+
                 timer.Start();
-                testMethod(console, hw);
+                testMethod(console, hw, i);
                 cnt++;
                 timer.Stop();
             }
@@ -250,7 +247,7 @@ namespace Konsole.PerformanceTests
             postTest($"{testName}-{response:0}ms");
             Console.WriteLine(successMessage);
             log.WriteLine(successMessage);
-   }
+        }
 
     }
 }

@@ -4,6 +4,11 @@ new change log for version 7 onwards. See archive changelog for version 1 to 6.4
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [7.0.0.7-alpha/highspeedwriter-only-refresh-dirty-regions]
+
+- busy ... test only refreshing dirty region of screen.
+- do perf test writing lines at a time to screen, including scrolling.
+
 ## [7.0.0.6-alpha/hsw-perf-faster-borders]
 
 ### Improved
