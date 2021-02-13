@@ -47,7 +47,6 @@ namespace Konsole.PerformanceTests
 
                     var tester = new Tester(log);
                     Console.WriteLine($"hello from default size console  {Console.WindowWidth}x{Console.WindowHeight}");
-                    Console.ReadKey();
                     Screenshot.Take(Path.Combine(logs, "screen1"));
                     if (PlatformStuff.IsWindows)
                     {
@@ -61,8 +60,8 @@ namespace Konsole.PerformanceTests
                     //  THE ACTUAL TESTS 
                     // ----------------------
 
-                    //public void TestIt(int iterations, string testName, Action<IConsole, HighSpeedWriter> testMethod, bool useHighSpeedWriter, Action<string> postTest)
-                    tester.TestIt(iterations, "HighSpeedWriterBoxes", HWSplitLeftRightPerformanceTest, true, TakeScreenShot);
+                    // disable high speed writer tests for Azure (for now) - tester.TestIt(iterations, "HighSpeedWriterBoxes", HWSplitLeftRightPerformanceTest, true, TakeScreenShot);
+                    tester.TestIt(iterations, "HighSpeedWriterBoxes", HWSplitLeftRightPerformanceTest, false, TakeScreenShot);
 
                     //tester.TestIt(NoSetup, iterations, "NewWindowTest", NewWindowTest, DoNothing);
                     //tester.TestIt(NoSetup, iterations, "NewWindowConcurrent", NewWindowConcurrent, DoNothing);
@@ -139,7 +138,7 @@ namespace Konsole.PerformanceTests
         private static void HWSplitLeftRightPerformanceTest(IConsole console, HighSpeedWriter hw)
         {
             SplitLeftRightPerformanceTest(console, null);
-            hw.Flush();
+            hw?.Flush();
         }
 
         private static void SplitLeftRightPerformanceTest(IConsole console, HighSpeedWriter hw)
