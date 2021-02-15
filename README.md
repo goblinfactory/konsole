@@ -22,7 +22,8 @@ If you have any questions on how to use Konsole, please join us on Gitter (https
 | --- | --- |
 | 11/2/21 | (`7.0.0.5-alpha`)[https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.5-alpha] |
 | 13/2/21 | (`7.0.0.7-alpha`)[https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.7-alpha] |
-cheers, 
+
+enjoy, cheers, 
 
 Alan
 
