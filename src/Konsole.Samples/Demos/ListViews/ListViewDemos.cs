@@ -8,7 +8,8 @@ namespace Konsole.Samples
     {
         public static void ListViewThemeTest()
         {
-            var window = new Window(50, 10, new StyleTheme(Yellow, DarkMagenta).WithTitle(White, Red));
+            Console.WriteLine();
+            var window = new Window(padLeft:2, width:50, height: 10, theme: new StyleTheme(Yellow, DarkMagenta).WithTitle(White, Red));
             var incoming = window.SplitLeft("INCOMING");
             var outgoing = window.SplitRight("OUTGOING");
 
@@ -18,6 +19,7 @@ namespace Konsole.Samples
                 new Column("Name", 0),
                 new Column("Credits", 0)
             );
+
             view.Render();
             Console.ReadKey(true);
         }

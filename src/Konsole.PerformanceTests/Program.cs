@@ -63,17 +63,18 @@ namespace Konsole.PerformanceTests
                     IConsole right = null;
                     tester.TestIt(()=>
                     {
-                        var hw = new HighSpeedWriter();
-                        var console = new Window(hw);
+                        //var hw = new HighSpeedWriter();
+                        //var console = new Window(hw);
+                        var console = new Window();
                         left = console.SplitLeft("left");
                         right = console.SplitRight("right");
-                        return (console, hw);
+                        return (console, null);
                     },
                     iterations, "HighSpeedWriterBoxes", (IConsole console, HighSpeedWriter hw, int iteration) =>
                     {
                         left.WriteLine(Red, $"left iteration {iteration}");
                         right.WriteLine(Green, $"left iteration {iteration}");
-                        hw.Flush();
+                        hw?.Flush();
                     } , TakeScreenShot);
 
                     //tester.TestIt(iterations, "HighSpeedWriterBoxes", HWSplitLeftRightPerformanceTest, false, TakeScreenShot);

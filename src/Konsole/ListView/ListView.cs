@@ -41,6 +41,12 @@ namespace Konsole
             return null;
         }
 
+        //public static ListView<T> CreateList(IEnumerable<T> items)
+        //{
+        //    // todo: create a generic version of listview that works out the columns using reflection
+        //    return null;
+        //}
+
         public ListView(IConsole console, Func<T[]> getData, Func<T, string[]> getRow, params Column[] columns) : base(console, null, null, null, null, null, null)
         {
             _getData = getData;
@@ -54,7 +60,7 @@ namespace Konsole
             return (false, false);
         }
 
-        public override void Render(ControlStatus status, Style style)
+        protected override void Render(ControlStatus status, Style style)
         {
             // can later add in overloads to the refesh to decide how much to refresh, e.g. just refresh the border(box) etc.
             // TODO: write concurrency test that proves that we need this lock here! Test must fail if I take it out !

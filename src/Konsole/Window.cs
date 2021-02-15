@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Konsole.Internal;
 using Konsole.Platform;
 
 namespace Konsole
 {
-    public partial class Window : IConsole, IPeek
+    public partial class Window : IConsole, IPeek//, IConsoleApplication
     {
         // *****************
         // ** HostConsole **
@@ -736,5 +740,30 @@ namespace Konsole
                 return row;
             }
         }
+
+        //public int? TabOrder { get; set; }
+
+        //public void Refresh(ControlStatus status)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //private ConcurrentDictionary<string, IConsole> _children;
+
+
+        //void RemoveConsole(string id)
+        //{
+        //    if (!_children.TryRemove(id, out _)) throw new ArgumentOutOfRangeException($"Console with id '{id}' not found.");
+        //}
+        //void AddConsole(string id, IConsole console)
+        //{
+        //    if (!_children.TryAdd(id, console)) throw new ArgumentOutOfRangeException($"Console with id '{id}' already exists.");               
+        //}
+
+        //public Task RunAsync()
+        //{
+        //    return Task.CompletedTask();
+        //    //var handler = new 
+        //}
     }
 }

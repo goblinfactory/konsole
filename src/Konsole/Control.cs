@@ -53,7 +53,7 @@ namespace Konsole
     // need a sample that shows how to use that!
 
 
-    public abstract class Control<T, TItem>
+    public abstract class Control<TControl, TItem> : IControl
     {
         private int _captionWidth;
         private string _caption;
@@ -77,19 +77,19 @@ namespace Konsole
         /// Enter event happens when the control gets focus for the first time. 
         /// </summary>
         /// <remarks>Useful place to put lazy load, or initialisers you dont want to put in constructors.</remarks>
-        public Action<Control<T, TItem>> OnEnter = (c) => { };
+        public Action<Control<TControl, TItem>> OnEnter = (c) => { };
 
         /// <summary>
         /// every time the control gets focus for editing, even the first time
         /// </summary>
         /// <remarks>Is triggered by .Focus()</remarks>
-        public Action<Control<T, TItem>> OnGotFocus = (c) => { };
+        public Action<Control<TControl, TItem>> OnGotFocus = (c) => { };
 
         /// <summary>
         /// Occurs when the input focus leaves the control. 
         /// </summary>
         /// <remarks>Is triggered by Blur()</remarks>
-        public Action<Control<T, TItem>> OnLostFocus = (c) => { };
+        public Action<Control<TControl, TItem>> OnLostFocus = (c) => { };
 
         /// <summary>
         /// returns the cursor position to set the cursor to when this control has focus. Return null if the control does not require a blinking cursor. e.g. listview (no cursor) vs (input box, has cursor)
@@ -115,12 +115,13 @@ namespace Konsole
 
         public Control(IConsole console, int? x, int? y, string caption, int? captionWidth, int? width, int? height)
         {
-            lock(Window._locker)
+            lock (Window._locker)
             {
                 _captionWidth = captionWidth ?? caption?.Length ?? 0;
                 HasCaption = _captionWidth != 0;
                 _caption = caption;
                 _console = console ?? Window._HostConsole;
+                _status = ControlStatus.Inactive;
             }
 
             // layout
@@ -184,7 +185,7 @@ namespace Konsole
         /// If your control responds to non keyboard events then call Refresh, which will check to see if layout has been suspended 
         /// if layout has been suspended then render will not be called until Layout resumes with a call to ResumeLayout.
         /// </remarks>
-        public abstract void Render(ControlStatus status, Style style);
+        protected abstract void Render(ControlStatus status, Style style);
 
         public void Render()
         {
@@ -201,14 +202,15 @@ namespace Konsole
                 Status = status;
             }
         }
-        
+
         /// <summary>
         /// helpful automation method. Especially useful for automated testing. This delegates to HandleKeyPress.
         /// </summary>
         /// <param name="keys"></param>
         public void HandleKeyPresses(string keys, bool shift, bool alt, bool control)
         {
-            foreach(char c in keys) {
+            foreach (char c in keys)
+            {
                 var press = c.ToKeypress(shift, alt, control);
                 HandleKeyPress(press, c);
             }
@@ -262,6 +264,9 @@ namespace Konsole
             }
         }
 
+        /// <summary>
+        /// Item value
+        /// </summary>
         public abstract TItem Value { get; }
 
         public void Blur()
@@ -304,5 +309,11 @@ namespace Konsole
                 return Theme?.GetActive(Status) ?? _console?.Theme.GetActive(Status) ?? Style.Default;
             }
         }
+
+        /// <summary>
+        /// controls will default to 0 indicating it will inherit tab order from the sequence of creation.
+        /// Set to null, to not have a tab order, i.e. will be bypassed during tabbing.
+        /// </summary>
+        public int? TabOrder { get; set; } = 0;
     }
 }

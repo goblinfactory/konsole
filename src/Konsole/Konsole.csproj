@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>7.0.0.6-alpha</Version>
+    <Version>7.0.0.7-alpha</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -13,12 +13,15 @@
     <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
-    <PackageReleaseNotes>
-## [7.0.0.6-alpha]
+    <PackageReleaseNotes>## [7.0.0.7-alpha/hsw-perf-faster-borders]
 
 ### Improved
 
-- improvement in HighspeedWriter performance tested rendering full screen (90x30 window) splitWindow left and right. (from `5.46fps`, `183ms` per screen render, to `8.26fps`, `121ms` per request.) Test run 200 iterations.
+- improvement in HighspeedWriter performance 
+  - tested rendering full screen (90x30 window) splitWindow left and right. (from `5.46fps`, `183ms` per screen render, to `8.26fps`, `121ms` per request.) Test run 200 iterations.
+  - tested rendering updates in split window (90x30 window) with writeLine and scrolling. No changes needed (Currently `289.92fps`, `3ms` per `WriteLine` operation including scrolling and rendering..) Test run 2000 iterations.
+  - tested rendering updates in split window (140x60 window) with writeLine and scrolling. No changes needed (Currently `78.18fps`, `13ms` per `WriteLine` operation including scrolling and rendering..) Test run 2000 iterations.
+
 - improvement in standard console rendering, performance tested rendering full screen (90x30 window) splitWindow left and right. (from `1.08fps`, `927ms` per screen render, to `1.71fps`, `602ms` per request.) Test run 40 iterations.
 
 ### Removed
@@ -62,15 +65,16 @@
   - white on blue
   - white on darkblue
   - blue on white
-  - darkblue on white</PackageReleaseNotes>
+  - darkblue on white
+</PackageReleaseNotes>
     <PackageIcon>konsole.png</PackageIcon>
     <PackageProjectUrl>https://github.com/goblinfactory/konsole/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/goblinfactory/konsole/</RepositoryUrl>
     <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
-    <AssemblyVersion>7.0.0.6</AssemblyVersion>
-    <FileVersion>7.0.0.6</FileVersion>
+    <AssemblyVersion>7.0.0.7</AssemblyVersion>
+    <FileVersion>7.0.0.7</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="konsole.png" Pack="true" Visible="false" PackagePath="" />

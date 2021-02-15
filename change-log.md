@@ -4,16 +4,31 @@ new change log for version 7 onwards. See archive changelog for version 1 to 6.4
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [7.0.0.8-alpha/-tbd-]
+
+### Added
+
+- TabOrder property to IConsole. 
+
+- new overloads for new Window()
+  - Add padleft to allow to add few margin padding chars. e.g. `var window = new Window(padLeft:2, width:50, height: 10, theme: new StyleTheme(Yellow, DarkMagenta).WithTitle(White, Red));`
+  - sx, sy, width, height => `public Window(int sx, int sy, int width, int height, StyleTheme theme)`
+- various changes to ListView and base controls, too many to list here. Will only list any changes to existing non-alpha code.
+
 ## [7.0.0.7-alpha/highspeedwriter-only-refresh-dirty-regions]
 
 - busy ... test only refreshing dirty region of screen.
 - do perf test writing lines at a time to screen, including scrolling.
 
-## [7.0.0.6-alpha/hsw-perf-faster-borders]
+## [7.0.0.7-alpha/hsw-perf-faster-borders]
 
 ### Improved
 
-- improvement in HighspeedWriter performance tested rendering full screen (90x30 window) splitWindow left and right. (from `5.46fps`, `183ms` per screen render, to `8.26fps`, `121ms` per request.) Test run 200 iterations.
+- improvement in HighspeedWriter performance 
+  - tested rendering full screen (90x30 window) splitWindow left and right. (from `5.46fps`, `183ms` per screen render, to `8.26fps`, `121ms` per request.) Test run 200 iterations.
+  - tested rendering updates in split window (90x30 window) with writeLine and scrolling. No changes needed (Currently `289.92fps`, `3ms` per `WriteLine` operation including scrolling and rendering..) Test run 2000 iterations.
+  - tested rendering updates in split window (140x60 window) with writeLine and scrolling. No changes needed (Currently `78.18fps`, `13ms` per `WriteLine` operation including scrolling and rendering..) Test run 2000 iterations.
+
 - improvement in standard console rendering, performance tested rendering full screen (90x30 window) splitWindow left and right. (from `1.08fps`, `927ms` per screen render, to `1.71fps`, `602ms` per request.) Test run 40 iterations.
 
 ### Removed

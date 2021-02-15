@@ -2,7 +2,7 @@
   "profiles": {
     "Konsole.PerformanceTests": {
       "commandName": "Project",
-      "commandLineArgs": "2000"
+      "commandLineArgs": "200"
     }
   }
 }

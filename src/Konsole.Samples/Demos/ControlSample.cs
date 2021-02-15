@@ -35,7 +35,7 @@ namespace Konsole.Samples
                 return (false, false);
             }
 
-            public override void Render(ControlStatus status, Style style)
+            protected override void Render(ControlStatus status, Style style)
             {
                 switch (status)
                 {

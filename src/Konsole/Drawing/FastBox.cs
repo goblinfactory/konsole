@@ -24,6 +24,18 @@ namespace Konsole
             return _console;
         }
 
+        //TODO: need to add color (Style) to this, foreground and background.
+
+        public IConsole Box(int sx, int sy, int ex, int ey, LineThickNess? thickness)
+        {
+            _console.DoCommand(_console, () =>
+            {
+                _Box(sx, sy, ex, ey, null, thickness ?? LineThickNess.Single);
+            });
+
+            return _console;
+        }
+
         internal void _Box(int sx, int sy, int ex, int ey, string title, LineThickNess thickness)
         {
             Style _style = _console.Style.WithThickness(thickness);
@@ -55,6 +67,7 @@ namespace Konsole
                     return;
                 }
                 DrawBoxLines(sx, sy, ex, ey, chars);
+            if (string.IsNullOrWhiteSpace(title)) return;
                 var titleText = $" {title} ";
                 int len = titleText.Length;
                 int maxLen = width - 2;
@@ -87,17 +100,6 @@ namespace Konsole
             if (sx > ex) throw new ArgumentOutOfRangeException("start x cannot be bigger than end x.");
             int length = ex - sx + 1;
              _console.PrintAt(sx, sy, new string(line.T, length));
-            //if(len>1)
-            //{
-            //    _console.PrintAt(sx, sy, new string(line.T, len));
-            //    return;
-            //}
-            //_console.PrintAt(sx, sy, line.T);
-            //for (int i = sx + 1; i < sx + length - 1; i++)
-            //{
-            //    _console.PrintAt(i, sy, line.T);
-            //}
-            //_console.PrintAt(sx + length - 1, sy, line.T);
         }
 
         private void DrawVertical(int sx, int sy, int ey, IBoxStyle line)

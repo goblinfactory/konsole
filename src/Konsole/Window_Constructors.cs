@@ -247,12 +247,12 @@ namespace Konsole
                 (height <= 0) || (width <= 0)
                 );
         }
-        
+
         internal Window(IConsole console, WindowSettings settings)
         {            
             lock (_locker)
             {
-                int x = settings.SX;
+                int x = settings.SX + settings.PadLeft;
                 int? y = settings.SY;
                 int? width = settings.Width;
                 int? height = settings.Height;
@@ -345,7 +345,25 @@ namespace Konsole
             return h;
         }
 
+        /// <summary>
+        /// Open a window Inline at the specific sx, sy position with, width and height wide and tall.  The parent's cursorTop is incremented so that it will continue to print underneath the newly created window. The constructor is threadsafe, so creating multiple windows will ensure they will not overlap. While the constructor is threadsafe, the returned instance is not. Calling any of the Split methods will return a threadsafe window based off this window. You can call .Concurrent() on the newly created window to return a ConcurrentWriter wrapping the window instance.
+        /// </summary>
+        /// <param name="width">The width of the window</param>
+        /// <param name="height">the height of the window</param>
+        public Window(int padLeft, int width, int height, StyleTheme theme)
+            : this(new WindowSettings { PadLeft = padLeft, Width = width, Height = height, Theme = theme })
+        {
+        }
 
+        /// <summary>
+        /// Open a window Inline at the specific sx, sy position with, width and height wide and tall.  The parent's cursorTop is incremented so that it will continue to print underneath the newly created window. The constructor is threadsafe, so creating multiple windows will ensure they will not overlap. While the constructor is threadsafe, the returned instance is not. Calling any of the Split methods will return a threadsafe window based off this window. You can call .Concurrent() on the newly created window to return a ConcurrentWriter wrapping the window instance.
+        /// </summary>
+        /// <param name="width">The width of the window</param>
+        /// <param name="height">the height of the window</param>
+        public Window(int sx, int sy, int width, int height, StyleTheme theme)
+            : this(new WindowSettings { SX = sx, SY = sy, Width = width, Height = height, Theme = theme })
+        {
+        }
         /// <summary>
         /// Open a window Inline at the current cursorTop position, width and height wide and tall.  The parent's cursorTop is incremented so that it will continue to print underneath the newly created window. The constructor is threadsafe, so creating multiple windows will ensure they will not overlap. While the constructor is threadsafe, the returned instance is not. Calling any of the Split methods will return a threadsafe window based off this window. You can call .Concurrent() on the newly created window to return a ConcurrentWriter wrapping the window instance.
         /// </summary>
