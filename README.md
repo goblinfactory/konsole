@@ -5,7 +5,7 @@ Source File: /README.source.md
 To change this file edit the source file and then run MarkdownSnippets.
 -->
 
-# <img src="docs/konsole.png" height="30px" valign='bottom'/> Konsole 
+# <img src="docs/konsole.png" height="30px" valign='bottom'/> Konsole V6
 
 ![Goblinfactory.Konsole](https://github.com/goblinfactory/konsole/workflows/Goblinfactory.Konsole/badge.svg?branch=master)
 [![NuGet Status](https://img.shields.io/nuget/v/Goblinfactory.Konsole.svg?label=Goblinfactory.Konsole)](https://www.nuget.org/packages/IConsole/)
@@ -17,8 +17,11 @@ Low ceremony, Fluent DSL for writing console apps, utilities and spike projects.
 
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole/community?source=orgpage) and I'll be happy to help you. 
 
-Update: 11 Feb 2021, there are some early V7 alpha releases available in nuget, check them out :D : see the release notes here : https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.5-alpha
-
+**Version 7 alpha release progress (see release notes for whats new)**
+| date | alpha release |
+| --- | --- |
+| 11/2/21 | (`7.0.0.5-alpha`)[https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.5-alpha] |
+| 13/2/21 | (`7.0.0.7-alpha`)[https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.7-alpha] |
 cheers, 
 
 Alan
