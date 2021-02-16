@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace Konsole
 {
-    internal class AppManager : IConsoleManager
+    internal class ConsoleManager : IConsoleManager
     {
-        public AppManager()
+        public int CntChildren {  get { return _children.Keys.Count; } }
+        public bool HasChildren { get { return _children.Keys.Any(); } }
+        
+        private int _cntChildren = 0;
+        public ConsoleManager()
         {
 
         }
@@ -24,14 +28,31 @@ namespace Konsole
             return _children.Select(c => c.Value).OrderBy(c => c.TabOrder).ToArray();
         }
 
-        public void Remove(Guid consoleId)
+        public IConsole[] Consoles
         {
-            if (!_children.TryRemove(consoleId, out _)) throw new ArgumentOutOfRangeException($"Console with id '{consoleId}' not found.");
+            get
+            {
+                return _children.Select(c => c.Value).ToArray();
+            }
         }
+
+        public void Remove(Guid id)
+        {
+            if (!_children.TryRemove(id, out _)) throw new ArgumentOutOfRangeException($"Console with id '{id}' not found.");
+        }
+        public void Remove(string title)
+        {
+            var con = Consoles.FirstOrDefault(c => c.Title == title);
+            if(con == null) throw new ArgumentOutOfRangeException($"Console with title '{title}' not found.");
+            if (!_children.TryRemove(con.Id, out _)) throw new ArgumentOutOfRangeException($"Console with title '{title}' not found.");
+        }
+
         public void Add(IConsole console)
         {
             if (!_children.TryAdd(console.Id, console)) throw new ArgumentOutOfRangeException($"Console with id '{console.Id}' already exists.");
         }
+
+ 
 
         /// <summary>
         /// while true loop that handles keyboard events and tabbing, with optional quit key, typically escape. Escape is default.

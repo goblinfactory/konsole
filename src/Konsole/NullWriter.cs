@@ -271,10 +271,12 @@ namespace Konsole
         public int? TabOrder { get; set; }
         public bool Enabled { get; set; }
 
-        public IConsoleManager Manager => throw new NotImplementedException();
+        public IConsoleManager Manager => null;
 
         public Guid Id { get; } = Guid.NewGuid();
 
         public string Title { get; set; }
+
+        public IConsoleApplication Parent => null;
     }
 }

@@ -728,7 +728,7 @@ namespace Konsole
             {
                 int len = sx + width > WindowWidth ? width - sx : width;
                 if (width < 1 || len < 1 || sx > WindowWidth) return new Row();
-                // perfect canidate for span, but only if cells were immutable, which they are not!
+                // perfect canidate for span, but only if cells were immutable, which they are not! (at the moment)
                 var cells = _lines[sy].Cells.Skip(sx).Take(len).Select(c => c.Value.Clone()).ToArray();
                 var row = new Row(cells);
                 return row;
@@ -748,9 +748,25 @@ namespace Konsole
         public bool Enabled { get; set; }
         public Guid Id { get; } = Guid.NewGuid();
 
+        private IConsoleApplication _parent = null;
+        public IConsoleApplication Parent { get { return _parent; } }
+
         public async Task RunAsync()
         {
             await _manager.RunAsync();
+        }
+
+        public IConsoleApplication this[string title]
+        {
+            get
+            {
+                return _manager?.Consoles?.FirstOrDefault(c => c.Title == title);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"{(Title ?? "untitled")}, width:{WindowWidth}, height:{WindowHeight}: FirstLine:{(BufferWritten.Length > 0 ? BufferWritten[0] : "[empty]")}";
         }
     }
 }

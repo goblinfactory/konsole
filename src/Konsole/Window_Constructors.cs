@@ -311,9 +311,9 @@ namespace Konsole
                     _console = new NullWriter();
                 }
 
-                _manager = new AppManager();
-                _manager.Add(_console);
-
+                _manager = new ConsoleManager();
+                _parent = _console;
+                _parent?.Manager?.Add(this);
             }
         }
 

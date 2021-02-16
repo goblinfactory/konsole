@@ -380,6 +380,8 @@ namespace Konsole
         public IConsoleManager Manager => throw new NotImplementedException();
 
         public Guid Id => throw new NotImplementedException();
+
+        public IConsoleApplication Parent => null;
     }
 }
 

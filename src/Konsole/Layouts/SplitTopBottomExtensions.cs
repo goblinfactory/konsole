@@ -71,8 +71,8 @@ namespace Konsole
                 });
 
                 var theme = c.Theme.WithColor(new Colors(foreground, background));
-                var topWin = new Window(c, new WindowSettings { SX = 1, SY = 1, Width = width - 2, Height = topHeight, Theme = theme });
-                var bottomWin = new Window(c, new WindowSettings { SX = 1, SY = topHeight + 2, Width = width - 2, Height = bottomHeight, Theme = theme });
+                var topWin = new Window(c, new WindowSettings { SX = 1, SY = 1, Width = width - 2, Height = topHeight, Theme = theme, HasBorder = false, Title = topTitle });
+                var bottomWin = new Window(c, new WindowSettings { SX = 1, SY = topHeight + 2, Width = width - 2, Height = bottomHeight, Theme = theme, HasBorder = false, Title = bottomTitle });
                 return (topWin, bottomWin);
             }
         }

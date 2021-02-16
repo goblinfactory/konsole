@@ -12,6 +12,7 @@ namespace Konsole
         public ConcurrentWriter(IConsole window)
         {
             _window = window;
+            _parent = window;
         }
 
         public ConcurrentWriter()
@@ -349,5 +350,8 @@ namespace Konsole
         public IConsoleManager Manager => null;
 
         public Guid Id { get; } = Guid.NewGuid();
+
+        private IConsoleApplication _parent = null;
+        public IConsoleApplication Parent { get { return _parent; } }
     }
 }
