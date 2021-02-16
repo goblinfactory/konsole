@@ -8,23 +8,7 @@ namespace Konsole
         public WindowSettings() {
             Theme = StyleTheme.Default;
         }
-        public WindowSettings(WindowSettings settings) : this(
-            settings.SX, 
-            settings.SY, 
-            settings.Clipping, 
-            settings.PadLeft,
-            settings.Transparent,
-            settings.Scrolling,
-            settings.Status,
-            settings.Title,
-            settings.Width,
-            settings.Height,
-            settings.Theme ?? StyleTheme.Default,
-            settings._echo,
-            settings._parentWindow
-            )
-        {
-        }
+
 
         public WindowSettings WithStyle(Style style)
         {
@@ -35,16 +19,17 @@ namespace Konsole
             return settings;
         }
 
-        public WindowSettings WithTitle(string title)
+        public WindowSettings WithBorder(string title)
         {
             var settings = new WindowSettings(this)
             {
-                Title = title
+                Title = title,
+                HasBorder = true
             };
             return settings;
         }
 
-        public WindowSettings(int sX, int? sY, bool clipping, int padLeft, bool transparent, bool scrolling, ControlStatus status, string title, int? width, int? height, StyleTheme theme, bool echo, IConsole parentWindow)
+        public WindowSettings(int sX, int? sY, bool clipping, int padLeft, bool transparent, bool scrolling, ControlStatus status, string title, bool hasBorder, int? width, int? height, StyleTheme theme, bool echo, bool enabled, int? tabOrder, IConsole parentWindow)
         {
             SX = sX;
             SY = sY;
@@ -54,17 +39,45 @@ namespace Konsole
             Scrolling = scrolling;
             Status = status;
             Title = title;
+            HasBorder = hasBorder;
             Width = width;
             Height = height;
             Theme = theme;
             _echo = echo;
             _parentWindow = parentWindow;
+            TabOrder = tabOrder;
+            Enabled = enabled;
+
+        }
+
+        public WindowSettings(WindowSettings settings) : this(
+            settings.SX,
+            settings.SY,
+            settings.Clipping,
+            settings.PadLeft,
+            settings.Transparent,
+            settings.Scrolling,
+            settings.Status,
+            settings.Title,
+            settings.HasBorder == (settings.HasBorder ?? !(settings.Title == null)),
+            settings.Width,
+            settings.Height,
+            settings.Theme ?? StyleTheme.Default,
+            settings._echo,
+            settings.Enabled,
+            settings.TabOrder,
+            settings._parentWindow
+    )
+        {
         }
 
         /// <summary>
         /// Starting X position of window. 
         /// </summary>
         public int SX { get; set; } = 0;
+
+        public int? TabOrder { get; set; } = null;
+        public bool Enabled { get; set; } = true;
 
         /// <summary>
         /// starting Y position of the window. Leave null to use the current CursorTop position.
@@ -96,10 +109,15 @@ namespace Konsole
         public ControlStatus Status { get; set; } = Active;
 
         /// <summary>
-        /// The title of the screen. Will be centered and at the top of the window.
+        /// The title of the screen. Will be centered and at the top of the window. Set to a non null, non whitespace value and the window will have a border. 
         /// </summary>
         public string Title { get; set; } = null;
-        public bool hasTitle => Title != null;
+        /// <summary>
+        /// Set 'HasBorder' to false if you've supplied a title but don't want the window to have a border. i.e. you want to be able to reference the window by the title without a border. Titles must be unique across windows and all child windows.
+        /// </summary>
+        public bool? HasBorder { get; set; } = null;
+
+        public bool HasTitle => (Title!=null);
 
         /// <summary>
         /// The width of the screen. Leave black to use whole width.

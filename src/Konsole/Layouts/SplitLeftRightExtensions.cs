@@ -70,8 +70,8 @@ namespace Konsole
                 });
 
                 var theme = c.Theme.WithColor(new Colors(foreground, background));
-                var leftWin = Window._CreateFloatingWindow(c, new WindowSettings { SX = 1, SY = 1, Width = leftWidth, Height = h - 2, Theme = theme });
-                var rightWin = Window._CreateFloatingWindow(c, new WindowSettings { SX = leftWidth + 2, SY = 1, Width = rightWidth, Height = h - 2, Theme = theme });
+                var leftWin = new Window(c, new WindowSettings { SX = 1, SY = 1, Width = leftWidth, Height = h - 2, Theme = theme });
+                var rightWin = new Window(c, new WindowSettings { SX = leftWidth + 2, SY = 1, Width = rightWidth, Height = h - 2, Theme = theme });
                 return (leftWin, rightWin);
             }
         }

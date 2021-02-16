@@ -133,7 +133,7 @@ namespace Konsole
         }
         public Window(string title, LineThickNess thickness) : this(null,
             FullScreenSettings()
-            .WithTitle(title)
+            .WithBorder(title)
             .WithStyle(Style.Default.WithThickness(thickness))
         )
         {
@@ -142,14 +142,14 @@ namespace Konsole
 
         public Window(string title, Style style) : this(null, 
             FullScreenSettings()
-            .WithTitle(title)
+            .WithBorder(title)
             .WithStyle(style)
         ) 
         {
         
         }
 
-        public Window(string title) : this(null, FullScreenSettings().WithTitle(title))
+        public Window(string title) : this(null, FullScreenSettings().WithBorder(title))
         {
 
         }
@@ -188,7 +188,7 @@ namespace Konsole
             )
         { }
 
-        public Window(IConsole console, string title) : this(console, FullScreenSettings().WithTitle(title))
+        public Window(IConsole console, string title) : this(console, FullScreenSettings().WithBorder(title))
         {
 
         }
@@ -238,8 +238,9 @@ namespace Konsole
         {
         }
 
+        private readonly bool _hasBorder;
+        private readonly bool _hasTitle;
         private string _title = null;
-        private bool HasTitle = false;
 
         private bool hasVisibleContent(int height, int width)
         {
@@ -279,9 +280,10 @@ namespace Konsole
                 Clipping = settings.Clipping;
                 Scrolling = settings.Scrolling;
                 _title = settings.Title;
-                if (settings.hasTitle)
+                _hasBorder = settings.HasBorder ?? settings.HasTitle;
+                _hasTitle = settings.HasTitle;
+                if (_hasBorder)
                 {
-                    HasTitle = true;
                     // we have a box around the outside, so window dimensions are "inside"
                     _x = _x + 1;
                     _y = _y + 1;
@@ -289,7 +291,7 @@ namespace Konsole
                     WindowHeight = WindowHeight - 2;
                 }
 
-                (_absoluteX, _absoluteY) = GetAbsolutePosition(HasTitle, _console, _x, _y);
+                (_absoluteX, _absoluteY) = GetAbsolutePosition(_console, _x, _y);
 
                 init();
                     
@@ -299,7 +301,7 @@ namespace Konsole
                 {
                     if(_hasVisibleContent)
                     {
-                        _console.CursorTop += WindowHeight + (HasTitle ? 2 : 0);
+                        _console.CursorTop += WindowHeight + (_hasBorder ? 2 : 0);
                         _console.CursorLeft = 0;
                     }
                 }
@@ -308,12 +310,15 @@ namespace Konsole
                 {
                     _console = new NullWriter();
                 }
+
+                _manager = new AppManager();
+                _manager.Add(_console);
+
             }
         }
 
-        private static (int absoluteX, int absoluteY) GetAbsolutePosition(bool hasTitle, IConsole parent, int x, int y)
+        private static (int absoluteX, int absoluteY) GetAbsolutePosition(IConsole parent, int x, int y)
         {
-            // argh, the great offset debarkable of March 2020!
             int offset = 0; // hasTitle ? 1 : 0;
             var absoluteX = (parent?.AbsoluteX ?? 0) + x + offset;
             var absoluteY = (parent?.AbsoluteY ?? 0) + y + offset;

@@ -342,6 +342,12 @@ namespace Konsole
             }
         }
 
+        public int? TabOrder { get; set; }
+        public bool Enabled { get; set; }
 
+        public string Title { get; set; }
+        public IConsoleManager Manager => null;
+
+        public Guid Id { get; } = Guid.NewGuid();
     }
 }

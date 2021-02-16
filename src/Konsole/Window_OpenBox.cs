@@ -181,7 +181,7 @@ namespace Konsole
                 var draw = new Draw(_console, style, Drawing.MergeOrOverlap.Fast);
                 draw.Box(sx, sy, ex, ey, title);
 
-                var window = _CreateFloatingWindow(_console, new WindowSettings { SX = sx + 1, SY = sy + 1, Width = width - 2, Height = height - 2, Status = status, Theme = theme });
+                var window = new Window(_console, new WindowSettings { SX = sx + 1, SY = sy + 1, Width = width - 2, Height = height - 2, Status = status, Theme = theme });
                 if (inline)
                 {
                     _console.CursorTop = _console.CursorTop + height;

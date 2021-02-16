@@ -1,13 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Konsole
 {
-    public interface IConsoleApplication : IConsole
+    public interface IConsoleApplication
     {
-        void RemoveConsole(string id);
-        void AddConsole(string id, IConsole console);
-        int? TabOrder { get; }
-        void Refresh(ControlStatus status);
-        Task RunAsync();
+        IConsoleManager Manager { get; }
+        bool Enabled { get; set; }
+        int? TabOrder { get; set; }
+        string Title { get; }
+        Guid Id { get; }
     }
 }   

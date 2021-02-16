@@ -8,7 +8,7 @@ Describe navigation behavior using the code below as an example; opening a windo
 
 ```csharp
 
-// pseudo code for now
+// pseudo code for now, excluding code for 'new user', will update shortly.
 
 var win = new Window();
 

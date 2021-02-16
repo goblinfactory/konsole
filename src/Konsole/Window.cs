@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Konsole.Internal;
-using Konsole.Platform;
 
 namespace Konsole
 {
-    public partial class Window : IConsole, IPeek//, IConsoleApplication
+    public partial class Window : IConsole, IPeek, IConsoleApplication
     {
         // *****************
         // ** HostConsole **
@@ -39,6 +35,7 @@ namespace Konsole
                     _hostConsole = value;
             }
         }
+        public string Title {  get { return _title; } }
 
         // *****************
         // ** GetVersion  **
@@ -160,28 +157,6 @@ namespace Konsole
             return (con.WindowWidth, con.WindowHeight);
         };
 
-
-
-
-
-
-        //internal static IConsole _CreateFloatingWindow(int? x, int? y, int? width, int? height, ConsoleColor foreground, ConsoleColor background, bool echo = true, IConsole echoConsole = null, params K[] options)
-        //{
-        //    var theme = new Style(foreground, background).ToTheme();
-        //}
-
-        internal static IConsole _CreateFloatingWindow(IConsole console, WindowSettings settings)
-        {
-            var w = new Window(console, settings);
-            w.SetWindowOffset(settings.SX, settings.SY ?? 0);
-            return w;
-        }
-
-        internal static IConsole _CreateFloatingWindow(WindowSettings settings)
-        {
-            return _CreateFloatingWindow(null, settings);
-        }
-
         private StyleTheme _theme = null;
 
         public StyleTheme Theme
@@ -208,10 +183,21 @@ namespace Konsole
 
         private void init()
         {
+            //THIS IS WHERE I'd keep the text lines written, so that I could re-render them if the window is resized. Could be trickly on scroll and portion of last print is lost as partial scroll off top of window?
+            // also if I want to render ... lines, previously scrolled off, so that I can create scrollable windows! just keep a buffer.
             if (!_hasVisibleContent) return;
-            if (HasTitle)
+            if (_hasBorder)
             {
-                new Draw(_console, Style, Drawing.MergeOrOverlap.Fast).Box(_x - 1, _y - 1, _x + WindowWidth, _y + WindowHeight, _title);
+                //TODO: possibly replace with faster, and check how this is "merged"
+                var draw = new Draw(_console, Style, Drawing.MergeOrOverlap.Fast);
+                if (_hasTitle)
+                {
+                   draw.Box(_x - 1, _y - 1, _x + WindowWidth, _y + WindowHeight, _title);
+                }
+                else
+                {
+                    draw.Box(_x - 1, _y - 1, _x + WindowWidth, _y + WindowHeight);
+                }
             }
 
             _lastLineWrittenTo = -1;
@@ -463,7 +449,15 @@ namespace Konsole
             _absoluteY = y;
         }
 
+        /// <summary>
+        /// The "absolute" i.e. actual (not relative) position of the window in the console or highspeed writer.
+        /// </summary>
         public int AbsoluteY => _absoluteY;
+
+        /// <summary>
+        /// The "absolute" i.e. actual (not relative) position of the window in the console or highspeed writer.
+        /// </summary>
+
         public int AbsoluteX => _absoluteX;
         public int WindowWidth { get; }
 
@@ -741,29 +735,22 @@ namespace Konsole
             }
         }
 
-        //public int? TabOrder { get; set; }
+        private IConsoleManager _manager;
+        public IConsoleManager Manager
+        {
+            get
+            {
+                return _manager;
+            }
+        }
 
-        //public void Refresh(ControlStatus status)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public int? TabOrder { get; set;  }
+        public bool Enabled { get; set; }
+        public Guid Id { get; } = Guid.NewGuid();
 
-        //private ConcurrentDictionary<string, IConsole> _children;
-
-
-        //void RemoveConsole(string id)
-        //{
-        //    if (!_children.TryRemove(id, out _)) throw new ArgumentOutOfRangeException($"Console with id '{id}' not found.");
-        //}
-        //void AddConsole(string id, IConsole console)
-        //{
-        //    if (!_children.TryAdd(id, console)) throw new ArgumentOutOfRangeException($"Console with id '{id}' already exists.");               
-        //}
-
-        //public Task RunAsync()
-        //{
-        //    return Task.CompletedTask();
-        //    //var handler = new 
-        //}
+        public async Task RunAsync()
+        {
+            await _manager.RunAsync();
+        }
     }
 }

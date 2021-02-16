@@ -1,4 +1,4 @@
-﻿using Goblinfactory.Konsole.Layouts.Internal;
+﻿using Konsole.Layouts;
 using System;
 using System.Linq;
 

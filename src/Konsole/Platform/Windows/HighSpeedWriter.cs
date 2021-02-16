@@ -371,6 +371,15 @@ namespace Konsole
                 return Theme.GetActive(Status);
             }
         }
+
+        public int? TabOrder { get; set; }
+        public bool Enabled { get; set; }
+
+        public string Title { get; set; }
+
+        public IConsoleManager Manager => throw new NotImplementedException();
+
+        public Guid Id => throw new NotImplementedException();
     }
 }
 

@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Konsole.Tests.Helpers;
+﻿using Konsole.Tests.Helpers;
 using NUnit.Framework;
 using static System.ConsoleColor;
 
@@ -12,7 +11,7 @@ namespace Konsole.Tests.WindowTests
         {
             var con = new MockConsole(20, 8);
             var win = new Window(con);
-            var float1 = Window._CreateFloatingWindow(win, new WindowSettings
+            var float1 = new Window(win, new WindowSettings
             {
                 SX = 5,
                 SY = 1,
@@ -43,7 +42,7 @@ namespace Konsole.Tests.WindowTests
 
             var con = new MockConsole(20, 8);
             var win = new Window(con);
-            var float1 = Window._CreateFloatingWindow(win, new WindowSettings
+            var float1 = new Window(win, new WindowSettings
             {
                 SX = 5,
                 SY = 1,
@@ -66,7 +65,7 @@ namespace Konsole.Tests.WindowTests
             con.Buffer.ShouldBe(expected);
 
             // now test creating a nested window
-            var float2 = Window._CreateFloatingWindow(float1, new WindowSettings
+            var float2 = new Window(float1, new WindowSettings
             {
                 SX = 3,
                 SY = 2,
@@ -74,11 +73,9 @@ namespace Konsole.Tests.WindowTests
                 Height = 2,
                 Theme = new StyleTheme(White, Black)
             });
-            float2.CursorLeft = 0;
-            float2.CursorTop = 0;
             float2.Write(@"===...");
 
-            expected = new[] {
+            expected = new[]{
                 "                    ",
                 "     0000000        ",
                 "     1111111        ",
@@ -86,8 +83,8 @@ namespace Konsole.Tests.WindowTests
                 "     333...3        ",
                 "     4444444        ",
                 "                    ",
-                "                    "
-            };
+                "                    ",
+                };
 
             con.Buffer.ShouldBe(expected);
         }

@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace Goblinfactory.Konsole.Layouts.Internal
+namespace Konsole.Layouts
 {
     internal static class Splitter
     {

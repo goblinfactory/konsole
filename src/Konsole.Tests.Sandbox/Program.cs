@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using static System.ConsoleColor;
 
 namespace Konsole.Tests.RunOne
 {
@@ -12,12 +13,38 @@ namespace Konsole.Tests.RunOne
         static async Task Main(string[] args)
         {
             Console.CursorVisible = false;
-
-            var win = new Window();
-            var (top, bot) = win.SplitTopBottom("top", "bottom");
+            Console.SetWindowSize(90, 30);
+            var window = new Window();
+            var (top, bot) = window.SplitTopBottom("top", "bottom");
             var (left, right) = bot.SplitLeftRight("left", "right");
+            
+            // disable the bottom right for demo purposes.
+            // all controls and text inside the right window
+            // will be rendered in Disabled styling.
+            right.Enabled = false;                                      
 
-            //await win.RunAsync();
+            //await window.RunAsync();
+
+            // at this point we should be able to print the window layout...
+            // ask each window recursively to dump .. their configuration?
+            // window should report it's child windows as well by call
+            PrintWindowTitles(top, window, 2);
+            top.WriteLine(Yellow, "Press enter to quit");
+            Console.ReadLine();
+        }
+
+        private static void PrintWindowTitles(IConsole output, IConsole window, int indent) {
+            var spacer = new string(' ', indent * 2);
+            foreach (var win in window.Manager.ConsolesByTabOrder())
+            {
+                output.WriteLine($"{spacer}{win.Title}");
+
+                foreach (var win2 in win?.Manager?.ConsolesByTabOrder() ?? new IConsole[0])
+                {
+                    PrintWindowTitles(output, win2, indent + 1);
+                }
+            }
+
         }
     }
 }

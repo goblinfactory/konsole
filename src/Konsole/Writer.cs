@@ -399,5 +399,12 @@ namespace Konsole
         public StyleTheme Theme { get; set; } = StyleTheme.Default;
 
         public ControlStatus Status { get; set; } = ControlStatus.Active;
+        public int? TabOrder { get; set; }
+        public bool Enabled { get; set; }
+        public string Title { get; set; }
+
+        public IConsoleManager Manager => throw new NotImplementedException();
+
+        public Guid Id { get; } = Guid.NewGuid();
     }
 }
