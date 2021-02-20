@@ -1,5 +1,4 @@
 ﻿using Konsole.Platform;
-using Microsoft.WindowsAzure.ServiceRuntime;
 using System;
 using System.Diagnostics;
 using System.IO;
