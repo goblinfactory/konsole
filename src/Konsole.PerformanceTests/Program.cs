@@ -1,4 +1,5 @@
 ﻿using Konsole.Platform;
+using Microsoft.WindowsAzure.ServiceRuntime;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -13,6 +14,13 @@ namespace Konsole.PerformanceTests
     {
         const int ERRORS = -1;
         const string RUN = "RUN";
+
+        private static bool? _isRunningAzure;
+        public static bool IsAzure
+        {
+            get { return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("RoleRoot")); }
+        }
+
         static void Main(string[] args)
         {
 
@@ -56,21 +64,39 @@ namespace Konsole.PerformanceTests
                         Screenshot.Take(Path.Combine(logs, "screen2"));
                     }
 
-                    // ----------------------
-                    //  THE ACTUAL TESTS 
-                    // ----------------------
                     IConsole left = null;
                     IConsole right = null;
-                    tester.TestIt(()=>
+
+                    // ------------------------------------------------------------
+                    //       Window border print tests (splitleft, splitright)
+                    // ------------------------------------------------------------
+                    tester.TestIt(() =>
                     {
-                        //var hw = new HighSpeedWriter();
-                        //var console = new Window(hw);
+                        Console.Clear();
                         var console = new Window();
-                        left = console.SplitLeft("left");
-                        right = console.SplitRight("right");
                         return (console, null);
                     },
-                    iterations, "HighSpeedWriterBoxes", (IConsole console, HighSpeedWriter hw, int iteration) =>
+                    20, "split left, split right tests", (IConsole console, HighSpeedWriter hw, int iteration) =>
+                    {
+                        left = console.SplitLeft("left");
+                        right = console.SplitRight("right");
+                    }, TakeScreenShot);
+
+                    // ------------------------------------------------------------
+                    //         High speed writer tests (scrolling tests)
+                    // ------------------------------------------------------------
+                    tester.TestIt(()=>
+                    {
+                        Console.Clear();
+                        var hw = new HighSpeedWriter();
+                        var console = new Window(hw);
+                        
+                        //var console = new Window();
+                        left = console.SplitLeft("left");
+                        right = console.SplitRight("right");
+                        return (console, hw);
+                    },
+                    200, "high speed writer tests", (IConsole console, HighSpeedWriter hw, int iteration) =>
                     {
                         left.WriteLine(Red, $"left iteration {iteration}");
                         right.WriteLine(Green, $"left iteration {iteration}");
@@ -219,6 +245,15 @@ namespace Konsole.PerformanceTests
             Console.Clear();
 
             var (console, hw) = setup();
+            if (Program.IsAzure && hw != null)
+            {
+                var msg = $"test '{testName}' skipped, not compatible on azure build servers for security reasons";
+                Console.WriteLine(msg);
+                log.WriteLineAsync(msg);
+                log.Flush();
+                return;
+            }
+
 
             for (int i = 0; i < iterations; i++)
             {

@@ -377,9 +377,9 @@ namespace Konsole
 
         public string Title { get; set; }
 
-        public IConsoleManager Manager => throw new NotImplementedException();
+        public IConsoleManager Manager { get; } = new ConsoleManager();
 
-        public Guid Id => throw new NotImplementedException();
+        public Guid Id { get; } = Guid.NewGuid();
 
         public IConsoleApplication Parent => null;
     }
