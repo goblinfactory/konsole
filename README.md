@@ -685,7 +685,7 @@ You can create advanced window layouts using `SplitRows` and `SplitColumns` pass
                     new Split(4, "heading", LineThickNess.Single),
                     new Split(0),
                     new Split(4, "status", LineThickNess.Single)
-            ); ; ;
+            );
 
             var headline = consoles[0];
             var status = consoles[2];
