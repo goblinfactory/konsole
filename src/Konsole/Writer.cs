@@ -240,11 +240,25 @@ namespace Konsole
         }
 
         // method written in response to issue #28 https://github.com/goblinfactory/konsole/issues/28 (Crash after window resize)
+
+        //// commented changed below to see if I can stop the jitter...does mean issue above is still a problem...
+        //// maybe handle using try catch, and only if there's an exception we check the width! ooohhh
+        //private static int? _consoleWindowWidth = null;
+        //private static int? _consoleBufferWidth = null;
+
+        //private static int CheckWidth(int x)
+        //{
+        //    //return  x.Min(Console.WindowWidth, Console.BufferWidth);
+        //    return x.Min(
+        //        _consoleWindowWidth ?? (int)(_consoleWindowWidth = Console.WindowWidth),
+        //        _consoleBufferWidth ?? (int)(_consoleBufferWidth = Console.BufferWidth)
+        //    );
+        //}
+
         private static int CheckWidth(int x)
         {
             return x.Min(Console.WindowWidth, Console.BufferWidth);
         }
-
 
         public void PrintAt(int x, int y, string format, params object[] args)
         {
@@ -408,5 +422,8 @@ namespace Konsole
         public Guid Id { get; } = Guid.NewGuid();
 
         public IConsoleApplication Parent => null;
+
+        public bool Clipping { get; set; } = false;
+        public bool Scrolling { get; set; } = false;
     }
 }

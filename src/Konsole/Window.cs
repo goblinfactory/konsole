@@ -86,9 +86,9 @@ namespace Konsole
 
         internal static object _locker = new object();
 
-        public bool Clipping { get; } = false;
+        public bool Clipping { get; set; } = false;
 
-        public bool Scrolling { get; } = true;
+        public bool Scrolling { get; set; } = true;
         public bool Transparent { get; } = false;
         
 
@@ -171,11 +171,20 @@ namespace Konsole
             }
         }
 
+        private Style _Style
+        {
+            get
+            {
+                return Theme.GetActive(Status);
+            }
+        }
+
+
         public Style Style
         {
             get
             {
-                lock (_locker) return Theme.GetActive(Status);
+                lock (_locker) return _Style;
             }
         }
 
@@ -189,14 +198,15 @@ namespace Konsole
             if (_hasBorder)
             {
                 //TODO: possibly replace with faster, and check how this is "merged"
-                var draw = new Draw(_console, Style, Drawing.MergeOrOverlap.Fast);
+                //var draw = new Draw(_console, Style, Drawing.MergeOrOverlap.Fast);
+                var draw = new Faster(_console);
                 if (_hasTitle)
                 {
-                   draw.Box(_x - 1, _y - 1, _x + WindowWidth, _y + WindowHeight, _title);
+                   draw.Box(_x - 1, _y - 1, _x + WindowWidth, _y + WindowHeight, _title, _Style.ThickNess);
                 }
                 else
                 {
-                    draw.Box(_x - 1, _y - 1, _x + WindowWidth, _y + WindowHeight);
+                    draw.Box(_x - 1, _y - 1, _x + WindowWidth, _y + WindowHeight, _Style.ThickNess);
                 }
             }
 

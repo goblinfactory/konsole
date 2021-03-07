@@ -1,4 +1,6 @@
-﻿namespace Konsole
+﻿using System;
+
+namespace Konsole
 {
 // begin-snippet: IWindowed
     public interface IWindowed
@@ -15,6 +17,10 @@
 
         int WindowWidth { get; }
         int WindowHeight { get; }
+
+        bool Clipping { get; set; }
+
+        bool Scrolling { get; set; }
     }
     // end-snippet
 }

@@ -82,13 +82,23 @@ namespace Konsole
                 }
         }
 
+        private object locker = new object();
         private void DrawBoxLines(int sx, int sy, int ex, int ey, IBoxStyle chars)
         {
-            DrawCorners(sx, sy, ex, ey, chars);
-            DrawHorizontal(sx + 1, sy, ex - 1, chars);
-            DrawVertical(sx, sy + 1, ey - 1, chars);
-            DrawVertical(ex, sy + 1, ey - 1, chars);
-            DrawHorizontal(sx + 1, ey, ex - 1, chars);
+            //lock (locker)
+            //{
+            //    var cc = (_console.Clipping, _console.Scrolling);
+                //_console.Clipping = true;
+                //_console.Scrolling = false;
+                    DrawCorners(sx, sy, ex, ey, chars);
+                DrawHorizontal(sx + 1, sy, ex - 1, chars);
+                DrawVertical(sx, sy + 1, ey - 1, chars);
+                DrawVertical(ex, sy + 1, ey - 1, chars);
+                DrawHorizontal(sx + 1, ey, ex - 1, chars);
+
+                //_console.Clipping = cc.Clipping;
+                //_console.Scrolling = cc.Scrolling;
+           // }
         }
 
         private enum HV {  Undefined, Horizontal, Vertical }
@@ -107,7 +117,12 @@ namespace Konsole
             if (ey - sy < 0) return;
             if (sy > ey) throw new ArgumentOutOfRangeException("start y cannot be bigger than end y.");
             _console.PrintAt(sx, sy, line.L);
-            for (int i = sy + 1; i < ey; i++) _console.PrintAt(sx, i, line.L);
+            for (int i = sy + 1; i < ey; i++)
+            {
+                _console.PrintAt(sx, i, line.L);
+            }
+            // protect against small window sizes by having another print here.
+            // For very small window sizes doesnt matter if this is printed on top of start.
             _console.PrintAt(sx, ey, line.L);
         }
 

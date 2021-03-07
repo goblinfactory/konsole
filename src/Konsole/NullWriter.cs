@@ -278,5 +278,8 @@ namespace Konsole
         public string Title { get; set; }
 
         public IConsoleApplication Parent => null;
+
+        public bool Clipping { get; set; } = false;
+        public bool Scrolling { get; set; } = false;
     }
 }

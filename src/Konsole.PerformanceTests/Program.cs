@@ -22,7 +22,7 @@ namespace Konsole.PerformanceTests
 
         static void Main(string[] args)
         {
-
+            args = args ?? new string[] { "RUN50" };
             if (args.Length != 1)
             {
                 WriteHelpThenExitWithError();
@@ -48,7 +48,8 @@ namespace Konsole.PerformanceTests
             {
                 try
                 {
-                    log.WriteLine($"starting test [ {iterations} ] iterations.");
+                    var n = DateTime.Now;
+                    log.WriteLine($"starting tests [{n.ToShortDateString()} {n.ToShortTimeString()}] ");
                     var logs = Solution.Path("logs");
                     if (!Directory.Exists(logs)) Directory.CreateDirectory(logs);
 
@@ -57,8 +58,10 @@ namespace Konsole.PerformanceTests
                     Screenshot.Take(Path.Combine(logs, "screen1"));
                     if (PlatformStuff.IsWindows)
                     {
+#pragma warning disable CA1416 // Validate platform compatibility
+                        Console.SetWindowSize(60, 40);
+#pragma warning restore CA1416 // Validate platform compatibility
                         Console.CursorVisible = false;
-                        Console.SetWindowSize(90, 30);
                         Console.WriteLine($"hello from 90x30");
                         Screenshot.Take(Path.Combine(logs, "screen2"));
                     }
@@ -72,35 +75,38 @@ namespace Konsole.PerformanceTests
                     tester.TestIt(() =>
                     {
                         Console.Clear();
+                        Console.CursorVisible = false;
                         var console = new Window();
                         return (console, null);
                     },
                     20, "split left, split right tests", (IConsole console, HighSpeedWriter hw, int iteration) =>
                     {
-                        left = console.SplitLeft("left");
+                        //left = console.SplitLeft("left");
+                        console.Clear();
                         right = console.SplitRight("right");
                     }, TakeScreenShot);
 
                     // ------------------------------------------------------------
                     //         High speed writer tests (scrolling tests)
                     // ------------------------------------------------------------
-                    tester.TestIt(()=>
-                    {
-                        Console.Clear();
-                        var hw = new HighSpeedWriter();
-                        var console = new Window(hw);
+                    
+                    //tester.TestIt(()=>
+                    //{
+                    //    Console.Clear();
+                    //    var hw = new HighSpeedWriter();
+                    //    var console = new Window(hw);
                         
-                        //var console = new Window();
-                        left = console.SplitLeft("left");
-                        right = console.SplitRight("right");
-                        return (console, hw);
-                    },
-                    200, "high speed writer tests", (IConsole console, HighSpeedWriter hw, int iteration) =>
-                    {
-                        left.WriteLine(Red, $"left iteration {iteration}");
-                        right.WriteLine(Green, $"left iteration {iteration}");
-                        hw?.Flush();
-                    } , TakeScreenShot);
+                    //    //var console = new Window();
+                    //    left = console.SplitLeft("left");
+                    //    right = console.SplitRight("right");
+                    //    return (console, hw);
+                    //},
+                    //100, "high speed writer tests", (IConsole console, HighSpeedWriter hw, int iteration) =>
+                    //{
+                    //    left.WriteLine(Red, $"left iteration {iteration}");
+                    //    right.WriteLine(Green, $"left iteration {iteration}");
+                    //    hw?.Flush();
+                    //} , TakeScreenShot);
 
                     //tester.TestIt(iterations, "HighSpeedWriterBoxes", HWSplitLeftRightPerformanceTest, false, TakeScreenShot);
 
@@ -278,7 +284,8 @@ namespace Konsole.PerformanceTests
 
             double rps = (double)iterations / timer.Elapsed.TotalSeconds;
             double response = (1 / rps) * 1000;
-            var successMessage = $"TEST:{testName,-20} [{rps:00000.00}] requests per second, [{response:0000}]  ms per requst. ";
+            var n = DateTime.Now;
+            var successMessage = $"{n.ToShortDateString()} {n.ToShortTimeString()} : TEST: {testName,-35} [{rps:00000.00}] requests per second, [{response:0000}]  ms per requst. ";
             postTest($"{testName}-{response:0}ms");
             Console.WriteLine(successMessage);
             log.WriteLine(successMessage);

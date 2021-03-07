@@ -382,6 +382,9 @@ namespace Konsole
         public Guid Id { get; } = Guid.NewGuid();
 
         public IConsoleApplication Parent => null;
+
+        public bool Clipping { get; set; } = false;
+        public bool Scrolling { get; set; } = false;
     }
 }
 
