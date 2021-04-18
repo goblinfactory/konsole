@@ -5,7 +5,7 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Konsole</RootNamespace>
-    <Version>7.0.0.7-alpha</Version>
+    <Version>7.0.0.10-alpha</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
@@ -73,8 +73,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/goblinfactory/konsole/</RepositoryUrl>
     <MSBuildWarningsAsMessages>NU1702</MSBuildWarningsAsMessages>
-    <AssemblyVersion>7.0.0.7</AssemblyVersion>
-    <FileVersion>7.0.0.7</FileVersion>
+    <AssemblyVersion>7.0.0.10</AssemblyVersion>
+    <FileVersion>7.0.0.10</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="konsole.png" Pack="true" Visible="false" PackagePath="" />

@@ -3,7 +3,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using static System.ConsoleColor;
 
 namespace Konsole.PerformanceTests
@@ -22,7 +21,7 @@ namespace Konsole.PerformanceTests
 
         static void Main(string[] args)
         {
-            args = args ?? new string[] { "RUN50" };
+            args = args ?? new string[] { "RUN20" };
             if (args.Length != 1)
             {
                 WriteHelpThenExitWithError();
@@ -59,7 +58,9 @@ namespace Konsole.PerformanceTests
                     if (PlatformStuff.IsWindows)
                     {
 #pragma warning disable CA1416 // Validate platform compatibility
-                        Console.SetWindowSize(60, 40);
+                        Console.SetWindowSize(1, 1);
+                        Console.SetBufferSize(90, 30);
+                        Console.SetWindowSize(90, 30);
 #pragma warning restore CA1416 // Validate platform compatibility
                         Console.CursorVisible = false;
                         Console.WriteLine($"hello from 90x30");
@@ -79,10 +80,9 @@ namespace Konsole.PerformanceTests
                         var console = new Window();
                         return (console, null);
                     },
-                    20, "split left, split right tests", (IConsole console, HighSpeedWriter hw, int iteration) =>
+                    40, "split left, split right tests", (IConsole console, HighSpeedWriter hw, int iteration) =>
                     {
-                        //left = console.SplitLeft("left");
-                        console.Clear();
+                        left = console.SplitLeft("left");
                         right = console.SplitRight("right");
                     }, TakeScreenShot);
 
@@ -124,8 +124,10 @@ namespace Konsole.PerformanceTests
                 }
                 catch (Exception ex)
                 {
-                    log.WriteLine("Error running performance test.");
-                    log.WriteLine(ex.Message);
+                    Console.Clear();
+                    var msg = $"Error running performance test. {ex.Message}";
+                    Console.WriteLine(msg);
+                    log.WriteLine(msg);
                     log.WriteLine("--------");
                     log.WriteLine(ex.ToString());
                     log.WriteLine("--------");
@@ -231,65 +233,5 @@ namespace Konsole.PerformanceTests
                 return ERRORS;
             }
         }
-    }
-
-    public class Tester
-    {
-        private readonly StreamWriter log;
-        public Tester(StreamWriter log)
-        {
-            this.log = log;
-            //Console.SetWindowSize(120, 50);
-        }
-        public void TestIt(Func<(IConsole, HighSpeedWriter)> setup, int iterations, string testName, Action<IConsole, HighSpeedWriter, int> testMethod, Action<string> postTest)
-        {
-            Console.WriteLine($"Running test :{testName}");
-            int cnt = 0;
-            var timer = new Stopwatch();
-            Console.Write($"{testName} - started, ");
-            Console.Clear();
-
-            var (console, hw) = setup();
-            if (Program.IsAzure && hw != null)
-            {
-                var msg = $"test '{testName}' skipped, not compatible on azure build servers for security reasons";
-                Console.WriteLine(msg);
-                log.WriteLineAsync(msg);
-                log.Flush();
-                return;
-            }
-
-
-            for (int i = 0; i < iterations; i++)
-            {
-
-                // add a brief pause before clearing screen otherwise we won't see much, just flicker
-                //if (useHighSpeedWriter) Thread.Sleep(100);
-
-                timer.Start();
-                testMethod(console, hw, i);
-                cnt++;
-                timer.Stop();
-            }
-
-            if (iterations != cnt)
-            {
-                var errorMessage = $"Error, iterations:${iterations} != cnt:{cnt}";
-                Console.WriteLine(errorMessage);
-                log.WriteLineAsync(errorMessage);
-                log.Flush();
-                log.Close();
-                Environment.Exit(-1);
-            }
-
-            double rps = (double)iterations / timer.Elapsed.TotalSeconds;
-            double response = (1 / rps) * 1000;
-            var n = DateTime.Now;
-            var successMessage = $"{n.ToShortDateString()} {n.ToShortTimeString()} : TEST: {testName,-35} [{rps:00000.00}] requests per second, [{response:0000}]  ms per requst. ";
-            postTest($"{testName}-{response:0}ms");
-            Console.WriteLine(successMessage);
-            log.WriteLine(successMessage);
-        }
-
     }
 }

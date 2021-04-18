@@ -243,22 +243,33 @@ namespace Konsole
 
         //// commented changed below to see if I can stop the jitter...does mean issue above is still a problem...
         //// maybe handle using try catch, and only if there's an exception we check the width! ooohhh
-        //private static int? _consoleWindowWidth = null;
-        //private static int? _consoleBufferWidth = null;
+        private static int? _consoleWindowWidth = null;
+        private static int? _consoleBufferWidth = null;
+        private static int KonsoleWidth
+        {
+            get
+            {
+                return _consoleWindowWidth ?? (int)(_consoleWindowWidth = Console.WindowWidth);
+            }
+        }
 
-        //private static int CheckWidth(int x)
-        //{
-        //    //return  x.Min(Console.WindowWidth, Console.BufferWidth);
-        //    return x.Min(
-        //        _consoleWindowWidth ?? (int)(_consoleWindowWidth = Console.WindowWidth),
-        //        _consoleBufferWidth ?? (int)(_consoleBufferWidth = Console.BufferWidth)
-        //    );
-        //}
+        private static int KonsoleBufferWidth
+        {
+            get
+            {
+                return _consoleBufferWidth ?? (int)(_consoleBufferWidth = Console.BufferWidth);
+            }
+        }
 
         private static int CheckWidth(int x)
         {
-            return x.Min(Console.WindowWidth, Console.BufferWidth);
+            return x.Min(KonsoleWidth,KonsoleBufferWidth);
         }
+
+        //private static int CheckWidth(int x)
+        //{
+        //    return x.Min(Console.WindowWidth, Console.BufferWidth);
+        //}
 
         public void PrintAt(int x, int y, string format, params object[] args)
         {
@@ -271,12 +282,21 @@ namespace Konsole
             SetCursorPosition(CheckWidth(x), y);
             Console.Write(text);            
         }
+
+        //public void PrintAt(int x, int y, char c)
+        //{
+        //    if (x >= Console.WindowWidth || x>=Console.BufferWidth) return;
+        //    SetCursorPosition(CheckWidth(x), y);
+        //    Console.Write(c);
+        //}
+
         public void PrintAt(int x, int y, char c)
         {
-            if (x >= Console.WindowWidth || x>=Console.BufferWidth) return;
+            if (x >= KonsoleWidth || x >= KonsoleBufferWidth ) return;
             SetCursorPosition(CheckWidth(x), y);
             Console.Write(c);
         }
+
 
         public void PrintAt(Colors colors, int x, int y, char c)
         {

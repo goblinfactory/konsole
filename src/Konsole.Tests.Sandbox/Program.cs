@@ -15,9 +15,25 @@ namespace Konsole.Tests.RunOne
         // All "windows" will become keyHandlers and will delgate jeyHandling "down", the reverse of how print commands delegated UP the compositional hierarchy.
         static async Task Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.Unicode;
+            var test = Window.OpenBox("Test Chinese", 20, 12);
+            test.WriteLine("这是一个中文句子测试，是否可以自动换行不越界");
+
+            Console.ReadLine();
+            return;
+
             Console.CursorVisible = false;
-            Console.SetWindowSize(90, 30);
+            Console.SetWindowSize(1, 1);
+            Console.SetBufferSize(20, 5);
+            Console.SetWindowSize(20, 5);
+
             var window = new Window();
+            var (l, r) = window.SplitLeftRight("left", "right");
+            l.Write("line1\nline2\nline3\nline4");
+            Console.ReadKey(true);
+            return;
+
+
             var (top, bot) = window.SplitTopBottom("top", "bottom");
             var (left, right) = bot.SplitLeftRight("left", "right");
             var (veg, fruit) = right.SplitTopBottom("vegetables", "fruit");
