@@ -2,6 +2,13 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 
+## [6.2.2]
+
+### hotfix 
+
+- #83 Fixed scrolling bug when window created with specific constructor. (merged PR from @PAzureOP)
+  - (This is fixed already in 7.x alpha released, hotfix to support 6.x users.)
+
 ## [6.2.1]
 
 ### Fixed

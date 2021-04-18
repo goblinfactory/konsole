@@ -5,17 +5,23 @@
     <Title>Goblinfactory.Konsole</Title>
     <AssemblyName>Goblinfactory.Konsole</AssemblyName>
     <RootNamespace>Goblinfactory.Konsole</RootNamespace>
-    <Version>6.2.1</Version>
+    <Version>6.2.2</Version>
     <Owners>Goblinfactory Ltd</Owners>
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
     <Description>Simple console library consisting of ProgressBar, Window, Form, Draw and MockConsole.</Description>
-    <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
+    <Copyright>Copyright Goblinfactory Ltd, 2021, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
     <PackageReleaseNotes># Change Log
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
+## [6.2.2]
+
+### hotfix 
+
+- #83 Fixed scrolling bug when window created with specific constructor. (merged PR from @PAzureOP)
+  - (This is fixed already in 7.x alpha released, hotfix to support 6.x users.)
 
 ## [6.2.1]
 
