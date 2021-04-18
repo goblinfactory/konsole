@@ -195,8 +195,8 @@ namespace Konsole
 
                 _y = y ?? _echoConsole?.CursorTop ?? _echoConsole.CursorTop + height ?? 0;
                 _x = x ?? 0;
-                _absoluteX = echoConsole?.AbsoluteX ?? 0 + _x;
-                _absoluteY = echoConsole?.AbsoluteY ?? 0 + _y;
+                _absoluteX = (echoConsole?.AbsoluteX ?? 0) + _x;
+                _absoluteY = (echoConsole?.AbsoluteY ?? 0) + _y;
                 _width = GetStartWidth(_echo, width, _x, echoConsole);
                 _height = GetStartHeight(height, _y, echoConsole);
                 _startForeground = foreground;
