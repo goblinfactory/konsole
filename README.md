@@ -5,7 +5,7 @@ Source File: /README.source.md
 To change this file edit the source file and then run MarkdownSnippets.
 -->
 
-# <img src="docs/konsole.png" height="30px" valign='bottom'/> Konsole 
+# <img src="docs/konsole.png" height="30px" valign='bottom'/> Konsole V6
 
 ![Goblinfactory.Konsole](https://github.com/goblinfactory/konsole/workflows/Goblinfactory.Konsole/badge.svg?branch=master)
 [![NuGet Status](https://img.shields.io/nuget/v/Goblinfactory.Konsole.svg?label=Goblinfactory.Konsole)](https://www.nuget.org/packages/IConsole/)
@@ -17,13 +17,19 @@ Low ceremony, Fluent DSL for writing console apps, utilities and spike projects.
 
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole/community?source=orgpage) and I'll be happy to help you. 
 
-cheers, 
+**Version 7 alpha release progress (see release notes for whats new)**
+| date | alpha release |
+| --- | --- |
+| 11/2/21 | (`7.0.0.5-alpha`)[https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.5-alpha] |
+| 13/2/21 | (`7.0.0.7-alpha`)[https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.7-alpha] |
+
+enjoy, cheers, 
 
 Alan
 
 ![sample demo using HighSpeedWriter](docs/img/01-intro.png)
 
-## Contents
+## Contents : V6
 
   * [Installing and getting started](#installing-and-getting-started)
   * [using static Console.ConsoleColor](#using-static-consoleconsolecolor)      
@@ -679,7 +685,7 @@ You can create advanced window layouts using `SplitRows` and `SplitColumns` pass
                     new Split(4, "heading", LineThickNess.Single),
                     new Split(0),
                     new Split(4, "status", LineThickNess.Single)
-            ); ; ;
+            );
 
             var headline = consoles[0];
             var status = consoles[2];
