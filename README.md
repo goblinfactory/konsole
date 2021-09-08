@@ -1696,11 +1696,10 @@ keep chillin!
 
 Alan
 
-[p.s. join us at snowcode 2020! ](http://www.snowcode.com?refer=konsole) <br/>
+[p.s. join us at snowcode free dev conference at ski resort](http://www.snowcode.com?refer=konsole) <br/>
 [www.snowcode.com](http://www.snowcode.com?refer=konsole) <br/>
-(free dev conf at great ski resort)<br/>
 developers + party + snow + great learning
-April 2020 end of season snowcode conf, slushfest, best for boarders! :D will try to be at a glacier for the skiers.
+February (private invite only powderfest) and April (open to public) end of season snowcode conf, slushfest, best for boarders! :D will try to be at a glacier for the skiers.
 
 [@snowcode](https://twitter.com/snowcode)
 
