@@ -1686,7 +1686,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Support, Feedback, Suggestions
 
-Please drop me a tweet if you find Konsole useful. Latest updates to Konsole was written at Snowcode 2017.
+[If you find Konsole useful please consider sponsoring me.](https://github.com/sponsors/goblinfactory)
+ 
 keep chillin!
 
     O__
