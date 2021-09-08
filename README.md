@@ -10,13 +10,19 @@ Low ceremony, Fluent DSL for writing console apps, utilities and spike projects.
 
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole/community?source=orgpage) and I'll be happy to help you. 
 
-cheers, 
+**Version 7 alpha release progress (see release notes for whats new)**
+| date | alpha release |
+| --- | --- |
+| 11/2/21 | (`7.0.0.5-alpha`)[https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.5-alpha] |
+| 13/2/21 | (`7.0.0.7-alpha`)[https://www.nuget.org/packages/Goblinfactory.Konsole/7.0.0.7-alpha] |
+
+enjoy, cheers, 
 
 Alan
 
 ![sample demo using HighSpeedWriter](docs/img/01-intro.png)
 
-## Contents
+## Contents : V6
 
   * [Installing and getting started](#installing-and-getting-started)
   * [using static Console.ConsoleColor](#using-static-consoleconsolecolor)      
@@ -929,7 +935,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Support, Feedback, Suggestions
 
-Please drop me a tweet if you find Konsole useful. Latest updates to Konsole was written at Snowcode 2017.
+[If you find Konsole useful please consider sponsoring me.](https://github.com/sponsors/goblinfactory)
+ 
 keep chillin!
 
     O__
@@ -938,11 +945,10 @@ keep chillin!
 
 Alan
 
-[p.s. join us at snowcode 2020! ](http://www.snowcode.com?refer=konsole) <br/>
+[p.s. join us at snowcode free dev conference at ski resort](http://www.snowcode.com?refer=konsole) <br/>
 [www.snowcode.com](http://www.snowcode.com?refer=konsole) <br/>
-(free dev conf at great ski resort)<br/>
 developers + party + snow + great learning
-April 2020 end of season snowcode conf, slushfest, best for boarders! :D will try to be at a glacier for the skiers.
+February (private invite only powderfest) and April (open to public) end of season snowcode conf, slushfest, best for boarders! :D will try to be at a glacier for the skiers.
 
 [@snowcode](https://twitter.com/snowcode)
 

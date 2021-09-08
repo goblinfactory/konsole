@@ -10,7 +10,7 @@
     <Company>Goblinfactory Ltd</Company>
     <Authors>Alan Hemmings</Authors>
     <Description>Simple console library consisting of ProgressBar, Window, Form, Draw and MockConsole.</Description>
-    <Copyright>Copyright Goblinfactory Ltd, 2019, all rights reserved.</Copyright>
+    <Copyright>Copyright Goblinfactory Ltd, 2021, all rights reserved.</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageTags>konsole;progress;progressbar;window;readline;console;shell;cui</PackageTags>
     <PackageReleaseNotes>## [7.0.0.7-alpha/hsw-perf-faster-borders]
