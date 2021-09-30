@@ -297,14 +297,16 @@ To open a progress bar inside a new window, just pass the window (`IConsole`) as
 public static void Main(string[] args)
 {
     var w = Window.OpenBox("tasks", 60, 8);
-    var right = w.SplitLeft("files");
-    var left = w.SplitRight("users");
+    var left = w.SplitLeft("files");
+    var right = w.SplitRight("users");
     
-    var pb1 = new ProgressBar(left, 100);
-    pb1.Refresh(50, "hotel-california.mp3");
+    var pb1 = new ProgressBar(right, 100);
+    pb1.Refresh(10, "Clint Eastwood");
+ 
+    var pb2 = new ProgressBar(left, 100);
+    pb2.Refresh(50, "hotel-california.mp3");
 
-    var pb2 = new ProgressBar(right, 100);
-    pb2.Refresh(10, "Clint Eastwood");
+
 }
 ```
 <sup><a href='/src/Konsole.Samples/Samples/ProgressBarInsideWindow.cs#L9-L22' title='File snippet `progressbarinsidewindow` was extracted from'>snippet source</a> | <a href='#snippet-progressbarinsidewindow' title='Navigate to start of snippet `progressbarinsidewindow`'>anchor</a></sup>
