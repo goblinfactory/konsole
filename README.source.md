@@ -1503,7 +1503,7 @@ Alan
 [www.snowcode.com](http://www.snowcode.com?refer=konsole) <br/>
 (free dev conf at great ski resort)<br/>
 developers + party + snow + great learning
-April 2020 end of season snowcode conf, slushfest, best for boarders! :D will try to be at a glacier for the skiers.
+April 2022 end of season snowcode conf, slushfest, best for boarders! :D will try to be at a glacier for the skiers.
 
 [@snowcode](https://twitter.com/snowcode)
 
