@@ -33,6 +33,7 @@ Alan
 
   * [Installing and getting started](#installing-and-getting-started)
   * [using static Console.ConsoleColor](#using-static-consoleconsolecolor)      
+  * [Debugging inside VSCode](./readme-debugging-inside-vscode.md)
   * [IConsole](readme-iconsole.md)
   * [ConcurrentWriter](#concurrentwriter)
   * [Progress Bars](#progressbars)
@@ -204,7 +205,6 @@ using static System.Console;
 Console.WriteLine(Red, "I am red"); 
 var box = Window.OpenBox("warnings", new BoxStyle() { Title = new Colors(White, Red) })
 ```
-
 ## IConsole
 
 This is the main interface that all windows, and objects that wrap a window, or that wrap the `System.Console` writer. It implements the almost everything that `System.Console` does with some extra magic. `IConsole` is a well thought out .NET System.Console abstractions. Use to remove a direct dependancy on System.Console and replace with a dependancy on a well used and well known console interface, `IConsole`, to allow for building rich 'testable', high quality interactive console applications and utilities.
@@ -358,6 +358,9 @@ var safewin = window.Concurrent();
 safewin.WriteLine(Green, "This is threadsafe");
 
 ```
+## Debugging inside VSCode
+
+[debugging inside visual studio code](./readme-debugging-inside-vscode.md)
 
 ## ConcurrentWriter
 
