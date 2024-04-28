@@ -17,7 +17,9 @@ Low ceremony, Fluent DSL for writing console apps, utilities and spike projects.
 
 ### Private beta for version 7 and 8. 
 
+```
 Update : 28 April 2024 : I'm busy planning version 7 and version 8 of Konsole, but need to know who's using it and how much effort to allocate to these two important releases. If you're actively using Konsole, then it's important that you please connect with me on Linkedin so that I can collect discrete input from users on how they're using Konsole, and to makes sure that I work on the features that will add most value to users.
+```
 
 ### General help on any version
 
