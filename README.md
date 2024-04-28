@@ -15,6 +15,12 @@ To change this file edit the source file and then run MarkdownSnippets.
 
 Low ceremony, Fluent DSL for writing console apps, utilities and spike projects. Providing thread safe progress bars, windows and forms and drawing for console applications. Build UX's as shown below in very few lines of code. Konsole provides simple threadsafe ways to write to the C# console window. [See my notes on threading](docs/threading.md). The project is growing quickly with fast responses to issues raised. 
 
+### Private beta for version 7 and 8. 
+
+Update : 28 April 2024 : I'm busy planning version 7 and version 8 of Konsole, but need to know who's using it and how much effort to allocate to these two important releases. If you're actively using Konsole, then it's important that you please connect with me on Linkedin so that I can collect discrete input from users on how they're using Konsole, and to makes sure that I work on the features that will add most value to users.
+
+### General help on any version
+
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole/community?source=orgpage) and I'll be happy to help you. 
 
 **Version 7 alpha release progress (see release notes for whats new)**
