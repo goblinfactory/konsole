@@ -20,6 +20,17 @@ Low ceremony, Fluent DSL for writing console apps, utilities and spike projects.
 
 > Update : 28 April 2024 : I'm busy planning version 7 and version 8 of Konsole, but need to know who's using it and how much effort to allocate to these two important releases. If you're actively using Konsole, then it's important that you please connect with me on Linkedin so that I can collect discrete input from users on how they're using Konsole, and to makes sure that I work on the features that will add most value to users.
 
+[Connect with Alan on LinkedIn in for access to version 7 and 8.](https://www.linkedin.com/in/goblinfactory/)
+
+Version 7 and 8 is going to start out as a private beta (by invitation only) You must connect with me in order to be allowed to use it. I may update the licence to say you need to be connected. 
+
+Version 7 and 8 version will include; (among other critical updates)
+- Input handling inside windows
+- Deeper security updates
+- Docker and cloud native support : Write cloud services as Konsole apps.
+- Full high speed cross platform support, Nix, OSX, Windows.
+- AI integrations. (Default Konsole UI's for building AI powered Konsole apps)
+
 ### General help on any version
 
 If you have any questions on how to use Konsole, please join us on Gitter (https://gitter.im/goblinfactory-konsole/community?source=orgpage) and I'll be happy to help you. 
