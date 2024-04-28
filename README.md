@@ -25,8 +25,8 @@ Low ceremony, Fluent DSL for writing console apps, utilities and spike projects.
 Version 7 and 8 is going to start out as a private beta (by invitation only) You must connect with me in order to be allowed to use it. I may update the licence to say you need to be connected. 
 
 Version 7 and 8 version will include; (among other critical updates)
-- Input handling inside windows
-- Deeper security updates
+- Input handling inside windows.
+- Deeper security updates necessary for a new AI world.
 - Docker and cloud native support : Write cloud services as Konsole apps.
 - Full high speed cross platform support, Nix, OSX, Windows.
 - AI integrations. (Default Konsole UI's for building AI powered Konsole apps)
